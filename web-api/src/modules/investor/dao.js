@@ -9,7 +9,7 @@ import * as db from '../../core/database'
 export const getAll = async params => {
   const query = `SELECT NOW()`
 
-  const res = await db.connect().query(query)
+  const res = await (await db.connect()).query(query)
 
   return res.rows[0]
 }
@@ -23,7 +23,7 @@ export const getAll = async params => {
 export const getById = async id => {
   const query = `SELECT NOW()`
 
-  const res = await db.connect().query(query)
+  const res = await (await db.connect()).query(query)
 
   return res.rows[0]
 }
@@ -37,7 +37,7 @@ export const getById = async id => {
 export const create = async data => {
   const query = `SELECT NOW()`
 
-  const res = await db.connect().query(query)
+  const res = await (await db.connect()).query(query)
 
   return res.rows[0]
 }
@@ -51,7 +51,7 @@ export const create = async data => {
 export const update = async data => {
   const query = `SELECT NOW()`
 
-  const res = await db.connect().query(query)
+  const res = await (await db.connect()).query(query)
 
   return res.rows[0]
 }
@@ -65,7 +65,7 @@ export const update = async data => {
 export const remove = async id => {
   const query = `SELECT NOW()`
 
-  const res = await db.connect().query(query)
+  const res = await (await db.connect()).query(query)
 
   return res.rows[0]
 }
