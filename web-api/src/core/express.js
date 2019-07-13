@@ -4,7 +4,8 @@ import bodyParser from 'body-parser'
 import helmet from 'helmet'
 import morgan from 'morgan'
 import path from 'path'
-import config from '../common/config'
+
+import config from './config'
 import * as pathUtils from '../common/path-utils'
 
 const server = express()

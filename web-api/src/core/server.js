@@ -1,4 +1,4 @@
-import config from '../common/config'
+import config from './config'
 import server from './express'
 
 server.listen(config.server.PORT, () => {

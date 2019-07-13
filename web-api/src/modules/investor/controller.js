@@ -12,7 +12,6 @@ export const getAll = async (request, response) => {
     response.json(await repository.getAll(request.params))
   } catch (error) {
     // Printar erro no log e/ou console
-    console.log(error)
 
     response.status(500).json(error)
   }
