@@ -1,4 +1,4 @@
-import glob from 'glob'
+import glob from 'glop'
 import express from 'express'
 // import cors from 'cors'
 import bodyParser from 'body-parser'
@@ -7,7 +7,6 @@ import morgan from 'morgan'
 import path from 'path'
 
 import configs from './configs'
-import * as pathUtils from '../common/path-utils'
 
 const server = express()
 
