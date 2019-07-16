@@ -8,7 +8,6 @@ import * as repository from './repository'
  */
 export const getAll = async (request, response) => {
   try {
-    logger.warn('djsdhasjdhaslhj')
     response.json(await repository.getAll(request.params))
   } catch (err) {
     logger.error(err)

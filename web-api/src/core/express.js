@@ -1,24 +1,25 @@
+import glob from 'glob'
 import express from 'express'
-import cors from 'cors'
+// import cors from 'cors'
 import bodyParser from 'body-parser'
 import helmet from 'helmet'
 import morgan from 'morgan'
 import path from 'path'
 
-import config from './config'
+import configs from './configs'
 import * as pathUtils from '../common/path-utils'
 
 const server = express()
 
-function setCORS() {
-  server.use(cors())
-  // server.use((req, res, next) => {
-  //   res.setHeader('Access-Control-Allow-Origin', '*');
-  //   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, DELETE, PUT, OPTIONS');
-  //   res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type,Authorization');
-  //   next();
-  // });
-}
+// function setCORS() {
+//   server.use(cors())
+//   // server.use((req, res, next) => {
+//   //   res.setHeader('Access-Control-Allow-Origin', '*');
+//   //   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, DELETE, PUT, OPTIONS');
+//   //   res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type,Authorization');
+//   //   next();
+//   // });
+// }
 
 function setParsers() {
   server.use(helmet())
@@ -26,7 +27,7 @@ function setParsers() {
   server.use(bodyParser.json())
   server.use(morgan('dev')) // morgan(':method :url - :status :response-time :referrer')
 
-  // server.use(express.static(`${config.rootDir}/public`));
+  // server.use(express.static(`${configs.rootDir}/public`));
   // server.set('showStackError', true)
 }
 
@@ -37,8 +38,8 @@ function setRoutes() {
     res.end('<h3>Buildinvest API - V1.0.0</h3>\n')
   })
 
-  pathUtils.getGlobbedPaths(path.join(__dirname, '../modules/**/routes.js')).forEach(routePath => {
-    server.use(config.API_BASE_PATH, require(path.resolve(routePath)).default())
+  glob.sync(path.join(__dirname, '../modules/**/routes.js')).forEach(routePath => {
+    server.use(configs.API_BASE_PATH, require(path.resolve(routePath)).default())
   })
 }
 
