@@ -1,7 +1,8 @@
 import config from '@core/config'
 import server from '@core/express'
+import * as logger from '@core/logger'
 
 server.listen(config.server.PORT, () => {
-  console.log(`\nServer running in http://localhost:${config.server.PORT}`)
-  console.log('To stop server type: ctrl + c\n')
+  logger.info(`Server running in http://localhost:${config.server.PORT}`)
+  logger.info('To stop server type: ctrl + c')
 })

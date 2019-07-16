@@ -9,3 +9,5 @@ public/images/*
 
 # Environment variables
 package-lock.json
+
+logs

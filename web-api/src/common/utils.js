@@ -49,7 +49,6 @@
 //  */
 // export const handleData = (data => ({ data }));
 
-
 // /**
 //  * Print the info message in console
 //  * @param {String} message - Info message

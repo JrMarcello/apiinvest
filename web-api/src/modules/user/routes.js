@@ -2,7 +2,7 @@ import express from 'express'
 import * as controller from './controller'
 
 const router = express.Router()
-const API_INVESTOR_BASE_PAH = '/investor'
+const API_INVESTOR_BASE_PAH = '/user'
 
 export default () => {
   router.get(API_INVESTOR_BASE_PAH, controller.getAll)
