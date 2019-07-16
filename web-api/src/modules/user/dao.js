@@ -1,23 +1,28 @@
-import * as db from '../../core/database'
+// import * as db from '../../core/database'
+import db from '../../core/database'
 
 /**
- *  Get all Member from database.
+ *  Get all User from database.
  *
  * @param {Object} params - Params for query
  * @returns {Promisse} - Returns a Promisse
  */
 export const getAll = async params => {
-  const query = `SELECT NOW()`
+  // const query = `SELECT NOW()`
 
-  const res = await (await db.connect()).query(query)
+  // const res = await (await db.connect()).query(query)
 
-  return res.rows[0]
+  // return res.rows[0]
+
+  // return (await db.connect()).select('now()')
+
+  return (await db.select('now() as data').run())[0]
 }
 
 /**
- * Find a Member by ID
+ * Find a User by ID
  *
- * @param {Interger} id - Member ID
+ * @param {Interger} id - User ID
  * @returns {Promisse} - Returns a Promisse
  */
 export const getById = async id => {
@@ -29,9 +34,9 @@ export const getById = async id => {
 }
 
 /**
- * Saves a Investor in database
+ * Saves a User in database
  *
- * @param {Object} data - Investor data to be saved
+ * @param {Object} data - User data to be saved
  * @returns {Promisse} - Returns a Promisse
  */
 export const create = async data => {
@@ -43,9 +48,9 @@ export const create = async data => {
 }
 
 /**
- * Updates an Investor, given an id
+ * Updates an User, given an id
  *
- * @param {Object} data - Investor data to be updated
+ * @param {Object} data - User data to be updated
  * @returns {Promisse} - Returns a Promisse
  */
 export const update = async data => {
@@ -57,9 +62,9 @@ export const update = async data => {
 }
 
 /**
- * Remove a Investor
+ * Remove a User
  *
- * @param {Object} id - Investor data to be removed
+ * @param {Object} id - User data to be removed
  * @returns {Object} - Returns data
  */
 export const remove = async id => {

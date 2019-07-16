@@ -3,15 +3,15 @@ import * as dao from './dao'
 // /**
 //  * Main validate
 //  *
-//  * @param {Object} data - Investor data to validate
+//  * @param {Object} data - User data to validate
 //  */
 // const _validate = async data => {
 //   if (!data || Object.keys(data).length === 0)
-//     throw new Error('Constante de validação dos campos de Investor')
+//     throw new Error('Constante de validação dos campos de User')
 // }
 
 /**
- *  Get all Investor from database.
+ *  Get all User from database.
  *
  * @param {Object} params - Params for query
  * @returns {Promisse} - Returns a Promisse
@@ -21,9 +21,9 @@ export const getAll = async params => {
 }
 
 /**
- * Find a Investor by ID
+ * Find a User by ID
  *
- * @param {Interger} id - Investor ID
+ * @param {Interger} id - User ID
  * @returns {Promisse} - Returns a Promisse
  */
 export const getById = id => {
@@ -31,9 +31,9 @@ export const getById = id => {
 }
 
 /**
- * Saves a Investor in database
+ * Saves a User in database
  *
- * @param {Object} data - Investor data to be saved
+ * @param {Object} data - User data to be saved
  * @returns {Promisse} - Returns a Promisse
  */
 export const create = data => {
@@ -43,9 +43,9 @@ export const create = data => {
 }
 
 /**
- * Updates an Investor, given an id
+ * Updates an User, given an id
  *
- * @param {Object} data - Investor data to be updated
+ * @param {Object} data - User data to be updated
  * @returns {Promisse} - Returns a Promisse
  */
 export const update = data => {
@@ -55,9 +55,9 @@ export const update = data => {
 }
 
 /**
- * Remove a Investor
+ * Remove a User
  *
- * @param {Object} id - Investor data to be removed
+ * @param {Object} id - User data to be removed
  * @returns {Function} - Returns the callback function
  */
 export const remove = id => {

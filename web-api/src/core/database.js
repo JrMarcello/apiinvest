@@ -1,26 +1,29 @@
-import { Pool } from 'pg'
+// import { Pool } from 'pg'
+import { shiphold } from 'ship-hold'
 
-let pool = null
+export default shiphold({})
 
-export const isConnected = () => {
-  return !!pool
-}
+// let pool = null
 
-export const getPool = () => {
-  if (!isConnected()) pool = new Pool()
+// export const isConnected = () => {
+//   return !!pool
+// }
 
-  return pool
-}
+// export const getPool = () => {
+//   if (!isConnected()) pool = new Pool()
 
-export const connect = () => {
-  if (!isConnected()) pool = new Pool()
+//   return pool
+// }
 
-  return pool.connect()
-}
+// export const connect = () => {
+//   if (!isConnected()) pool = new Pool()
 
-export const disconnect = () => {
-  if (pool) {
-    pool.end()
-    pool = null
-  }
-}
+//   return pool.connect()
+// }
+
+// export const disconnect = () => {
+//   if (pool) {
+//     pool.end()
+//     pool = null
+//   }
+// }
