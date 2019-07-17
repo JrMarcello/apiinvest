@@ -25,10 +25,10 @@ const logger = winston.createLogger({
  * @param msg
  */
 export const info = msg => {
-  const formattedMsg = `${moment().format()} - [INFO] - ${msg}\n`
+  const formattedMsg = `[INFO] - [${moment().format()}] -> ${msg}\n`
 
   process.stdout.write(chalk.bold.white(formattedMsg))
-  logger.info(msg)
+  // logger.info(msg)
 }
 
 /**
@@ -36,7 +36,7 @@ export const info = msg => {
  * @param msg
  */
 export const warn = msg => {
-  const formattedMsg = `${moment().format('DD-MM-YYYY')} - [WARN] - ${msg}\n`
+  const formattedMsg = `[WARN] - ${moment().format()} -> ${msg}\n`
 
   process.stdout.write(chalk.bold.yellow(formattedMsg))
   logger.warn(msg)
@@ -47,7 +47,7 @@ export const warn = msg => {
  * @param msg
  */
 export const error = msg => {
-  const formattedMsg = `${moment().format()} - [ERROR] - ${typeof msg === 'object' ? msg.message : msg}\n`
+  const formattedMsg = `[ERROR] - ${moment().format()} -> ${typeof msg === 'object' ? msg.message : msg}\n`
 
   process.stderr.write(chalk.bold.red(formattedMsg))
   logger.error(msg)

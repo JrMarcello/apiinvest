@@ -1,4 +1,4 @@
-import glob from 'glop'
+import glob from 'glob'
 import express from 'express'
 // import cors from 'cors'
 import bodyParser from 'body-parser'

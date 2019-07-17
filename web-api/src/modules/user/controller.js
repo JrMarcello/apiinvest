@@ -1,4 +1,4 @@
-import * as logger from '@core/logger'
+import { logger } from '@common/utils'
 import * as repository from './repository'
 
 /**

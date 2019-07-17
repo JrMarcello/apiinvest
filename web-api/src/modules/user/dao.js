@@ -1,8 +1,7 @@
-// import * as db from '../../core/database'
-import db from '../../core/database'
+import db from '@core/database'
 
 /**
- *  Get all User from database.
+ *  Find all User
  *
  * @param {Object} params - Params for query
  * @returns {Promisse} - Returns a Promisse
@@ -34,7 +33,7 @@ export const getById = async id => {
 }
 
 /**
- * Saves a User in database
+ * Create an User
  *
  * @param {Object} data - User data to be saved
  * @returns {Promisse} - Returns a Promisse
@@ -48,7 +47,7 @@ export const create = async data => {
 }
 
 /**
- * Updates an User, given an id
+ * Update an User
  *
  * @param {Object} data - User data to be updated
  * @returns {Promisse} - Returns a Promisse
@@ -62,9 +61,9 @@ export const update = async data => {
 }
 
 /**
- * Remove a User
+ * Remove an User
  *
- * @param {Object} id - User data to be removed
+ * @param {Object} id - User id to be removed
  * @returns {Object} - Returns data
  */
 export const remove = async id => {
