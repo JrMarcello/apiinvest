@@ -10,7 +10,7 @@ export const getAll = async (request, response) => {
   try {
     response.json(await repository.getAll(request.params))
   } catch (err) {
-    logger.error(err)
+    logger().error(err)
 
     response.status(500).json(err.message)
   }
@@ -25,7 +25,7 @@ export const getById = async (request, response) => {
   try {
     response.json(await repository.getById(request.params.id))
   } catch (err) {
-    logger.error(err)
+    logger().error(err)
 
     response.status(500).json(err)
   }
@@ -40,7 +40,7 @@ export const create = async (request, response) => {
   try {
     response.json(await repository.create(request.body))
   } catch (err) {
-    logger.error(err)
+    logger().error(err)
 
     response.status(500).json(err)
   }
@@ -53,10 +53,10 @@ export const create = async (request, response) => {
  */
 export const update = async (request, response) => {
   try {
-    request.body.id = request.params.id
+    // request.body.id = request.params.id
     response.json(await repository.update(request.body))
   } catch (err) {
-    logger.error(err)
+    logger().error(err)
 
     response.status(500).json(err)
   }
@@ -71,7 +71,7 @@ export const remove = async (request, response) => {
   try {
     response.json(await repository.remove(request.params.id))
   } catch (err) {
-    logger.error(err)
+    logger().error(err)
 
     response.status(500).json(err)
   }
