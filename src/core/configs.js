@@ -5,7 +5,13 @@ export default {
     PORT: process.env.PORT
   },
   db: {
-    URI: process.env.DB_URI
+    URI: process.env.DB_URI,
+    PGHOST: process.env.PGHOST,
+    PGUSER: process.env.PGUSER,
+    PGDATABASE: process.env.PGDATABASE,
+    PGPASSWORD: process.env.PGPASSWORD,
+    PGPORT: process.env.PGPORT
   },
-  SECRET_KEY: process.env.SECRET_KEY
+  SECRET_KEY: process.env.SECRET_KEY,
+  NODE_ENV: process.env.NODE_ENV
 }
