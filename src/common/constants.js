@@ -5,32 +5,32 @@ const constants = {
   // Code: 1xxx
   auth: {
     // 10xx
-    success: {
-      CREATED: { code: 2000, message: 'movement successfully created' },
-      UPDATED: { code: 2001, message: 'movement successfully updated' },
-      REMOVED: { code: 2002, message: 'movement successfully removed' }
-    },
-    // 11xx
+    // success: {
+
+    // },
+    // 15xx
     error: {
-      DESTINY_HARDWARE: {
-        code: 2100,
-        message: 'Target hardware is different from the station hardware'
-      }
+      UNAUTHORIZED: { code: 1500, message: 'Acesso negado! Token inválido ou inexistente' }
     }
   },
   user: {
     // 20xx
     success: {
-      CREATED: { code: 2000, message: 'Usuario criado com sucesso' },
-      UPDATED: { code: 2001, message: 'Usuario atualizado com sucesso' },
-      REMOVED: { code: 2002, message: 'Usuario removido com sucesso' }
+      CREATED: { code: 2000, message: 'Usuário criado com sucesso' },
+      UPDATED: { code: 2001, message: 'Usuário atualizado com sucesso' },
+      REMOVED: { code: 2002, message: 'Usuário removido com sucesso' },
+      LOGGED: { code: 2003, message: 'Usuario logado' }
     },
-    // 21xx
+    // 25xx
     error: {
-      NOT_FOUNDS: { code: 2100, message: 'Ainda não exitem usuários cadastrados' },
-      NOT_FOUND: { code: 2100, message: 'Usuario não encontrado' }
+      NOT_FOUNDS: { code: 2500, message: 'Ainda não exitem usuários cadastrados' },
+      NOT_FOUND: { code: 2501, message: 'Usuario não encontrado' },
+      NOT_CREATED: { code: 2502, message: 'Erro ao criar o usuário' },
+      NOT_UPDATED: { code: 2503, message: 'Erro ao atualizar o usuário' },
+      NOT_REMOVED: { code: 2504, message: 'Erro ao remover o usuário' },
+      INVALID_USER_LOGIN: { code: 2505, message: 'Email ou senha inválido' }
     }
   }
 }
 
-export { constants as default }
+export default constants

@@ -11,6 +11,7 @@
   "author": "Majun",
   "license": "ISC",
   "dependencies": {
+    "bcrypt": "^3.0.6",
     "body-parser": "^1.19.0",
     "chalk": "^2.4.2",
     "cors": "^2.8.5",
@@ -18,6 +19,7 @@
     "express": "^4.17.1",
     "glob": "^7.1.4",
     "helmet": "^3.18.0",
+    "jsonwebtoken": "^8.5.1",
     "logger": "0.0.1",
     "moment": "^2.24.0",
     "morgan": "^1.9.1",
