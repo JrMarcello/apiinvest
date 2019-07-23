@@ -46,9 +46,10 @@ export const warn = msg => {
  *
  * @param msg
  */
-export const error = msg => {
-  const formattedMsg = `[ERROR] - ${moment().format()} -> ${typeof msg === 'object' ? msg.message : msg}\n`
+export const error = err => {
+  const formattedMsg = `[ERROR] - ${moment().format()} -> ${err.toString()}\n`
 
   process.stderr.write(chalk.bold.red(formattedMsg))
-  logger.error(msg)
+  logger.error(err)
+  console.log(err)
 }

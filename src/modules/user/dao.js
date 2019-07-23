@@ -1,10 +1,11 @@
 import db from '@core/database'
 import { generateUUID } from '@common/utils'
+import bcrypt from 'bcrypt'
 
-const table = 'investidor'
+const table = 'usuario'
 
 /**
- *  Find all Investor
+ *  Find all User
  *
  * @param {Object} params - Params for query
  * @returns {Promisse} - Returns a Promisse
@@ -21,9 +22,9 @@ export const getAll = () => {
 }
 
 /**
- * Find a Investor by ID
+ * Find a User by ID
  *
- * @param {Interger} id - Investor ID
+ * @param {Interger} id - User ID
  * @returns {Promisse} - Returns a Promisse
  */
 export const getById = id => {
@@ -36,38 +37,58 @@ export const getById = id => {
 }
 
 /**
- * Create an Investor
+ * Find a User by email
  *
- * @param {Object} data - Investor data to be saved
+ * @param {Interger} email - User email
+ * @returns {Promisse} - Returns a Promisse
+ */
+export const getByEmail = email => {
+  return db
+    .select()
+    .from(table)
+    .where('email', email)
+    .and('ativo', true)
+    .run()
+}
+
+/**
+ * Create an User
+ *
+ * @param {Object} data - User data to be saved
  * @returns {Promisse} - Returns a Promisse
  */
 export const create = async data => {
   data.id = await generateUUID()
+  data.password = `'${bcrypt.hashSync(data.password, 10)}'`
 
   return db
     .insert(data)
     .into(table)
+    .returning('*')
     .run()
 }
 
 /**
- * Update an Investor
+ * Update an User
  *
- * @param {Object} data - Investor data to be updated
+ * @param {Object} data - User data to be updated
  * @returns {Promisse} - Returns a Promisse
  */
 export const update = data => {
+  if (data.password) data.password = bcrypt.hashSync(data.password, 10)
+
   return db
     .update(table)
     .set(data)
     .where('id', data.id)
+    .returning('*')
     .run()
 }
 
 /**
- * Remove an Investor
+ * Remove an User
  *
- * @param {Object} id - Investor id to be removed
+ * @param {Object} id - User id to be removed
  * @returns {Object} - Returns data
  */
 export const remove = id => {
