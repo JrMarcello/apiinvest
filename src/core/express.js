@@ -1,6 +1,6 @@
 import glob from 'glob'
 import express from 'express'
-// import cors from 'cors'
+import cors from 'cors'
 import bodyParser from 'body-parser'
 import helmet from 'helmet'
 import morgan from 'morgan'
@@ -10,15 +10,15 @@ import configs from './configs'
 
 const server = express()
 
-// function setCORS() {
-//   server.use(cors())
-//   // server.use((req, res, next) => {
-//   //   res.setHeader('Access-Control-Allow-Origin', '*');
-//   //   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, DELETE, PUT, OPTIONS');
-//   //   res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type,Authorization');
-//   //   next();
-//   // });
-// }
+function setCORS() {
+  server.use(cors())
+  // server.use((req, res, next) => {
+  //   res.setHeader('Access-Control-Allow-Origin', '*');
+  //   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, DELETE, PUT, OPTIONS');
+  //   res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type,Authorization');
+  //   next();
+  // });
+}
 
 function setParsers() {
   server.use(helmet())
@@ -42,7 +42,7 @@ function setRoutes() {
   })
 }
 
-// setCORS()
+setCORS()
 setParsers()
 setRoutes()
 
