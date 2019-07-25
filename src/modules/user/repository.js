@@ -1,18 +1,7 @@
-import constants from '@common/constants'
 import bcrypt from 'bcrypt'
+import constants from '@common/constants'
 import { getToken } from '@core/auth'
-import Exception from '@core/exception'
 import * as dao from './dao'
-
-// /**
-//  * Main validate
-//  *
-//  * @param {Object} data - User data to validate
-//  */
-// const _validate = async data => {
-//   if (!data || Object.keys(data).length === 0)
-//     throw new Error('Constante de validação dos campos de User')
-// }
 
 /**
  *  Get all User from database.
@@ -41,8 +30,6 @@ export const getById = id => {
  * @returns {Promisse} - Returns a Promisse
  */
 export const create = data => {
-  // await _validate(data)
-
   return dao.create(data)
 }
 
@@ -53,7 +40,6 @@ export const create = data => {
  * @returns {Promisse} - Returns a Promisse
  */
 export const update = data => {
-  // await _validate(data)
   const updateble = {
     id: data.id,
     username: data.username,
@@ -80,12 +66,10 @@ export const remove = id => {
  * @returns {Promisse} - Returns a Promisse
  */
 export const login = async params => {
-  // await _validate(data)
-
   const user = (await dao.getByEmail(params.email))[0]
 
   if (!user || !bcrypt.compareSync(params.password, user.password))
-    throw new Exception(constants.user.error.INVALID_USER_LOGIN)
+    throw Error(constants.user.error.INVALID_USER_LOGIN.message)
 
   return getToken(user)
 }

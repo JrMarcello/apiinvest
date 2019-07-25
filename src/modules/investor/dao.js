@@ -1,19 +1,15 @@
 import db from '@core/database'
 import { generateUUID } from '@common/utils'
-import bcrypt from 'bcrypt'
 
-const table = 'usuario'
+const table = 'investidor'
 
 /**
- *  Find all User
+ *  Find all Investor
  *
  * @param {Object} params - Params for query
  * @returns {Promisse} - Returns a Promisse
  */
 export const getAll = () => {
-  // const query = `SELECT * FROM ${table} WHERE ativo`
-  // return db.query(query)
-
   return db
     .select()
     .from(table)
@@ -22,9 +18,9 @@ export const getAll = () => {
 }
 
 /**
- * Find a User by ID
+ * Find a Investor by ID
  *
- * @param {Interger} id - User ID
+ * @param {Interger} id - Investor ID
  * @returns {Promisse} - Returns a Promisse
  */
 export const getById = id => {
@@ -37,29 +33,28 @@ export const getById = id => {
 }
 
 /**
- * Find a User by email
+ * Find a Investor by User ID
  *
- * @param {Interger} email - User email
+ * @param {Interger} id - User ID
  * @returns {Promisse} - Returns a Promisse
  */
-export const getByEmail = email => {
+export const getByUserId = id => {
   return db
     .select()
     .from(table)
-    .where('email', email)
+    .where('id_usuario', id)
     .and('ativo', true)
     .run()
 }
 
 /**
- * Create an User
+ * Create an Investor
  *
- * @param {Object} data - User data to be saved
+ * @param {Object} data - Investor data to be saved
  * @returns {Promisse} - Returns a Promisse
  */
 export const create = async data => {
   data.id = await generateUUID()
-  data.password = `'${bcrypt.hashSync(data.password, 10)}'`
 
   return db
     .insert(data)
@@ -69,14 +64,12 @@ export const create = async data => {
 }
 
 /**
- * Update an User
+ * Update an Investor
  *
- * @param {Object} data - User data to be updated
+ * @param {Object} data - Investor data to be updated
  * @returns {Promisse} - Returns a Promisse
  */
 export const update = data => {
-  if (data.password) data.password = bcrypt.hashSync(data.password, 10)
-
   return db
     .update(table)
     .set(data)
@@ -85,9 +78,9 @@ export const update = data => {
 }
 
 /**
- * Remove an User
+ * Remove an Investor
  *
- * @param {Object} id - User id to be removed
+ * @param {Object} id - Investor id to be removed
  * @returns {Object} - Returns data
  */
 export const remove = id => {
