@@ -6,7 +6,7 @@ const rules = {
   getAll: [],
   getById: [check('id', constants.validations.INVALID_DATA_FIELD).isUUID()],
   create: [
-    check('id_perfil').isInt(),
+    // check('id_perfil').isInt(),
     check('username').isString(),
     check('email').isEmail(),
     check('password').isAlphanumeric()
