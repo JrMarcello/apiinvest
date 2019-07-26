@@ -37,6 +37,21 @@ export const getById = async (request, response) => {
  * @param {Object} response - HTTP response
  * @returns {Object} HTTP response with status code and data
  */
+export const getByUserId = async (request, response) => {
+  try {
+    response.json(await repository.getByUserId(request.params.id))
+  } catch (err) {
+    logger().error(err)
+
+    response.status(500).json(err)
+  }
+}
+
+/**
+ * @param {Object} request - HTTP request
+ * @param {Object} response - HTTP response
+ * @returns {Object} HTTP response with status code and data
+ */
 export const create = async (request, response) => {
   try {
     const builder = await repository.create(request.body)

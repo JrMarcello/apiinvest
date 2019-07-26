@@ -3,14 +3,16 @@ import { checkAuth } from '@core/auth'
 import * as controller from './controller'
 
 const router = express.Router()
-const INVESTIMENT_BASE_PATH = '/investment'
+const BUILDING_BASE_PATH = '/building'
 
 export default () => {
-  router.get(INVESTIMENT_BASE_PATH, checkAuth, controller.getAll)
-  router.get(`${INVESTIMENT_BASE_PATH}/:id`, checkAuth, controller.getById)
-  router.post(INVESTIMENT_BASE_PATH, checkAuth, controller.create)
-  router.put(INVESTIMENT_BASE_PATH, checkAuth, controller.update)
-  router.delete(`${INVESTIMENT_BASE_PATH}/:id`, checkAuth, controller.remove)
+  router.get(BUILDING_BASE_PATH, checkAuth, controller.getAll)
+  router.get(`${BUILDING_BASE_PATH}/:id`, checkAuth, controller.getById)
+  router.get(`${BUILDING_BASE_PATH}/builder/:id`, checkAuth, controller.getByBuilderId)
+  router.get(`${BUILDING_BASE_PATH}/funding/:id`, checkAuth, controller.getByFundingId)
+  router.post(BUILDING_BASE_PATH, checkAuth, controller.create)
+  router.put(BUILDING_BASE_PATH, checkAuth, controller.update)
+  router.delete(`${BUILDING_BASE_PATH}/:id`, checkAuth, controller.remove)
 
   return router
 }

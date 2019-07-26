@@ -1,7 +1,7 @@
 import * as dao from './dao'
 
 /**
- *  Get all Building from database.
+ *  Get all Builder from database.
  *
  * @param {Object} params - Params for query
  * @returns {Promisse} - Returns a Promisse
@@ -11,9 +11,9 @@ export const getAll = async params => {
 }
 
 /**
- * Find a Building by ID
+ * Find a Builder by ID
  *
- * @param {Interger} id - Building ID
+ * @param {Interger} id - Builder ID
  * @returns {Promisse} - Returns a Promisse
  */
 export const getById = id => {
@@ -21,9 +21,9 @@ export const getById = id => {
 }
 
 /**
- * Find Buildings by Builder ID
+ * Find a Builder by User ID
  *
- * @param {Interger} id - Builder ID
+ * @param {Interger} id - User ID
  * @returns {Promisse} - Returns a Promisse
  */
 export const getByBuilderId = id => {
@@ -31,19 +31,9 @@ export const getByBuilderId = id => {
 }
 
 /**
- * Find Buildings by Funding ID
+ * Saves a Builder in database
  *
- * @param {Interger} id - Funding ID
- * @returns {Promisse} - Returns a Promisse
- */
-export const getByFundingId = id => {
-  return dao.getByFundingId(id)
-}
-
-/**
- * Saves a Building in database
- *
- * @param {Object} data - Building data to be saved
+ * @param {Object} data - Builder data to be saved
  * @returns {Promisse} - Returns a Promisse
  */
 export const create = data => {
@@ -51,31 +41,28 @@ export const create = data => {
 }
 
 /**
- * Updates an Building, given an id
+ * Updates an Builder, given an id
  *
- * @param {Object} data - Building data to be updated
+ * @param {Object} data - Builder data to be updated
  * @returns {Promisse} - Returns a Promisse
  */
 export const update = data => {
   const updateble = {
     id: data.id,
-    spe: data.spe,
-    matricula: data.matricula,
-    nome: data.nome,
-    descricao: data.descricao,
-    endereco: data.endereco,
-    valor: data.valor,
-    data_inicio: data.data_inicio,
-    data_fim: data.data_fim
+    razao_social: data.razao_social,
+    nome_fantasia: data.nome_fantasia,
+    endereco: data.endereco
   }
+
+  if (data.cnpj) updateble.cnpj = data.cnpj
 
   return dao.update(updateble)
 }
 
 /**
- * Remove a Building
+ * Remove a Builder
  *
- * @param {Object} id - Building id
+ * @param {Object} id - Builder id
  * @returns {Function} - Returns the callback function
  */
 export const remove = id => {

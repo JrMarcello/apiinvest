@@ -1,10 +1,10 @@
 import db from '@core/database'
 import { generateUUID } from '@common/utils'
 
-const table = 'obra'
+const table = 'construtora'
 
 /**
- *  Find all Building
+ *  Find all Builder
  *
  * @param {Object} params - Params for query
  * @returns {Promisse} - Returns a Promisse
@@ -18,9 +18,9 @@ export const getAll = () => {
 }
 
 /**
- * Find a Building by ID
+ * Find a Builder by ID
  *
- * @param {Interger} id - Building ID
+ * @param {Interger} id - Builder ID
  * @returns {Promisse} - Returns a Promisse
  */
 export const getById = id => {
@@ -33,39 +33,24 @@ export const getById = id => {
 }
 
 /**
- * Find Buildings by Investor ID
+ * Find a Builder by User ID
  *
- * @param {Interger} id - Investor ID
+ * @param {Interger} id - User ID
  * @returns {Promisse} - Returns a Promisse
  */
 export const getByBuilderId = id => {
   return db
     .select()
     .from(table)
-    .where('id_construtora', id)
+    .where('id_contrutora', id)
     .and('ativo', true)
     .run()
 }
 
 /**
- * Find Buildings by Funding ID
+ * Create an Builder
  *
- * @param {Interger} id - Funding ID
- * @returns {Promisse} - Returns a Promisse
- */
-export const getByFundingId = id => {
-  return db
-    .select()
-    .from(table)
-    .where('id_captacao', id)
-    .and('ativo', true)
-    .run()
-}
-
-/**
- * Create an Building
- *
- * @param {Object} data - Building data to be saved
+ * @param {Object} data - Builder data to be saved
  * @returns {Promisse} - Returns a Promisse
  */
 export const create = async data => {
@@ -79,9 +64,9 @@ export const create = async data => {
 }
 
 /**
- * Update an Building
+ * Update an Builder
  *
- * @param {Object} data - Building data to be updated
+ * @param {Object} data - Builder data to be updated
  * @returns {Promisse} - Returns a Promisse
  */
 export const update = data => {
@@ -93,9 +78,9 @@ export const update = data => {
 }
 
 /**
- * Remove an Building
+ * Remove an Builder
  *
- * @param {Object} id - Building id to be removed
+ * @param {Object} id - Builder id to be removed
  * @returns {Object} - Returns data
  */
 export const remove = id => {
