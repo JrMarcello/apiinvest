@@ -1,0 +1,36 @@
+version: '3'
+
+services:
+  db:
+    image: postgres
+    restart: always
+    ports:
+      - '5432:5432'
+    container_name: buildinvest-postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: buildivest
+
+  api:
+    build: .
+    image: buildinvest/web-api
+
+    container_name: buildinvest-web-api
+
+    depends_on:
+      - db
+
+    working_dir: /usr/buildinvest/api
+
+    volumes:
+      - .:/usr/buildinvest/api
+      - /usr/buildinvest/api/node_modules
+
+    ports:
+      - '3000:3000'
+
+    env_file: .env
+
+    #command: sh -c "apk --no-cache --update --virtual build-dependencies add python make g++ && npm install && apk del build-dependencies && npm start"
+    command: npm start

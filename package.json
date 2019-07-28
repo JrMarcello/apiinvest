@@ -2,11 +2,11 @@
   "name": "web-api",
   "version": "1.0.0",
   "description": "Buildinvest web api",
-  "main": "index.js",
+  "main": "./src/core/server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon --exec babel-node ./src/core/server.js",
-    "lint": "eslint ./src"
+    "lint": "eslint ./src",
+    "start": "nodemon --exec babel-node ./src/core/server.js"
   },
   "author": "Majun",
   "license": "ISC",
@@ -20,6 +20,7 @@
     "express-validator": "^6.1.1",
     "glob": "^7.1.4",
     "helmet": "^3.18.0",
+    "ip": "^1.1.5",
     "jsonwebtoken": "^8.5.1",
     "logger": "0.0.1",
     "moment": "^2.24.0",
