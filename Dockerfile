@@ -2,7 +2,7 @@ FROM node:alpine
 
 WORKDIR /usr/buildinvest/api
 
-COPY package*.json .
+COPY package*.json ./
 
 RUN apk --no-cache --update --virtual build-dependencies add python make g++
 RUN npm install
