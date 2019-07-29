@@ -1,4 +1,3 @@
-// import 'dotenv/config'
 import ip from 'ip'
 import server from '@core/express'
 import { configs, logger } from '@common/utils'
