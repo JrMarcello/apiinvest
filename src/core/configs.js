@@ -5,7 +5,7 @@ export default {
     PORT: process.env.PORT
   },
   db: {
-    URI: process.env.DB_URI,
+    PGURI: process.env.PGURI,
     PGHOST: process.env.PGHOST,
     PGUSER: process.env.PGUSER,
     PGDATABASE: process.env.PGDATABASE,

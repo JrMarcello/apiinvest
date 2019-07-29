@@ -1,7 +1,10 @@
 // import { Pool } from 'pg'
 import { shiphold } from 'ship-hold'
+import configs from './configs'
 
-export default shiphold({})
+export default shiphold({
+  connectionString: configs.db.PGURI
+})
 
 // let pool = null
 
