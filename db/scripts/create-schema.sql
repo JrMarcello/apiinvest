@@ -1,5 +1,5 @@
 --#######################################################################
---## 			CREATE SHEMA 		       ##
+--## 												CREATE SHEMA 												       ##
 --#######################################################################
 --DROP SCHEMA IF EXISTS buildinvest CASCADE;
 CREATE SCHEMA buildinvest;
@@ -8,7 +8,7 @@ ALTER DATABASE buildinvest SET search_path TO buildinvest;
 SET search_path TO buildinvest;
 
 --#######################################################################
---##			    CREATE TABLES 	 		       ##
+--##			    							CREATE TABLES 									 		       ##
 --#######################################################################
 
 -- DROP TABLE IF EXISTS investidor CASCADE;
@@ -223,7 +223,7 @@ ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 
 --#######################################################################
---##			    	INSERT DATA	 		       ##
+--##			    								INSERT DATA										 		       ##
 --#######################################################################
 INSERT INTO perfil (nome) VALUES 
   ('Investidor'),

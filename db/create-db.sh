@@ -1,6 +1,4 @@
 #!/bin/bash
  
-psql postgres://postgres:postgres@0.0.0.0:5432/postgres -f /scripts/create-db.sql       
-psql postgres://postgres:postgres@0.0.0.0:5432/buildinvest -f /scripts/create-schema.sql       
-
-echo 'DABASE CRIADO'
+psql postgres://postgres:postgres@35.231.152.216:5432/postgres -f db/scripts/create-db.sql     
+psql postgres://postgres:postgres@35.231.152.216:5432/buildinvest -f db/scripts/create-schema.sql

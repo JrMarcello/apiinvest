@@ -1,5 +1,5 @@
 --#######################################################################
---## 			CREATTING DB		 		       ##
+--## 			                  CREATTING DB	                 	 		       ##
 --#######################################################################
 -- DROP ROLE IF EXISTS buildinvest;
 --CREATE ROLE buildinvest WITH LOGIN;
