@@ -1,7 +1,7 @@
 import db from '@core/database'
 import { generateUUID } from '@common/utils'
 
-const table = 'obra'
+const table = 'building'
 
 /**
  *  Find all Building
@@ -13,7 +13,7 @@ export const getAll = () => {
   return db
     .select()
     .from(table)
-    .where('ativo', true)
+    .where('active', true)
     .run()
 }
 
@@ -28,7 +28,7 @@ export const getById = id => {
     .select()
     .from(table)
     .where('id', id)
-    .and('ativo', true)
+    .and('active', true)
     .run()
 }
 
@@ -42,8 +42,8 @@ export const getByBuilderId = id => {
   return db
     .select()
     .from(table)
-    .where('id_construtora', id)
-    .and('ativo', true)
+    .where('id_builder', id)
+    .and('active', true)
     .run()
 }
 
@@ -57,8 +57,8 @@ export const getByFundingId = id => {
   return db
     .select()
     .from(table)
-    .where('id_captacao', id)
-    .and('ativo', true)
+    .where('id_fundraising', id)
+    .and('active', true)
     .run()
 }
 
@@ -101,7 +101,7 @@ export const update = data => {
 export const remove = id => {
   return db
     .update(table)
-    .set('ativo', false)
+    .set('active', false)
     .where('id', id)
     .run()
 }

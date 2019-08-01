@@ -1,7 +1,7 @@
 import db from '@core/database'
 import { generateUUID } from '@common/utils'
 
-const table = 'investidor'
+const table = 'investor'
 
 /**
  *  Find all Investor
@@ -13,7 +13,7 @@ export const getAll = () => {
   return db
     .select()
     .from(table)
-    .where('ativo', true)
+    .where('active', true)
     .run()
 }
 
@@ -28,7 +28,7 @@ export const getById = id => {
     .select()
     .from(table)
     .where('id', id)
-    .and('ativo', true)
+    .and('active', true)
     .run()
 }
 
@@ -42,8 +42,8 @@ export const getByUserId = id => {
   return db
     .select()
     .from(table)
-    .where('id_usuario', id)
-    .and('ativo', true)
+    .where('id_user', id)
+    .and('active', true)
     .run()
 }
 
@@ -86,7 +86,7 @@ export const update = data => {
 export const remove = id => {
   return db
     .update(table)
-    .set('ativo', false)
+    .set('active', false)
     .where('id', id)
     .run()
 }

@@ -2,7 +2,7 @@ import db from '@core/database'
 import { generateUUID } from '@common/utils'
 import bcrypt from 'bcrypt'
 
-const table = 'usuario'
+const table = 'user'
 
 /**
  *  Find all User
@@ -17,7 +17,7 @@ export const getAll = () => {
   return db
     .select()
     .from(table)
-    .where('ativo', true)
+    .where('active', true)
     .run()
 }
 
@@ -32,7 +32,7 @@ export const getById = id => {
     .select()
     .from(table)
     .where('id', id)
-    .and('ativo', true)
+    .and('active', true)
     .run()
 }
 
@@ -47,7 +47,7 @@ export const getByEmail = email => {
     .select()
     .from(table)
     .where('email', email)
-    .and('ativo', true)
+    .and('active', true)
     .run()
 }
 
@@ -93,7 +93,7 @@ export const update = data => {
 export const remove = id => {
   return db
     .update(table)
-    .set('ativo', false)
+    .set('active', false)
     .where('id', id)
     .run()
 }
