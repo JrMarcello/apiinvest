@@ -14,7 +14,7 @@ services:
     build: .
     image: buildinvest/web-api
 
-    container_name: buildinvest-web-api
+    container_name: web-api-buildinvest
 
     depends_on:
       - db
@@ -30,5 +30,4 @@ services:
 
     env_file: .env
 
-    #command: sh -c "apk --no-cache --update --virtual build-dependencies add python make g++ && npm install && apk del build-dependencies && npm start"
     command: npm start
