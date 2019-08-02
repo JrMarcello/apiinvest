@@ -1,7 +1,7 @@
 import * as dao from './dao'
 
 /**
- *  Get all Builder from database.
+ *  Get all Buildings
  *
  * @param {Object} params - Params for query
  * @returns {Promisse} - Returns a Promisse
@@ -11,9 +11,9 @@ export const getAll = async params => {
 }
 
 /**
- * Find a Builder by ID
+ * Find a Building by ID
  *
- * @param {Interger} id - Builder ID
+ * @param {Interger} id - Building ID
  * @returns {Promisse} - Returns a Promisse
  */
 export const getById = id => {
@@ -21,7 +21,7 @@ export const getById = id => {
 }
 
 /**
- * Find a Builder by User ID
+ * Find Buildings by Builder ID
  *
  * @param {Interger} id - User ID
  * @returns {Promisse} - Returns a Promisse
@@ -31,9 +31,9 @@ export const getByBuilderId = id => {
 }
 
 /**
- * Saves a Builder in database
+ * Saves a Building
  *
- * @param {Object} data - Builder data to be saved
+ * @param {Object} data - Building data to be saved
  * @returns {Promisse} - Returns a Promisse
  */
 export const create = data => {
@@ -41,9 +41,9 @@ export const create = data => {
 }
 
 /**
- * Updates an Builder, given an id
+ * Updates an Building
  *
- * @param {Object} data - Builder data to be updated
+ * @param {Object} data - Building data to be updated
  * @returns {Promisse} - Returns a Promisse
  */
 export const update = data => {
@@ -60,9 +60,9 @@ export const update = data => {
 }
 
 /**
- * Remove a Builder
+ * Remove an Building
  *
- * @param {Object} id - Builder id
+ * @param {Object} id - Building id
  * @returns {Function} - Returns the callback function
  */
 export const remove = id => {

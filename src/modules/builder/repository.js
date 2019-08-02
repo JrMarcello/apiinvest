@@ -1,7 +1,7 @@
 import * as dao from './dao'
 
 /**
- *  Get all Builder from database.
+ *  Get all Builders
  *
  * @param {Object} params - Params for query
  * @returns {Promisse} - Returns a Promisse
@@ -31,7 +31,7 @@ export const getByUserId = id => {
 }
 
 /**
- * Saves a Builder in database
+ * Saves a Builder
  *
  * @param {Object} data - Builder data to be saved
  * @returns {Promisse} - Returns a Promisse
@@ -41,7 +41,7 @@ export const create = data => {
 }
 
 /**
- * Updates an Builder, given an id
+ * Updates an Builder
  *
  * @param {Object} data - Builder data to be updated
  * @returns {Promisse} - Returns a Promisse
@@ -60,7 +60,7 @@ export const update = data => {
 }
 
 /**
- * Remove a Builder
+ * Remove an Builder
  *
  * @param {Object} id - Builder id
  * @returns {Function} - Returns the callback function

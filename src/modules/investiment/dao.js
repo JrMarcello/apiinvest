@@ -1,10 +1,10 @@
 import db from '@core/database'
 import { generateUUID } from '@common/utils'
 
-const table = 'building'
+const table = 'investment'
 
 /**
- *  Find all Building
+ *  Find all Investments
  *
  * @param {Object} params - Params for query
  * @returns {Promisse} - Returns a Promisse
@@ -18,9 +18,9 @@ export const getAll = () => {
 }
 
 /**
- * Find a Building by ID
+ * Find a Investment by ID
  *
- * @param {Interger} id - Building ID
+ * @param {Interger} id - Investment ID
  * @returns {Promisse} - Returns a Promisse
  */
 export const getById = id => {
@@ -33,27 +33,27 @@ export const getById = id => {
 }
 
 /**
- * Find Buildings by Investor ID
+ * Find Investments by Investor ID
  *
  * @param {Interger} id - Investor ID
  * @returns {Promisse} - Returns a Promisse
  */
-export const getByBuilderId = id => {
+export const getByInvestorId = id => {
   return db
     .select()
     .from(table)
-    .where('id_builder', id)
+    .where('id_investor', id)
     .and('active', true)
     .run()
 }
 
 /**
- * Find Buildings by Funding ID
+ * Find Investments by Fundraising ID
  *
- * @param {Interger} id - Funding ID
+ * @param {Interger} id - Fundraising ID
  * @returns {Promisse} - Returns a Promisse
  */
-export const getByFundingId = id => {
+export const getByFundraisingId = id => {
   return db
     .select()
     .from(table)
@@ -63,9 +63,9 @@ export const getByFundingId = id => {
 }
 
 /**
- * Create an Building
+ * Create an Investment
  *
- * @param {Object} data - Building data to be saved
+ * @param {Object} data - Investment data to be saved
  * @returns {Promisse} - Returns a Promisse
  */
 export const create = async data => {
@@ -79,9 +79,9 @@ export const create = async data => {
 }
 
 /**
- * Update an Building
+ * Update an Investment
  *
- * @param {Object} data - Building data to be updated
+ * @param {Object} data - Investment data to be updated
  * @returns {Promisse} - Returns a Promisse
  */
 export const update = data => {
@@ -93,9 +93,9 @@ export const update = data => {
 }
 
 /**
- * Remove an Building
+ * Remove an Investment
  *
- * @param {Object} id - Building id to be removed
+ * @param {Object} id - Investment id to be removed
  * @returns {Object} - Returns data
  */
 export const remove = id => {

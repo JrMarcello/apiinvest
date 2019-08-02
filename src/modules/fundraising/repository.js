@@ -1,7 +1,7 @@
 import * as dao from './dao'
 
 /**
- *  Get all Investments from database.
+ *  Get all Fundraisings
  *
  * @param {Object} params - Params for query
  * @returns {Promisse} - Returns a Promisse
@@ -11,9 +11,9 @@ export const getAll = async params => {
 }
 
 /**
- * Find a Investment by ID
+ * Find a Fundraising by ID
  *
- * @param {Interger} id - Investment ID
+ * @param {Interger} id - Fundraising ID
  * @returns {Promisse} - Returns a Promisse
  */
 export const getById = id => {
@@ -21,29 +21,29 @@ export const getById = id => {
 }
 
 /**
- * Find Investments by Investor ID
+ * Find Fundraisings by Building ID
  *
- * @param {Interger} id - Investor ID
+ * @param {Interger} id - Building ID
  * @returns {Promisse} - Returns a Promisse
  */
-export const getByInvestorId = id => {
-  return dao.getByInvestorId(id)
+export const getByBuildingId = id => {
+  return dao.getByBuilderId(id)
 }
 
 /**
- * Find Investments by Fundraising ID
+ * Find Fundraisings by Custodian ID
  *
- * @param {Interger} id - Fundraising ID
+ * @param {Interger} id - Custodian ID
  * @returns {Promisse} - Returns a Promisse
  */
-export const getByFundraisingId = id => {
-  return dao.getByFundraisingId(id)
+export const getByCustodianId = id => {
+  return dao.getByCustodianId(id)
 }
 
 /**
- * Saves a Investment in database
+ * Saves a Fundraising
  *
- * @param {Object} data - Investment data to be saved
+ * @param {Object} data - Fundraising data to be saved
  * @returns {Promisse} - Returns a Promisse
  */
 export const create = data => {
@@ -51,31 +51,28 @@ export const create = data => {
 }
 
 /**
- * Updates an Investment
+ * Updates an Fundraising
  *
- * @param {Object} data - Investment data to be updated
+ * @param {Object} data - Fundraising data to be updated
  * @returns {Promisse} - Returns a Promisse
  */
 export const update = data => {
   const updateble = {
     id: data.id,
-    spe: data.spe,
-    matricula: data.matricula,
-    nome: data.nome,
-    descricao: data.descricao,
-    endereco: data.endereco,
-    valor: data.valor,
-    data_inicio: data.data_inicio,
-    data_fim: data.data_fim
+    id_building: data.id_building,
+    id_custodian: data.id_custodian,
+    amount: data.amount,
+    initial_date: data.initial_date,
+    final_date: data.final_date
   }
 
   return dao.update(updateble)
 }
 
 /**
- * Remove a Investment
+ * Remove an Fundraising
  *
- * @param {Object} id - Investment id
+ * @param {Object} id - Fundraising id
  * @returns {Function} - Returns the callback function
  */
 export const remove = id => {

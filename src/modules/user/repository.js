@@ -4,7 +4,7 @@ import { getToken } from '@core/auth'
 import * as dao from './dao'
 
 /**
- *  Get all User from database.
+ *  Get all Users
  *
  * @param {Object} params - Params for query
  * @returns {Promisse} - Returns a Promisse
@@ -24,7 +24,7 @@ export const getById = id => {
 }
 
 /**
- * Saves a User in database
+ * Saves a User
  *
  * @param {Object} data - User data to be saved
  * @returns {Promisse} - Returns a Promisse
@@ -34,7 +34,7 @@ export const create = data => {
 }
 
 /**
- * Updates an User, given an id
+ * Updates an User
  *
  * @param {Object} data - User data to be updated
  * @returns {Promisse} - Returns a Promisse
@@ -50,7 +50,7 @@ export const update = data => {
 }
 
 /**
- * Remove a User
+ * Remove an User
  *
  * @param {Object} id - User data to be removed
  * @returns {Function} - Returns the callback function

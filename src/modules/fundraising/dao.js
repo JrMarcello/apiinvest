@@ -1,10 +1,10 @@
 import db from '@core/database'
 import { generateUUID } from '@common/utils'
 
-const table = 'investor'
+const table = 'fundraising'
 
 /**
- *  Find all Investors
+ *  Find all Fundraising
  *
  * @param {Object} params - Params for query
  * @returns {Promisse} - Returns a Promisse
@@ -18,9 +18,9 @@ export const getAll = () => {
 }
 
 /**
- * Find a Investor by ID
+ * Find a Fundraising by ID
  *
- * @param {Interger} id - Investor ID
+ * @param {Interger} id - Fundraising ID
  * @returns {Promisse} - Returns a Promisse
  */
 export const getById = id => {
@@ -33,24 +33,39 @@ export const getById = id => {
 }
 
 /**
- * Find a Investor by User ID
+ * Find Fundraisings by Building ID
  *
- * @param {Interger} id - User ID
+ * @param {Interger} id - Building ID
  * @returns {Promisse} - Returns a Promisse
  */
-export const getByUserId = id => {
+export const getByBuildingId = id => {
   return db
     .select()
     .from(table)
-    .where('id_user', id)
+    .where('id_building', id)
     .and('active', true)
     .run()
 }
 
 /**
- * Create an Investor
+ * Find Fundraisings by Custodian ID
  *
- * @param {Object} data - Investor data to be saved
+ * @param {Interger} id - Custodian ID
+ * @returns {Promisse} - Returns a Promisse
+ */
+export const getByCustodianId = id => {
+  return db
+    .select()
+    .from(table)
+    .where('id_custodian', id)
+    .and('active', true)
+    .run()
+}
+
+/**
+ * Create an Fundraising
+ *
+ * @param {Object} data - Fundraising data to be saved
  * @returns {Promisse} - Returns a Promisse
  */
 export const create = async data => {
@@ -64,9 +79,9 @@ export const create = async data => {
 }
 
 /**
- * Update an Investor
+ * Update an Fundraising
  *
- * @param {Object} data - Investor data to be updated
+ * @param {Object} data - Fundraising data to be updated
  * @returns {Promisse} - Returns a Promisse
  */
 export const update = data => {
@@ -78,9 +93,9 @@ export const update = data => {
 }
 
 /**
- * Remove an Investor
+ * Remove an Fundraising
  *
- * @param {Object} id - Investor id to be removed
+ * @param {Object} id - Fundraising id to be removed
  * @returns {Object} - Returns data
  */
 export const remove = id => {
