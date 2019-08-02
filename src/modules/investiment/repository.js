@@ -76,7 +76,7 @@ export const update = data => {
  * Remove a Investment
  *
  * @param {Object} id - Investment id
- * @returns {Function} - Returns the callback function
+ * @returns {Function} - Returns a Promisse
  */
 export const remove = id => {
   return dao.remove(id)

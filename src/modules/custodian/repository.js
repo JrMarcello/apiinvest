@@ -53,7 +53,7 @@ export const update = data => {
  * Remove an Custodian
  *
  * @param {Object} id - Custodian ID
- * @returns {Function} - Returns the callback function
+ * @returns {Function} - Returns a Promisse
  */
 export const remove = id => {
   return dao.remove(id)

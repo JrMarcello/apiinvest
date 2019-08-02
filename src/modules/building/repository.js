@@ -63,7 +63,7 @@ export const update = data => {
  * Remove an Building
  *
  * @param {Object} id - Building id
- * @returns {Function} - Returns the callback function
+ * @returns {Function} - Returns a Promisse
  */
 export const remove = id => {
   return dao.remove(id)
