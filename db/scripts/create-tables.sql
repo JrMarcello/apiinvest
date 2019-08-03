@@ -1,9 +1,7 @@
 --#######################################################################
 --##			    							CREATE TABLES 									 		       ##
 --#######################################################################
-
-CREATE TABLE investor
-(
+CREATE TABLE investor (
 	id uuid NOT NULL,
 	id_user uuid NOT NULL,
 	cpf varchar(11),
@@ -23,21 +21,17 @@ CREATE TABLE investor
 	CONSTRAINT investor_cpf_uq UNIQUE (cpf),
 	CONSTRAINT investor_cnpj_uq UNIQUE (cnpj),
 	CONSTRAINT investor_company_name_uq UNIQUE (company_name)
-
 );
 
-CREATE TABLE investor_phone
-(
+CREATE TABLE investor_phone (
 	id serial NOT NULL,
 	id_investor uuid NOT NULL,
 	number varchar NOT NULL,
 	active boolean NOT NULL DEFAULT true,
 	CONSTRAINT investor_phone_id_pk PRIMARY KEY (id)
-
 );
 
-CREATE TABLE builder
-(
+CREATE TABLE builder (
 	id uuid NOT NULL,
 	id_user uuid NOT NULL,
 	cnpj varchar(14) NOT NULL,
@@ -54,11 +48,9 @@ CREATE TABLE builder
 	active boolean NOT NULL DEFAULT true,
 	CONSTRAINT builder_id_pk PRIMARY KEY (id),
 	CONSTRAINT builder_cnpj_uq UNIQUE (cnpj)
-
 );
 
-CREATE TABLE building
-(
+CREATE TABLE building (
 	id uuid NOT NULL,
 	id_builder uuid NOT NULL,
 	spe varchar(14),
@@ -79,11 +71,9 @@ CREATE TABLE building
 	CONSTRAINT building_id_pk PRIMARY KEY (id),
 	CONSTRAINT building_spe_uq UNIQUE (spe),
 	CONSTRAINT building_registration_uq UNIQUE (registration)
-
 );
 
-CREATE TABLE fundraising
-(
+CREATE TABLE fundraising (
 	id uuid NOT NULL,
 	id_building uuid,
 	id_custodian uuid,
@@ -93,11 +83,9 @@ CREATE TABLE fundraising
 	created_date timestamp NOT NULL DEFAULT now(),
 	active boolean NOT NULL DEFAULT true,
 	CONSTRAINT fundraising_id_pk PRIMARY KEY (id)
-
 );
 
-CREATE TABLE investiment
-(
+CREATE TABLE investiment (
 	id uuid NOT NULL,
 	id_investor uuid NOT NULL,
 	id_fundraising uuid NOT NULL,
@@ -108,11 +96,9 @@ CREATE TABLE investiment
 	created_date timestamp NOT NULL DEFAULT now(),
 	ativo boolean NOT NULL DEFAULT true,
 	CONSTRAINT investiment_id_pk PRIMARY KEY (id)
-
 );
 
-CREATE TABLE custodian
-(
+CREATE TABLE custodian (
 	id uuid NOT NULL,
 	cnpj varchar(14) NOT NULL,
 	company_name varchar NOT NULL,
@@ -122,11 +108,9 @@ CREATE TABLE custodian
 	active boolean NOT NULL DEFAULT true,
 	CONSTRAINT custodian_id_pk PRIMARY KEY (id),
 	CONSTRAINT custodian_cnpj_uq UNIQUE (cnpj)
-
 );
 
-CREATE TABLE partner
-(
+CREATE TABLE partner (
 	id uuid NOT NULL,
 	id_builder uuid NOT NULL,
 	name varchar NOT NULL,
@@ -144,21 +128,17 @@ CREATE TABLE partner
 	created_date timestamp NOT NULL DEFAULT now(),
 	active boolean NOT NULL DEFAULT true,
 	CONSTRAINT partner_id_pk PRIMARY KEY (id)
-
 );
 
-CREATE TABLE builder_phone
-(
+CREATE TABLE builder_phone (
 	id serial NOT NULL,
 	id_builder uuid NOT NULL,
 	number varchar(11) NOT NULL,
 	active boolean NOT NULL DEFAULT true,
 	CONSTRAINT builder_phone_id_pk PRIMARY KEY (id)
-
 );
 
-CREATE TABLE "user"
-(
+CREATE TABLE "user" (
 	id uuid NOT NULL,
 	id_profile smallint NOT NULL DEFAULT 1,
 	email varchar(50) NOT NULL,
@@ -166,19 +146,36 @@ CREATE TABLE "user"
 	password varchar(60) NOT NULL,
 	create_date timestamp NOT NULL DEFAULT now(),
 	active boolean NOT NULL DEFAULT true,
-	CONSTRAINT user_id_pk PRIMARY KEY (id),
-	CONSTRAINT user_email_uq UNIQUE (email)
-
+	CONSTRAINT user_id_pk PRIMARY KEY (id)
 );
 
-CREATE TABLE profile
-(
+CREATE TABLE profile (
 	id smallserial NOT NULL,
 	name varchar NOT NULL,
 	active boolean NOT NULL DEFAULT true,
 	CONSTRAINT profile_id_pk PRIMARY KEY (id)
-
 );
+
+CREATE FUNCTION user_check_email ()
+	RETURNS trigger
+	LANGUAGE plpgsql 
+	VOLATILE 
+	CALLED ON NULL INPUT
+	SECURITY INVOKER
+	COST 1
+	AS $$
+BEGIN
+	IF EXISTS(SELECT 1 FROM "user" WHERE email = NEW.email AND active) THEN
+		RAISE EXCEPTION 'User email realy exists';
+  	END IF;
+
+  	RETURN NEW;
+END
+$$;
+
+CREATE TRIGGER user_check_email_trg
+	BEFORE INSERT ON "user"
+	FOR EACH ROW EXECUTE PROCEDURE user_check_email();
 
 ALTER TABLE investor ADD CONSTRAINT investor_id_user_fk FOREIGN KEY (id_user)
 REFERENCES "user" (id);
