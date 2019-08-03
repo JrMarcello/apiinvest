@@ -27,7 +27,7 @@ const validate = (req, res, next) => {
   try {
     validationResult(req).throw()
   } catch (errors) {
-    return res.status(500).send(Object.assign(constants.user.error.INVALID_REQUEST_DATA, { errors: errors.array() }))
+    return res.status(500).send(Object.assign(constants.validations.INVALID_REQUEST_DATA, { errors: errors.array() }))
   }
 
   return next()

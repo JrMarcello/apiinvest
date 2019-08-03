@@ -1,7 +1,8 @@
+import constants from '@common/constants'
 import * as dao from './dao'
 
 /**
- *  Get all Builders
+ *  Get all Custodians
  *
  * @param {Object} params - Params for query
  * @returns {Promisse} - Returns a Promisse
@@ -11,9 +12,9 @@ export const getAll = async params => {
 }
 
 /**
- * Find a Builder by ID
+ * Find a Custodian by ID
  *
- * @param {Interger} id - Builder ID
+ * @param {Interger} id - Custodian ID
  * @returns {Promisse} - Returns a Promisse
  */
 export const getById = id => {
@@ -21,19 +22,9 @@ export const getById = id => {
 }
 
 /**
- * Find a Builder by User ID
+ * Saves a Custodian
  *
- * @param {Interger} id - User ID
- * @returns {Promisse} - Returns a Promisse
- */
-export const getByUserId = id => {
-  return dao.getByUserId(id)
-}
-
-/**
- * Saves a Builder
- *
- * @param {Object} data - Builder data to be saved
+ * @param {Object} data - Custodian data
  * @returns {Promisse} - Returns a Promisse
  */
 export const create = data => {
@@ -41,28 +32,27 @@ export const create = data => {
 }
 
 /**
- * Updates an Builder
+ * Updates an Custodian
  *
- * @param {Object} data - Builder data to be updated
+ * @param {Object} data - Custodian data
  * @returns {Promisse} - Returns a Promisse
  */
 export const update = data => {
   const updateble = {
     id: data.id,
-    razao_social: data.razao_social,
-    nome_fantasia: data.nome_fantasia,
-    endereco: data.endereco
+    cnpj: data.cnpj,
+    company_name: data.company_name,
+    company_fancy_name: data.company_fancy_name,
+    phone: data.phone
   }
-
-  if (data.cnpj) updateble.cnpj = data.cnpj
 
   return dao.update(updateble)
 }
 
 /**
- * Remove an Builder
+ * Remove an Custodian
  *
- * @param {Object} id - Builder id
+ * @param {Object} id - Custodian ID
  * @returns {Function} - Returns a Promisse
  */
 export const remove = id => {

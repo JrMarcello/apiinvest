@@ -1,7 +1,7 @@
 import * as dao from './dao'
 
 /**
- *  Get all Building from database.
+ *  Get all Investments from database.
  *
  * @param {Object} params - Params for query
  * @returns {Promisse} - Returns a Promisse
@@ -11,9 +11,9 @@ export const getAll = async params => {
 }
 
 /**
- * Find a Building by ID
+ * Find a Investment by ID
  *
- * @param {Interger} id - Building ID
+ * @param {Interger} id - Investment ID
  * @returns {Promisse} - Returns a Promisse
  */
 export const getById = id => {
@@ -21,29 +21,29 @@ export const getById = id => {
 }
 
 /**
- * Find Buildings by Builder ID
+ * Find Investments by Investor ID
  *
- * @param {Interger} id - Builder ID
+ * @param {Interger} id - Investor ID
  * @returns {Promisse} - Returns a Promisse
  */
-export const getByBuilderId = id => {
-  return dao.getByBuilderId(id)
+export const getByInvestorId = id => {
+  return dao.getByInvestorId(id)
 }
 
 /**
- * Find Buildings by Funding ID
+ * Find Investments by Fundraising ID
  *
- * @param {Interger} id - Funding ID
+ * @param {Interger} id - Fundraising ID
  * @returns {Promisse} - Returns a Promisse
  */
-export const getByFundingId = id => {
-  return dao.getByFundingId(id)
+export const getByFundraisingId = id => {
+  return dao.getByFundraisingId(id)
 }
 
 /**
- * Saves a Building in database
+ * Saves a Investment in database
  *
- * @param {Object} data - Building data to be saved
+ * @param {Object} data - Investment data to be saved
  * @returns {Promisse} - Returns a Promisse
  */
 export const create = data => {
@@ -51,9 +51,9 @@ export const create = data => {
 }
 
 /**
- * Updates an Building, given an id
+ * Updates an Investment
  *
- * @param {Object} data - Building data to be updated
+ * @param {Object} data - Investment data to be updated
  * @returns {Promisse} - Returns a Promisse
  */
 export const update = data => {
@@ -73,10 +73,10 @@ export const update = data => {
 }
 
 /**
- * Remove a Building
+ * Remove a Investment
  *
- * @param {Object} id - Building id
- * @returns {Function} - Returns the callback function
+ * @param {Object} id - Investment id
+ * @returns {Function} - Returns a Promisse
  */
 export const remove = id => {
   return dao.remove(id)

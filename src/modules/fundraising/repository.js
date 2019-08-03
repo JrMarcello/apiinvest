@@ -1,7 +1,7 @@
 import * as dao from './dao'
 
 /**
- *  Get all Buildings
+ *  Get all Fundraisings
  *
  * @param {Object} params - Params for query
  * @returns {Promisse} - Returns a Promisse
@@ -11,9 +11,9 @@ export const getAll = async params => {
 }
 
 /**
- * Find a Building by ID
+ * Find a Fundraising by ID
  *
- * @param {Interger} id - Building ID
+ * @param {Interger} id - Fundraising ID
  * @returns {Promisse} - Returns a Promisse
  */
 export const getById = id => {
@@ -21,19 +21,29 @@ export const getById = id => {
 }
 
 /**
- * Find Buildings by Builder ID
+ * Find Fundraisings by Building ID
  *
- * @param {Interger} id - User ID
+ * @param {Interger} id - Building ID
  * @returns {Promisse} - Returns a Promisse
  */
-export const getByBuilderId = id => {
+export const getByBuildingId = id => {
   return dao.getByBuilderId(id)
 }
 
 /**
- * Saves a Building
+ * Find Fundraisings by Custodian ID
  *
- * @param {Object} data - Building data to be saved
+ * @param {Interger} id - Custodian ID
+ * @returns {Promisse} - Returns a Promisse
+ */
+export const getByCustodianId = id => {
+  return dao.getByCustodianId(id)
+}
+
+/**
+ * Saves a Fundraising
+ *
+ * @param {Object} data - Fundraising data to be saved
  * @returns {Promisse} - Returns a Promisse
  */
 export const create = data => {
@@ -41,28 +51,28 @@ export const create = data => {
 }
 
 /**
- * Updates an Building
+ * Updates an Fundraising
  *
- * @param {Object} data - Building data to be updated
+ * @param {Object} data - Fundraising data to be updated
  * @returns {Promisse} - Returns a Promisse
  */
 export const update = data => {
   const updateble = {
     id: data.id,
-    razao_social: data.razao_social,
-    nome_fantasia: data.nome_fantasia,
-    endereco: data.endereco
+    id_building: data.id_building,
+    id_custodian: data.id_custodian,
+    amount: data.amount,
+    initial_date: data.initial_date,
+    final_date: data.final_date
   }
-
-  if (data.cnpj) updateble.cnpj = data.cnpj
 
   return dao.update(updateble)
 }
 
 /**
- * Remove an Building
+ * Remove an Fundraising
  *
- * @param {Object} id - Building id
+ * @param {Object} id - Fundraising id
  * @returns {Function} - Returns a Promisse
  */
 export const remove = id => {

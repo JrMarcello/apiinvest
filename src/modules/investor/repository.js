@@ -1,7 +1,7 @@
 import * as dao from './dao'
 
 /**
- *  Get all Investor from database.
+ *  Get all Investors
  *
  * @param {Object} params - Params for query
  * @returns {Promisse} - Returns a Promisse
@@ -31,7 +31,7 @@ export const getByUserId = id => {
 }
 
 /**
- * Saves a Investor in database
+ * Saves a Investor
  *
  * @param {Object} data - Investor data to be saved
  * @returns {Promisse} - Returns a Promisse
@@ -41,7 +41,7 @@ export const create = data => {
 }
 
 /**
- * Updates an Investor, given an id
+ * Updates an Investor
  *
  * @param {Object} data - Investor data to be updated
  * @returns {Promisse} - Returns a Promisse
@@ -61,10 +61,10 @@ export const update = data => {
 }
 
 /**
- * Remove a Investor
+ * Remove an Investor
  *
  * @param {Object} id - Investor id
- * @returns {Function} - Returns the callback function
+ * @returns {Function} - Returns a Promisse
  */
 export const remove = id => {
   return dao.remove(id)

@@ -1,7 +1,7 @@
 import * as dao from './dao'
 
 /**
- *  Get all Builders
+ *  Get all Partners
  *
  * @param {Object} params - Params for query
  * @returns {Promisse} - Returns a Promisse
@@ -11,9 +11,9 @@ export const getAll = async params => {
 }
 
 /**
- * Find a Builder by ID
+ * Find a Partner by ID
  *
- * @param {Interger} id - Builder ID
+ * @param {Interger} id - Partner ID
  * @returns {Promisse} - Returns a Promisse
  */
 export const getById = id => {
@@ -21,19 +21,9 @@ export const getById = id => {
 }
 
 /**
- * Find a Builder by User ID
+ * Saves a Partner
  *
- * @param {Interger} id - User ID
- * @returns {Promisse} - Returns a Promisse
- */
-export const getByUserId = id => {
-  return dao.getByUserId(id)
-}
-
-/**
- * Saves a Builder
- *
- * @param {Object} data - Builder data to be saved
+ * @param {Object} data - Partner data
  * @returns {Promisse} - Returns a Promisse
  */
 export const create = data => {
@@ -41,28 +31,23 @@ export const create = data => {
 }
 
 /**
- * Updates an Builder
+ * Updates an Partner
  *
- * @param {Object} data - Builder data to be updated
+ * @param {Object} data - Partner data
  * @returns {Promisse} - Returns a Promisse
  */
 export const update = data => {
   const updateble = {
-    id: data.id,
-    razao_social: data.razao_social,
-    nome_fantasia: data.nome_fantasia,
-    endereco: data.endereco
+    id: data.id
   }
-
-  if (data.cnpj) updateble.cnpj = data.cnpj
 
   return dao.update(updateble)
 }
 
 /**
- * Remove an Builder
+ * Remove an Partner
  *
- * @param {Object} id - Builder id
+ * @param {Object} id - Partner ID
  * @returns {Function} - Returns a Promisse
  */
 export const remove = id => {

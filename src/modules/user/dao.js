@@ -5,7 +5,7 @@ import bcrypt from 'bcrypt'
 const table = 'user'
 
 /**
- *  Find all User
+ *  Find all Users
  *
  * @param {Object} params - Params for query
  * @returns {Promisse} - Returns a Promisse

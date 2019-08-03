@@ -37,45 +37,15 @@ export const getById = async (request, response) => {
  * @param {Object} response - HTTP response
  * @returns {Object} HTTP response with status code and data
  */
-export const getByInvestorId = async (request, response) => {
-  try {
-    response.json(await repository.getByInvestorId(request.params.id))
-  } catch (err) {
-    logger().error(err)
-
-    response.status(500).json(err)
-  }
-}
-
-/**
- * @param {Object} request - HTTP request
- * @param {Object} response - HTTP response
- * @returns {Object} HTTP response with status code and data
- */
-export const getByFundraisingId = async (request, response) => {
-  try {
-    response.json(await repository.getByFundraisingId(request.params.id))
-  } catch (err) {
-    logger().error(err)
-
-    response.status(500).json(err)
-  }
-}
-
-/**
- * @param {Object} request - HTTP request
- * @param {Object} response - HTTP response
- * @returns {Object} HTTP response with status code and data
- */
 export const create = async (request, response) => {
   try {
-    const investment = await repository.create(request.body)
+    const partner = await repository.create(request.body)
 
-    response.json(Object.assign(constants.investment.success.CREATED, { investment }))
+    response.json(Object.assign(constants.partner.success.CREATED, { partner }))
   } catch (err) {
     logger().error(err)
 
-    response.status(500).json(constants.investment.error.NOT_CREATED)
+    response.status(500).json(constants.partner.error.NOT_CREATED)
   }
 }
 
@@ -88,11 +58,11 @@ export const update = async (request, response) => {
   try {
     await repository.update(request.body)
 
-    response.json(constants.investment.success.UPDATED)
+    response.json(constants.partner.success.UPDATED)
   } catch (err) {
     logger().error(err)
 
-    response.status(500).json(constants.investment.error.NOT_UPDATED)
+    response.status(500).json(constants.partner.error.NOT_UPDATED)
   }
 }
 
@@ -105,10 +75,10 @@ export const remove = async (request, response) => {
   try {
     await repository.remove(request.params.id)
 
-    response.json(constants.investment.success.REMOVED)
+    response.json(constants.partner.success.REMOVED)
   } catch (err) {
     logger().error(err)
 
-    response.status(500).json(constants.investment.error.NOT_REMOVED)
+    response.status(500).json(constants.partner.error.NOT_REMOVED)
   }
 }

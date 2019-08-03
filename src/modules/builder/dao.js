@@ -4,7 +4,7 @@ import { generateUUID } from '@common/utils'
 const table = 'builder'
 
 /**
- *  Find all Builder
+ *  Find all Builders
  *
  * @param {Object} params - Params for query
  * @returns {Promisse} - Returns a Promisse
