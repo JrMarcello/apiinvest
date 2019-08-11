@@ -1,6 +1,6 @@
-import conf from '@core/configs'
 import * as log from '@core/logger'
 import uuid from 'uuid/v4'
+import conf from './configs'
 
 export const configs = () => conf
 

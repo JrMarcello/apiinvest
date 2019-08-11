@@ -13,5 +13,14 @@ export default {
     PGPORT: process.env.PGPORT
   },
   SECRET_KEY: process.env.SECRET_KEY,
-  NODE_ENV: process.env.NODE_ENV
+  NODE_ENV: process.env.NODE_ENV,
+  email: {
+    SERVICE: 'gmail',
+    HOST: 'smtp.mailtrap.io',
+    PORT: 2525,
+    AUTH: {
+      USER: '5bdf748bc46ea2',
+      PASSWORD: '99869d0ab4b011'
+    }
+  }
 }

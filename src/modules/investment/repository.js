@@ -1,4 +1,6 @@
+import * as mailer from '@core/mailer'
 import * as dao from './dao'
+import { getById as getInvestor } from '../investor/repository'
 
 /**
  *  Get all Investments from database.
@@ -11,7 +13,7 @@ export const getAll = async params => {
 }
 
 /**
- * Find a Investment by ID
+ * Find an Investment by ID
  *
  * @param {Interger} id - Investment ID
  * @returns {Promisse} - Returns a Promisse
@@ -41,13 +43,30 @@ export const getByFundraisingId = id => {
 }
 
 /**
- * Saves a Investment in database
+ * Saves an Investment in database
  *
  * @param {Object} data - Investment data to be saved
  * @returns {Promisse} - Returns a Promisse
  */
-export const create = data => {
-  return dao.create(data)
+export const create = async data => {
+  const investor = await getInvestor(data.id_investor)
+
+  if (!investor || !investorIsEnableToInvestments(investor)) throw Error('Usuario não pode realizar invetimento')
+
+  const investment = await dao.create(data)
+
+  mailer.sendEmail({
+    from: 'contato@buildinvest.com',
+    to: investor.email,
+    subject: 'Buildinvest - Novo investimento cadastrado',
+    html: `<h2>Parabens! Você realizou um novo investimento</h2><p>Olá <b>${investor.username}</b></p>`
+  })
+
+  return investment
+}
+
+const investorIsEnableToInvestments = investor => {
+  return !!investor
 }
 
 /**
