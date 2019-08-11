@@ -24,14 +24,14 @@ export const getAll = () => {
  * @returns {Promisse} - Returns a Promisse
  */
 export const getById = async id => {
-  const query = `SELECT 
-                     email, 
+  const query = `SELECT
+                     email,
                      username,
                      i.*
                  FROM 
-                     ${table} i 
+                     ${table} i
                      JOIN "user" u ON i.id_user = u.id
-                 WHERE 
+                 WHERE
                      i.active`
 
   return (await db.query(query, id)).rows
