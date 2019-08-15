@@ -28,7 +28,7 @@ export const getById = async id => {
                      email,
                      username,
                      i.*
-                 FROM 
+                 FROM
                      ${table} i
                      JOIN "user" u ON i.id_user = u.id
                  WHERE

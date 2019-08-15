@@ -1,5 +1,5 @@
 import nodemailer from 'nodemailer'
-// import { configs } from '@common/utils'
+import { configs } from '@common/utils'
 
 const getTransporter = async () => {
   // Generate test SMTP service account from ethereal.email
@@ -18,19 +18,19 @@ const getTransporter = async () => {
 
   // Test SMTP service account from mailtrap.io
   // return nodemailer.createTransport({
-  //   host: configs().email.HOST,
-  //   port: configs().email.PORT,
+  //   host: configs().smtp.HOST,
+  //   port: configs().smtp.PORT,
   //   auth: {
-  //     user: configs().email.AUTH.USER,
-  //     pass: configs().email.AUTH.PASSWORD
+  //     user: configs().smtp.USER,
+  //     pass: configs().smtp.PASSWORD
   //   }
   // })
 
   // return nodemailer.createTransport({
-  //   service: configs().email.SERVICE,
+  //   service: configs().smtp.SERVICE,
   //   auth: {
-  //     user: configs().email.AUTH.USER,
-  //     pass: configs().email.AUTH.PASSWORD
+  //     user: configs().smtp.USER,
+  //     pass: configs().smtp.PASSWORD
   //   }
   // })
 }
@@ -39,7 +39,9 @@ export const sendEmail = async message => {
   const transport = await getTransporter()
 
   const infos = await transport.sendMail(message)
-  console.log(Object.assign(infos, { url: nodemailer.getTestMessageUrl(infos) }))
+
+  if (configs().NODE_ENV !== 'production')
+    console.log(Object.assign(infos, { url: nodemailer.getTestMessageUrl(infos) }))
 
   return infos
 }

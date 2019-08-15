@@ -12,7 +12,9 @@ export default () => {
   router.get(`${INVESTIMENT_BASE_PATH}/fundraising/:id`, checkAuth, controller.getByFundraisingId)
   router.post(INVESTIMENT_BASE_PATH, checkAuth, controller.create)
   router.put(INVESTIMENT_BASE_PATH, checkAuth, controller.update)
-  router.delete(`${INVESTIMENT_BASE_PATH}/:id`, checkAuth, controller.remove)
+  router.put(`${INVESTIMENT_BASE_PATH}/ted-confirm`, checkAuth, controller.TEDProof)
+  // router.put(`${INVESTIMENT_BASE_PATH}/confirm`, checkAuth, controller.confirm)
+  router.delete(`${INVESTIMENT_BASE_PATH}/:id`, checkAuth, controller.cancel)
 
   return router
 }

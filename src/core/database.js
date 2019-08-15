@@ -3,7 +3,7 @@ import { shiphold } from 'ship-hold'
 import configs from '@common/configs'
 
 export default shiphold({
-  connectionString: configs.db.PGURI
+  connectionString: configs().db.PGURI
 })
 
 // let pool = null
