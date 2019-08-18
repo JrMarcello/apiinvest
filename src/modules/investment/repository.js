@@ -1,4 +1,5 @@
 import * as mailer from '@core/mailer'
+import * as storage from '@core/storage'
 import * as dao from './dao'
 import { getById as getInvestor } from '../investor/repository'
 import configs from '../../common/configs'
@@ -44,6 +45,16 @@ export const getByFundraisingId = id => {
 }
 
 /**
+ *  Get all pendings Investments
+ *
+ * @param {Object} params - Params for query
+ * @returns {Promisse} - Returns a Promisse
+ */
+export const getPendings = async params => {
+  return dao.getPendings(params)
+}
+
+/**
  * Saves an Investment in database
  *
  * @param {Object} data - Investment data to be saved
@@ -52,7 +63,7 @@ export const getByFundraisingId = id => {
 export const create = async data => {
   const investor = await getInvestor(data.id_investor)
 
-  if (!investor || !investorIsEnableToInvestments(investor)) throw Error('Usuario não pode realizar invetimento')
+  if (!investor || !investorIsEnableToInvestments(investor)) throw Error()
 
   const investment = await dao.create(data)
 
@@ -82,12 +93,27 @@ const getEmailParams = investor => {
  * @param {Object} data - TED proof
  * @returns {Promisse} - Returns a Promisse
  */
-export const TEDProof = data => {
-  const uri = storege.uploadfile(data.file)
+export const tedConfirmation = async data => {
+  if (!data || data.file) throw Error()
 
   const updateble = {
     id: data.id,
-    ted_uri: uri
+    ted_proof_url: await storage.uploadfile(data.file, configs.GOOGLE_CLOUD.TEDS_BUCKET)
+  }
+
+  return dao.update(updateble)
+}
+
+/**
+ * Send TED proof for an Investment
+ *
+ * @param {Object} data - TED proof
+ * @returns {Promisse} - Returns a Promisse
+ */
+export const confirmation = async data => {
+  const updateble = {
+    id: data.id,
+    confirmed: true
   }
 
   return dao.update(updateble)

@@ -52,7 +52,8 @@ const constants = {
     success: {
       CREATE: { code: 4000, message: 'Investimento criado com sucesso' },
       REMOVE: { code: 4002, message: 'Investimento removido com sucesso' },
-      TED_PROOF: { code: 4003, message: 'Comprovante de TED enviado' }
+      TED_CONFIRMATION: { code: 4003, message: 'Comprovante de TED enviado' },
+      CONFIRMATION: { code: 4004, message: 'Investimento(s) comnfirmado' }
     },
     // 45xx
     error: {
@@ -60,7 +61,8 @@ const constants = {
       NOT_FOUND: { code: 4501, message: 'Não foi possivel carregar o investimento' },
       CREATE: { code: 4502, message: 'Erro ao tentar criar a investimento' },
       CANCEL: { code: 4504, message: 'Erro ao tentar cancelar o investimento' },
-      TED_PROOF: { code: 4505, message: 'Erro ao tentar enviar comprovante de TED' }
+      TED_CONFIRMATION: { code: 4505, message: 'Erro ao tentar enviar comprovante de TED' },
+      CONFIRMATION: { code: 4506, message: 'Erro ao tentar confirmar o investimento' }
     }
   },
   builder: {

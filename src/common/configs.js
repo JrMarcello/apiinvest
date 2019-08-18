@@ -26,5 +26,12 @@ export default {
     subjects: {
       NEW_INVESTMENT: process.env.SUBJECT_NEW_INVESTMENT
     }
+  },
+  GOOGLE_CLOUD: {
+    PROJECT_ID: process.env.PROJECT_ID,
+    KEYFILE: process.env.KEYFILE,
+    BUILDINGS_IMGS_BUCKET: process.env.BUILDINGS_IMGS_BUCKET,
+    TEDS_BUCKET: process.env.TEDS_BUCKET,
+    DOCS_BUCKET: process.env.DOCS_BUCKET
   }
 }
