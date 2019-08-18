@@ -51,6 +51,6 @@ export const error = err => {
 
   process.stderr.write(chalk.bold.red(formattedMsg))
   logger.error(err)
-  // REMOVER
+  // TODO REMOVER
   if (process.env.NODE_ENV === 'development') console.error(err)
 }

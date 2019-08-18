@@ -13,7 +13,7 @@ export const getAll = async (request, response) => {
   } catch (err) {
     logger().error(err)
 
-    response.status(500).json(err.message)
+    response.status(500).json(constants.investment.error.NOT_FOUNDS)
   }
 }
 
@@ -28,7 +28,7 @@ export const getById = async (request, response) => {
   } catch (err) {
     logger().error(err)
 
-    response.status(500).json(err)
+    response.status(500).json(constants.investment.error.NOT_FOUND)
   }
 }
 
@@ -43,7 +43,7 @@ export const getByInvestorId = async (request, response) => {
   } catch (err) {
     logger().error(err)
 
-    response.status(500).json(err)
+    response.status(500).json(constants.investment.error.NOT_FOUNDS)
   }
 }
 
@@ -71,11 +71,11 @@ export const create = async (request, response) => {
   try {
     const investment = await repository.create(request.body)
 
-    response.json(Object.assign(constants.investment.success.CREATED, { investment }))
+    response.json(Object.assign(constants.investment.success.CREATE, { investment }))
   } catch (err) {
     logger().error(err)
 
-    response.status(500).json(constants.investment.error.NOT_CREATED)
+    response.status(500).json(constants.investment.error.CREATE)
   }
 }
 
@@ -84,15 +84,15 @@ export const create = async (request, response) => {
  * @param {Object} response - HTTP response
  * @returns {Object} HTTP response with status code and data
  */
-export const update = async (request, response) => {
+export const TEDProof = async (request, response) => {
   try {
-    await repository.update(request.body)
+    await repository.TEDProof(request.body)
 
-    response.json(constants.investment.success.UPDATED)
+    response.json(constants.investment.success.TED_PROOF)
   } catch (err) {
     logger().error(err)
 
-    response.status(500).json(constants.investment.error.NOT_UPDATED)
+    response.status(500).json(constants.investment.error.TED_PROOF)
   }
 }
 
@@ -101,14 +101,14 @@ export const update = async (request, response) => {
  * @param {Object} response - HTTP response
  * @returns {Object} HTTP response with status code and data
  */
-export const remove = async (request, response) => {
+export const cancel = async (request, response) => {
   try {
-    await repository.remove(request.params.id)
+    await repository.cancel(request.params.id)
 
-    response.json(constants.investment.success.REMOVED)
+    response.json(constants.investment.success.CANCEL)
   } catch (err) {
     logger().error(err)
 
-    response.status(500).json(constants.investment.error.NOT_REMOVED)
+    response.status(500).json(constants.investment.error.CANCEL)
   }
 }

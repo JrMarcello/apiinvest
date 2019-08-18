@@ -13,5 +13,18 @@ export default {
     PGPORT: process.env.PGPORT
   },
   SECRET_KEY: process.env.SECRET_KEY,
-  NODE_ENV: process.env.NODE_ENV
+  NODE_ENV: process.env.NODE_ENV,
+  smtp: {
+    SERVICE: process.env.SMTP_SERVICE,
+    HOST: process.env.SMTP_HOST,
+    PORT: process.env.SMTP_PORT,
+    USER: process.env.SMTP_USER,
+    PASSWORD: process.env.SMTP_PASSWORD
+  },
+  emails: {
+    contact: process.env.CONTACT_EMAIL,
+    subjects: {
+      NEW_INVESTMENT: process.env.SUBJECT_NEW_INVESTMENT
+    }
+  }
 }

@@ -6,7 +6,7 @@ import helmet from 'helmet'
 import morgan from 'morgan'
 import path from 'path'
 
-import configs from './configs'
+import configs from '@common/configs'
 
 const server = express()
 
