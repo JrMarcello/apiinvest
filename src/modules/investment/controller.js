@@ -67,6 +67,21 @@ export const getByFundraisingId = async (request, response) => {
  * @param {Object} response - HTTP response
  * @returns {Object} HTTP response with status code and data
  */
+export const getPendings = async (request, response) => {
+  try {
+    response.json(await repository.getPendings(request.params))
+  } catch (err) {
+    logger().error(err)
+
+    response.status(500).json(constants.investment.error.NOT_FOUNDS)
+  }
+}
+
+/**
+ * @param {Object} request - HTTP request
+ * @param {Object} response - HTTP response
+ * @returns {Object} HTTP response with status code and data
+ */
 export const create = async (request, response) => {
   try {
     const investment = await repository.create(request.body)
@@ -84,15 +99,32 @@ export const create = async (request, response) => {
  * @param {Object} response - HTTP response
  * @returns {Object} HTTP response with status code and data
  */
-export const TEDProof = async (request, response) => {
+export const tedConfirmation = async (request, response) => {
   try {
-    await repository.TEDProof(request.body)
+    await repository.tedConfirmation(Object.assign(request.body, { file: request.file }))
 
-    response.json(constants.investment.success.TED_PROOF)
+    response.json(constants.investment.success.TED_CONFIRMATION)
   } catch (err) {
     logger().error(err)
 
-    response.status(500).json(constants.investment.error.TED_PROOF)
+    response.status(500).json(constants.investment.error.TED_CONFIRMATION)
+  }
+}
+
+/**
+ * @param {Object} request - HTTP request
+ * @param {Object} response - HTTP response
+ * @returns {Object} HTTP response with status code and data
+ */
+export const confirmation = async (request, response) => {
+  try {
+    await repository.confirmation(request.body)
+
+    response.json(constants.investment.success.CONFIRMATION)
+  } catch (err) {
+    logger().error(err)
+
+    response.status(500).json(constants.investment.error.CONFIRMATION)
   }
 }
 

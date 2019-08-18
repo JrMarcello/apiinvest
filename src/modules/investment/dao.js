@@ -63,6 +63,21 @@ export const getByFundraisingId = id => {
 }
 
 /**
+ *  Find all pendings Investments
+ *
+ * @param {Object} params - Params for query
+ * @returns {Promisse} - Returns a Promisse
+ */
+export const getPendings = () => {
+  return db
+    .select()
+    .from(table)
+    .where('ted_proof_url', null)
+    .and('active', true)
+    .run()
+}
+
+/**
  * Create an Investment
  *
  * @param {Object} data - Investment data to be saved
