@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken'
-import { configs } from '@common/utils'
+import { env } from '@common/utils'
 import constants from '@common/constants'
 
 /**
@@ -7,7 +7,7 @@ import constants from '@common/constants'
  *
  * @param {*} payload -
  */
-export const getToken = payload => jwt.sign(payload, configs().SECRET_KEY, { algorithm: 'HS256', expiresIn: '365d' })
+export const getToken = payload => jwt.sign(payload, env().SECRET_KEY, { algorithm: 'HS256', expiresIn: '365d' })
 
 /**
  * Middiware to check if token is valid
@@ -23,7 +23,7 @@ export const checkAuth = async (req, res, next) => {
 
   if (!token) return res.status(401).send(constants.auth.error.UNAUTHORIZED)
 
-  req.user = await jwt.verify(token, configs().SECRET_KEY)
+  req.user = await jwt.verify(token, env().SECRET_KEY)
 
   return next()
 }

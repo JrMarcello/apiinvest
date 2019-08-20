@@ -1,18 +1,18 @@
 import { Storage } from '@google-cloud/storage'
-import { configs } from '@common/utils'
+import { env } from '@common/utils'
 
-// const storage = new Storage({
-//   projectId: configs().GOOGLE_CLOUD.PROJECT_ID,
-//   keyFilename: configs().GOOGLE_CLOUD.KEYFILE
-// })
+const storage = new Storage({
+  projectId: env().GOOGLE_CLOUD.PROJECT_ID,
+  keyFilename: env().GOOGLE_CLOUD.KEYFILE
+})
 
 export const uploadFile = async (file, bucketName) => {
   const fileName = `${Date.now()}-${file.originalname}`
 
-  // await storage
-  //   .bucket(bucketName)
-  //   .file(`${Date.now()}-${file.originalname}`)
-  //   .upload(file.path)
+  await storage
+    .bucket(bucketName)
+    .file(`${Date.now()}-${file.originalname}`)
+    .upload(file.path)
 
   // const bucket = storage.bucket(bucketName)
   // const file = bucket.file(fileName);

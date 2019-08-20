@@ -1,5 +1,6 @@
+--Model Author: Majun                           --PostgreSQL version: 11
 --#######################################################################
---## 			                  CREATTING DB	                 	 		       ##
+--## 			               CREATE DB            	 		       ##
 --#######################################################################
 DROP DATABASE IF EXISTS buildinvest;
 CREATE DATABASE buildinvest;

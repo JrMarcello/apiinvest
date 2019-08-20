@@ -1,3 +1,7 @@
+import dotenv from 'dotenv'
+
+dotenv.config()
+
 export default {
   API_BASE_PATH: process.env.API_BASE_PATH,
   server: {
@@ -5,12 +9,14 @@ export default {
     PORT: process.env.PORT
   },
   db: {
-    PGURI: process.env.PGURI,
-    PGHOST: process.env.PGHOST,
-    PGUSER: process.env.PGUSER,
-    PGDATABASE: process.env.PGDATABASE,
-    PGPASSWORD: process.env.PGPASSWORD,
-    PGPORT: process.env.PGPORT
+    // PGURI: process.env.PGURI,
+    // PGURI: process.env.PGURI_DOCKER,
+    PGURI: process.env.PGURI_GOOGLE
+    // PGHOST: process.env.PGHOST,
+    // PGUSER: process.env.PGUSER,
+    // PGDATABASE: process.env.PGDATABASE,
+    // PGPASSWORD: process.env.PGPASSWORD,
+    // PGPORT: process.env.PGPORT
   },
   SECRET_KEY: process.env.SECRET_KEY,
   NODE_ENV: process.env.NODE_ENV,
@@ -30,8 +36,6 @@ export default {
   GOOGLE_CLOUD: {
     PROJECT_ID: process.env.PROJECT_ID,
     KEYFILE: process.env.KEYFILE,
-    BUILDINGS_IMGS_BUCKET: process.env.BUILDINGS_IMGS_BUCKET,
-    TEDS_BUCKET: process.env.TEDS_BUCKET,
-    DOCS_BUCKET: process.env.DOCS_BUCKET
+    BUCKET: process.env.BUCKET
   }
 }

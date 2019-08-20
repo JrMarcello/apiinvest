@@ -1,8 +1,8 @@
 import * as mailer from '@core/mailer'
 import * as storage from '@core/storage'
+import { env } from '@common/utils'
 import * as dao from './dao'
 import { getById as getInvestor } from '../investor/repository'
-import configs from '../../common/configs'
 
 /**
  *  Get all Investments from database.
@@ -79,9 +79,9 @@ const investorIsEnableToInvestments = investor => {
 
 const getEmailParams = investor => {
   return {
-    from: configs().emails.contact,
+    from: env().emails.contact,
     to: investor.email,
-    subject: configs().emails.subjects.NEW_INVESTMENT,
+    subject: env().emails.subjects.NEW_INVESTMENT,
     // TODO: Criar template
     html: `<h2>Parabens! Você realizou um novo investimento</h2><p>Olá <b>${investor.username}</b></p>`
   }
@@ -98,7 +98,7 @@ export const tedConfirmation = async data => {
 
   const updateble = {
     id: data.id,
-    ted_proof_url: await storage.uploadfile(data.file, configs.GOOGLE_CLOUD.TEDS_BUCKET)
+    ted_proof_url: await storage.uploadfile(data.file, env.GOOGLE_CLOUD.TEDS_BUCKET)
   }
 
   return dao.update(updateble)
