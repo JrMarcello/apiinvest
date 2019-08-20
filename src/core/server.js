@@ -1,8 +1,8 @@
 import ip from 'ip'
 import server from '@core/express'
-import { configs, logger } from '@common/utils'
+import { env, logger } from '@common/utils'
 
-server.listen(configs().server.PORT, configs().server.HOST, () => {
-  logger().info(`Server running in http://${ip.address()}:${configs().server.PORT}`)
+server.listen(env().server.PORT, env().server.HOST, () => {
+  logger().info(`Server running in http://${ip.address()}:${env().server.PORT}`)
   logger().info('To stop server type: ctrl + c')
 })

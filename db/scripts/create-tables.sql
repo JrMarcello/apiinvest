@@ -1,5 +1,6 @@
+--Model Author: Majun                           --PostgreSQL version: 11
 --#######################################################################
---##			    							CREATE TABLES 									 		       ##
+--## 							CREATE TABLES			 		       ##
 --#######################################################################
 CREATE TABLE investor (
 	id uuid NOT NULL,
@@ -44,6 +45,7 @@ CREATE TABLE builder (
 	address_state varchar NOT NULL,
 	address_country varchar NOT NULL DEFAULT 'Brasil',
 	address_cep varchar(8) NOT NULL,
+	logo_url varchar,
 	created_date timestamp NOT NULL DEFAULT now(),
 	active boolean NOT NULL DEFAULT true,
 	CONSTRAINT builder_id_pk PRIMARY KEY (id),
@@ -92,6 +94,7 @@ CREATE TABLE investiment (
 	amout numeric(10,2) NOT NULL,
 	percentage numeric(3,0) NOT NULL,
 	date date NOT NULL,
+	ted_proof_url varchar,
 	confirmed boolean NOT NULL DEFAULT false,
 	created_date timestamp NOT NULL DEFAULT now(),
 	ativo boolean NOT NULL DEFAULT true,
@@ -110,7 +113,7 @@ CREATE TABLE custodian (
 	CONSTRAINT custodian_cnpj_uq UNIQUE (cnpj)
 );
 
-CREATE TABLE partner (
+CREATE TABLE partner(
 	id uuid NOT NULL,
 	id_builder uuid NOT NULL,
 	name varchar NOT NULL,
@@ -141,9 +144,10 @@ CREATE TABLE builder_phone (
 CREATE TABLE "user" (
 	id uuid NOT NULL,
 	id_profile smallint NOT NULL DEFAULT 1,
-	email varchar(50) NOT NULL,
-	username varchar(25) NOT NULL,
-	password varchar(60) NOT NULL,
+	email varchar NOT NULL,
+	username varchar NOT NULL,
+	password varchar NOT NULL,
+	avatar_url varchar,
 	create_date timestamp NOT NULL DEFAULT now(),
 	active boolean NOT NULL DEFAULT true,
 	CONSTRAINT user_id_pk PRIMARY KEY (id)
@@ -156,13 +160,11 @@ CREATE TABLE profile (
 	CONSTRAINT profile_id_pk PRIMARY KEY (id)
 );
 
+
+--FUNCTION TO CHECK IF EMAIL AREALY EXISTS
 CREATE FUNCTION user_check_email ()
 	RETURNS trigger
-	LANGUAGE plpgsql 
-	VOLATILE 
-	CALLED ON NULL INPUT
-	SECURITY INVOKER
-	COST 1
+	LANGUAGE plpgsql
 	AS $$
 BEGIN
 	IF EXISTS(SELECT 1 FROM "user" WHERE email = NEW.email AND active) THEN
@@ -174,44 +176,99 @@ END
 $$;
 
 CREATE TRIGGER user_check_email_trg
-	BEFORE INSERT ON "user"
-	FOR EACH ROW EXECUTE PROCEDURE user_check_email();
+	BEFORE INSERT 
+	ON "user"
+	FOR EACH ROW
+	EXECUTE PROCEDURE user_check_email();
 
+
+CREATE TABLE bank_account (
+	id smallserial NOT NULL,
+	id_investor uuid NOT NULL,
+	agency varchar NOT NULL,
+	account varchar NOT NULL,
+	created_date timestamp NOT NULL DEFAULT now(),
+	active boolean NOT NULL DEFAULT true,
+	CONSTRAINT bank_account_id_pk PRIMARY KEY (id)
+);
+
+CREATE TABLE investor_document_image (
+	id smallserial NOT NULL,
+	id_investor uuid NOT NULL,
+	url varchar NOT NULL,
+	type char(1) NOT NULL,
+	CONSTRAINT investor_document_image_id_pk PRIMARY KEY (id),
+	CONSTRAINT investor_document_image_type_ck CHECK (type IN ('f', 'v', 'r'))
+);
+
+CREATE TABLE building_image(
+	id smallserial NOT NULL,
+	id_building uuid NOT NULL,
+	url varchar NOT NULL,
+	CONSTRAINT building_image_id_pk PRIMARY KEY (id)
+
+);
+
+--CONTRAINTS
 ALTER TABLE investor ADD CONSTRAINT investor_id_user_fk FOREIGN KEY (id_user)
-REFERENCES "user" (id);
+REFERENCES "user" (id) MATCH FULL
+ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 ALTER TABLE investor_phone ADD CONSTRAINT investor_phone_id_investor_fk FOREIGN KEY (id_investor)
-REFERENCES investor (id);
+REFERENCES investor (id) MATCH FULL
+ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 ALTER TABLE builder ADD CONSTRAINT builder_id_user_fk FOREIGN KEY (id_user)
-REFERENCES "user" (id);
+REFERENCES "user" (id) MATCH FULL
+ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 ALTER TABLE building ADD CONSTRAINT building_id_builder_fk FOREIGN KEY (id_builder)
-REFERENCES builder (id);
+REFERENCES builder (id) MATCH FULL
+ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 ALTER TABLE fundraising ADD CONSTRAINT fundraising_id_custodian_fk FOREIGN KEY (id_custodian)
-REFERENCES custodian (id);
+REFERENCES custodian (id) MATCH FULL
+ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 ALTER TABLE fundraising ADD CONSTRAINT fundraising_id_building_fk FOREIGN KEY (id_building)
-REFERENCES building (id);
+REFERENCES building (id) MATCH FULL
+ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 ALTER TABLE investiment ADD CONSTRAINT investiment_id_investor_fk FOREIGN KEY (id_investor)
-REFERENCES investor (id);
+REFERENCES investor (id) MATCH FULL
+ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 ALTER TABLE investiment ADD CONSTRAINT investiment_id_fundraising_fk FOREIGN KEY (id_fundraising)
-REFERENCES fundraising (id);
+REFERENCES fundraising (id) MATCH FULL
+ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 ALTER TABLE partner ADD CONSTRAINT partner_id_builder_fk FOREIGN KEY (id_builder)
-REFERENCES builder (id);
+REFERENCES builder (id) MATCH FULL
+ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 ALTER TABLE builder_phone ADD CONSTRAINT builder_phone_id_builder_fk FOREIGN KEY (id_builder)
-REFERENCES builder (id);
+REFERENCES builder (id) MATCH FULL
+ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 ALTER TABLE "user" ADD CONSTRAINT user_id_profile_fk FOREIGN KEY (id_profile)
-REFERENCES profile (id);
+REFERENCES profile (id) MATCH FULL
+ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+ALTER TABLE bank_account ADD CONSTRAINT bank_account_id_investor_fk FOREIGN KEY (id_investor)
+REFERENCES investor (id) MATCH FULL
+ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+ALTER TABLE investor_document_image ADD CONSTRAINT investor_document_image_id_investor_fk FOREIGN KEY (id_investor)
+REFERENCES investor (id) MATCH FULL
+ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+ALTER TABLE building_image ADD CONSTRAINT building_image_id_building_fk FOREIGN KEY (id_building)
+REFERENCES building (id) MATCH FULL
+ON DELETE NO ACTION ON UPDATE NO ACTION;
+
 
 --#######################################################################
---##			    								INSERT DATA										 		       ##
+--##			    		INSERT DEFAULT DATA			 		       ##
 --#######################################################################
 INSERT INTO "profile"
 	(name)
@@ -220,7 +277,7 @@ VALUES
 	('Contrutor'),
 	('Admin');
 
--- INSERT INTO "user"
--- 	(id, id_profile, email, username, password)
--- VALUES
--- 	('', 3, 'admin@mail.com', 'Admin', '');
+INSERT INTO "user"
+	(id, id_profile, email, username, password)
+VALUES
+	('647ac188-62c8-4618-8a0a-be14174aac49', 3, 'buildinvest@admin.com', 'Buildinvest Admin', '$2b$10$o8Av/20hYJX3IKRRUKK5UO/bfjWIbYTIpLc6dtlvnk8NrTxTdf9r2');

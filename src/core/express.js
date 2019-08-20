@@ -6,7 +6,7 @@ import helmet from 'helmet'
 import morgan from 'morgan'
 import path from 'path'
 
-import configs from '@common/configs'
+import { env } from '@common/utils'
 
 const server = express()
 
@@ -26,7 +26,7 @@ function setParsers() {
   server.use(bodyParser.json())
   server.use(morgan('dev')) // morgan(':method :url - :status :response-time :referrer')
 
-  // server.use(express.static(`${configs.rootDir}/public`));
+  // server.use(express.static(`${env().rootDir}/public`));
   // server.set('showStackError', true)
 }
 
@@ -38,7 +38,7 @@ function setRoutes() {
   })
 
   glob.sync(path.join(__dirname, '../modules/**/routes.js')).forEach(routePath => {
-    server.use(configs.API_BASE_PATH, require(path.resolve(routePath)).default())
+    server.use(env().API_BASE_PATH, require(path.resolve(routePath)).default())
   })
 }
 

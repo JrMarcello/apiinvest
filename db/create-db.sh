@@ -1,5 +1,5 @@
 #!/bin/sh
- 
-psql postgres://postgres:postgres@35.231.152.216:5432/postgres -f db/scripts/create-db.sql     
-psql postgres://postgres:postgres@35.231.152.216:5432/buildinvest -f db/scripts/create-schema.sql
-psql postgres://postgres:postgres@35.231.152.216:5432/buildinvest -f db/scripts/create-tables.sql
+
+psql postgres://buildinvest:buildinvest123@104.197.55.110:5432:5432/postgres -f db/scripts/create-db.sql     
+psql postgres://buildinvest:buildinvest123@104.197.55.110:5432:5432/buildinvest -f db/scripts/create-schema.sql
+psql postgres://buildinvest:buildinvest123@104.197.55.110:5432:5432/buildinvest -f db/scripts/create-tables.sql
