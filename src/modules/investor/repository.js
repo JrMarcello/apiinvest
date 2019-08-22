@@ -1,3 +1,6 @@
+import * as phone from '@modules/investor-phone/repository'
+import * as bankAccount from '@modules/investor-bank-account/repository'
+import * as document from '@modules/investor-document/repository'
 import * as dao from './dao'
 
 /**
@@ -36,8 +39,14 @@ export const getByUserId = id => {
  * @param {Object} data - Investor data to be saved
  * @returns {Promisse} - Returns a Promisse
  */
-export const create = data => {
-  return dao.create(data)
+export const create = async data => {
+  const investor = await dao.create(data.investor)
+
+  await phone.create(investor.id, data.phones)
+  await bankAccount.create(investor.id, data.accounts)
+  await document.create(investor.id, data.files)
+
+  return investor
 }
 
 /**
