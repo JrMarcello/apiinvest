@@ -145,6 +145,54 @@ const constants = {
       NOT_REMOVED: { code: 6504, message: 'Erro ao tentar remover o sócio' }
     }
   },
+  investor_phone: {
+    // 90xx
+    success: {
+      CREATED: { code: 9000, message: 'Telefone criado com sucesso' },
+      UPDATED: { code: 9001, message: 'Telefone atualizado com sucesso' },
+      REMOVED: { code: 9002, message: 'Telefone removido com sucesso' }
+    },
+    // 95xx
+    error: {
+      NOT_FOUNDS: { code: 9500, message: 'Ainda não existem telefones cadastrados' },
+      NOT_FOUND: { code: 9501, message: 'Telefone não encontrado' },
+      NOT_CREATED: { code: 9502, message: 'Erro ao tentar criar o telefone' },
+      NOT_UPDATED: { code: 9503, message: 'Erro ao tentar atualizar o telefone' },
+      NOT_REMOVED: { code: 9504, message: 'Erro ao tentar remover o telefone' }
+    }
+  },
+  investor_bank_account: {
+    // 90xx
+    success: {
+      CREATED: { code: 9000, message: 'Conta criada com sucesso' },
+      UPDATED: { code: 9001, message: 'Conta atualizada com sucesso' },
+      REMOVED: { code: 9002, message: 'Conta removida com sucesso' }
+    },
+    // 95xx
+    error: {
+      NOT_FOUNDS: { code: 3500, message: 'Ainda não existem contas cadastradas' },
+      NOT_FOUND: { code: 3501, message: 'Conta não encontrado' },
+      NOT_CREATED: { code: 3502, message: 'Erro ao tentar criar a conta' },
+      NOT_UPDATED: { code: 3503, message: 'Erro ao tentar atualizar a conta' },
+      NOT_REMOVED: { code: 3504, message: 'Erro ao tentar remover a conta' }
+    }
+  },
+  investor_document: {
+    // 90xx
+    success: {
+      CREATED: { code: 9000, message: 'Comprovante enviado com sucesso' },
+      UPDATED: { code: 9001, message: 'Comprovante atualizado com sucesso' },
+      REMOVED: { code: 9002, message: 'Comprovante removido com sucesso' }
+    },
+    // 95xx
+    error: {
+      NOT_FOUNDS: { code: 3500, message: 'Ainda não existem comprovante cadastrados' },
+      NOT_FOUND: { code: 3501, message: 'Comprovante não encontrado' },
+      NOT_CREATED: { code: 3502, message: 'Erro ao tentar enviar o comprovante' },
+      NOT_UPDATED: { code: 3503, message: 'Erro ao tentar atualizar o comprovante' }
+      // NOT_REMOVED: { code: 3504, message: 'Erro ao tentar remover o comprovante' }
+    }
+  },
   validations: {
     INVALID_REQUEST_DATA: { code: 9999, message: 'Dados da requisição inválidos' },
     INVALID_DATA_FIELD: 'Dado inválido'

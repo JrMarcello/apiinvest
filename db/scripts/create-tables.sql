@@ -192,16 +192,16 @@ CREATE TABLE bank_account (
 	CONSTRAINT bank_account_id_pk PRIMARY KEY (id)
 );
 
-CREATE TABLE investor_document_image (
+CREATE TABLE investor_document (
 	id smallserial NOT NULL,
 	id_investor uuid NOT NULL,
 	url varchar NOT NULL,
 	type char(1) NOT NULL,
-	CONSTRAINT investor_document_image_id_pk PRIMARY KEY (id),
-	CONSTRAINT investor_document_image_type_ck CHECK (type IN ('f', 'v', 'r'))
+	CONSTRAINT investor_document_id_pk PRIMARY KEY (id),
+	CONSTRAINT investor_document_type_ck CHECK (type IN ('f', 'v', 'r'))
 );
 
-CREATE TABLE building_image(
+CREATE TABLE building_image (
 	id smallserial NOT NULL,
 	id_building uuid NOT NULL,
 	url varchar NOT NULL,
@@ -258,7 +258,7 @@ ALTER TABLE bank_account ADD CONSTRAINT bank_account_id_investor_fk FOREIGN KEY 
 REFERENCES investor (id) MATCH FULL
 ON DELETE NO ACTION ON UPDATE NO ACTION;
 
-ALTER TABLE investor_document_image ADD CONSTRAINT investor_document_image_id_investor_fk FOREIGN KEY (id_investor)
+ALTER TABLE investor_document ADD CONSTRAINT investor_document_id_investor_fk FOREIGN KEY (id_investor)
 REFERENCES investor (id) MATCH FULL
 ON DELETE NO ACTION ON UPDATE NO ACTION;
 
