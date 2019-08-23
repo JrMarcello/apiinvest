@@ -1,3 +1,5 @@
+import * as storage from '@core/storage'
+import { env } from '@common/utils'
 import * as dao from './dao'
 
 // /**
@@ -34,14 +36,19 @@ export const getByInvestorId = id => {
  * Saves the Document
  *
  * @param {Object} idInvestor - Investor id
- * @param {Object} data - Document data
+ * @param {Object} filesBuffer - Files data
  * @returns {Promisse} - Returns a Promisse
  */
-export const create = async (idInvestor, data) => {
-  // upload cada doc para storage
-  // ..
+export const create = (idInvestor, filesBuffer) => {
+  const files = filesBuffer.map(async (file, i) => {
+    return {
+      id_investor: idInvestor,
+      url: await storage.uploadfile(file, env().GOOGLE_CLOUD.TEDS_BUCKET),
+      type: i
+    }
+  })
 
-  const documents = dao.create(data)
+  const documents = dao.create(files)
 
   return documents
 }

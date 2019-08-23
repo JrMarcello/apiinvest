@@ -38,15 +38,13 @@ export const getByInvestorId = id => {
  * @returns {Promisse} - Returns a Promisse
  */
 export const create = async (idInvestor, data) => {
-  data.map(account => {
+  const accounts = data.map(account => {
     account.id_investor = idInvestor
 
     return account
   })
 
-  const accounts = dao.create(data)
-
-  return accounts
+  return dao.create(accounts)
 }
 
 /**

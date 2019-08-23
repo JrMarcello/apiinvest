@@ -196,9 +196,8 @@ CREATE TABLE investor_document (
 	id smallserial NOT NULL,
 	id_investor uuid NOT NULL,
 	url varchar NOT NULL,
-	type char(1) NOT NULL,
-	CONSTRAINT investor_document_id_pk PRIMARY KEY (id),
-	CONSTRAINT investor_document_type_ck CHECK (type IN ('f', 'v', 'r'))
+	"order" smallint NOT NULL,
+	CONSTRAINT investor_document_id_pk PRIMARY KEY (id)
 );
 
 CREATE TABLE building_image (
