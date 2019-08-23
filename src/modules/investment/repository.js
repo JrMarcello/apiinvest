@@ -98,7 +98,7 @@ export const tedConfirmation = async data => {
 
   const updateble = {
     id: data.id,
-    ted_proof_url: await storage.uploadfile(data.file, env.GOOGLE_CLOUD.TEDS_BUCKET)
+    ted_proof_url: await storage.uploadfile(data.file, env().GOOGLE_CLOUD.TEDS_BUCKET)
   }
 
   return dao.update(updateble)

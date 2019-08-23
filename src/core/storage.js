@@ -6,13 +6,13 @@ const storage = new Storage({
   keyFilename: env().GOOGLE_CLOUD.KEYFILE
 })
 
-export const uploadFile = async (file, bucketName) => {
+export const uploadFile = async (file, bucketName, options = {}) => {
   const fileName = `${Date.now()}-${file.originalname}`
 
   await storage
     .bucket(bucketName)
-    .file(`${Date.now()}-${file.originalname}`)
-    .upload(file.path)
+    // .file(`${Date.now()}-${file.originalname}`)
+    .upload(file.path, options)
 
   // const bucket = storage.bucket(bucketName)
   // const file = bucket.file(fileName);
