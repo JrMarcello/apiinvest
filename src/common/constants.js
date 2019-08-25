@@ -47,7 +47,7 @@ const constants = {
       NOT_REMOVED: { code: 3504, message: 'Erro ao tentar remover o investidor' }
     }
   },
-  investiment: {
+  investment: {
     // 40xx
     success: {
       CREATE: { code: 4000, message: 'Investimento criado com sucesso' },

@@ -40,11 +40,16 @@ export const getByUserId = id => {
  * @returns {Promisse} - Returns a Promisse
  */
 export const create = async data => {
-  const investor = await dao.create(data.investor)
+  if (!data.investor || data.investor.length === 0) throw Error('Informe seus dados')
+  if (!data.phones || data.phones.length === 0) throw Error('Informe pelo menos 1 telefone')
+  if (!data.accounts || data.accounts.length === 0) throw Error('Informe pelo menos 1 conta bancária')
+  if (!data.files || data.files.length === 0) throw Error('Envie fotos dos seu documento e comprovante de residência')
+  if (data.files && data.files.length !== 3) throw Error('Numeros de fotos inválido')
 
-  await phone.create(investor.id, data.phones)
-  await bankAccount.create(investor.id, data.accounts)
-  await document.create(investor.id, data.files)
+  const investor = await dao.create(data.investor)
+  await phone.create({ id_investor: investor.id, phones: data.phones })
+  await bankAccount.create(Object.assign({ id_investor: investor.id }, { accounts: data.accounts }))
+  await document.create(Object.assign({ id_investor: investor.id }, { files: data.files }))
 
   return investor
 }

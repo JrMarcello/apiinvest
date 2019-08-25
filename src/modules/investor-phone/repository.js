@@ -33,13 +33,12 @@ export const getByInvestorId = id => {
 /**
  * Saves the Phone
  *
- * @param {Object} idInvestor - Investor ID
  * @param {Object} data - Phone data
  * @returns {Promisse} - Returns a Promisse
  */
-export const create = async (idInvestor, data) => {
-  const phones = data.map(phone => {
-    phone.id_investor = idInvestor
+export const create = async data => {
+  const phones = data.phones.map(phone => {
+    phone.id_investor = data.id_investor
 
     return phone
   })

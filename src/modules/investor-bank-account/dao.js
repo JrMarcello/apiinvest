@@ -54,7 +54,8 @@ export const getByInvestorId = id => {
  */
 export const create = async data => {
   return db
-    .insert(data)
+    .insert('id_investor', 'agency', 'account')
+    .values(data)
     .into(table)
     .returning('*')
     .run()

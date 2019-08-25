@@ -69,7 +69,7 @@ export const getByFundraisingId = id => {
  * @returns {Promisse} - Returns a Promisse
  */
 export const getPendings = async () => {
-  const query = `SELECT * FROM ${table} WHERE ted_proof_url ISNOT NULL AND confirmed = false AND active`
+  const query = `SELECT * FROM ${table} WHERE ted_proof_url IS NOT NULL AND confirmed = false AND active`
 
   return (await db.query(query)).rows
 }

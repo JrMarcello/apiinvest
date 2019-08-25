@@ -63,7 +63,8 @@ export const getPendings = async params => {
 export const create = async data => {
   const investor = await getInvestor(data.id_investor)
 
-  if (!investor || !investorIsEnableToInvestments(investor)) throw Error()
+  if (!investor || !investorIsEnableToInvestments(investor))
+    throw Error('Complete seu cadastro para começar a investir')
 
   const investment = await dao.create(data)
 

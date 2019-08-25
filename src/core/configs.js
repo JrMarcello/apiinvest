@@ -11,7 +11,7 @@ export default {
   db: {
     // PGURI: process.env.PGURI,
     // PGURI: process.env.PGURI_DOCKER,
-    PGURI: process.env.PGURI_GOOGLE
+    PGURI: process.env.PGURI
     // PGHOST: process.env.PGHOST,
     // PGUSER: process.env.PGUSER,
     // PGDATABASE: process.env.PGDATABASE,
@@ -35,7 +35,7 @@ export default {
   },
   GOOGLE_CLOUD: {
     PROJECT_ID: process.env.PROJECT_ID,
-    KEYFILE: process.env.KEYFILE,
+    KEYFILE: process.env.KEYFILE_PATH,
     BUCKET: process.env.BUCKET
   }
 }

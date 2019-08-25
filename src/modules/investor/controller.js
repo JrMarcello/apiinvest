@@ -54,7 +54,7 @@ export const getByUserId = async (request, response) => {
  */
 export const create = async (request, response) => {
   try {
-    const investor = await repository.create(Object.assign(request.body, { files: request.files }))
+    const investor = await repository.create(Object.assign(JSON.parse(request.body.data), { files: request.files }))
 
     response.json(Object.assign(constants.investor.success.CREATED, { investor }))
   } catch (err) {

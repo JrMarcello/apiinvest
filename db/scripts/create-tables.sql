@@ -62,14 +62,15 @@ CREATE TABLE building (
 	address_street varchar(100) NOT NULL,
 	address_number varchar NOT NULL DEFAULT 'SN',
 	address_neighborhood varchar NOT NULL,
+	address_city varchar NOT NULL,
 	address_state varchar NOT NULL,
 	address_country varchar NOT NULL DEFAULT 'Brasil',
 	address_cep varchar(8) NOT NULL,
-	amount numeric(11,2) NOT NULL,
+	amount numeric(15,2) NOT NULL,
 	initial_date date NOT NULL,
 	final_date date,
 	created_date timestamp NOT NULL DEFAULT now(),
-	active boolean NOT NULL,
+	active boolean NOT NULL DEFAULT true,
 	CONSTRAINT building_id_pk PRIMARY KEY (id),
 	CONSTRAINT building_spe_uq UNIQUE (spe),
 	CONSTRAINT building_registration_uq UNIQUE (registration)
@@ -79,7 +80,7 @@ CREATE TABLE fundraising (
 	id uuid NOT NULL,
 	id_building uuid,
 	id_custodian uuid,
-	amount numeric(10,2) NOT NULL,
+	amount numeric(15,2) NOT NULL,
 	initial_date date NOT NULL,
 	final_date date NOT NULL,
 	created_date timestamp NOT NULL DEFAULT now(),
@@ -87,18 +88,18 @@ CREATE TABLE fundraising (
 	CONSTRAINT fundraising_id_pk PRIMARY KEY (id)
 );
 
-CREATE TABLE investiment (
+CREATE TABLE investment (
 	id uuid NOT NULL,
 	id_investor uuid NOT NULL,
 	id_fundraising uuid NOT NULL,
-	amout numeric(10,2) NOT NULL,
-	percentage numeric(3,0) NOT NULL,
+	amount numeric(15,2) NOT NULL,
+	percentage numeric(3,2) NOT NULL,
 	date date NOT NULL,
 	ted_proof_url varchar,
 	confirmed boolean NOT NULL DEFAULT false,
 	created_date timestamp NOT NULL DEFAULT now(),
-	ativo boolean NOT NULL DEFAULT true,
-	CONSTRAINT investiment_id_pk PRIMARY KEY (id)
+	active boolean NOT NULL DEFAULT true,
+	CONSTRAINT investment_id_pk PRIMARY KEY (id)
 );
 
 CREATE TABLE custodian (
@@ -182,14 +183,14 @@ CREATE TRIGGER user_check_email_trg
 	EXECUTE PROCEDURE user_check_email();
 
 
-CREATE TABLE bank_account (
+CREATE TABLE investor_bank_account (
 	id smallserial NOT NULL,
 	id_investor uuid NOT NULL,
 	agency varchar NOT NULL,
 	account varchar NOT NULL,
 	created_date timestamp NOT NULL DEFAULT now(),
 	active boolean NOT NULL DEFAULT true,
-	CONSTRAINT bank_account_id_pk PRIMARY KEY (id)
+	CONSTRAINT investor_bank_account_id_pk PRIMARY KEY (id)
 );
 
 CREATE TABLE investor_document (
@@ -233,11 +234,11 @@ ALTER TABLE fundraising ADD CONSTRAINT fundraising_id_building_fk FOREIGN KEY (i
 REFERENCES building (id) MATCH FULL
 ON DELETE NO ACTION ON UPDATE NO ACTION;
 
-ALTER TABLE investiment ADD CONSTRAINT investiment_id_investor_fk FOREIGN KEY (id_investor)
+ALTER TABLE investment ADD CONSTRAINT investment_id_investor_fk FOREIGN KEY (id_investor)
 REFERENCES investor (id) MATCH FULL
 ON DELETE NO ACTION ON UPDATE NO ACTION;
 
-ALTER TABLE investiment ADD CONSTRAINT investiment_id_fundraising_fk FOREIGN KEY (id_fundraising)
+ALTER TABLE investment ADD CONSTRAINT investment_id_fundraising_fk FOREIGN KEY (id_fundraising)
 REFERENCES fundraising (id) MATCH FULL
 ON DELETE NO ACTION ON UPDATE NO ACTION;
 
@@ -253,7 +254,7 @@ ALTER TABLE "user" ADD CONSTRAINT user_id_profile_fk FOREIGN KEY (id_profile)
 REFERENCES profile (id) MATCH FULL
 ON DELETE NO ACTION ON UPDATE NO ACTION;
 
-ALTER TABLE bank_account ADD CONSTRAINT bank_account_id_investor_fk FOREIGN KEY (id_investor)
+ALTER TABLE investor_bank_account ADD CONSTRAINT investor_bank_account_id_investor_fk FOREIGN KEY (id_investor)
 REFERENCES investor (id) MATCH FULL
 ON DELETE NO ACTION ON UPDATE NO ACTION;
 
@@ -278,5 +279,99 @@ VALUES
 
 INSERT INTO "user"
 	(id, id_profile, email, username, password)
-VALUES
+VALUES																						   --123456
 	('647ac188-62c8-4618-8a0a-be14174aac49', 3, 'buildinvest@admin.com', 'Buildinvest Admin', '$2b$10$o8Av/20hYJX3IKRRUKK5UO/bfjWIbYTIpLc6dtlvnk8NrTxTdf9r2');
+
+INSERT INTO builder (
+	id,
+	id_user,
+	cnpj,
+	company_name,
+	company_fancy_name,
+	address_street,
+	address_number,
+	address_neighborhood,
+	address_city,
+	address_state,
+	address_country,
+	address_cep
+) VALUES (
+	'647ac188-62c8-4618-8a0a-be14174aac49',
+	'647ac188-62c8-4618-8a0a-be14174aac49',
+	'34096667000151',
+	'Construtora default SA',
+	'Construtora default',
+	'Rua da construtora',
+	'123',
+	'Bairro',
+	'Cidade',
+	'Estado',
+	'Pais',
+	'58000000'
+);
+
+INSERT INTO building (
+	id,
+	id_builder,
+	spe,
+	registration,
+	name,
+	description,
+	address_street,
+	address_number,
+	address_neighborhood,
+	address_city,
+	address_state,
+	address_country,
+	address_cep,
+	amount,
+	initial_date,
+	final_date
+) VALUES (
+	'647ac188-62c8-4618-8a0a-be14174aac49',
+	'647ac188-62c8-4618-8a0a-be14174aac49',
+	'34096667000151',
+	'123456',
+	'Empreendimento default',
+	'Uma breve descrição do empreendimento',
+	'Rua da empreendimento',
+	'123',
+	'Bairro',
+	'Cidade',
+	'Estado',
+	'Pais',
+	'58000000',
+	1000000.00,
+	NOW(),
+	NOW() + INTERVAL'1 year'
+);
+
+INSERT INTO custodian (
+	id,
+	cnpj,
+	company_name,
+	company_fancy_name,
+	phone
+) VALUES (
+	'647ac188-62c8-4618-8a0a-be14174aac49',
+	'34096667000151',
+	'Custodiadora Default SA',
+	'Custodiadora Default',
+	'8333334444'
+);
+
+INSERT INTO fundraising (
+	id,
+	id_building,
+	id_custodian,
+	amount,
+	initial_date,
+	final_date 
+) VALUES (
+	'647ac188-62c8-4618-8a0a-be14174aac49',
+	'647ac188-62c8-4618-8a0a-be14174aac49',
+	'647ac188-62c8-4618-8a0a-be14174aac49',
+	500000.00,
+	NOW(),
+	NOW() + INTERVAL'6 months'
+);

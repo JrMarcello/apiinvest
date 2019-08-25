@@ -2,6 +2,6 @@
 --#######################################################################
 --## 						CREATE SHEMA						       ##
 --#######################################################################
-DROP SCHEMA IF EXISTS buildinvest; --CASCADE;
+DROP SCHEMA IF EXISTS buildinvest;
 CREATE SCHEMA buildinvest;
 ALTER DATABASE buildinvest SET search_path TO buildinvest;

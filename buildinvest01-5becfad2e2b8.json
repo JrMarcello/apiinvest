@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "buildinvest01",
+  "private_key_id": "5becfad2e2b8620f8af19708551b63ecb8dcaaee",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDo2taFs70JZ59T\ndq97gJ/B4qJAJgzUOWsYUp2UBxu1Vxls0iMLAs00+He9VIDS1ENjpyLcDZiEszWH\noAtlJDf23bGLO1p7NPGzCoGXU1IxAruJvyTnvmov1YgIr8FpnoyM1Ecf5GXp4xKN\nk0mYV8v1R2Z2FGCH07ppsfhCUPfuNopIUEZDm/wJFoRbXSkS28nCCPREYkInwtj9\nCDdwBI2cj0hMvGp7lh5G2WalWV/XRQCX1Flb2oTpunpQdh2rJHu+4uKnHdNXbPFM\nOeJrQ9GJ0+uWQDCqalRTcjPciuQ6lvpjX7Ob8sVXPr3E2PNW2ASUlvrBPc4Wbc10\nZquTfOV9AgMBAAECggEANOxaEgjUN/E+h9KDl1sYVFGNhW1wgIKtWdmbGYQVEt3h\nODe5gbzpBXdMhbJRVjmquFlKJcAMUGrHyZPBS0NUWe4wtl+u1K5nmcUTR6DHHz8K\n/0d7nJVNXqJWWP0TRU1lDfQIV1IKrMIwmw9lDHQ19cE84y0F9JEVfwTVU0NCWnhJ\na0QQe55n0Dmx9T/mYRwgcT5KQmFeBQpg9mGleVRRNCk6havlrHZLm8jp0gF/0Knn\nS9hr6K+gXeOBSIRygOQn/yV2liKDky0/jt55uEZ/6C3m5Bby6KtUupnZWiuCoBSk\nKNmL++YxWg5qoT6zx/SY0Tas7wqlWI5Bih65Uj0rCQKBgQD5Ms1p8lXDEh+B24Z0\nSGFwEZ9Qm8Sn6Eah8r1G/OUvh4xrtJefv9DibZIiYAZ9h7dYIUC4luEUCSMk4YbX\nfcqsKqOhLcFbG+EcKiBvF0tkXqxiRyxMw+i7CVWpIhsx8qDlnysZ+Pk8Qnh6ys2J\nuZhn3AHahtK+jxZgP4sTh4Pc1QKBgQDvNdbxNGpc7PQX7YW0AST2MX1A6NyRU0yF\nmsvpH9FlLjiN1ol9y58UAAIZ8hd8UV8TAOQx3/Goo6Y8ZXB5hVbxTpt5u6YGa0kI\nTxBCJfZRZE2vcA2Ye7MjCaSUYwko7Gy3eRMaEttnJEoX3HTPOTlcMmXIWm1SmKR3\n9F+EAfqaCQKBgQDoJQdu9y4ltzBazKKImRUMTZ5YfYPJ13xVSchB5T2r9V4+x9Go\nJAz3opNMKqBhOJj4JKIiU4wCGjD/Hol7Hdg8YsxkTjeeJG6kyinE07KMIhX8x8jh\nCnA4LQ37raYf9aMlxg1k+KdWF6Yc3ehzsM3lkvK3HHoewzVZHFj3LHsOsQKBgETo\njo2XWtiADeTisHRlK/+bzAgpzHg0tcN7DyiN2OU7xmDdn2fUg3PgeLp+qdNPIYM4\n64OOjm/VDKszUY5AIgaLbXBI5Q/OUhCJrhZQFz/lFBfowJHfeIAsY/O2/8mBKeRE\nhYMqUXfJ1WpAQIn9Yw+zGOz5V6rGfAJuLCG77DP5AoGAIhwbUGZnc5fLX35R03sh\nTW1dtKKxtRiiXMffG1aTu76r3Zz00SFD1tBaVisAUuoegV6vdwOaM2mT42lq38FM\n5OcR9C+c3XRLbKXafh/dhOG3/nGngmNLVUZaIHhFr3HCXkyNPJKPcGxwwWdu7BPN\ncXyZNC/JeSujz0BnY2SRD1Q=\n-----END PRIVATE KEY-----\n",
+  "client_email": "backend-storage@buildinvest01.iam.gserviceaccount.com",
+  "client_id": "107483375889172722571",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/backend-storage%40buildinvest01.iam.gserviceaccount.com"
+}
