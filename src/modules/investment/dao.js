@@ -96,12 +96,13 @@ export const create = async data => {
  * @param {Object} data - Investment data to be updated
  * @returns {Promisse} - Returns a Promisse
  */
-export const update = data => {
-  return db
-    .update(table)
-    .set(data)
-    .where('id', data.id)
-    .run()
+export const confirm = async data => {
+  const query = {
+    text: `UPDATE ${table} SET confirmed = true WHERE id = ANY($1::uuid[])`,
+    values: [data]
+  }
+
+  return (await db.query(query)).rows[0]
 }
 
 /**

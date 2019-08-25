@@ -63,8 +63,9 @@ export const getPendings = async params => {
 export const create = async data => {
   const investor = await getInvestor(data.id_investor)
 
-  if (!investor || !investorIsEnableToInvestments(investor))
+  if (!investor || !investorIsEnableToInvestments(investor)) {
     throw Error('Complete seu cadastro para começar a investir')
+  }
 
   const investment = await dao.create(data)
 
@@ -95,29 +96,33 @@ const getEmailParams = investor => {
  * @returns {Promisse} - Returns a Promisse
  */
 export const tedConfirmation = async data => {
-  if (!data || data.file) throw Error()
+  if (!data || !data.file) throw Error()
 
-  const updateble = {
+  const url = await storage.uploadFile(data.file, env().GOOGLE_CLOUD.BUCKET, 'teds')
+
+  return dao.update({
     id: data.id,
-    ted_proof_url: await storage.uploadfile(data.file, env().GOOGLE_CLOUD.TEDS_BUCKET)
-  }
-
-  return dao.update(updateble)
+    ted_proof_url: url
+  })
 }
 
 /**
- * Send TED proof for an Investment
+ * Confirm an Investment
  *
- * @param {Object} data - TED proof
+ * @param {Object} data - Investment IDs
  * @returns {Promisse} - Returns a Promisse
  */
-export const confirmation = async data => {
-  const updateble = {
-    id: data.id,
-    confirmed: true
-  }
+export const confirm = async data => {
+  if (!Array.isArray(data)) throw Error('Formato de dados inválido')
 
-  return dao.update(updateble)
+  // const confirmations = data.map(id => {
+  //   return {
+  //     id,
+  //     confirmed: true
+  //   }
+  // })
+
+  return dao.confirm(data)
 }
 
 /**

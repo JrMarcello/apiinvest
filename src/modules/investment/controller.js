@@ -116,9 +116,9 @@ export const tedConfirmation = async (request, response) => {
  * @param {Object} response - HTTP response
  * @returns {Object} HTTP response with status code and data
  */
-export const confirmation = async (request, response) => {
+export const confirm = async (request, response) => {
   try {
-    await repository.confirmation(request.body)
+    await repository.confirm(request.body.confirmations)
 
     response.json(constants.investment.success.CONFIRMATION)
   } catch (err) {
