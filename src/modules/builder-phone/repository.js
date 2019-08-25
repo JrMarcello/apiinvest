@@ -1,13 +1,13 @@
 import * as dao from './dao'
 
 /**
- * Find a Phone by Investor ID
+ * Find a Phone by Builder ID
  *
- * @param {Interger} id - Investor ID
+ * @param {Interger} id - Builder ID
  * @returns {Promisse} - Returns a Promisse
  */
-export const getByInvestorId = id => {
-  return dao.getByInvestorId(id)
+export const getByBuilderId = id => {
+  return dao.getByBuilderId(id)
 }
 
 /**
@@ -18,7 +18,7 @@ export const getByInvestorId = id => {
  */
 export const create = async data => {
   const phones = data.phones.map(phone => {
-    phone.id_investor = data.id_investor
+    phone.id_builder = data.id_builder
 
     return phone
   })

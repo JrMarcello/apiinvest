@@ -25,16 +25,17 @@ export const getAll = () => {
  */
 export const getById = async id => {
   const query = {
+    name: 'get-investor-by-id',
     text: `SELECT
-              u.email,
-              u.username,
-              i.*
-          FROM
-              ${table} i
-              JOIN "user" u ON i.id_user = u.id
-          WHERE
-              i.id = $1
-              AND i.active`,
+               u.email,
+               u.username,
+               i.*
+           FROM
+               ${table} i
+               JOIN "user" u ON i.id_user = u.id
+           WHERE
+               i.id = $1
+               AND i.active`,
     values: [id]
   }
 
@@ -47,13 +48,13 @@ export const getById = async id => {
  * @param {Interger} id - User ID
  * @returns {Promisse} - Returns a Promisse
  */
-export const getByUserId = id => {
-  return db
+export const getByUserId = async id => {
+  return (await db
     .select()
     .from(table)
     .where('id_user', id)
     .and('active', true)
-    .run()
+    .run())[0]
 }
 
 /**

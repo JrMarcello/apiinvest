@@ -1,6 +1,8 @@
 import bcrypt from 'bcrypt'
 import constants from '@common/constants'
 import { getToken } from '@core/auth'
+import * as investor from '@modules/investor/repository'
+import * as builder from '@modules/builder/repository'
 import * as dao from './dao'
 
 /**
@@ -19,8 +21,19 @@ export const getAll = async params => {
  * @param {Interger} id - User ID
  * @returns {Promisse} - Returns a Promisse
  */
-export const getById = id => {
-  return dao.getById(id)
+export const getById = async id => {
+  const user = await dao.getById(id)
+
+  if (user.profile === 1) {
+    user.investor = await investor.getByUserId(user.id)
+  } else if (user.profile === 2) {
+    user.builder = await builder.getByUserId(user.id)
+  } else {
+    user.investor = await investor.getByUserId(user.id)
+    user.builder = await builder.getByUserId(user.id)
+  }
+
+  return user
 }
 
 /**

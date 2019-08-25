@@ -1,6 +1,6 @@
 --Model Author: Majun                           --PostgreSQL version: 11
 --#######################################################################
---## 							CREATE TABLES			 		       ##
+--## 						CREATE TABLES				 		       ##
 --#######################################################################
 CREATE TABLE investor (
 	id uuid NOT NULL,
@@ -25,10 +25,9 @@ CREATE TABLE investor (
 );
 
 CREATE TABLE investor_phone (
-	id serial NOT NULL,
+	id bigserial NOT NULL,
 	id_investor uuid NOT NULL,
-	number varchar NOT NULL,
-	active boolean NOT NULL DEFAULT true,
+	number varchar NOT NULL
 	CONSTRAINT investor_phone_id_pk PRIMARY KEY (id)
 );
 
@@ -114,8 +113,8 @@ CREATE TABLE custodian (
 	CONSTRAINT custodian_cnpj_uq UNIQUE (cnpj)
 );
 
-CREATE TABLE partner(
-	id uuid NOT NULL,
+CREATE TABLE builder_partner(
+	id bigserial NOT NULL,
 	id_builder uuid NOT NULL,
 	name varchar NOT NULL,
 	company_name varchar,
@@ -129,13 +128,12 @@ CREATE TABLE partner(
 	address_state varchar,
 	address_country varchar,
 	address_cep varchar,
-	created_date timestamp NOT NULL DEFAULT now(),
-	active boolean NOT NULL DEFAULT true,
-	CONSTRAINT partner_id_pk PRIMARY KEY (id)
+	created_date timestamp NOT NULL DEFAULT now()
+	CONSTRAINT builder_partner_id_pk PRIMARY KEY (id)
 );
 
 CREATE TABLE builder_phone (
-	id serial NOT NULL,
+	id bigserial NOT NULL,
 	id_builder uuid NOT NULL,
 	number varchar(11) NOT NULL,
 	active boolean NOT NULL DEFAULT true,
@@ -184,7 +182,7 @@ CREATE TRIGGER user_check_email_trg
 
 
 CREATE TABLE investor_bank_account (
-	id smallserial NOT NULL,
+	id bigserial NOT NULL,
 	id_investor uuid NOT NULL,
 	agency varchar NOT NULL,
 	account varchar NOT NULL,
@@ -194,7 +192,7 @@ CREATE TABLE investor_bank_account (
 );
 
 CREATE TABLE investor_document (
-	id smallserial NOT NULL,
+	id bigserial NOT NULL,
 	id_investor uuid NOT NULL,
 	url varchar NOT NULL,
 	"order" smallint NOT NULL,
@@ -202,14 +200,14 @@ CREATE TABLE investor_document (
 );
 
 CREATE TABLE building_image (
-	id smallserial NOT NULL,
+	id bigserial NOT NULL,
 	id_building uuid NOT NULL,
 	url varchar NOT NULL,
 	CONSTRAINT building_image_id_pk PRIMARY KEY (id)
 
 );
 
---CONTRAINTS
+--CONSTRAINTS
 ALTER TABLE investor ADD CONSTRAINT investor_id_user_fk FOREIGN KEY (id_user)
 REFERENCES "user" (id) MATCH FULL
 ON DELETE NO ACTION ON UPDATE NO ACTION;
@@ -242,7 +240,7 @@ ALTER TABLE investment ADD CONSTRAINT investment_id_fundraising_fk FOREIGN KEY (
 REFERENCES fundraising (id) MATCH FULL
 ON DELETE NO ACTION ON UPDATE NO ACTION;
 
-ALTER TABLE partner ADD CONSTRAINT partner_id_builder_fk FOREIGN KEY (id_builder)
+ALTER TABLE builder_partner ADD CONSTRAINT builder_partner_id_builder_fk FOREIGN KEY (id_builder)
 REFERENCES builder (id) MATCH FULL
 ON DELETE NO ACTION ON UPDATE NO ACTION;
 
@@ -265,113 +263,3 @@ ON DELETE NO ACTION ON UPDATE NO ACTION;
 ALTER TABLE building_image ADD CONSTRAINT building_image_id_building_fk FOREIGN KEY (id_building)
 REFERENCES building (id) MATCH FULL
 ON DELETE NO ACTION ON UPDATE NO ACTION;
-
-
---#######################################################################
---##			    		INSERT DEFAULT DATA			 		       ##
---#######################################################################
-INSERT INTO "profile"
-	(name)
-VALUES
-	('Investidor'),
-	('Contrutor'),
-	('Admin');
-
-INSERT INTO "user"
-	(id, id_profile, email, username, password)
-VALUES																						   --123456
-	('647ac188-62c8-4618-8a0a-be14174aac49', 3, 'buildinvest@admin.com', 'Buildinvest Admin', '$2b$10$o8Av/20hYJX3IKRRUKK5UO/bfjWIbYTIpLc6dtlvnk8NrTxTdf9r2');
-
-INSERT INTO builder (
-	id,
-	id_user,
-	cnpj,
-	company_name,
-	company_fancy_name,
-	address_street,
-	address_number,
-	address_neighborhood,
-	address_city,
-	address_state,
-	address_country,
-	address_cep
-) VALUES (
-	'647ac188-62c8-4618-8a0a-be14174aac49',
-	'647ac188-62c8-4618-8a0a-be14174aac49',
-	'34096667000151',
-	'Construtora default SA',
-	'Construtora default',
-	'Rua da construtora',
-	'123',
-	'Bairro',
-	'Cidade',
-	'Estado',
-	'Pais',
-	'58000000'
-);
-
-INSERT INTO building (
-	id,
-	id_builder,
-	spe,
-	registration,
-	name,
-	description,
-	address_street,
-	address_number,
-	address_neighborhood,
-	address_city,
-	address_state,
-	address_country,
-	address_cep,
-	amount,
-	initial_date,
-	final_date
-) VALUES (
-	'647ac188-62c8-4618-8a0a-be14174aac49',
-	'647ac188-62c8-4618-8a0a-be14174aac49',
-	'34096667000151',
-	'123456',
-	'Empreendimento default',
-	'Uma breve descrição do empreendimento',
-	'Rua da empreendimento',
-	'123',
-	'Bairro',
-	'Cidade',
-	'Estado',
-	'Pais',
-	'58000000',
-	1000000.00,
-	NOW(),
-	NOW() + INTERVAL'1 year'
-);
-
-INSERT INTO custodian (
-	id,
-	cnpj,
-	company_name,
-	company_fancy_name,
-	phone
-) VALUES (
-	'647ac188-62c8-4618-8a0a-be14174aac49',
-	'34096667000151',
-	'Custodiadora Default SA',
-	'Custodiadora Default',
-	'8333334444'
-);
-
-INSERT INTO fundraising (
-	id,
-	id_building,
-	id_custodian,
-	amount,
-	initial_date,
-	final_date 
-) VALUES (
-	'647ac188-62c8-4618-8a0a-be14174aac49',
-	'647ac188-62c8-4618-8a0a-be14174aac49',
-	'647ac188-62c8-4618-8a0a-be14174aac49',
-	500000.00,
-	NOW(),
-	NOW() + INTERVAL'6 months'
-);

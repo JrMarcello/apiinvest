@@ -1,3 +1,5 @@
+import * as phone from '@modules/builder-phone/repository'
+import * as partner from '@modules/builder-partner/repository'
 import * as dao from './dao'
 
 /**
@@ -16,8 +18,16 @@ export const getAll = async params => {
  * @param {Interger} id - Builder ID
  * @returns {Promisse} - Returns a Promisse
  */
-export const getById = id => {
-  return dao.getById(id)
+export const getById = async id => {
+  console.log(id)
+  const builder = await dao.getById(id)
+  console.log(builder)
+
+  builder.phones = await phone.getByBuilderId(builder.id)
+  builder.partners = await partner.getByBuilderId(builder.id)
+  // builder.buildings = await building.getByBuilderId(builder.id)
+
+  return builder
 }
 
 /**
@@ -36,8 +46,21 @@ export const getByUserId = id => {
  * @param {Object} data - Builder data to be saved
  * @returns {Promisse} - Returns a Promisse
  */
-export const create = data => {
-  return dao.create(data)
+export const create = async data => {
+  console.log(data)
+
+  if (!data.builder || data.builder.length === 0) throw Error('Informe seus dados')
+  if (!data.phones || data.phones.length === 0) throw Error('Informe pelo menos 1 telefone')
+
+  const builder = await dao.create(data.builder)
+
+  await phone.create({ id_builder: builder.id, phones: data.phones })
+
+  if (data.partners && data.partners.length !== 0) {
+    await partner.create(Object.assign({ id_builder: builder.id }, { partners: data.partners }))
+  }
+
+  return builder
 }
 
 /**

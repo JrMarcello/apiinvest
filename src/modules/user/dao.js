@@ -11,9 +11,6 @@ const table = 'user'
  * @returns {Promisse} - Returns a Promisse
  */
 export const getAll = () => {
-  // const query = `SELECT * FROM ${table} WHERE ativo`
-  // return db.query(query)
-
   return db
     .select()
     .from(table)
@@ -27,13 +24,13 @@ export const getAll = () => {
  * @param {Interger} id - User ID
  * @returns {Promisse} - Returns a Promisse
  */
-export const getById = id => {
-  return db
+export const getById = async id => {
+  return (await db
     .select()
     .from(table)
     .where('id', id)
     .and('active', true)
-    .run()
+    .run())[0]
 }
 
 /**
@@ -42,13 +39,13 @@ export const getById = id => {
  * @param {Interger} email - User email
  * @returns {Promisse} - Returns a Promisse
  */
-export const getByEmail = email => {
-  return db
+export const getByEmail = async email => {
+  return (await db
     .select()
     .from(table)
     .where('email', email)
     .and('active', true)
-    .run()
+    .run())[0]
 }
 
 /**

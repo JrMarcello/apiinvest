@@ -13,7 +13,6 @@ export const getByInvestorId = id => {
     .select()
     .from(table)
     .where('id_investor', id)
-    .and('active', true)
     .run()
 }
 
