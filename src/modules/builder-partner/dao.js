@@ -23,12 +23,26 @@ export const getByBuilderId = id => {
  * @returns {Promisse} - Returns a Promisse
  */
 export const create = async data => {
-  // return db
-  //   .insert('id_builder', 'number')
-  //   .values(data)
-  //   .into(table)
-  //   .returning('*')
-  //   .run()
+  return db
+    .insert(
+      'id_builder',
+      'name',
+      'company_name',
+      'cpf',
+      'cnpj',
+      'phone',
+      'address_street',
+      'address_number',
+      'address_neighborhood',
+      'address_city',
+      'address_state',
+      'address_country',
+      'address_cep'
+    )
+    .values(data)
+    .into(table)
+    .returning('*')
+    .run()
 }
 
 /**

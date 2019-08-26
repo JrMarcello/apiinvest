@@ -19,12 +19,10 @@ export const getAll = async params => {
  * @returns {Promisse} - Returns a Promisse
  */
 export const getById = async id => {
-  console.log(id)
   const builder = await dao.getById(id)
-  console.log(builder)
 
   builder.phones = await phone.getByBuilderId(builder.id)
-  builder.partners = await partner.getByBuilderId(builder.id)
+  // builder.partners = await partner.getByBuilderId(builder.id)
   // builder.buildings = await building.getByBuilderId(builder.id)
 
   return builder
@@ -47,8 +45,6 @@ export const getByUserId = id => {
  * @returns {Promisse} - Returns a Promisse
  */
 export const create = async data => {
-  console.log(data)
-
   if (!data.builder || data.builder.length === 0) throw Error('Informe seus dados')
   if (!data.phones || data.phones.length === 0) throw Error('Informe pelo menos 1 telefone')
 

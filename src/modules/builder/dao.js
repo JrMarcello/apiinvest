@@ -55,13 +55,12 @@ export const getByUserId = async id => {
  */
 export const create = async data => {
   data.id = await generateUUID()
-  console.log('BUILDER DAO', data)
 
-  // return db
-  //   .insert(data)
-  //   .into(table)
-  //   .returning('*')
-  //   .run()
+  return (await db
+    .insert(data)
+    .into(table)
+    .returning('*')
+    .run())[0]
 }
 
 /**

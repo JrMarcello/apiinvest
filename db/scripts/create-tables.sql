@@ -123,7 +123,7 @@ CREATE TABLE builder_partner(
 	phone varchar NOT NULL,
 	address_street varchar NOT NULL,
 	address_number varchar,
-	address_nieghborhood varchar,
+	address_neighborhood varchar,
 	address_city varchar,
 	address_state varchar,
 	address_country varchar,
@@ -135,8 +135,7 @@ CREATE TABLE builder_partner(
 CREATE TABLE builder_phone (
 	id bigserial NOT NULL,
 	id_builder uuid NOT NULL,
-	number varchar(11) NOT NULL,
-	active boolean NOT NULL DEFAULT true,
+	number varchar(11) NOT NULL
 	CONSTRAINT builder_phone_id_pk PRIMARY KEY (id)
 );
 
