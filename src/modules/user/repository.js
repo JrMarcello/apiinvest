@@ -24,11 +24,15 @@ export const getAll = async params => {
 export const getById = async id => {
   const user = await dao.getById(id)
 
-  if (user.profile === 1) {
+  if (user && user.profile === 1) {
     user.investor = await investor.getByUserId(user.id)
-  } else if (user.profile === 2) {
+  }
+
+  if (user && user.profile === 2) {
     user.builder = await builder.getByUserId(user.id)
-  } else {
+  }
+
+  if (user && user.profile === 3) {
     user.investor = await investor.getByUserId(user.id)
     user.builder = await builder.getByUserId(user.id)
   }

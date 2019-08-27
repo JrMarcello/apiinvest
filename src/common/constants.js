@@ -4,24 +4,24 @@
 const constants = {
   // Code: 1xxx
   auth: {
-    // 10xx
+    // S00xx
     // success: {
 
     // },
-    // 15xx
+    // E00xx
     error: {
       UNAUTHORIZED: { code: 1500, message: 'Acesso negado! Token inválido ou inexistente' }
     }
   },
   user: {
-    // 20xx
+    // S01xx
     success: {
-      CREATED: { code: 2000, message: 'Usuário criado com sucesso' },
-      UPDATED: { code: 2001, message: 'Usuário atualizado com sucesso' },
-      REMOVED: { code: 2002, message: 'Usuário removido com sucesso' },
-      LOGGED: { code: 2003, message: 'Usuario logado' }
+      CREATED: { code: 'S0000', message: 'Usuário criado com sucesso' },
+      UPDATED: { code: 'S0001', message: 'Usuário atualizado com sucesso' },
+      REMOVED: { code: 'S0002', message: 'Usuário removido com sucesso' },
+      LOGGED: { code: 'S0003', message: 'Usuario logado' }
     },
-    // 25xx
+    // E01xx
     error: {
       NOT_FOUNDS: { code: 2500, message: 'Ainda não existem usuários cadastrados' },
       NOT_FOUND: { code: 2501, message: 'Usuario não encontrado' },
@@ -32,13 +32,13 @@ const constants = {
     }
   },
   investor: {
-    // 30xx
+    // S01xx
     success: {
       CREATED: { code: 3000, message: 'Investidor criado com sucesso' },
       UPDATED: { code: 3001, message: 'Investidor atualizado com sucesso' },
       REMOVED: { code: 3002, message: 'Investidor removido com sucesso' }
     },
-    // 35xx
+    // E01xx
     error: {
       NOT_FOUNDS: { code: 3500, message: 'Ainda não existem investidores cadastrados' },
       NOT_FOUND: { code: 3501, message: 'Investidor não encontrado' },
@@ -191,6 +191,19 @@ const constants = {
       NOT_CREATED: { code: 3502, message: 'Erro ao tentar enviar o comprovante' },
       NOT_UPDATED: { code: 3503, message: 'Erro ao tentar atualizar o comprovante' }
       // NOT_REMOVED: { code: 3504, message: 'Erro ao tentar remover o comprovante' }
+    }
+  },
+  building_image: {
+    // 90xx
+    success: {
+      CREATED: { code: 9000, message: 'Comprovante enviado com sucesso' },
+      REMOVED: { code: 9002, message: 'Comprovante removido com sucesso' }
+    },
+    // 95xx
+    error: {
+      NOT_FOUNDS: { code: 3500, message: 'Ainda não existem imagens cadastradas' },
+      NOT_CREATED: { code: 3502, message: 'Erro ao tentar enviar a imagem' },
+      NOT_REMOVED: { code: 3504, message: 'Erro ao tentar remover a imagem' }
     }
   },
   validations: {

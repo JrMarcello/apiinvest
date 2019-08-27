@@ -22,9 +22,10 @@ export const getAll = async params => {
 export const getById = async id => {
   const investor = await dao.getById(id)
 
-  investor.phones = await phone.getByInvestorId(investor.id)
-  investor.accounts = await bankAccount.getByInvestorId(investor.id)
-  // investor.documents = await document.getByInvestorId(investor.id)
+  if (investor) {
+    investor.phones = await phone.getByInvestorId(investor.id)
+    investor.accounts = await bankAccount.getByInvestorId(investor.id)
+  }
 
   return investor
 }
@@ -35,8 +36,15 @@ export const getById = async id => {
  * @param {Interger} id - User ID
  * @returns {Promisse} - Returns a Promisse
  */
-export const getByUserId = id => {
-  return dao.getByUserId(id)
+export const getByUserId = async id => {
+  const investor = await dao.getByUserId(id)
+
+  if (investor) {
+    investor.phones = await phone.getByInvestorId(investor.id)
+    investor.accounts = await bankAccount.getByInvestorId(investor.id)
+  }
+
+  return investor
 }
 
 /**

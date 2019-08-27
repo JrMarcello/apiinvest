@@ -14,7 +14,7 @@ const storage = new Storage({
  * @param {*} dirname
  */
 export const uploadFile = async (file, bucketName, dirname) => {
-  const fileName = `${Date.now()}`
+  const fileName = `${Date.now()}.${file.mimetype.split('/')[1]}`
 
   await storage
     .bucket(bucketName)

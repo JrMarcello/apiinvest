@@ -1,3 +1,4 @@
+import * as image from '@modules/building-image/repository'
 import * as dao from './dao'
 
 /**
@@ -16,8 +17,12 @@ export const getAll = async params => {
  * @param {Interger} id - Building ID
  * @returns {Promisse} - Returns a Promisse
  */
-export const getById = id => {
-  return dao.getById(id)
+export const getById = async id => {
+  const building = await dao.getById(id)
+
+  if (building) building.images = await image.getByBuildingId(building.id)
+
+  return building
 }
 
 /**
@@ -26,8 +31,12 @@ export const getById = id => {
  * @param {Interger} id - User ID
  * @returns {Promisse} - Returns a Promisse
  */
-export const getByBuilderId = id => {
-  return dao.getByBuilderId(id)
+export const getByBuilderId = async id => {
+  const building = await dao.getByBuilderId(id)
+
+  if (building) building.images = await image.getByBuildingId(building.id)
+
+  return building
 }
 
 /**

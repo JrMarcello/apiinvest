@@ -1,5 +1,6 @@
 import * as phone from '@modules/builder-phone/repository'
 import * as partner from '@modules/builder-partner/repository'
+import * as building from '@modules/building/repository'
 import * as dao from './dao'
 
 /**
@@ -21,9 +22,11 @@ export const getAll = async params => {
 export const getById = async id => {
   const builder = await dao.getById(id)
 
-  builder.phones = await phone.getByBuilderId(builder.id)
-  // builder.partners = await partner.getByBuilderId(builder.id)
-  // builder.buildings = await building.getByBuilderId(builder.id)
+  if (builder) {
+    builder.phones = await phone.getByBuilderId(builder.id)
+    builder.partners = await partner.getByBuilderId(builder.id)
+    builder.buildings = await building.getByBuilderId(builder.id)
+  }
 
   return builder
 }

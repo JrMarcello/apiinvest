@@ -1,4 +1,3 @@
-import constants from '@common/constants'
 import * as dao from './dao'
 
 /**
