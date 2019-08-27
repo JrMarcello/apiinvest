@@ -20,5 +20,7 @@ sudo docker-compose up
 3. Depois que os conteiers estiverem rodando, execute
 
 ```javascript
-sudo ./db/create-db-dev.sh  ou sudo ./db/create-db.sh
+chmod +x db/create-db-local.sh
+chmod +x db/create-db.sh
+./db/create-db-local.sh  ou ./db/create-db.sh
 ```

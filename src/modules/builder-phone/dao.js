@@ -1,31 +1,30 @@
 import db from '@core/database'
 
-const table = 'investor_bank_account'
+const table = 'builder_phone'
 
 /**
- * Find Accounts by Investor ID
+ * Find Phones by Builder ID
  *
- * @param {Interger} id - Investor ID
+ * @param {Interger} id - Builder ID
  * @returns {Promisse} - Returns a Promisse
  */
-export const getByInvestorId = id => {
+export const getByBuilderId = id => {
   return db
     .select()
     .from(table)
-    .where('id_investor', id)
-    .and('active', true)
+    .where('id_builder', id)
     .run()
 }
 
 /**
- * Create an Account
+ * Create an Phone
  *
- * @param {Object} data - Account data to be saved
+ * @param {Object} data - Phone data to be saved
  * @returns {Promisse} - Returns a Promisse
  */
 export const create = async data => {
   return db
-    .insert('id_investor', 'agency', 'account')
+    .insert('id_builder', 'number')
     .values(data)
     .into(table)
     .returning('*')
@@ -33,15 +32,14 @@ export const create = async data => {
 }
 
 /**
- * Remove an Account
+ * Remove an Phone
  *
- * @param {Object} id - Account id to be removed
+ * @param {Object} id - Phone id to be removed
  * @returns {Object} - Returns data
  */
 export const remove = id => {
   return db
-    .update(table)
-    .set('active', false)
+    .delete(table)
     .where('id', id)
     .run()
 }

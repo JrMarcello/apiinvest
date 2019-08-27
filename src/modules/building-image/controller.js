@@ -7,9 +7,9 @@ import * as repository from './repository'
  * @param {Object} response - HTTP response
  * @returns {Object} HTTP response with status code and data
  */
-export const getByInvestorId = async (request, response) => {
+export const getByBuildingId = async (request, response) => {
   try {
-    response.json(await repository.getByInvestorId(request.params.id))
+    response.json(await repository.getByBuildingId(request.params.id))
   } catch (err) {
     logger().error(err)
 
@@ -24,13 +24,13 @@ export const getByInvestorId = async (request, response) => {
  */
 export const create = async (request, response) => {
   try {
-    const phones = await repository.create(request.body.id_investor, request.body.phones)
+    const images = await repository.create({ id_building: request.body.id_building, files: request.files })
 
-    response.json(Object.assign(constants.investor_phone.success.CREATED, { phones }))
+    response.json(Object.assign(constants.building_image.success.CREATED, { images }))
   } catch (err) {
     logger().error(err)
 
-    response.status(500).json(constants.investor_phone.error.NOT_CREATED)
+    response.status(500).json(constants.building_image.error.NOT_CREATED)
   }
 }
 
@@ -43,10 +43,10 @@ export const remove = async (request, response) => {
   try {
     await repository.remove(request.params.id)
 
-    response.json(constants.investor_phone.success.REMOVED)
+    response.json(constants.building_image.success.REMOVED)
   } catch (err) {
     logger().error(err)
 
-    response.status(500).json(constants.investor_phone.error.NOT_REMOVED)
+    response.status(500).json(constants.building_image.error.NOT_REMOVED)
   }
 }

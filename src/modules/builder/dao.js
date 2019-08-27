@@ -23,13 +23,13 @@ export const getAll = () => {
  * @param {Interger} id - Builder ID
  * @returns {Promisse} - Returns a Promisse
  */
-export const getById = id => {
-  return db
+export const getById = async id => {
+  return (await db
     .select()
     .from(table)
     .where('id', id)
     .and('active', true)
-    .run()
+    .run())[0]
 }
 
 /**
@@ -38,13 +38,13 @@ export const getById = id => {
  * @param {Interger} id - User ID
  * @returns {Promisse} - Returns a Promisse
  */
-export const getByUserId = id => {
-  return db
+export const getByUserId = async id => {
+  return (await db
     .select()
     .from(table)
     .where('id_user', id)
     .and('active', true)
-    .run()
+    .run())[0]
 }
 
 /**
@@ -56,11 +56,11 @@ export const getByUserId = id => {
 export const create = async data => {
   data.id = await generateUUID()
 
-  return db
+  return (await db
     .insert(data)
     .into(table)
     .returning('*')
-    .run()
+    .run())[0]
 }
 
 /**

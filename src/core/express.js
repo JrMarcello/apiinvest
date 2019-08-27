@@ -5,6 +5,7 @@ import bodyParser from 'body-parser'
 import helmet from 'helmet'
 import morgan from 'morgan'
 import path from 'path'
+import compression from 'compression'
 
 import { env } from '@common/utils'
 
@@ -24,7 +25,8 @@ function setParsers() {
   server.use(helmet())
   server.use(bodyParser.urlencoded({ extended: false }))
   server.use(bodyParser.json())
-  server.use(morgan('dev')) // morgan(':method :url - :status :response-time :referrer')
+  server.use(morgan('dev'))
+  server.use(compression())
 
   // server.use(express.static(`${env().rootDir}/public`));
   // server.set('showStackError', true)

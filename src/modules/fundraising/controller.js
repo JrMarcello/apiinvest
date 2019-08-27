@@ -47,20 +47,20 @@ export const getByBuildingId = async (request, response) => {
   }
 }
 
-/**
- * @param {Object} request - HTTP request
- * @param {Object} response - HTTP response
- * @returns {Object} HTTP response with status code and data
- */
-export const getByCustodianId = async (request, response) => {
-  try {
-    response.json(await repository.getByCustodianId(request.params.id))
-  } catch (err) {
-    logger().error(err)
+// /**
+//  * @param {Object} request - HTTP request
+//  * @param {Object} response - HTTP response
+//  * @returns {Object} HTTP response with status code and data
+//  */
+// export const getByCustodianId = async (request, response) => {
+//   try {
+//     response.json(await repository.getByCustodianId(request.params.id))
+//   } catch (err) {
+//     logger().error(err)
 
-    response.status(500).json(err)
-  }
-}
+//     response.status(500).json(err)
+//   }
+// }
 
 /**
  * @param {Object} request - HTTP request
@@ -93,6 +93,23 @@ export const update = async (request, response) => {
     logger().error(err)
 
     response.status(500).json(constants.fundraising.error.NOT_UPDATED)
+  }
+}
+
+/**
+ * @param {Object} request - HTTP request
+ * @param {Object} response - HTTP response
+ * @returns {Object} HTTP response with status code and data
+ */
+export const finish = async (request, response) => {
+  try {
+    await repository.finish(request.params.id)
+
+    response.json(constants.fundraising.success.FINISHED)
+  } catch (err) {
+    logger().error(err)
+
+    response.status(500).json(constants.fundraising.error.FINISHED)
   }
 }
 

@@ -3,20 +3,23 @@ import { env } from '@common/utils'
 
 const storage = new Storage({
   projectId: env().GOOGLE_CLOUD.PROJECT_ID,
-  keyFilename: env().GOOGLE_CLOUD.KEYFILE
+  keyFilename: env().GOOGLE_CLOUD.KEYFILE_PATH
 })
 
-export const uploadFile = async (file, bucketName, options = {}) => {
-  const fileName = `${Date.now()}-${file.originalname}`
+/**
+ * Pushes file to GCS
+ *
+ * @param {*} file
+ * @param {*} bucketName
+ * @param {*} dirname
+ */
+export const uploadFile = async (file, bucketName, dirname) => {
+  const fileName = `${Date.now()}.${file.mimetype.split('/')[1]}`
 
   await storage
     .bucket(bucketName)
-    // .file(`${Date.now()}-${file.originalname}`)
-    .upload(file.path, options)
+    .file(`${dirname}/${fileName}`)
+    .save(file.buffer)
 
-  // const bucket = storage.bucket(bucketName)
-  // const file = bucket.file(fileName);
-  // const res = await bucket.upload(localFilePath, options)
-
-  return `https://storage.googleapis.com/${bucketName}/${fileName}`
+  return `https://storage.googleapis.com/${bucketName}/${dirname}/${fileName}`
 }

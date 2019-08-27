@@ -3,35 +3,6 @@ import db from '@core/database'
 const table = 'investor_phone'
 
 /**
- *  Find all Phones
- *
- * @param {Object} params - Params for query
- * @returns {Promisse} - Returns a Promisse
- */
-export const getAll = () => {
-  return db
-    .select()
-    .from(table)
-    .where('active', true)
-    .run()
-}
-
-/**
- * Find a Phone by ID
- *
- * @param {Interger} id - Phone ID
- * @returns {Promisse} - Returns a Promisse
- */
-export const getById = async id => {
-  return db
-    .select()
-    .from(table)
-    .where('id', id)
-    .and('active', true)
-    .run()
-}
-
-/**
  * Find Phones by Investor ID
  *
  * @param {Interger} id - Investor ID
@@ -42,7 +13,6 @@ export const getByInvestorId = id => {
     .select()
     .from(table)
     .where('id_investor', id)
-    .and('active', true)
     .run()
 }
 
@@ -54,23 +24,10 @@ export const getByInvestorId = id => {
  */
 export const create = async data => {
   return db
-    .insert(data)
+    .insert('id_investor', 'number')
+    .values(data)
     .into(table)
     .returning('*')
-    .run()
-}
-
-/**
- * Update an Phone
- *
- * @param {Object} data - Phone data to be updated
- * @returns {Promisse} - Returns a Promisse
- */
-export const update = data => {
-  return db
-    .update(table)
-    .set(data)
-    .where('id', data.id)
     .run()
 }
 
@@ -82,8 +39,7 @@ export const update = data => {
  */
 export const remove = id => {
   return db
-    .update(table)
-    .set('active', false)
+    .delete(table)
     .where('id', id)
     .run()
 }
