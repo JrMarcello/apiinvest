@@ -1,26 +1,24 @@
-# **INTALAÇÃO DO PROJETO**
+# **Manual de Instalação**
 
-## **PREREQUISITOS**
+### **PREREQUISITOS**
 
 - Git
-- Docker
-- Docker-compose
+- Node
+- Postgres
 
-## **PASSOS PARA INSTALAÇÃO**
+### **Passo a Passo**
 
 1. Clone o projeto do repositorio
-   gitclone [https://gitlab.com/buildinvestpb/back-buildinvest.git]
 
-2. No terminal, navegue ate o diretorio do projeto e execute
+git clone https://gitlab.com/buildinvestpb/back-buildinvest.git
 
+2. Caso prefira usar um DB local. Defina as credenciais do Postgres no arquivo ***.env*** e no diretorio raiz do projeto, execute:
 ```javascript
-sudo docker-compose up
+chmod +x db/create-db-local.sh && ./db/create-db-local.sh
 ```
 
-3. Depois que os conteiers estiverem rodando, execute
-
+3. No terminal, navegue ate o diretorio raiz do projeto e execute
 ```javascript
-chmod +x db/create-db-local.sh
-chmod +x db/create-db.sh
-./db/create-db-local.sh  ou ./db/create-db.sh
+npm start
 ```
+
