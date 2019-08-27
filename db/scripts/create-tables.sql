@@ -27,7 +27,7 @@ CREATE TABLE investor (
 CREATE TABLE investor_phone (
 	id bigserial NOT NULL,
 	id_investor uuid NOT NULL,
-	number varchar NOT NULL
+	number varchar NOT NULL,
 	CONSTRAINT investor_phone_id_pk PRIMARY KEY (id)
 );
 
@@ -129,14 +129,14 @@ CREATE TABLE builder_partner(
 	address_state varchar,
 	address_country varchar,
 	address_cep varchar,
-	created_date timestamp NOT NULL DEFAULT now()
+	created_date timestamp NOT NULL DEFAULT now(),
 	CONSTRAINT builder_partner_id_pk PRIMARY KEY (id)
 );
 
 CREATE TABLE builder_phone (
 	id bigserial NOT NULL,
 	id_builder uuid NOT NULL,
-	number varchar(11) NOT NULL
+	number varchar(11) NOT NULL,
 	CONSTRAINT builder_phone_id_pk PRIMARY KEY (id)
 );
 
