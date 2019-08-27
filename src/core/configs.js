@@ -11,7 +11,7 @@ export default {
   db: {
     // PGURI: process.env.PGURI,
     // PGURI: process.env.PGURI_DOCKER,
-    PGURI: process.env.PGURI
+    PGURI: process.env.PGURI_GOOGLE
     // PGHOST: process.env.PGHOST,
     // PGUSER: process.env.PGUSER,
     // PGDATABASE: process.env.PGDATABASE,
