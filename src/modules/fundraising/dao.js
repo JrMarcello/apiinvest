@@ -47,20 +47,20 @@ export const getByBuildingId = id => {
     .run()
 }
 
-/**
- * Find Fundraisings by Custodian ID
- *
- * @param {Interger} id - Custodian ID
- * @returns {Promisse} - Returns a Promisse
- */
-export const getByCustodianId = id => {
-  return db
-    .select()
-    .from(table)
-    .where('id_custodian', id)
-    .and('active', true)
-    .run()
-}
+// /**
+//  * Find Fundraisings by Custodian ID
+//  *
+//  * @param {Interger} id - Custodian ID
+//  * @returns {Promisse} - Returns a Promisse
+//  */
+// export const getByCustodianId = id => {
+//   return db
+//     .select()
+//     .from(table)
+//     .where('id_custodian', id)
+//     .and('active', true)
+//     .run()
+// }
 
 /**
  * Create an Fundraising

@@ -27,18 +27,18 @@ export const getById = id => {
  * @returns {Promisse} - Returns a Promisse
  */
 export const getByBuildingId = id => {
-  return dao.getByBuilderId(id)
+  return dao.getByBuildingId(id)
 }
 
-/**
- * Find Fundraisings by Custodian ID
- *
- * @param {Interger} id - Custodian ID
- * @returns {Promisse} - Returns a Promisse
- */
-export const getByCustodianId = id => {
-  return dao.getByCustodianId(id)
-}
+// /**
+//  * Find Fundraisings by Custodian ID
+//  *
+//  * @param {Interger} id - Custodian ID
+//  * @returns {Promisse} - Returns a Promisse
+//  */
+// export const getByCustodianId = id => {
+//   return dao.getByCustodianId(id)
+// }
 
 /**
  * Saves a Fundraising
@@ -67,6 +67,19 @@ export const update = data => {
   }
 
   return dao.update(updateble)
+}
+
+/**
+ * Finish a Fundraising
+ *
+ * @param {Object} data - Fundraising data to be updated
+ * @returns {Promisse} - Returns a Promisse
+ */
+export const finish = id => {
+  return dao.update({
+    id,
+    finished: true
+  })
 }
 
 /**

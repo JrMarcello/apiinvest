@@ -1,4 +1,5 @@
 import * as image from '@modules/building-image/repository'
+import * as fundraising from '@modules/fundraising/repository'
 import * as dao from './dao'
 
 /**
@@ -20,7 +21,10 @@ export const getAll = async params => {
 export const getById = async id => {
   const building = await dao.getById(id)
 
-  if (building) building.images = await image.getByBuildingId(building.id)
+  if (building) {
+    building.images = await image.getByBuildingId(building.id)
+    building.fundraisings = await fundraising.getByBuildingId(building.id)
+  }
 
   return building
 }
@@ -34,7 +38,10 @@ export const getById = async id => {
 export const getByBuilderId = async id => {
   const building = await dao.getByBuilderId(id)
 
-  if (building) building.images = await image.getByBuildingId(building.id)
+  if (building) {
+    building.images = await image.getByBuildingId(building.id)
+    building.fundraisings = await fundraising.getByBuildingId(building.id)
+  }
 
   return building
 }

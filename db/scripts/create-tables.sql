@@ -82,6 +82,7 @@ CREATE TABLE fundraising (
 	amount numeric(15,2) NOT NULL,
 	initial_date date NOT NULL,
 	final_date date NOT NULL,
+	finished boolean NOT NULL DEFAULT false,
 	created_date timestamp NOT NULL DEFAULT now(),
 	active boolean NOT NULL DEFAULT true,
 	CONSTRAINT fundraising_id_pk PRIMARY KEY (id)
