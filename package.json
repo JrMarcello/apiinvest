@@ -26,7 +26,7 @@
     "express": "^4.17.1",
     "express-validator": "^6.2.0",
     "glob": "^7.1.4",
-    "helmet": "^3.20.1",
+    "helmet": "^3.21.0",
     "jsonwebtoken": "^8.5.1",
     "logger": "0.0.1",
     "moment": "^2.24.0",
@@ -40,19 +40,19 @@
     "winston-daily-rotate-file": "^3.10.0"
   },
   "devDependencies": {
-    "@babel/cli": "^7.5.5",
-    "@babel/core": "^7.5.5",
-    "@babel/node": "^7.5.5",
-    "@babel/preset-env": "^7.5.5",
+    "@babel/cli": "^7.6.0",
+    "@babel/core": "^7.6.0",
+    "@babel/node": "^7.6.1",
+    "@babel/preset-env": "^7.6.0",
     "babel-plugin-module-resolver": "^3.2.0",
     "eslint": "^6.3.0",
     "eslint-config-airbnb": "^18.0.1",
     "eslint-config-airbnb-base": "^14.0.0",
-    "eslint-config-prettier": "^6.1.0",
+    "eslint-config-prettier": "^6.2.0",
     "eslint-import-resolver-babel-module": "^5.1.0",
     "eslint-plugin-import": "^2.18.2",
     "eslint-plugin-prettier": "^3.1.0",
-    "nodemon": "^1.19.1",
+    "nodemon": "^1.19.2",
     "prettier": "^1.18.2"
   }
 }
