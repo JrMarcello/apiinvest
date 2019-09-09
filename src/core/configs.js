@@ -9,9 +9,9 @@ export default {
     PORT: process.env.PORT
   },
   db: {
-    // PGURI: process.env.PGURI,
+    PGURI: process.env.PGURI
     // PGURI: process.env.PGURI_DOCKER,
-    PGURI: process.env.PGURI_GOOGLE
+    // PGURI: process.env.PGURI_GOOGLE
     // PGHOST: process.env.PGHOST,
     // PGUSER: process.env.PGUSER,
     // PGDATABASE: process.env.PGDATABASE,

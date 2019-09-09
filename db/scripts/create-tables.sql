@@ -102,6 +102,48 @@ CREATE TABLE investment (
 	CONSTRAINT investment_id_pk PRIMARY KEY (id)
 );
 
+--FUNCTION TO CHECK IF FUNDRAISING IS NOT FINISHED
+CREATE FUNCTION investiment_check_investiment ()
+	RETURNS trigger
+	LANGUAGE plpgsql
+AS $$
+BEGIN
+	IF NOT EXISTS(SELECT 1 FROM fundraising WHERE id = NEW.id_fundraising AND finished = false) THEN
+		RAISE EXCEPTION 'Fundraising is finished';
+	END IF;
+
+	RETURN NEW;
+END;
+$$;
+
+CREATE TRIGGER investiment_check_investiment_trg
+	BEFORE INSERT ON investment FOR EACH ROW
+EXECUTE PROCEDURE investiment_check_investiment();
+
+--FUNCTION TO SET FUNDRAISING FINISHED 
+CREATE FUNCTION investment_fundraising_finish ()
+	RETURNS trigger
+	LANGUAGE plpgsql
+AS $$
+DECLARE
+    fundraising_max_amount fundraising.amount%TYPE;
+    fundraising_total_amount fundraising.amount%TYPE;
+BEGIN
+    SELECT COUNT(amount) INTO fundraising_total_amount FROM investment WHERE id_fundraising = NEW.id_fundraising AND confirmed;
+    SELECT amount INTO fundraising_max_amount FROM fundraising WHERE id = NEW.id_fundraising;
+
+	IF fundraising_total_amount >= fundraising_max_amount THEN
+		UPDATE fundraising SET finished = true WHERE id = NEW.id_fundraising;
+	END IF;
+
+	RETURN NEW;
+END;
+$$;
+
+CREATE TRIGGER investment_fundraising_finish_trg
+	AFTER INSERT ON investment FOR EACH ROW
+EXECUTE PROCEDURE investment_fundraising_finish();
+
 CREATE TABLE custodian (
 	id uuid NOT NULL,
 	cnpj varchar(14) NOT NULL,
@@ -164,7 +206,7 @@ CREATE TABLE profile (
 CREATE FUNCTION user_check_email ()
 	RETURNS trigger
 	LANGUAGE plpgsql
-	AS $$
+AS $$
 BEGIN
 	IF EXISTS(SELECT 1 FROM "user" WHERE email = NEW.email AND active) THEN
 		RAISE EXCEPTION 'User email realy exists';
@@ -175,11 +217,8 @@ END
 $$;
 
 CREATE TRIGGER user_check_email_trg
-	BEFORE INSERT 
-	ON "user"
-	FOR EACH ROW
-	EXECUTE PROCEDURE user_check_email();
-
+	BEFORE INSERT ON "user" FOR EACH ROW
+EXECUTE PROCEDURE user_check_email();
 
 CREATE TABLE investor_bank_account (
 	id bigserial NOT NULL,
