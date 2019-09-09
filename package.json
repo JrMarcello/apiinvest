@@ -5,9 +5,10 @@
   "main": "./src/core/server.js",
   "scripts": {
     "docker-build": "docker build -t builinvest/web-api .",
+    "build": "rm -rf build && babel -d ./build ./src",
     "start": "docker run --name web-api -p 3000:3000 builinvest/web-api",
     "dev": "nodemon --exec babel-node ./src/core/server.js",
-    "prod": "NODE_ENV=production nodemon --exec babel-node ./src/core/server.js",
+    "prod": "NODE_ENV=production node ./build/core/server.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "eslint ./src",
     "deploy": "gcloud app deploy"
