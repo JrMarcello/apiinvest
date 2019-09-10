@@ -69,20 +69,20 @@ export const create = async data => {
  * @returns {Promisse} - Returns a Promisse
  */
 export const update = async data => {
-  if (!data.builder || data.builder.length === 0) throw Error('Invalid data')
+  if (!data || data.length === 0) throw Error('Invalid data')
 
   return dao.update({
     id: data.id,
-    cnpj: data.builder.cnpj,
-    company_name: data.builder.company_name,
-    company_fancy_name: data.builder.company_fancy_name,
-    address_street: data.builder.address_street,
-    address_number: data.builder.address_number,
-    address_neighborhood: data.builder.address_neighborhood,
-    address_city: data.builder.address_city,
-    address_state: data.builder.address_state,
-    address_country: data.builder.address_country,
-    address_cep: data.builder.address_cep
+    cnpj: data.cnpj,
+    company_name: data.company_name,
+    company_fancy_name: data.company_fancy_name,
+    address_street: data.address_street,
+    address_number: data.address_number,
+    address_neighborhood: data.address_neighborhood,
+    address_city: data.address_city,
+    address_state: data.address_state,
+    address_country: data.address_country,
+    address_cep: data.address_cep
   })
 }
 
