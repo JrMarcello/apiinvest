@@ -13,7 +13,7 @@ export default () => {
   router.post(FUNDRAISING_BASE_PATH, checkAuth, controller.create)
   // router.put(FUNDRAISING_BASE_PATH, checkAuth, controller.update)
   router.put(`${FUNDRAISING_BASE_PATH}/:id/finish`, checkAuth, controller.finish)
-  router.delete(`${FUNDRAISING_BASE_PATH}/:id`, checkAuth, controller.remove)
+  // router.delete(`${FUNDRAISING_BASE_PATH}/:id`, checkAuth, controller.cancel)
 
   return router
 }

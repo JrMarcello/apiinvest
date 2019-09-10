@@ -64,36 +64,36 @@ export const create = async (request, response) => {
   }
 }
 
-/**
- * @param {Object} request - HTTP request
- * @param {Object} response - HTTP response
- * @returns {Object} HTTP response with status code and data
- */
-export const update = async (request, response) => {
-  try {
-    await repository.update(request.body)
+// /**
+//  * @param {Object} request - HTTP request
+//  * @param {Object} response - HTTP response
+//  * @returns {Object} HTTP response with status code and data
+//  */
+// export const update = async (request, response) => {
+//   try {
+//     await repository.update(request.body)
 
-    response.json(constants.investor.success.UPDATED)
-  } catch (err) {
-    logger().error(err)
+//     response.json(constants.investor.success.UPDATED)
+//   } catch (err) {
+//     logger().error(err)
 
-    response.status(500).json(constants.investor.error.NOT_UPDATED)
-  }
-}
+//     response.status(500).json(constants.investor.error.NOT_UPDATED)
+//   }
+// }
 
-/**
- * @param {Object} request - HTTP request
- * @param {Object} response - HTTP response
- * @returns {Object} HTTP response with status code and data
- */
-export const remove = async (request, response) => {
-  try {
-    await repository.remove(request.params.id)
+// /**
+//  * @param {Object} request - HTTP request
+//  * @param {Object} response - HTTP response
+//  * @returns {Object} HTTP response with status code and data
+//  */
+// export const remove = async (request, response) => {
+//   try {
+//     await repository.remove(request.params.id)
 
-    response.json(constants.investor.success.REMOVED)
-  } catch (err) {
-    logger().error(err)
+//     response.json(constants.investor.success.REMOVED)
+//   } catch (err) {
+//     logger().error(err)
 
-    response.status(500).json(constants.investor.error.NOT_REMOVED)
-  }
-}
+//     response.status(500).json(constants.investor.error.NOT_REMOVED)
+//   }
+// }
