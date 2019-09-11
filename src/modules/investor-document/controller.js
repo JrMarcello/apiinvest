@@ -33,3 +33,20 @@ export const create = async (request, response) => {
     response.status(500).json(constants.investor_document.error.NOT_CREATED)
   }
 }
+
+/**
+ * @param {Object} request - HTTP request
+ * @param {Object} response - HTTP response
+ * @returns {Object} HTTP response with status code and data
+ */
+export const resend = async (request, response) => {
+  try {
+    const documents = await repository.resend(request.body.id_investor, request.files)
+
+    response.json(Object.assign(constants.investor_document.success.CREATED, { documents }))
+  } catch (err) {
+    logger().error(err)
+
+    response.status(500).json(constants.investor_document.error.NOT_CREATED)
+  }
+}

@@ -23,7 +23,7 @@ export const create = async data => {
     data.files.map(async file => {
       return {
         id_building: data.id_building,
-        url: await storage.uploadFile(file, env().GOOGLE_CLOUD.BUCKET, 'buildings')
+        url: await storage.uploadFile(file, 'buildings')
       }
     })
   )
