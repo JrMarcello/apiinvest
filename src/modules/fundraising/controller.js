@@ -118,9 +118,9 @@ export const finish = async (request, response) => {
  * @param {Object} response - HTTP response
  * @returns {Object} HTTP response with status code and data
  */
-export const remove = async (request, response) => {
+export const cancel = async (request, response) => {
   try {
-    await repository.remove(request.params.id)
+    await repository.cancel(request.params.id)
 
     response.json(constants.fundraising.success.REMOVED)
   } catch (err) {

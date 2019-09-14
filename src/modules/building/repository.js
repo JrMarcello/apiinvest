@@ -63,16 +63,25 @@ export const create = data => {
  * @returns {Promisse} - Returns a Promisse
  */
 export const update = data => {
-  const updateble = {
+  if (!data || data.length === 0) throw Error('Dados inválidos')
+
+  return dao.update({
     id: data.id,
-    razao_social: data.razao_social,
-    nome_fantasia: data.nome_fantasia,
-    endereco: data.endereco
-  }
-
-  if (data.cnpj) updateble.cnpj = data.cnpj
-
-  return dao.update(updateble)
+    spe: data.spe,
+    registration: data.registration,
+    name: data.name,
+    description: data.description,
+    address_street: data.address_street,
+    address_number: data.address_number,
+    address_neighborhood: data.address_neighborhood,
+    address_city: data.address_city,
+    address_state: data.address_state,
+    address_country: data.address_country,
+    address_cep: data.address_cep,
+    amount: data.amount,
+    initial_date: data.initial_date,
+    final_date: data.final_date
+  })
 }
 
 /**

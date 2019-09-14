@@ -83,11 +83,12 @@ export const finish = id => {
 }
 
 /**
- * Remove an Fundraising
+ * Cancel an Fundraising
  *
  * @param {Object} id - Fundraising id
  * @returns {Function} - Returns a Promisse
  */
-export const remove = id => {
-  return dao.remove(id)
+export const cancel = id => {
+  // TODO: Só cancelar se não tiver investimentos
+  return dao.cancel(id)
 }

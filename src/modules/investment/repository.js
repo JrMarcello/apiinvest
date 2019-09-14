@@ -98,7 +98,7 @@ const getEmailParams = investor => {
 export const tedConfirmation = async data => {
   if (!data || !data.file) throw Error()
 
-  const url = await storage.uploadFile(data.file, env().GOOGLE_CLOUD.BUCKET, 'teds')
+  const url = await storage.uploadFile(data.file, 'teds')
 
   return dao.update({
     id: data.id,

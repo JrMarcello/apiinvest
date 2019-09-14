@@ -56,7 +56,7 @@ export const create = async data => {
   await phone.create({ id_builder: builder.id, phones: data.phones })
 
   if (data.partners && data.partners.length !== 0) {
-    await partner.create(Object.assign({ id_builder: builder.id }, { partners: data.partners }))
+    await partner.create({ id_builder: builder.id, partners: data.partners })
   }
 
   return builder
@@ -68,17 +68,22 @@ export const create = async data => {
  * @param {Object} data - Builder data to be updated
  * @returns {Promisse} - Returns a Promisse
  */
-export const update = data => {
-  const updateble = {
+export const update = async data => {
+  if (!data || data.length === 0) throw Error('Invalid data')
+
+  return dao.update({
     id: data.id,
-    razao_social: data.razao_social,
-    nome_fantasia: data.nome_fantasia,
-    endereco: data.endereco
-  }
-
-  if (data.cnpj) updateble.cnpj = data.cnpj
-
-  return dao.update(updateble)
+    cnpj: data.cnpj,
+    company_name: data.company_name,
+    company_fancy_name: data.company_fancy_name,
+    address_street: data.address_street,
+    address_number: data.address_number,
+    address_neighborhood: data.address_neighborhood,
+    address_city: data.address_city,
+    address_state: data.address_state,
+    address_country: data.address_country,
+    address_cep: data.address_cep
+  })
 }
 
 /**

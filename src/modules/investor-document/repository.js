@@ -1,5 +1,4 @@
 import * as storage from '@core/storage'
-import { env } from '@common/utils'
 import * as dao from './dao'
 
 /**
@@ -13,7 +12,7 @@ export const getByInvestorId = id => {
 }
 
 /**
- * Saves the Document
+ * Saves the Documents
  *
  * @param {Object} filesBuffer - Files data
  * @returns {Promisse} - Returns a Promisse
@@ -23,13 +22,46 @@ export const create = async data => {
     data.files.map(async (file, i) => {
       return {
         id_investor: data.id_investor,
-        url: await storage.uploadFile(file, env().GOOGLE_CLOUD.BUCKET, 'documents'),
+        url: await storage.uploadFile(file, 'documents'),
         order: i
       }
     })
   )
-
   const documents = dao.create(files)
 
   return documents
+
+  // Retirar o async/await do storage.uploadFile
+  // return data.files.forEach((file, i) => {
+  //   dao.create({
+  //     id_investor: data.id_investor,
+  //     url: storage.uploadFile(file, 'documents'),
+  //     order: i
+  //   })
+  // })
+}
+
+/**
+ * Resend the Documents
+ *
+ * @param {Object} filesBuffer - Files data
+ * @returns {Promisse} - Returns a Promisse
+ */
+export const resend = async data => {
+  removeAll(data.id_investor)
+  return create(data)
+}
+
+/**
+ * Remove all Documents of a Investor
+ *
+ * @param {Object} id - Investor ID
+ * @returns {Promisse} - Returns a Promisse
+ */
+export const removeAll = async id => {
+  const urls = await getByInvestorId(id)
+
+  storage.removeFiles(urls, 'documents')
+
+  return dao.removeAll(id)
 }

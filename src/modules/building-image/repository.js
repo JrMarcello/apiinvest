@@ -1,5 +1,4 @@
 import * as storage from '@core/storage'
-import { env } from '@common/utils'
 import * as dao from './dao'
 
 /**
@@ -23,7 +22,7 @@ export const create = async data => {
     data.files.map(async file => {
       return {
         id_building: data.id_building,
-        url: await storage.uploadFile(file, env().GOOGLE_CLOUD.BUCKET, 'buildings')
+        url: await storage.uploadFile(file, 'buildings')
       }
     })
   )
@@ -36,11 +35,15 @@ export const create = async data => {
 /**
  * Remove an image
  *
- * @param {Object} id - Image id
+ * @param {Object} ids - Image ids
  * @returns {Function} - Returns a Promisse
  */
-export const remove = id => {
+export const remove = ids => {
   // TODO
   // Remover do GC
-  return dao.remove(id)
+  // Criar um getByIds()
+  // Ajustar o o remove() para suportar array
+  // Deletar tds getByIds() no GC
+  // Deletar tds na base
+  return dao.remove(ids)
 }

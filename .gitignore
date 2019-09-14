@@ -1,14 +1,8 @@
 # Compiled binary addons (http://nodejs.org/api/addons.html)
-build/Release
-
+build
+logs
 # Dependency directories
 node_modules
 
-public/images/*
-!public/images/.gitkeep
-
-# Environment variables
-package-lock.json
-
-logs
-
+#public/images/*
+#!public/images/.gitkeep

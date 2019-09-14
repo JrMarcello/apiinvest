@@ -106,6 +106,20 @@ export const confirm = async data => {
 }
 
 /**
+ * Update an Investment
+ *
+ * @param {Object} data - Investment data to be updated
+ * @returns {Promisse} - Returns a Promisse
+ */
+export const update = data => {
+  return db
+    .update(table)
+    .set(data)
+    .where('id', data.id)
+    .run()
+}
+
+/**
  * Cancel an Investment
  *
  * @param {Object} id - Investment id
