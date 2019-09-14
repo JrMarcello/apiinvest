@@ -1,5 +1,4 @@
 import * as storage from '@core/storage'
-import { env } from '@common/utils'
 import * as dao from './dao'
 
 /**
@@ -28,10 +27,18 @@ export const create = async data => {
       }
     })
   )
-
   const documents = dao.create(files)
 
   return documents
+
+  // Retirar o async/await do storage.uploadFile
+  // return data.files.forEach((file, i) => {
+  //   dao.create({
+  //     id_investor: data.id_investor,
+  //     url: storage.uploadFile(file, 'documents'),
+  //     order: i
+  //   })
+  // })
 }
 
 /**

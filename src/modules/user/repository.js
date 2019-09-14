@@ -83,7 +83,7 @@ export const remove = id => {
  * @returns {Promisse} - Returns a Promisse
  */
 export const login = async params => {
-  const user = (await dao.getByEmail(params.email))[0]
+  const user = await dao.getByEmail(params.email)
 
   if (!user || !bcrypt.compareSync(params.password, user.password))
     throw Error(constants.user.error.INVALID_USER_LOGIN.message)

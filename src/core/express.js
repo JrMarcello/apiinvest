@@ -28,7 +28,7 @@ function setParsers() {
   server.use(morgan('dev'))
   server.use(compression())
 
-  // server.use(express.static(`${env().rootDir}/public`));
+  server.use(express.static('public'))
   // server.set('showStackError', true)
 }
 
