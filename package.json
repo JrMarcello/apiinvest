@@ -4,14 +4,15 @@
   "description": "Buildinvest web api",
   "main": "./src/core/server.js",
   "scripts": {
-    "docker-build": "docker build -t builinvest/web-api .",
-    "build": "rm -rf build && babel -d ./build ./src",
-    "start": "docker run --name web-api -p 3000:3000 builinvest/web-api",
+    "docker-build": "docker build -t builinvest/web-api . && docker run --name web-api -p 3000:3000 builinvest/web-api",
+    "docker-rebuild": "docker rm web-api && docker rmi builinvest/web-api && npm run docker-build",
+    "start": "docker start web-api",
+    "stop": "docker stop web-api",
     "dev": "nodemon --exec babel-node ./src/core/server.js",
+    "build": "rm -rf build && babel -d ./build ./src",
     "prod": "NODE_ENV=production node ./build/core/server.js",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "lint": "eslint ./src",
-    "deploy": "gcloud app deploy"
+    "lint": "eslint ./src"
   },
   "author": "Majun",
   "license": "ISC",
