@@ -33,14 +33,16 @@ function setParsers() {
 }
 
 function setRoutes() {
-  server.get('/', (req, res) => {
-    res.statusCode = 200
-    res.setHeader('Content-Type', 'text/html')
-    res.end('<h3>Buildinvest API - V1.0.0</h3>\n')
+  server.get(env().API_BASE_PATH, (req, res) => {
+    res.redirect('/api')
   })
 
   glob.sync(path.join(__dirname, '../modules/**/routes.js')).forEach(routePath => {
     server.use(env().API_BASE_PATH, require(path.resolve(routePath)).default())
+  })
+
+  server.get('*', (req, res) => {
+    res.redirect('/api')
   })
 }
 
