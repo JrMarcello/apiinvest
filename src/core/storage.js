@@ -56,6 +56,7 @@ export const uploadFile = async (file, dirname) => {
  */
 export const removeFile = async (urls, dirname) => {
   const bucketName = env().GOOGLE_CLOUD.BUCKET
+  console.log(dirname)
 
   return urls.forEach(url => {
     storage
