@@ -3,7 +3,7 @@ import constants from '@common/constants'
 import * as repository from './repository'
 
 /**
- * @api {get} /building/:id/image Get (By Building ID)
+ * @api {get} /building/:id/image Get Image (By Building ID)
  * @apiName GetBuildingImage
  * @apiGroup Building
  * @apiVersion 1.0.0
@@ -45,9 +45,9 @@ export const getByBuildingId = async (request, response) => {
 }
 
 /**
- * @api {post} /building/image Create
+ * @api {post} /building/image Create Image
  * @apiName CreateBuilderImage
- * @apiGroup Builder
+ * @apiGroup Building
  * @apiVersion 1.0.0
  *
  * @apiParam {string} params Builder iamge params em breve aqui
@@ -91,9 +91,9 @@ export const create = async (request, response) => {
 }
 
 /**
- * @api {delete} /building/image/:id Delete
+ * @api {delete} /building/image/:id Delete Image
  * @apiName DeleteBuilderImage
- * @apiGroup Builder
+ * @apiGroup Building
  * @apiVersion 1.0.0
  *
  * @apiParamExample {json} Request-Example:

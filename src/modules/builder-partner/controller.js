@@ -3,7 +3,7 @@ import constants from '@common/constants'
 import * as repository from './repository'
 
 /**
- * @api {get} /builder/:id/partner Get (By Builder ID)
+ * @api {get} /builder/:id/partner Get Partner (By Builder ID)
  * @apiName GetBuilderPartner
  * @apiGroup Builder
  * @apiVersion 1.0.0
@@ -43,7 +43,7 @@ export const getByBuilderId = async (request, response) => {
 }
 
 /**
- * @api {post} /builder/partner Create
+ * @api {post} /builder/partner Create Partner
  * @apiName CreateBuilderPartner
  * @apiGroup Builder
  * @apiVersion 1.0.0
@@ -88,7 +88,7 @@ export const create = async (request, response) => {
 }
 
 /**
- * @api {delete} /builder/partner/:id Delete
+ * @api {delete} /builder/partner/:id Delete Partner
  * @apiName DeleteBuilderPartner
  * @apiGroup Builder
  * @apiVersion 1.0.0
