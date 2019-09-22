@@ -3,9 +3,36 @@ import constants from '@common/constants'
 import * as repository from './repository'
 
 /**
- * @param {Object} request - HTTP request
- * @param {Object} response - HTTP response
- * @returns {Object} HTTP response with status code and data
+ * @api {get} /building/:id/image Get Image (By Building ID)
+ * @apiName GetBuildingImage
+ * @apiGroup Building
+ * @apiVersion 1.0.0
+ *
+ * @apiParam {uuid} ID Building ID
+ * @apiParamExample {json} Request-Example:
+ *   {
+ *      "id": "eb76cd10-367b-447d-b238-fa8e9eef2a1f"
+ *   }
+ *
+ * @apiSuccessExample Success-Response:
+ *   HTTP/1.1 200 OK
+ *   {
+ *      "id": "1234560",
+ *      "id_building": "eb76cd10-367b-447d-b238-fa8e9eef2a1f",
+ *      "url": "https://storage.googleapis.com/buildinvest/building/545121513535151311.png"
+ *   }
+ *
+ * @apiErrorExample Error-Response:
+ *   HTTP/1.1 500 Internal Server Error
+ *   {
+ *      "code": 9999,
+ *      "message": "Dados da requisição inválidos",
+ *      "errors": [{
+ *        "msg": "Invalid value",
+ *        "param": "id",
+ *        "location": "body"
+ *      }]
+ *   }
  */
 export const getByBuildingId = async (request, response) => {
   try {
@@ -18,9 +45,38 @@ export const getByBuildingId = async (request, response) => {
 }
 
 /**
- * @param {Object} request - HTTP request
- * @param {Object} response - HTTP response
- * @returns {Object} HTTP response with status code and data
+ * @api {post} /building/image Create Image
+ * @apiName CreateBuilderImage
+ * @apiGroup Building
+ * @apiVersion 1.0.0
+ *
+ * @apiParam {string} params Builder iamge params em breve aqui
+ *
+ * @apiParamExample {json} Request-Example:
+ *   {
+ *      "id_building": "eb76cd10-367b-447d-b238-fa8e9eef2a1f",
+ *      "images": [[image buffer], [image buffer]]
+ *   }
+ *
+ * @apiSuccessExample Success-Response:
+ *   HTTP/1.1 200 OK
+ *   {
+ *      "code": "S0000",
+ *      "message": "Telefone criado com sucesso",
+ *      "builder": [{}]
+ *   }
+ *
+ * @apiErrorExample Error-Response:
+ *   HTTP/1.1 500 Internal Server Error
+ *   {
+ *      "code": 9999,
+ *      "message": "Dados da requisição inválidos",
+ *      "errors": [{
+ *        "msg": "Invalid value",
+ *        "param": "numero",
+ *        "location": "body"
+ *      }]
+ *   }
  */
 export const create = async (request, response) => {
   try {
@@ -35,9 +91,35 @@ export const create = async (request, response) => {
 }
 
 /**
- * @param {Object} request - HTTP request
- * @param {Object} response - HTTP response
- * @returns {Object} HTTP response with status code and data
+ * @api {delete} /building/image/:id Delete Image
+ * @apiName DeleteBuilderImage
+ * @apiGroup Building
+ * @apiVersion 1.0.0
+ *
+ * @apiParamExample {json} Request-Example:
+ *   {
+ *      "id": eb76cd10-367b-447d-b238-fa8e9eef2a1f
+ *   }
+ *
+ * @apiParam {uuid} ID Builder Phone ID
+ * @apiSuccessExample Success-Response:
+ *   HTTP/1.1 200 OK
+ *   {
+ *      "code": "S0000",
+ *      "message": "Telefone deletado com sucesso"
+ *   }
+ *
+ * @apiErrorExample Error-Response:
+ *   HTTP/1.1 500 Internal Server Error
+ *   {
+ *      "code": 9999,
+ *      "message": "Dados da requisição inválidos",
+ *      "errors": [{
+ *        "msg": "Invalid value",
+ *        "param": "id",
+ *        "location": "body"
+ *      }]
+ *   }
  */
 export const remove = async (request, response) => {
   try {

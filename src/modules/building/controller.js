@@ -3,9 +3,26 @@ import constants from '@common/constants'
 import * as repository from './repository'
 
 /**
- * @param {Object} request - HTTP request
- * @param {Object} response - HTTP response
- * @returns {Object} HTTP response with status code and data
+ * @api {get} /building Get all
+ * @apiName GetBuildings
+ * @apiGroup Building
+ * @apiVersion 1.0.0
+ *
+ * @apiSuccessExample Success-Response:
+ *   HTTP/1.1 200 OK
+ *   {
+ *      [
+ *
+ *      ]
+ *   }
+ *
+ * @apiErrorExample Error-Response:
+ *   HTTP/1.1 500 Internal Server Error
+ *     {
+ *        "code": 9999,
+ *        "message": "Requisição inválida",
+ *        "errors": [{}]
+ *     }
  */
 export const getAll = async (request, response) => {
   try {
@@ -18,9 +35,34 @@ export const getAll = async (request, response) => {
 }
 
 /**
- * @param {Object} request - HTTP request
- * @param {Object} response - HTTP response
- * @returns {Object} HTTP response with status code and data
+ * @api {get} /building/:id Get (By ID)
+ * @apiName GetBuilding
+ * @apiGroup Building
+ * @apiVersion 1.0.0
+ *
+ * @apiParam {uuid} ID Building ID
+ * @apiParamExample {json} Request-Example:
+ *   {
+ *      "id": eb76cd10-367b-447d-b238-fa8e9eef2a1f
+ *   }
+ *
+ * @apiSuccessExample Success-Response:
+ *   HTTP/1.1 200 OK
+ *   {
+ *
+ *   }
+ *
+ * @apiErrorExample Error-Response:
+ *   HTTP/1.1 500 Internal Server Error
+ *   {
+ *      "code": 9999,
+ *      "message": "Dados da requisição inválidos",
+ *      "errors": [{
+ *        "msg": "Invalid value",
+ *        "param": "id",
+ *        "location": "body"
+ *      }]
+ *   }
  */
 export const getById = async (request, response) => {
   try {
@@ -33,9 +75,34 @@ export const getById = async (request, response) => {
 }
 
 /**
- * @param {Object} request - HTTP request
- * @param {Object} response - HTTP response
- * @returns {Object} HTTP response with status code and data
+ * @api {get} /building/builder/:id Get (By Builder ID)
+ * @apiName GetBuildingByBuilderId
+ * @apiGroup Building
+ * @apiVersion 1.0.0
+ *
+ * @apiParam {uuid} ID Builder ID
+ * @apiParamExample {json} Request-Example:
+ *   {
+ *      "id": eb76cd10-367b-447d-b238-fa8e9eef2a1f
+ *   }
+ *
+ * @apiSuccessExample Success-Response:
+ *   HTTP/1.1 200 OK
+ *   {
+ *
+ *   }
+ *
+ * @apiErrorExample Error-Response:
+ *   HTTP/1.1 500 Internal Server Error
+ *   {
+ *      "code": 9999,
+ *      "message": "Dados da requisição inválidos",
+ *      "errors": [{
+ *        "msg": "Invalid value",
+ *        "param": "id",
+ *        "location": "body"
+ *      }]
+ *   }
  */
 export const getByBuilderId = async (request, response) => {
   try {
@@ -48,9 +115,37 @@ export const getByBuilderId = async (request, response) => {
 }
 
 /**
- * @param {Object} request - HTTP request
- * @param {Object} response - HTTP response
- * @returns {Object} HTTP response with status code and data
+ * @api {post} /building Create
+ * @apiName CreateBuilding
+ * @apiGroup Building
+ * @apiVersion 1.0.0
+ *
+ * @apiParam {string} params Building params em breve aqui
+ *
+ * @apiParamExample {json} Request-Example:
+ *   {
+ *
+ *   }
+ *
+ * @apiSuccessExample Success-Response:
+ *   HTTP/1.1 200 OK
+ *   {
+ *      "code": "S0000",
+ *      "message": "Obra criada com sucesso",
+ *      "builder": [{}]
+ *   }
+ *
+ * @apiErrorExample Error-Response:
+ *   HTTP/1.1 500 Internal Server Error
+ *   {
+ *      "code": 9999,
+ *      "message": "Dados da requisição inválidos",
+ *      "errors": [{
+ *        "msg": "Invalid value",
+ *        "param": "spe",
+ *        "location": "body"
+ *      }]
+ *   }
  */
 export const create = async (request, response) => {
   try {
@@ -65,9 +160,36 @@ export const create = async (request, response) => {
 }
 
 /**
- * @param {Object} request - HTTP request
- * @param {Object} response - HTTP response
- * @returns {Object} HTTP response with status code and data
+ * @api {put} /building Update
+ * @apiName UpdateBuilding
+ * @apiGroup Building
+ * @apiVersion 1.0.0
+ *
+ * @apiParam {string} params Building params em breve
+ *
+ * @apiParamExample {json} Request-Example:
+ *   {
+ *
+ *   }
+ *
+ * @apiSuccessExample Success-Response:
+ *   HTTP/1.1 200 OK
+ *   {
+ *      "code": "S0000",
+ *      "message": "Obra atualizada com sucesso",
+ *   }
+ *
+ * @apiErrorExample Error-Response:
+ *   HTTP/1.1 500 Internal Server Error
+ *   {
+ *      "code": 9999,
+ *      "message": "Dados da requisição inválidos",
+ *      "errors": [{
+ *        "msg": "Invalid value",
+ *        "param": "spe",
+ *        "location": "body"
+ *      }]
+ *   }
  */
 export const update = async (request, response) => {
   try {
@@ -82,9 +204,35 @@ export const update = async (request, response) => {
 }
 
 /**
- * @param {Object} request - HTTP request
- * @param {Object} response - HTTP response
- * @returns {Object} HTTP response with status code and data
+ * @api {delete} /building/:id Delete
+ * @apiName DeleteBuilding
+ * @apiGroup Building
+ * @apiVersion 1.0.0
+ *
+ * @apiParamExample {json} Request-Example:
+ *   {
+ *      "id": eb76cd10-367b-447d-b238-fa8e9eef2a1f
+ *   }
+ *
+ * @apiParam {uuid} ID Building ID
+ * @apiSuccessExample Success-Response:
+ *   HTTP/1.1 200 OK
+ *   {
+ *      "code": "S0000",
+ *      "message": "Obra deletada com sucesso"
+ *   }
+ *
+ * @apiErrorExample Error-Response:
+ *   HTTP/1.1 500 Internal Server Error
+ *   {
+ *      "code": 9999,
+ *      "message": "Dados da requisição inválidos",
+ *      "errors": [{
+ *        "msg": "Invalid value",
+ *        "param": "id",
+ *        "location": "body"
+ *      }]
+ *   }
  */
 export const remove = async (request, response) => {
   try {

@@ -118,7 +118,7 @@ export const getById = async (request, response) => {
  *   {
  *      "email": "marcello@mail.com",
  *      "username": "Marcello Jr",
- *      "password": "123456",
+ *      "password": "123456"
  *   }
  *
  * @apiSuccessExample Success-Response:
@@ -176,14 +176,14 @@ export const create = async (request, response) => {
  *   {
  *      "email": "marcello@mail.com",
  *      "username": "Marcello Jr",
- *      "password": "123456",
+ *      "password": "123456"
  *   }
  *
  * @apiSuccessExample Success-Response:
  *   HTTP/1.1 200 OK
  *   {
  *      "code": "S0000",
- *      "message": "Usuário atualizado com sucesso",
+ *      "message": "Usuário atualizado com sucesso"
  *   }
  *
  * @apiErrorExample Error-Response:
@@ -226,7 +226,7 @@ export const update = async (request, response) => {
  *   HTTP/1.1 200 OK
  *   {
  *      "code": "S0000",
- *      "message": "Usuário deletado com sucesso",
+ *      "message": "Usuário deletado com sucesso"
  *   }
  *
  * @apiErrorExample Error-Response:
@@ -265,7 +265,7 @@ export const remove = async (request, response) => {
  * @apiParamExample {json} Request-Example:
  *   {
  *      "email": "marcello@mail.com",
- *      "password": "123456",
+ *      "password": "123456"
  *   }
  *
  * @apiSuccessExample Success-Response:

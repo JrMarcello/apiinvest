@@ -3,9 +3,36 @@ import constants from '@common/constants'
 import * as repository from './repository'
 
 /**
- * @param {Object} request - HTTP request
- * @param {Object} response - HTTP response
- * @returns {Object} HTTP response with status code and data
+ * @api {get} /builder/:id/phone Get Phone (By Builder ID)
+ * @apiName GetBuilderPhone
+ * @apiGroup Builder
+ * @apiVersion 1.0.0
+ *
+ * @apiParam {uuid} ID Builder ID
+ * @apiParamExample {json} Request-Example:
+ *   {
+ *      "id": "eb76cd10-367b-447d-b238-fa8e9eef2a1f"
+ *   }
+ *
+ * @apiSuccessExample Success-Response:
+ *   HTTP/1.1 200 OK
+ *   {
+ *      "id": "123",
+ *      "id_builder": "eb76cd10-367b-447d-b238-fa8e9eef2a1f",
+ *      "number": "83988317864"
+ *   }
+ *
+ * @apiErrorExample Error-Response:
+ *   HTTP/1.1 500 Internal Server Error
+ *   {
+ *      "code": 9999,
+ *      "message": "Dados da requisição inválidos",
+ *      "errors": [{
+ *        "msg": "Invalid value",
+ *        "param": "id",
+ *        "location": "body"
+ *      }]
+ *   }
  */
 export const getByBuilderId = async (request, response) => {
   try {
@@ -18,9 +45,38 @@ export const getByBuilderId = async (request, response) => {
 }
 
 /**
- * @param {Object} request - HTTP request
- * @param {Object} response - HTTP response
- * @returns {Object} HTTP response with status code and data
+ * @api {post} /builder/phone Create Phone
+ * @apiName CreateBuilderPhone
+ * @apiGroup Builder
+ * @apiVersion 1.0.0
+ *
+ * @apiParam {string} params Builder Phone params em breve aqui
+ *
+ * @apiParamExample {json} Request-Example:
+ *   {
+ *      "id_builder": "eb76cd10-367b-447d-b238-fa8e9eef2a1f",
+ *      "number": "83988317864"
+ *   }
+ *
+ * @apiSuccessExample Success-Response:
+ *   HTTP/1.1 200 OK
+ *   {
+ *      "code": "S0000",
+ *      "message": "Telefone criado com sucesso",
+ *      "builder": [{}]
+ *   }
+ *
+ * @apiErrorExample Error-Response:
+ *   HTTP/1.1 500 Internal Server Error
+ *   {
+ *      "code": 9999,
+ *      "message": "Dados da requisição inválidos",
+ *      "errors": [{
+ *        "msg": "Invalid value",
+ *        "param": "numero",
+ *        "location": "body"
+ *      }]
+ *   }
  */
 export const create = async (request, response) => {
   try {
@@ -35,9 +91,35 @@ export const create = async (request, response) => {
 }
 
 /**
- * @param {Object} request - HTTP request
- * @param {Object} response - HTTP response
- * @returns {Object} HTTP response with status code and data
+ * @api {delete} /builder/phone/:id Delete Phone
+ * @apiName DeleteBuilderPhone
+ * @apiGroup Builder
+ * @apiVersion 1.0.0
+ *
+ * @apiParamExample {json} Request-Example:
+ *   {
+ *      "id": eb76cd10-367b-447d-b238-fa8e9eef2a1f
+ *   }
+ *
+ * @apiParam {uuid} ID Builder Phone ID
+ * @apiSuccessExample Success-Response:
+ *   HTTP/1.1 200 OK
+ *   {
+ *      "code": "S0000",
+ *      "message": "Telefone deletado com sucesso"
+ *   }
+ *
+ * @apiErrorExample Error-Response:
+ *   HTTP/1.1 500 Internal Server Error
+ *   {
+ *      "code": 9999,
+ *      "message": "Dados da requisição inválidos",
+ *      "errors": [{
+ *        "msg": "Invalid value",
+ *        "param": "id",
+ *        "location": "body"
+ *      }]
+ *   }
  */
 export const remove = async (request, response) => {
   try {
