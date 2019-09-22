@@ -11,13 +11,15 @@ import * as repository from './repository'
  * @apiParam {uuid} ID Builder ID
  * @apiParamExample {json} Request-Example:
  *   {
- *      "id": eb76cd10-367b-447d-b238-fa8e9eef2a1f
+ *      "id": "eb76cd10-367b-447d-b238-fa8e9eef2a1f"
  *   }
  *
  * @apiSuccessExample Success-Response:
  *   HTTP/1.1 200 OK
  *   {
- *
+ *      "id": "123",
+ *      "id_builder": "eb76cd10-367b-447d-b238-fa8e9eef2a1f",
+ *      "number": "83988317864"
  *   }
  *
  * @apiErrorExample Error-Response:
@@ -52,7 +54,8 @@ export const getByBuilderId = async (request, response) => {
  *
  * @apiParamExample {json} Request-Example:
  *   {
- *
+ *      "id_builder": "eb76cd10-367b-447d-b238-fa8e9eef2a1f",
+ *      "number": "83988317864"
  *   }
  *
  * @apiSuccessExample Success-Response:
