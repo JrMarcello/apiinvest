@@ -266,7 +266,7 @@ export const getByUserId = async (request, response) => {
  *         "address_country": "Pais",
  *         "address_cep": "58000000"
  *       }]
-}
+ *   }
  *
  * @apiSuccessExample Success-Response:
  *   HTTP/1.1 200 OK

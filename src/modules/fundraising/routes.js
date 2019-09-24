@@ -11,9 +11,9 @@ export default () => {
   router.get(`/building/:id${FUNDRAISING_BASE_PATH}`, checkAuth, controller.getByBuildingId)
   // router.get(`${FUNDRAISING_BASE_PATH}/custodian/:id`, checkAuth, controller.getByCustodianId)
   router.post(FUNDRAISING_BASE_PATH, checkAuth, controller.create)
-  // router.put(FUNDRAISING_BASE_PATH, checkAuth, controller.update)
+  router.put(FUNDRAISING_BASE_PATH, checkAuth, controller.update)
   router.put(`${FUNDRAISING_BASE_PATH}/:id/finish`, checkAuth, controller.finish)
-  // router.delete(`${FUNDRAISING_BASE_PATH}/:id`, checkAuth, controller.cancel)
+  router.put(`${FUNDRAISING_BASE_PATH}/:id/cancel`, checkAuth, controller.cancel)
 
   return router
 }
