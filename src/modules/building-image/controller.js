@@ -62,8 +62,7 @@ export const getByBuildingId = async (request, response) => {
  *   HTTP/1.1 200 OK
  *   {
  *      "code": "S0000",
- *      "message": "Telefone criado com sucesso",
- *      "builder": [{}]
+ *      "message": "Imagens enviadas com sucesso"
  *   }
  *
  * @apiErrorExample Error-Response:
@@ -106,7 +105,7 @@ export const create = async (request, response) => {
  *   HTTP/1.1 200 OK
  *   {
  *      "code": "S0000",
- *      "message": "Telefone deletado com sucesso"
+ *      "message": "Imagens deletadas com sucesso"
  *   }
  *
  * @apiErrorExample Error-Response:

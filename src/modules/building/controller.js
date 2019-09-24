@@ -10,11 +10,26 @@ import * as repository from './repository'
  *
  * @apiSuccessExample Success-Response:
  *   HTTP/1.1 200 OK
- *   {
- *      [
- *
- *      ]
- *   }
+ *   [{
+ *       "id": "69cb237c-c53a-4619-8433-d80719c0c18f",
+ *       "id_builder": "7de6982f-6989-45bd-97d4-973ebeb75295",
+ *       "spe": "34096667000199",
+ *       "registration": "789456",
+ *       "name": "Nome da obra",
+ *       "description": "Descrição da obra",
+ *       "address_street": "Rua da obraa",
+ *       "address_number": "123",
+ *       "address_neighborhood": "Bairro",
+ *       "address_city": "Cidade",
+ *       "address_state": "Estado",
+ *       "address_country": "Pais",
+ *       "address_cep": "58000000",
+ *       "amount": "1000000.00",
+ *       "initial_date": "2019-08-27T00:00:00.000Z",
+ *       "final_date": "2022-08-27T00:00:00.000Z",
+ *       "created_date": "2019-09-24T00:50:58.550Z",
+ *       "active": true
+ *   }]
  *
  * @apiErrorExample Error-Response:
  *   HTTP/1.1 500 Internal Server Error
@@ -49,7 +64,26 @@ export const getAll = async (request, response) => {
  * @apiSuccessExample Success-Response:
  *   HTTP/1.1 200 OK
  *   {
- *
+ *      "id": "69cb237c-c53a-4619-8433-d80719c0c18f",
+ *      "id_builder": "7de6982f-6989-45bd-97d4-973ebeb75295",
+ *      "spe": "34096667000199",
+ *      "registration": "789456",
+ *      "name": "Nome da obra",
+ *      "description": "Descrição da obra",
+ *      "address_street": "Rua da obraa",
+ *      "address_number": "123",
+ *      "address_neighborhood": "Bairro",
+ *      "address_city": "Cidade",
+ *      "address_state": "Estado",
+ *      "address_country": "Pais",
+ *      "address_cep": "58000000",
+ *      "amount": "1000000.00",
+ *      "initial_date": "2019-08-27T00:00:00.000Z",
+ *      "final_date": "2022-08-27T00:00:00.000Z",
+ *      "created_date": "2019-09-24T00:50:58.550Z",
+ *      "active": true,
+ *      "images": [],
+ *      "fundraisings": []
  *   }
  *
  * @apiErrorExample Error-Response:
@@ -88,9 +122,26 @@ export const getById = async (request, response) => {
  *
  * @apiSuccessExample Success-Response:
  *   HTTP/1.1 200 OK
- *   {
- *
- *   }
+ *   [{
+ *       "id": "69cb237c-c53a-4619-8433-d80719c0c18f",
+ *       "id_builder": "7de6982f-6989-45bd-97d4-973ebeb75295",
+ *       "spe": "34096667000199",
+ *       "registration": "789456",
+ *       "name": "Nome da obra",
+ *       "description": "Descrição da obra",
+ *       "address_street": "Rua da obraa",
+ *       "address_number": "123",
+ *       "address_neighborhood": "Bairro",
+ *       "address_city": "Cidade",
+ *       "address_state": "Estado",
+ *       "address_country": "Pais",
+ *       "address_cep": "58000000",
+ *       "amount": "1000000.00",
+ *       "initial_date": "2019-08-27T00:00:00.000Z",
+ *       "final_date": "2022-08-27T00:00:00.000Z",
+ *       "created_date": "2019-09-24T00:50:58.550Z",
+ *       "active": true
+ *   }]
  *
  * @apiErrorExample Error-Response:
  *   HTTP/1.1 500 Internal Server Error
@@ -124,7 +175,23 @@ export const getByBuilderId = async (request, response) => {
  *
  * @apiParamExample {json} Request-Example:
  *   {
- *
+ *      "id_builder": "7de6982f-6989-45bd-97d4-973ebeb75295",
+ *      "spe": "34096667000199",
+ *      "registration": "789456",
+ *      "name": "Nome da obra",
+ *      "description": "Descrição da obra",
+ *      "address_street": "Rua da obraa",
+ *      "address_number": "123",
+ *      "address_neighborhood": "Bairro",
+ *      "address_city": "Cidade",
+ *      "address_state": "Estado",
+ *      "address_country": "Pais",
+ *      "address_cep": "58000000",
+ *      "amount": "1000000.00",
+ *      "initial_date": "2019-08-27T00:00:00.000Z",
+ *      "final_date": "2022-08-27T00:00:00.000Z",
+ *      "created_date": "2019-09-24T00:50:58.550Z",
+ *      "active": true
  *   }
  *
  * @apiSuccessExample Success-Response:
@@ -132,7 +199,30 @@ export const getByBuilderId = async (request, response) => {
  *   {
  *      "code": "S0000",
  *      "message": "Obra criada com sucesso",
- *      "builder": [{}]
+ *      "builder": [{
+ *        "code": 6000,
+ *        "message": "Obra criada com sucesso",
+ *        "building": {
+ *          "id": "69cb237c-c53a-4619-8433-d80719c0c18f",
+ *          "id_builder": "7de6982f-6989-45bd-97d4-973ebeb75295",
+ *          "spe": "34096667000199",
+ *          "registration": "789456",
+ *          "name": "Nome da obra",
+ *          "description": "Descrição da obra",
+ *          "address_street": "Rua da obraa",
+ *          "address_number": "123",
+ *          "address_neighborhood": "Bairro",
+ *          "address_city": "Cidade",
+ *          "address_state": "Estado",
+ *          "address_country": "Pais",
+ *          "address_cep": "58000000",
+ *          "amount": "1000000.00",
+ *          "initial_date": "2019-08-27T00:00:00.000Z",
+ *          "final_date": "2022-08-27T00:00:00.000Z",
+ *          "created_date": "2019-09-24T00:50:58.550Z",
+ *          "active": true
+ *        }
+ *      }]
  *   }
  *
  * @apiErrorExample Error-Response:
@@ -169,7 +259,24 @@ export const create = async (request, response) => {
  *
  * @apiParamExample {json} Request-Example:
  *   {
- *
+ *      "id": "69cb237c-c53a-4619-8433-d80719c0c18f",
+ *      "id_builder": "7de6982f-6989-45bd-97d4-973ebeb75295",
+ *      "spe": "34096667000199",
+ *      "registration": "789456",
+ *      "name": "Nome da obra",
+ *      "description": "Descrição da obra",
+ *      "address_street": "Rua da obraa",
+ *      "address_number": "123",
+ *      "address_neighborhood": "Bairro",
+ *      "address_city": "Cidade",
+ *      "address_state": "Estado",
+ *      "address_country": "Pais",
+ *      "address_cep": "58000000",
+ *      "amount": "1000000.00",
+ *      "initial_date": "2019-08-27T00:00:00.000Z",
+ *      "final_date": "2022-08-27T00:00:00.000Z",
+ *      "created_date": "2019-09-24T00:50:58.550Z",
+ *      "active": true
  *   }
  *
  * @apiSuccessExample Success-Response:

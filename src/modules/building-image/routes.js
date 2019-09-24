@@ -9,7 +9,7 @@ const BUILDING_IMAGE_BASE_PAH = '/building/image'
 export default () => {
   router.get('/building/:id/image', checkAuth, controller.getByBuildingId)
   router.post(BUILDING_IMAGE_BASE_PAH, checkAuth, multer.array('images'), controller.create)
-  router.delete(`${BUILDING_IMAGE_BASE_PAH}/:id`, checkAuth, controller.remove)
+  router.delete('/building/:id/image', checkAuth, controller.remove)
 
   return router
 }

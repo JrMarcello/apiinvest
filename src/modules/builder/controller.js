@@ -11,9 +11,27 @@ import * as repository from './repository'
  * @apiSuccessExample Success-Response:
  *   HTTP/1.1 200 OK
  *   {
- *      [
- *
- *      ]
+ *      [{
+ *          "code": 5000,
+ *          "message": "Construtora criada com sucesso",
+ *            "builder": {
+ *              "id": "7de6982f-6989-45bd-97d4-973ebeb75295",
+ *              "id_user": "647ac188-62c8-4618-8a0a-be14174aac49",
+ *              "cnpj": "34096667000152",
+ *              "company_name": "Razão social da Construtora",
+ *              "company_fancy_name": "Nome fantasia da Construtora",
+ *              "address_street": "Rua da construtora",
+ *              "address_number": "123",
+ *              "address_neighborhood": "Bairro",
+ *              "address_city": "Cidade",
+ *              "address_state": "Estado",
+ *              "address_country": "Pais",
+ *              "address_cep": "58000000",
+ *              "logo_url": null,
+ *              "created_date": "2019-09-24T00:01:22.722Z",
+ *              "active": true
+ *            }
+ *       }]
  *   }
  *
  * @apiErrorExample Error-Response:
@@ -49,8 +67,70 @@ export const getAll = async (request, response) => {
  * @apiSuccessExample Success-Response:
  *   HTTP/1.1 200 OK
  *   {
- *
- *   }
+ *      "id": "7de6982f-6989-45bd-97d4-973ebeb75295",
+ *      "id_user": "647ac188-62c8-4618-8a0a-be14174aac49",
+ *      "cnpj": "34096667000152",
+ *      "company_name": "Razão social da Construtora",
+ *      "company_fancy_name": "Nome fantasia da Construtora",
+ *      "address_street": "Rua da construtora",
+ *      "address_number": "123",
+ *      "address_neighborhood": "Bairro",
+ *      "address_city": "Cidade",
+ *      "address_state": "Estado",
+ *      "address_country": "Pais",
+ *      "address_cep": "58000000",
+ *      "logo_url": null,
+ *      "created_date": "2019-09-24T00:01:22.722Z",
+ *      "active": true,
+ *      "phones": [
+ *        {
+ *           "id": "1",
+ *           "id_builder": "7de6982f-6989-45bd-97d4-973ebeb75295",
+ *           "number": "8332333333"
+ *        },
+ *        {
+ *           "id": "2",
+ *           "id_builder": "7de6982f-6989-45bd-97d4-973ebeb75295",
+ *           "number": "8332344444"
+ *        }
+ *      ],
+ *      "partners": [
+ *        {
+ *           "id": "1",
+ *           "id_builder": "7de6982f-6989-45bd-97d4-973ebeb75295",
+ *           "name": "Nome do socio 1",
+ *           "company_name": null,
+ *           "cpf": "06595212446",
+ *           "cnpj": null,
+ *           "phone": "8332447788",
+ *           "address_street": "Rua do socio 1",
+ *           "address_number": "123",
+ *           "address_neighborhood": "Bairro",
+ *           "address_city": "Cidade",
+ *           "address_state": "Estado",
+ *           "address_country": "Pais",
+ *           "address_cep": "58000000",
+ *           "created_date": "2019-09-24T00:01:22.960Z"
+ *        },
+ *        {
+ *           "id": "2",
+ *           "id_builder": "7de6982f-6989-45bd-97d4-973ebeb75295",
+ *           "name": "Nome fantasia do socio 2",
+ *           "company_name": "Razão social do socio 2",
+ *           "cpf": null,
+ *           "cnpj": "34096667000151",
+ *           "phone": "8332447788",
+ *           "address_street": "Rua do socio 2",
+ *           "address_number": "123",
+ *           "address_neighborhood": "Bairro",
+ *           "address_city": "Cidade",
+ *           "address_state": "Estado",
+ *           "address_country": "Pais",
+ *           "address_cep": "58000000",
+ *           "created_date": "2019-09-24T00:01:22.960Z"
+ *        }
+ *      ]
+ *    }
  *
  * @apiErrorExample Error-Response:
  *   HTTP/1.1 500 Internal Server Error
@@ -89,7 +169,27 @@ export const getById = async (request, response) => {
  * @apiSuccessExample Success-Response:
  *   HTTP/1.1 200 OK
  *   {
- *
+ *      [{
+ *          "code": 5000,
+ *          "message": "Construtora criada com sucesso",
+ *            "builder": {
+ *              "id": "7de6982f-6989-45bd-97d4-973ebeb75295",
+ *              "id_user": "647ac188-62c8-4618-8a0a-be14174aac49",
+ *              "cnpj": "34096667000152",
+ *              "company_name": "Razão social da Construtora",
+ *              "company_fancy_name": "Nome fantasia da Construtora",
+ *              "address_street": "Rua da construtora",
+ *              "address_number": "123",
+ *              "address_neighborhood": "Bairro",
+ *              "address_city": "Cidade",
+ *              "address_state": "Estado",
+ *              "address_country": "Pais",
+ *              "address_cep": "58000000",
+ *              "logo_url": null,
+ *              "created_date": "2019-09-24T00:01:22.722Z",
+ *              "active": true
+ *            }
+ *       }]
  *   }
  *
  * @apiErrorExample Error-Response:
@@ -124,15 +224,68 @@ export const getByUserId = async (request, response) => {
  *
  * @apiParamExample {json} Request-Example:
  *   {
- *
- *   }
+ *      "builder": {
+ *        "id_user": "647ac188-62c8-4618-8a0a-be14174aac49",
+ *        "cnpj": "34096667000152",
+ *        "company_name": "Razão social da Construtora",
+ *        "company_fancy_name": "Nome fantasia da Construtora",
+ *        "address_street": "Rua da construtora",
+ *        "address_number": "123",
+ *        "address_neighborhood": "Bairro",
+ *        "address_city": "Cidade",
+ *        "address_state": "Estado",
+ *        "address_country": "Pais",
+ *        "address_cep": "58000000"
+ *      },
+ *      "phones": [{"number":"8332333333"},{"number":"8332344444"}],
+ *      "partners": [{
+ *        "name": "Nome do socio 1",
+ *        "company_name": null,
+ *        "cpf": "06595212446",
+ *        "cnpj": null,
+ *        "phone":"8332447788",
+ *        "address_street": "Rua do socio 1",
+ *        "address_number": "123",
+ *        "address_neighborhood": "Bairro",
+ *        "address_city": "Cidade",
+ *        "address_state": "Estado",
+ *        "address_country": "Pais",
+ *        "address_cep": "58000000"
+ *      },
+ *      {
+ *         "name": "Nome fantasia do socio 2",
+ *         "company_name": "Razão social do socio 2",
+ *         "cpf": null,
+ *         "cnpj": "34096667000151",
+ *         "phone":"8332447788",
+ *         "address_street": "Rua do socio 2",
+ *         "address_number": "123",
+ *         "address_neighborhood": "Bairro",
+ *         "address_city": "Cidade",
+ *         "address_state": "Estado",
+ *         "address_country": "Pais",
+ *         "address_cep": "58000000"
+ *       }]
+}
  *
  * @apiSuccessExample Success-Response:
  *   HTTP/1.1 200 OK
  *   {
  *      "code": "S0000",
  *      "message": "Construtora criada com sucesso",
- *      "builder": [{}]
+ *      "builder": {
+ *        "id_user": "647ac188-62c8-4618-8a0a-be14174aac49",
+ *        "cnpj": "34096667000152",
+ *        "company_name": "Razão social da Construtora",
+ *        "company_fancy_name": "Nome fantasia da Construtora",
+ *        "address_street": "Rua da construtora",
+ *        "address_number": "123",
+ *        "address_neighborhood": "Bairro",
+ *        "address_city": "Cidade",
+ *        "address_state": "Estado",
+ *        "address_country": "Pais",
+ *        "address_cep": "58000000"
+ *      }
  *   }
  *
  * @apiErrorExample Error-Response:
@@ -169,7 +322,17 @@ export const create = async (request, response) => {
  *
  * @apiParamExample {json} Request-Example:
  *   {
- *
+ *      "id_user": "647ac188-62c8-4618-8a0a-be14174aac49",
+ *      "cnpj": "34096667000152",
+ *      "company_name": "Razão social da Construtora",
+ *      "company_fancy_name": "Nome fantasia da Construtora",
+ *      "address_street": "Rua da construtora",
+ *      "address_number": "123",
+ *      "address_neighborhood": "Bairro",
+ *      "address_city": "Cidade",
+ *      "address_state": "Estado",
+ *      "address_country": "Pais",
+ *      "address_cep": "58000000"
  *   }
  *
  * @apiSuccessExample Success-Response:
