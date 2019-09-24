@@ -89,19 +89,19 @@ VALUES (
 -- 	NOW() + INTERVAL'1 year'
 -- );
 
--- INSERT INTO custodian (
--- 	id,
--- 	cnpj,
--- 	company_name,
--- 	company_fancy_name,
--- 	phone
--- ) VALUES (
--- 	'647ac188-62c8-4618-8a0a-be14174aac49',
--- 	'34096667000151',
--- 	'Custodiadora Default SA',
--- 	'Custodiadora Default',
--- 	'8333334444'
--- );
+INSERT INTO custodian (
+	id,
+	cnpj,
+	company_name,
+	company_fancy_name,
+	phone
+) VALUES (
+	'647ac188-62c8-4618-8a0a-be14174aac49',
+	'34096667000151',
+	'Custodiadora Default SA',
+	'Custodiadora Default',
+	'8333334444'
+);
 
 -- INSERT INTO fundraising (
 -- 	id,

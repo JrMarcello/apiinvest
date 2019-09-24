@@ -16,11 +16,11 @@ import * as repository from './repository'
  *
  * @apiSuccessExample Success-Response:
  *   HTTP/1.1 200 OK
- *   {
+ *   [{
  *      "id": "123",
  *      "id_builder": "eb76cd10-367b-447d-b238-fa8e9eef2a1f",
  *      "number": "83988317864"
- *   }
+ *   }]
  *
  * @apiErrorExample Error-Response:
  *   HTTP/1.1 500 Internal Server Error
@@ -63,7 +63,11 @@ export const getByBuilderId = async (request, response) => {
  *   {
  *      "code": "S0000",
  *      "message": "Telefone criado com sucesso",
- *      "builder": [{}]
+ *      "phone": [{
+ *        "id": "123",
+ *        "id_builder": "eb76cd10-367b-447d-b238-fa8e9eef2a1f",
+ *        "number": "83988317864"
+ *      }]
  *   }
  *
  * @apiErrorExample Error-Response:

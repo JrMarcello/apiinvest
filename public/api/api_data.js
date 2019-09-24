@@ -21,7 +21,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Request-Example:",
-          "content": "{\n\n}",
+          "content": "  {\n     \"builder\": {\n       \"id_user\": \"647ac188-62c8-4618-8a0a-be14174aac49\",\n       \"cnpj\": \"34096667000152\",\n       \"company_name\": \"Razão social da Construtora\",\n       \"company_fancy_name\": \"Nome fantasia da Construtora\",\n       \"address_street\": \"Rua da construtora\",\n       \"address_number\": \"123\",\n       \"address_neighborhood\": \"Bairro\",\n       \"address_city\": \"Cidade\",\n       \"address_state\": \"Estado\",\n       \"address_country\": \"Pais\",\n       \"address_cep\": \"58000000\"\n     },\n     \"phones\": [{\"number\":\"8332333333\"},{\"number\":\"8332344444\"}],\n     \"partners\": [{\n       \"name\": \"Nome do socio 1\",\n       \"company_name\": null,\n       \"cpf\": \"06595212446\",\n       \"cnpj\": null,\n       \"phone\":\"8332447788\",\n       \"address_street\": \"Rua do socio 1\",\n       \"address_number\": \"123\",\n       \"address_neighborhood\": \"Bairro\",\n       \"address_city\": \"Cidade\",\n       \"address_state\": \"Estado\",\n       \"address_country\": \"Pais\",\n       \"address_cep\": \"58000000\"\n     },\n     {\n        \"name\": \"Nome fantasia do socio 2\",\n        \"company_name\": \"Razão social do socio 2\",\n        \"cpf\": null,\n        \"cnpj\": \"34096667000151\",\n        \"phone\":\"8332447788\",\n        \"address_street\": \"Rua do socio 2\",\n        \"address_number\": \"123\",\n        \"address_neighborhood\": \"Bairro\",\n        \"address_city\": \"Cidade\",\n        \"address_state\": \"Estado\",\n        \"address_country\": \"Pais\",\n        \"address_cep\": \"58000000\"\n      }]\n}",
           "type": "json"
         }
       ]
@@ -30,7 +30,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "HTTP/1.1 200 OK\n{\n   \"code\": \"S0000\",\n   \"message\": \"Construtora criada com sucesso\",\n   \"builder\": [{}]\n}",
+          "content": "HTTP/1.1 200 OK\n{\n   \"code\": \"S0000\",\n   \"message\": \"Construtora criada com sucesso\",\n   \"builder\": {\n     \"id_user\": \"647ac188-62c8-4618-8a0a-be14174aac49\",\n     \"cnpj\": \"34096667000152\",\n     \"company_name\": \"Razão social da Construtora\",\n     \"company_fancy_name\": \"Nome fantasia da Construtora\",\n     \"address_street\": \"Rua da construtora\",\n     \"address_number\": \"123\",\n     \"address_neighborhood\": \"Bairro\",\n     \"address_city\": \"Cidade\",\n     \"address_state\": \"Estado\",\n     \"address_country\": \"Pais\",\n     \"address_cep\": \"58000000\"\n   }\n}",
           "type": "json"
         }
       ]
@@ -69,7 +69,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Request-Example:",
-          "content": "{\n\n}",
+          "content": "{\n   \"id_builder\": \"7de6982f-6989-45bd-97d4-973ebeb75295\",\n   \"name\": \"Nome do socio 1\",\n   \"company_name\": null,\n   \"cpf\": \"06595212446\",\n   \"cnpj\": null,\n   \"phone\": \"8332447788\",\n   \"address_street\": \"Rua do socio 1\",\n   \"address_number\": \"123\",\n   \"address_neighborhood\": \"Bairro\",\n   \"address_city\": \"Cidade\",\n   \"address_state\": \"Estado\",\n   \"address_country\": \"Pais\",\n   \"address_cep\": \"58000000\"\n}",
           "type": "json"
         }
       ]
@@ -78,7 +78,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "HTTP/1.1 200 OK\n{\n   \"code\": \"S0000\",\n   \"message\": \"Construtora criada com sucesso\",\n   \"builder\": [{}]\n}",
+          "content": "HTTP/1.1 200 OK\n{\n   \"code\": \"S0000\",\n   \"message\": \"Construtora criada com sucesso\",\n   \"builder\": [{\n     \"id\": \"1\",\n     \"id_builder\": \"7de6982f-6989-45bd-97d4-973ebeb75295\",\n     \"name\": \"Nome do socio 1\",\n     \"company_name\": null,\n     \"cpf\": \"06595212446\",\n     \"cnpj\": null,\n     \"phone\": \"8332447788\",\n     \"address_street\": \"Rua do socio 1\",\n     \"address_number\": \"123\",\n     \"address_neighborhood\": \"Bairro\",\n     \"address_city\": \"Cidade\",\n     \"address_state\": \"Estado\",\n     \"address_country\": \"Pais\",\n     \"address_cep\": \"58000000\",\n     \"created_date\": \"2019-09-24T00:01:22.960Z\"\n   }]\n}",
           "type": "json"
         }
       ]
@@ -126,7 +126,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "HTTP/1.1 200 OK\n{\n   \"code\": \"S0000\",\n   \"message\": \"Telefone criado com sucesso\",\n   \"builder\": [{}]\n}",
+          "content": "HTTP/1.1 200 OK\n{\n   \"code\": \"S0000\",\n   \"message\": \"Telefone criado com sucesso\",\n   \"phone\": [{\n     \"id\": \"123\",\n     \"id_builder\": \"eb76cd10-367b-447d-b238-fa8e9eef2a1f\",\n     \"number\": \"83988317864\"\n   }]\n}",
           "type": "json"
         }
       ]
@@ -318,7 +318,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "HTTP/1.1 200 OK\n{\n\n}",
+          "content": "HTTP/1.1 200 OK\n{\n   \"id\": \"7de6982f-6989-45bd-97d4-973ebeb75295\",\n   \"id_user\": \"647ac188-62c8-4618-8a0a-be14174aac49\",\n   \"cnpj\": \"34096667000152\",\n   \"company_name\": \"Razão social da Construtora\",\n   \"company_fancy_name\": \"Nome fantasia da Construtora\",\n   \"address_street\": \"Rua da construtora\",\n   \"address_number\": \"123\",\n   \"address_neighborhood\": \"Bairro\",\n   \"address_city\": \"Cidade\",\n   \"address_state\": \"Estado\",\n   \"address_country\": \"Pais\",\n   \"address_cep\": \"58000000\",\n   \"logo_url\": null,\n   \"created_date\": \"2019-09-24T00:01:22.722Z\",\n   \"active\": true,\n   \"phones\": [\n     {\n        \"id\": \"1\",\n        \"id_builder\": \"7de6982f-6989-45bd-97d4-973ebeb75295\",\n        \"number\": \"8332333333\"\n     },\n     {\n        \"id\": \"2\",\n        \"id_builder\": \"7de6982f-6989-45bd-97d4-973ebeb75295\",\n        \"number\": \"8332344444\"\n     }\n   ],\n   \"partners\": [\n     {\n        \"id\": \"1\",\n        \"id_builder\": \"7de6982f-6989-45bd-97d4-973ebeb75295\",\n        \"name\": \"Nome do socio 1\",\n        \"company_name\": null,\n        \"cpf\": \"06595212446\",\n        \"cnpj\": null,\n        \"phone\": \"8332447788\",\n        \"address_street\": \"Rua do socio 1\",\n        \"address_number\": \"123\",\n        \"address_neighborhood\": \"Bairro\",\n        \"address_city\": \"Cidade\",\n        \"address_state\": \"Estado\",\n        \"address_country\": \"Pais\",\n        \"address_cep\": \"58000000\",\n        \"created_date\": \"2019-09-24T00:01:22.960Z\"\n     },\n     {\n        \"id\": \"2\",\n        \"id_builder\": \"7de6982f-6989-45bd-97d4-973ebeb75295\",\n        \"name\": \"Nome fantasia do socio 2\",\n        \"company_name\": \"Razão social do socio 2\",\n        \"cpf\": null,\n        \"cnpj\": \"34096667000151\",\n        \"phone\": \"8332447788\",\n        \"address_street\": \"Rua do socio 2\",\n        \"address_number\": \"123\",\n        \"address_neighborhood\": \"Bairro\",\n        \"address_city\": \"Cidade\",\n        \"address_state\": \"Estado\",\n        \"address_country\": \"Pais\",\n        \"address_cep\": \"58000000\",\n        \"created_date\": \"2019-09-24T00:01:22.960Z\"\n     }\n   ]\n }",
           "type": "json"
         }
       ]
@@ -366,7 +366,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "HTTP/1.1 200 OK\n{\n\n}",
+          "content": "HTTP/1.1 200 OK\n{\n   [{\n       \"code\": 5000,\n       \"message\": \"Construtora criada com sucesso\",\n         \"builder\": {\n           \"id\": \"7de6982f-6989-45bd-97d4-973ebeb75295\",\n           \"id_user\": \"647ac188-62c8-4618-8a0a-be14174aac49\",\n           \"cnpj\": \"34096667000152\",\n           \"company_name\": \"Razão social da Construtora\",\n           \"company_fancy_name\": \"Nome fantasia da Construtora\",\n           \"address_street\": \"Rua da construtora\",\n           \"address_number\": \"123\",\n           \"address_neighborhood\": \"Bairro\",\n           \"address_city\": \"Cidade\",\n           \"address_state\": \"Estado\",\n           \"address_country\": \"Pais\",\n           \"address_cep\": \"58000000\",\n           \"logo_url\": null,\n           \"created_date\": \"2019-09-24T00:01:22.722Z\",\n           \"active\": true\n         }\n    }]\n}",
           "type": "json"
         }
       ]
@@ -414,7 +414,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "HTTP/1.1 200 OK\n{\n\n}",
+          "content": "HTTP/1.1 200 OK\n{\n   \"id\": \"1\",\n   \"id_builder\": \"7de6982f-6989-45bd-97d4-973ebeb75295\",\n   \"name\": \"Nome do socio 1\",\n   \"company_name\": null,\n   \"cpf\": \"06595212446\",\n   \"cnpj\": null,\n   \"phone\": \"8332447788\",\n   \"address_street\": \"Rua do socio 1\",\n   \"address_number\": \"123\",\n   \"address_neighborhood\": \"Bairro\",\n   \"address_city\": \"Cidade\",\n   \"address_state\": \"Estado\",\n   \"address_country\": \"Pais\",\n   \"address_cep\": \"58000000\",\n   \"created_date\": \"2019-09-24T00:01:22.960Z\"\n}",
           "type": "json"
         }
       ]
@@ -462,7 +462,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "HTTP/1.1 200 OK\n{\n   \"id\": \"123\",\n   \"id_builder\": \"eb76cd10-367b-447d-b238-fa8e9eef2a1f\",\n   \"number\": \"83988317864\"\n}",
+          "content": "HTTP/1.1 200 OK\n[{\n   \"id\": \"123\",\n   \"id_builder\": \"eb76cd10-367b-447d-b238-fa8e9eef2a1f\",\n   \"number\": \"83988317864\"\n}]",
           "type": "json"
         }
       ]
@@ -490,7 +490,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "HTTP/1.1 200 OK\n{\n   [\n\n   ]\n}",
+          "content": "HTTP/1.1 200 OK\n{\n   [{\n       \"code\": 5000,\n       \"message\": \"Construtora criada com sucesso\",\n         \"builder\": {\n           \"id\": \"7de6982f-6989-45bd-97d4-973ebeb75295\",\n           \"id_user\": \"647ac188-62c8-4618-8a0a-be14174aac49\",\n           \"cnpj\": \"34096667000152\",\n           \"company_name\": \"Razão social da Construtora\",\n           \"company_fancy_name\": \"Nome fantasia da Construtora\",\n           \"address_street\": \"Rua da construtora\",\n           \"address_number\": \"123\",\n           \"address_neighborhood\": \"Bairro\",\n           \"address_city\": \"Cidade\",\n           \"address_state\": \"Estado\",\n           \"address_country\": \"Pais\",\n           \"address_cep\": \"58000000\",\n           \"logo_url\": null,\n           \"created_date\": \"2019-09-24T00:01:22.722Z\",\n           \"active\": true\n         }\n    }]\n}",
           "type": "json"
         }
       ]
@@ -529,7 +529,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Request-Example:",
-          "content": "{\n\n}",
+          "content": "{\n   \"id_user\": \"647ac188-62c8-4618-8a0a-be14174aac49\",\n   \"cnpj\": \"34096667000152\",\n   \"company_name\": \"Razão social da Construtora\",\n   \"company_fancy_name\": \"Nome fantasia da Construtora\",\n   \"address_street\": \"Rua da construtora\",\n   \"address_number\": \"123\",\n   \"address_neighborhood\": \"Bairro\",\n   \"address_city\": \"Cidade\",\n   \"address_state\": \"Estado\",\n   \"address_country\": \"Pais\",\n   \"address_cep\": \"58000000\"\n}",
           "type": "json"
         }
       ]
@@ -586,7 +586,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "HTTP/1.1 200 OK\n{\n   \"code\": \"S0000\",\n   \"message\": \"Telefone criado com sucesso\",\n   \"builder\": [{}]\n}",
+          "content": "HTTP/1.1 200 OK\n{\n   \"code\": \"S0000\",\n   \"message\": \"Imagens enviadas com sucesso\"\n}",
           "type": "json"
         }
       ]
@@ -625,7 +625,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Request-Example:",
-          "content": "{\n\n}",
+          "content": "{\n   \"id_builder\": \"7de6982f-6989-45bd-97d4-973ebeb75295\",\n   \"spe\": \"34096667000199\",\n   \"registration\": \"789456\",\n   \"name\": \"Nome da obra\",\n   \"description\": \"Descrição da obra\",\n   \"address_street\": \"Rua da obraa\",\n   \"address_number\": \"123\",\n   \"address_neighborhood\": \"Bairro\",\n   \"address_city\": \"Cidade\",\n   \"address_state\": \"Estado\",\n   \"address_country\": \"Pais\",\n   \"address_cep\": \"58000000\",\n   \"amount\": \"1000000.00\",\n   \"initial_date\": \"2019-08-27T00:00:00.000Z\",\n   \"final_date\": \"2022-08-27T00:00:00.000Z\",\n   \"created_date\": \"2019-09-24T00:50:58.550Z\",\n   \"active\": true\n}",
           "type": "json"
         }
       ]
@@ -634,7 +634,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "HTTP/1.1 200 OK\n{\n   \"code\": \"S0000\",\n   \"message\": \"Obra criada com sucesso\",\n   \"builder\": [{}]\n}",
+          "content": "HTTP/1.1 200 OK\n{\n   \"code\": \"S0000\",\n   \"message\": \"Obra criada com sucesso\",\n   \"builder\": [{\n     \"code\": 6000,\n     \"message\": \"Obra criada com sucesso\",\n     \"building\": {\n       \"id\": \"69cb237c-c53a-4619-8433-d80719c0c18f\",\n       \"id_builder\": \"7de6982f-6989-45bd-97d4-973ebeb75295\",\n       \"spe\": \"34096667000199\",\n       \"registration\": \"789456\",\n       \"name\": \"Nome da obra\",\n       \"description\": \"Descrição da obra\",\n       \"address_street\": \"Rua da obraa\",\n       \"address_number\": \"123\",\n       \"address_neighborhood\": \"Bairro\",\n       \"address_city\": \"Cidade\",\n       \"address_state\": \"Estado\",\n       \"address_country\": \"Pais\",\n       \"address_cep\": \"58000000\",\n       \"amount\": \"1000000.00\",\n       \"initial_date\": \"2019-08-27T00:00:00.000Z\",\n       \"final_date\": \"2022-08-27T00:00:00.000Z\",\n       \"created_date\": \"2019-09-24T00:50:58.550Z\",\n       \"active\": true\n     }\n   }]\n}",
           "type": "json"
         }
       ]
@@ -682,7 +682,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "HTTP/1.1 200 OK\n{\n   \"code\": \"S0000\",\n   \"message\": \"Telefone deletado com sucesso\"\n}",
+          "content": "HTTP/1.1 200 OK\n{\n   \"code\": \"S0000\",\n   \"message\": \"Imagens deletadas com sucesso\"\n}",
           "type": "json"
         }
       ]
@@ -778,7 +778,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "HTTP/1.1 200 OK\n{\n\n}",
+          "content": "HTTP/1.1 200 OK\n{\n   \"id\": \"69cb237c-c53a-4619-8433-d80719c0c18f\",\n   \"id_builder\": \"7de6982f-6989-45bd-97d4-973ebeb75295\",\n   \"spe\": \"34096667000199\",\n   \"registration\": \"789456\",\n   \"name\": \"Nome da obra\",\n   \"description\": \"Descrição da obra\",\n   \"address_street\": \"Rua da obraa\",\n   \"address_number\": \"123\",\n   \"address_neighborhood\": \"Bairro\",\n   \"address_city\": \"Cidade\",\n   \"address_state\": \"Estado\",\n   \"address_country\": \"Pais\",\n   \"address_cep\": \"58000000\",\n   \"amount\": \"1000000.00\",\n   \"initial_date\": \"2019-08-27T00:00:00.000Z\",\n   \"final_date\": \"2022-08-27T00:00:00.000Z\",\n   \"created_date\": \"2019-09-24T00:50:58.550Z\",\n   \"active\": true,\n   \"images\": [],\n   \"fundraisings\": []\n}",
           "type": "json"
         }
       ]
@@ -826,7 +826,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "HTTP/1.1 200 OK\n{\n\n}",
+          "content": "HTTP/1.1 200 OK\n[{\n    \"id\": \"69cb237c-c53a-4619-8433-d80719c0c18f\",\n    \"id_builder\": \"7de6982f-6989-45bd-97d4-973ebeb75295\",\n    \"spe\": \"34096667000199\",\n    \"registration\": \"789456\",\n    \"name\": \"Nome da obra\",\n    \"description\": \"Descrição da obra\",\n    \"address_street\": \"Rua da obraa\",\n    \"address_number\": \"123\",\n    \"address_neighborhood\": \"Bairro\",\n    \"address_city\": \"Cidade\",\n    \"address_state\": \"Estado\",\n    \"address_country\": \"Pais\",\n    \"address_cep\": \"58000000\",\n    \"amount\": \"1000000.00\",\n    \"initial_date\": \"2019-08-27T00:00:00.000Z\",\n    \"final_date\": \"2022-08-27T00:00:00.000Z\",\n    \"created_date\": \"2019-09-24T00:50:58.550Z\",\n    \"active\": true\n}]",
           "type": "json"
         }
       ]
@@ -902,7 +902,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "HTTP/1.1 200 OK\n{\n   [\n\n   ]\n}",
+          "content": "HTTP/1.1 200 OK\n[{\n    \"id\": \"69cb237c-c53a-4619-8433-d80719c0c18f\",\n    \"id_builder\": \"7de6982f-6989-45bd-97d4-973ebeb75295\",\n    \"spe\": \"34096667000199\",\n    \"registration\": \"789456\",\n    \"name\": \"Nome da obra\",\n    \"description\": \"Descrição da obra\",\n    \"address_street\": \"Rua da obraa\",\n    \"address_number\": \"123\",\n    \"address_neighborhood\": \"Bairro\",\n    \"address_city\": \"Cidade\",\n    \"address_state\": \"Estado\",\n    \"address_country\": \"Pais\",\n    \"address_cep\": \"58000000\",\n    \"amount\": \"1000000.00\",\n    \"initial_date\": \"2019-08-27T00:00:00.000Z\",\n    \"final_date\": \"2022-08-27T00:00:00.000Z\",\n    \"created_date\": \"2019-09-24T00:50:58.550Z\",\n    \"active\": true\n}]",
           "type": "json"
         }
       ]
@@ -941,7 +941,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Request-Example:",
-          "content": "{\n\n}",
+          "content": "{\n   \"id\": \"69cb237c-c53a-4619-8433-d80719c0c18f\",\n   \"id_builder\": \"7de6982f-6989-45bd-97d4-973ebeb75295\",\n   \"spe\": \"34096667000199\",\n   \"registration\": \"789456\",\n   \"name\": \"Nome da obra\",\n   \"description\": \"Descrição da obra\",\n   \"address_street\": \"Rua da obraa\",\n   \"address_number\": \"123\",\n   \"address_neighborhood\": \"Bairro\",\n   \"address_city\": \"Cidade\",\n   \"address_state\": \"Estado\",\n   \"address_country\": \"Pais\",\n   \"address_cep\": \"58000000\",\n   \"amount\": \"1000000.00\",\n   \"initial_date\": \"2019-08-27T00:00:00.000Z\",\n   \"final_date\": \"2022-08-27T00:00:00.000Z\",\n   \"created_date\": \"2019-09-24T00:50:58.550Z\",\n   \"active\": true\n}",
           "type": "json"
         }
       ]
