@@ -20,13 +20,13 @@ import * as repository from './repository'
  *         "order": 1
  *      },
  *      {
- *         "id": 1,
+ *         "id": 2,
  *         "id_investor": "35bd3682-0a9f-42fa-a98e-24cba9e78729",
  *         "url": "https://storage.googleapis.com/buildinvest/documents/545121513535151312.png"
  *         "order": 2
  *      },
  *      {
- *         "id": 1,
+ *         "id": 3,
  *         "id_investor": "35bd3682-0a9f-42fa-a98e-24cba9e78729",
  *         "url": "https://storage.googleapis.com/buildinvest/documents/545121513535151313.png"
  *         "order": 3

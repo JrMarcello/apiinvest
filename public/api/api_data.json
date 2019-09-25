@@ -21,7 +21,7 @@
       "examples": [
         {
           "title": "Request-Example:",
-          "content": "  {\n     \"builder\": {\n       \"id_user\": \"647ac188-62c8-4618-8a0a-be14174aac49\",\n       \"cnpj\": \"34096667000152\",\n       \"company_name\": \"Razão social da Construtora\",\n       \"company_fancy_name\": \"Nome fantasia da Construtora\",\n       \"address_street\": \"Rua da construtora\",\n       \"address_number\": \"123\",\n       \"address_neighborhood\": \"Bairro\",\n       \"address_city\": \"Cidade\",\n       \"address_state\": \"Estado\",\n       \"address_country\": \"Pais\",\n       \"address_cep\": \"58000000\"\n     },\n     \"phones\": [{\"number\":\"8332333333\"},{\"number\":\"8332344444\"}],\n     \"partners\": [{\n       \"name\": \"Nome do socio 1\",\n       \"company_name\": null,\n       \"cpf\": \"06595212446\",\n       \"cnpj\": null,\n       \"phone\":\"8332447788\",\n       \"address_street\": \"Rua do socio 1\",\n       \"address_number\": \"123\",\n       \"address_neighborhood\": \"Bairro\",\n       \"address_city\": \"Cidade\",\n       \"address_state\": \"Estado\",\n       \"address_country\": \"Pais\",\n       \"address_cep\": \"58000000\"\n     },\n     {\n        \"name\": \"Nome fantasia do socio 2\",\n        \"company_name\": \"Razão social do socio 2\",\n        \"cpf\": null,\n        \"cnpj\": \"34096667000151\",\n        \"phone\":\"8332447788\",\n        \"address_street\": \"Rua do socio 2\",\n        \"address_number\": \"123\",\n        \"address_neighborhood\": \"Bairro\",\n        \"address_city\": \"Cidade\",\n        \"address_state\": \"Estado\",\n        \"address_country\": \"Pais\",\n        \"address_cep\": \"58000000\"\n      }]\n}",
+          "content": "{\n   \"builder\": {\n     \"id_user\": \"647ac188-62c8-4618-8a0a-be14174aac49\",\n     \"cnpj\": \"34096667000152\",\n     \"company_name\": \"Razão social da Construtora\",\n     \"company_fancy_name\": \"Nome fantasia da Construtora\",\n     \"address_street\": \"Rua da construtora\",\n     \"address_number\": \"123\",\n     \"address_neighborhood\": \"Bairro\",\n     \"address_city\": \"Cidade\",\n     \"address_state\": \"Estado\",\n     \"address_country\": \"Pais\",\n     \"address_cep\": \"58000000\"\n   },\n   \"phones\": [{\"number\":\"8332333333\"},{\"number\":\"8332344444\"}],\n   \"partners\": [{\n     \"name\": \"Nome do socio 1\",\n     \"company_name\": null,\n     \"cpf\": \"06595212446\",\n     \"cnpj\": null,\n     \"phone\":\"8332447788\",\n     \"address_street\": \"Rua do socio 1\",\n     \"address_number\": \"123\",\n     \"address_neighborhood\": \"Bairro\",\n     \"address_city\": \"Cidade\",\n     \"address_state\": \"Estado\",\n     \"address_country\": \"Pais\",\n     \"address_cep\": \"58000000\"\n   },\n   {\n      \"name\": \"Nome fantasia do socio 2\",\n      \"company_name\": \"Razão social do socio 2\",\n      \"cpf\": null,\n      \"cnpj\": \"34096667000151\",\n      \"phone\":\"8332447788\",\n      \"address_street\": \"Rua do socio 2\",\n      \"address_number\": \"123\",\n      \"address_neighborhood\": \"Bairro\",\n      \"address_city\": \"Cidade\",\n      \"address_state\": \"Estado\",\n      \"address_country\": \"Pais\",\n      \"address_cep\": \"58000000\"\n    }]\n}",
           "type": "json"
         }
       ]
@@ -107,17 +107,24 @@
         "Parameter": [
           {
             "group": "Parameter",
-            "type": "string",
+            "type": "uuid",
             "optional": false,
-            "field": "params",
-            "description": "<p>Builder Phone params em breve aqui</p>"
+            "field": "id_builder",
+            "description": "<p>Builder ID</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "array",
+            "optional": false,
+            "field": "phones",
+            "description": "<p>Phones numbers</p>"
           }
         ]
       },
       "examples": [
         {
           "title": "Request-Example:",
-          "content": "{\n   \"id_builder\": \"eb76cd10-367b-447d-b238-fa8e9eef2a1f\",\n   \"number\": \"83988317864\"\n}",
+          "content": "{\n   \"id_builder\": \"eb76cd10-367b-447d-b238-fa8e9eef2a1f\",\n   \"phones\": [\"83988317864\"]\n}",
           "type": "json"
         }
       ]
@@ -247,13 +254,6 @@
     "group": "Builder",
     "version": "1.0.0",
     "parameter": {
-      "examples": [
-        {
-          "title": "Request-Example:",
-          "content": "{\n   \"id\": eb76cd10-367b-447d-b238-fa8e9eef2a1f\n}",
-          "type": "json"
-        }
-      ],
       "fields": {
         "Parameter": [
           {
@@ -305,14 +305,7 @@
             "description": "<p>Builder ID</p>"
           }
         ]
-      },
-      "examples": [
-        {
-          "title": "Request-Example:",
-          "content": "{\n   \"id\": eb76cd10-367b-447d-b238-fa8e9eef2a1f\n}",
-          "type": "json"
-        }
-      ]
+      }
     },
     "success": {
       "examples": [
@@ -353,14 +346,7 @@
             "description": "<p>User ID</p>"
           }
         ]
-      },
-      "examples": [
-        {
-          "title": "Request-Example:",
-          "content": "{\n   \"id\": eb76cd10-367b-447d-b238-fa8e9eef2a1f\n}",
-          "type": "json"
-        }
-      ]
+      }
     },
     "success": {
       "examples": [
@@ -401,14 +387,7 @@
             "description": "<p>Builder ID</p>"
           }
         ]
-      },
-      "examples": [
-        {
-          "title": "Request-Example:",
-          "content": "{\n   \"id\": eb76cd10-367b-447d-b238-fa8e9eef2a1f\n}",
-          "type": "json"
-        }
-      ]
+      }
     },
     "success": {
       "examples": [
@@ -449,20 +428,13 @@
             "description": "<p>Builder ID</p>"
           }
         ]
-      },
-      "examples": [
-        {
-          "title": "Request-Example:",
-          "content": "{\n   \"id\": \"eb76cd10-367b-447d-b238-fa8e9eef2a1f\"\n}",
-          "type": "json"
-        }
-      ]
+      }
     },
     "success": {
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "HTTP/1.1 200 OK\n[{\n   \"id\": \"123\",\n   \"id_builder\": \"eb76cd10-367b-447d-b238-fa8e9eef2a1f\",\n   \"number\": \"83988317864\"\n}]",
+          "content": "HTTP/1.1 200 OK\n[{\n   \"id\": 123,\n   \"id_builder\": \"eb76cd10-367b-447d-b238-fa8e9eef2a1f\",\n   \"number\": \"83988317864\"\n}]",
           "type": "json"
         }
       ]
@@ -765,14 +737,7 @@
             "description": "<p>Building ID</p>"
           }
         ]
-      },
-      "examples": [
-        {
-          "title": "Request-Example:",
-          "content": "{\n   \"id\": eb76cd10-367b-447d-b238-fa8e9eef2a1f\n}",
-          "type": "json"
-        }
-      ]
+      }
     },
     "success": {
       "examples": [
@@ -813,14 +778,7 @@
             "description": "<p>Builder ID</p>"
           }
         ]
-      },
-      "examples": [
-        {
-          "title": "Request-Example:",
-          "content": "{\n   \"id\": eb76cd10-367b-447d-b238-fa8e9eef2a1f\n}",
-          "type": "json"
-        }
-      ]
+      }
     },
     "success": {
       "examples": [
@@ -861,14 +819,7 @@
             "description": "<p>Building ID</p>"
           }
         ]
-      },
-      "examples": [
-        {
-          "title": "Request-Example:",
-          "content": "{\n   \"id\": \"eb76cd10-367b-447d-b238-fa8e9eef2a1f\"\n}",
-          "type": "json"
-        }
-      ]
+      }
     },
     "success": {
       "examples": [
@@ -981,15 +932,36 @@
             "group": "Parameter",
             "type": "string",
             "optional": false,
-            "field": "params",
-            "description": "<p>Custodian params em breve aqui</p>"
+            "field": "cnpj",
+            "description": "<p>Custodian cnpj</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "company_name",
+            "description": "<p>Custodian company name</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "company_fancy_name",
+            "description": "<p>Custodian company fancy name</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "phone",
+            "description": "<p>Custodian phone</p>"
           }
         ]
       },
       "examples": [
         {
           "title": "Request-Example:",
-          "content": "{\n\n}",
+          "content": "{\n   \"cnpj\": \"34096667000151\",\n   \"company_name\": \"Custodiadora Default SA\",\n   \"company_fancy_name\": \"Custodiadora Default\",\n   \"phone\": \"8333334444\"\n}",
           "type": "json"
         }
       ]
@@ -998,7 +970,7 @@
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "HTTP/1.1 200 OK\n{\n   \"code\": \"S0000\",\n   \"message\": \"Custodiadora criada com sucesso\",\n   \"builder\": [{}]\n}",
+          "content": "HTTP/1.1 200 OK\n{\n   \"code\": \"S0000\",\n   \"message\": \"Custodiadora criada com sucesso\",\n   \"builder\": [{\n     \"id\": \"647ac188-62c8-4618-8a0a-be14174aac49\",\n     \"cnpj\": \"34096667000151\",\n     \"company_name\": \"Custodiadora Default SA\",\n     \"company_fancy_name\": \"Custodiadora Default\",\n     \"phone\": \"8333334444\",\n     \"create_date\": \"2019-09-24T04:29:51.726Z\",\n     \"active\": true\n   }]\n}",
           "type": "json"
         }
       ]
@@ -1023,13 +995,6 @@
     "group": "Custodian",
     "version": "1.0.0",
     "parameter": {
-      "examples": [
-        {
-          "title": "Request-Example:",
-          "content": "{\n   \"id\": eb76cd10-367b-447d-b238-fa8e9eef2a1f\n}",
-          "type": "json"
-        }
-      ],
       "fields": {
         "Parameter": [
           {
@@ -1081,20 +1046,13 @@
             "description": "<p>Custodian ID</p>"
           }
         ]
-      },
-      "examples": [
-        {
-          "title": "Request-Example:",
-          "content": "{\n   \"id\": eb76cd10-367b-447d-b238-fa8e9eef2a1f\n}",
-          "type": "json"
-        }
-      ]
+      }
     },
     "success": {
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "HTTP/1.1 200 OK\n{\n\n}",
+          "content": "HTTP/1.1 200 OK\n{\n   \"id\": \"647ac188-62c8-4618-8a0a-be14174aac49\",\n   \"cnpj\": \"34096667000151\",\n   \"company_name\": \"Custodiadora Default SA\",\n   \"company_fancy_name\": \"Custodiadora Default\",\n   \"phone\": \"8333334444\",\n   \"create_date\": \"2019-09-24T04:29:51.726Z\",\n   \"active\": true\n}",
           "type": "json"
         }
       ]
@@ -1122,7 +1080,7 @@
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "HTTP/1.1 200 OK\n{\n   [\n\n   ]\n}",
+          "content": "HTTP/1.1 200 OK\n[{\n    \"id\": \"647ac188-62c8-4618-8a0a-be14174aac49\",\n    \"cnpj\": \"34096667000151\",\n    \"company_name\": \"Custodiadora Default SA\",\n    \"company_fancy_name\": \"Custodiadora Default\",\n    \"phone\": \"8333334444\",\n    \"create_date\": \"2019-09-24T04:29:51.726Z\",\n    \"active\": true\n}]",
           "type": "json"
         }
       ]
@@ -1151,17 +1109,45 @@
         "Parameter": [
           {
             "group": "Parameter",
+            "type": "uuid",
+            "optional": false,
+            "field": "ID",
+            "description": "<p>Custodian ID</p>"
+          },
+          {
+            "group": "Parameter",
             "type": "string",
             "optional": false,
-            "field": "params",
-            "description": "<p>Custodian params em breve</p>"
+            "field": "cnpj",
+            "description": "<p>Custodian cnpj</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "company_name",
+            "description": "<p>Custodian company name</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "company_fancy_name",
+            "description": "<p>Custodian company fancy name</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "phone",
+            "description": "<p>Custodian phone</p>"
           }
         ]
       },
       "examples": [
         {
           "title": "Request-Example:",
-          "content": "{\n\n}",
+          "content": "{\n   \"id\": \"647ac188-62c8-4618-8a0a-be14174aac49\",\n   \"cnpj\": \"34096667000151\",\n   \"company_name\": \"Custodiadora Default SA\",\n   \"company_fancy_name\": \"Custodiadora Default\",\n   \"phone\": \"8333334444\"\n}",
           "type": "json"
         }
       ]
@@ -1186,6 +1172,1189 @@
     },
     "filename": "src/modules/custodian/controller.js",
     "groupTitle": "Custodian"
+  },
+  {
+    "type": "put",
+    "url": "/fundraising/:id/cancel",
+    "title": "Cancel",
+    "name": "CancelFundraising",
+    "group": "Fundraising",
+    "version": "1.0.0",
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n{\n   \"code\": \"S0000\",\n   \"message\": \"Captação cancelada com sucesso\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "HTTP/1.1 500 Internal Server Error\n{\n   \"code\": 9999,\n   \"message\": \"Dados da requisição inválidos\",\n   \"errors\": [{\n     \"msg\": \"Invalid value\",\n     \"param\": \"id\",\n     \"location\": \"body\"\n   }]\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "src/modules/fundraising/controller.js",
+    "groupTitle": "Fundraising"
+  },
+  {
+    "type": "post",
+    "url": "/fundraising",
+    "title": "Create",
+    "name": "CreateFundraising",
+    "group": "Fundraising",
+    "version": "1.0.0",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "params",
+            "description": "<p>Fundraising params em breve aqui</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Request-Example:",
+          "content": "{\n   \"id_building\": \"8dff5f89-dbd1-4db1-b3ac-ee4d3904429a\",\n   \"id_custodian\": \"647ac188-62c8-4618-8a0a-be14174aac49\",\n   \"amount\": \"1000.00\",\n   \"initial_date\": \"2019-08-25\",\n   \"final_date\": \"2020-02-25\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n{\n   \"code\": 6000,\n   \"message\": \"Captação criada com sucesso\",\n   \"fundraising\": [\n     {\n        \"id\": \"164164dd-2b2c-4bbd-8d06-0d67e7ca242f\",\n        \"id_building\": \"8dff5f89-dbd1-4db1-b3ac-ee4d3904429a\",\n        \"id_custodian\": \"647ac188-62c8-4618-8a0a-be14174aac49\",\n        \"amount\": \"1000.00\",\n        \"initial_date\": \"2019-08-25T03:00:00.000Z\",\n        \"final_date\": \"2020-02-25T03:00:00.000Z\",\n        \"finished\": false,\n        \"created_date\": \"2019-09-25T00:32:04.442Z\",\n        \"active\": true\n     }\n   ]\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "HTTP/1.1 500 Internal Server Error\n{\n   \"code\": 9999,\n   \"message\": \"Dados da requisição inválidos\",\n   \"errors\": [{\n     \"msg\": \"Invalid value\",\n     \"param\": \"cnpj\",\n     \"location\": \"body\"\n   }]\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "src/modules/fundraising/controller.js",
+    "groupTitle": "Fundraising"
+  },
+  {
+    "type": "put",
+    "url": "/fundraising/:id/finish",
+    "title": "Finish",
+    "name": "FinishFundraising",
+    "group": "Fundraising",
+    "version": "1.0.0",
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n{\n   \"code\": \"S0000\",\n   \"message\": \"Captação encerrada com sucesso\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "HTTP/1.1 500 Internal Server Error\n{\n   \"code\": 9999,\n   \"message\": \"Dados da requisição inválidos\",\n   \"errors\": [{\n     \"msg\": \"Invalid value\",\n     \"param\": \"id\",\n     \"location\": \"body\"\n   }]\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "src/modules/fundraising/controller.js",
+    "groupTitle": "Fundraising"
+  },
+  {
+    "type": "get",
+    "url": "/fundraising/:id",
+    "title": "Get (By ID)",
+    "name": "GetFundraising",
+    "group": "Fundraising",
+    "version": "1.0.0",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "uuid",
+            "optional": false,
+            "field": "ID",
+            "description": "<p>Fundraising ID</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n{\n   \"id\": \"cd99df55-e99b-4db1-86cd-143430f1a19a\",\n   \"id_building\": \"e69738af-8619-4335-99b9-153da3f723c6\",\n   \"id_custodian\": null,\n   \"amount\": \"2536216.00\",\n   \"initial_date\": \"2019-09-24T03:00:00.000Z\",\n   \"final_date\": \"2019-09-30T03:00:00.000Z\",\n   \"finished\": false,\n   \"created_date\": \"2019-09-24T19:08:56.438Z\",\n   \"active\": true\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "HTTP/1.1 500 Internal Server Error\n{\n   \"code\": 9999,\n   \"message\": \"Dados da requisição inválidos\",\n   \"errors\": [{\n     \"msg\": \"Invalid value\",\n     \"param\": \"id\",\n     \"location\": \"body\"\n   }]\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "src/modules/fundraising/controller.js",
+    "groupTitle": "Fundraising"
+  },
+  {
+    "type": "get",
+    "url": "/fundraising",
+    "title": "Get all",
+    "name": "GetFundraisings",
+    "group": "Fundraising",
+    "version": "1.0.0",
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n[{\n    \"id\": \"cd99df55-e99b-4db1-86cd-143430f1a19a\",\n    \"id_building\": \"e69738af-8619-4335-99b9-153da3f723c6\",\n    \"id_custodian\": null,\n    \"amount\": \"2536216.00\",\n    \"initial_date\": \"2019-09-24T03:00:00.000Z\",\n    \"final_date\": \"2019-09-30T03:00:00.000Z\",\n    \"finished\": false,\n    \"created_date\": \"2019-09-24T19:08:56.438Z\",\n    \"active\": true\n}]",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "HTTP/1.1 500 Internal Server Error\n  {\n     \"code\": 9999,\n     \"message\": \"Requisição inválida\",\n     \"errors\": [{}]\n  }",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "src/modules/fundraising/controller.js",
+    "groupTitle": "Fundraising"
+  },
+  {
+    "type": "get",
+    "url": "/fundraising",
+    "title": "Get (By Building ID)",
+    "name": "GetFundraisingsByBuilding",
+    "group": "Fundraising",
+    "version": "1.0.0",
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n[{\n    \"id\": \"cd99df55-e99b-4db1-86cd-143430f1a19a\",\n    \"id_building\": \"e69738af-8619-4335-99b9-153da3f723c6\",\n    \"id_custodian\": null,\n    \"amount\": \"2536216.00\",\n    \"initial_date\": \"2019-09-24T03:00:00.000Z\",\n    \"final_date\": \"2019-09-30T03:00:00.000Z\",\n    \"finished\": false,\n    \"created_date\": \"2019-09-24T19:08:56.438Z\",\n    \"active\": true\n}]",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "HTTP/1.1 500 Internal Server Error\n  {\n     \"code\": 9999,\n     \"message\": \"Requisição inválida\",\n     \"errors\": [{}]\n  }",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "src/modules/fundraising/controller.js",
+    "groupTitle": "Fundraising"
+  },
+  {
+    "type": "get",
+    "url": "/investment/fundraising/:id",
+    "title": "Get (By Fundraising ID)",
+    "name": "GetInvestmentsByFundraisingId",
+    "group": "Fundraising",
+    "version": "1.0.0",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "uuid",
+            "optional": false,
+            "field": "ID",
+            "description": "<p>Fundraising ID</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n[{\n    \"id\": \"f77880cf-4864-4a27-b15c-34fae2566a38\",\n    \"id_investor\": \"35bd3682-0a9f-42fa-a98e-24cba9e78729\",\n    \"id_fundraising\": \"164164dd-2b2c-4bbd-8d06-0d67e7ca242f\",\n    \"amount\": \"1000.00\",\n    \"percentage\": \"0.05\",\n    \"date\": \"2019-09-25T03:00:00.000Z\",\n    \"ted_proof_url\": null,\n    \"confirmed\": false,\n    \"created_date\": \"2019-09-25T01:59:29.077Z\",\n    \"active\": true\n}]",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "HTTP/1.1 500 Internal Server Error\n  {\n     \"code\": 9999,\n     \"message\": \"Requisição inválida\",\n     \"errors\": [{}]\n  }",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "src/modules/investment/controller.js",
+    "groupTitle": "Fundraising"
+  },
+  {
+    "type": "put",
+    "url": "/fundraising",
+    "title": "Update",
+    "name": "UpdateFundraising",
+    "group": "Fundraising",
+    "version": "1.0.0",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "params",
+            "description": "<p>Fundraising params em breve</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Request-Example:",
+          "content": "{\n   \"id\": \"164164dd-2b2c-4bbd-8d06-0d67e7ca242f\",\n   \"amount\": \"1000.00\",\n   \"initial_date\": \"2019-08-25\",\n   \"final_date\": \"2020-02-25\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n{\n   \"code\": \"S0000\",\n   \"message\": \"Captação atualizada com sucesso\",\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "HTTP/1.1 500 Internal Server Error\n{\n   \"code\": 9999,\n   \"message\": \"Dados da requisição inválidos\",\n   \"errors\": [{\n     \"msg\": \"Invalid value\",\n     \"param\": \"cnpj\",\n     \"location\": \"body\"\n   }]\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "src/modules/fundraising/controller.js",
+    "groupTitle": "Fundraising"
+  },
+  {
+    "type": "put",
+    "url": "/investment/:id/cancel",
+    "title": "Cancel",
+    "name": "CancelInvestment",
+    "group": "Investment",
+    "version": "1.0.0",
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n{\n   \"code\": \"S0000\",\n   \"message\": \"Investimento cancelado com sucesso\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "HTTP/1.1 500 Internal Server Error\n{\n   \"code\": 9999,\n   \"message\": \"Dados da requisição inválidos\",\n   \"errors\": [{\n     \"msg\": \"Invalid value\",\n     \"param\": \"id\",\n     \"location\": \"body\"\n   }]\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "src/modules/investment/controller.js",
+    "groupTitle": "Investment"
+  },
+  {
+    "type": "post",
+    "url": "/investment",
+    "title": "Create",
+    "name": "CreateInvestment",
+    "group": "Investment",
+    "version": "1.0.0",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "params",
+            "description": "<p>Investment params em breve aqui</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Request-Example:",
+          "content": "{\n   \"id_investor\": \"35bd3682-0a9f-42fa-a98e-24cba9e78729\",\n   \"id_fundraising\": \"164164dd-2b2c-4bbd-8d06-0d67e7ca242f\",\n   \"amount\": 1000,\n   \"percentage\": 0.05,\n   \"date\": \"2019-09-25\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n{\n   \"code\": 4000,\n   \"message\": \"Investimento criado com sucesso\",\n   \"investment\": [{\n        \"id\": \"f77880cf-4864-4a27-b15c-34fae2566a38\",\n        \"id_investor\": \"35bd3682-0a9f-42fa-a98e-24cba9e78729\",\n        \"id_fundraising\": \"164164dd-2b2c-4bbd-8d06-0d67e7ca242f\",\n        \"amount\": \"1000.00\",\n        \"percentage\": \"0.05\",\n        \"date\": \"2019-09-25T03:00:00.000Z\",\n        \"ted_proof_url\": null,\n        \"confirmed\": false,\n        \"created_date\": \"2019-09-25T01:59:29.077Z\",\n        \"active\": true\n   }]\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "HTTP/1.1 500 Internal Server Error\n{\n   \"code\": 4502,\n   \"message\": \"Erro ao tentar criar a investimento\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "src/modules/investment/controller.js",
+    "groupTitle": "Investment"
+  },
+  {
+    "type": "get",
+    "url": "/investment/:id",
+    "title": "Get (By ID)",
+    "name": "GetInvestment",
+    "group": "Investment",
+    "version": "1.0.0",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "uuid",
+            "optional": false,
+            "field": "ID",
+            "description": "<p>Investment ID</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n{\n   \"id\": \"f77880cf-4864-4a27-b15c-34fae2566a38\",\n   \"id_investor\": \"35bd3682-0a9f-42fa-a98e-24cba9e78729\",\n   \"id_fundraising\": \"164164dd-2b2c-4bbd-8d06-0d67e7ca242f\",\n   \"amount\": \"1000.00\",\n   \"percentage\": \"0.05\",\n   \"date\": \"2019-09-25T03:00:00.000Z\",\n   \"ted_proof_url\": null,\n   \"confirmed\": false,\n   \"created_date\": \"2019-09-25T01:59:29.077Z\",\n   \"active\": true\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "HTTP/1.1 500 Internal Server Error\n{\n   \"code\": 9999,\n   \"message\": \"Dados da requisição inválidos\",\n   \"errors\": [{\n     \"msg\": \"Invalid value\",\n     \"param\": \"id\",\n     \"location\": \"body\"\n   }]\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "src/modules/investment/controller.js",
+    "groupTitle": "Investment"
+  },
+  {
+    "type": "get",
+    "url": "/investment",
+    "title": "Get all",
+    "name": "GetInvestments",
+    "group": "Investment",
+    "version": "1.0.0",
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n[{\n    \"id\": \"f77880cf-4864-4a27-b15c-34fae2566a38\",\n    \"id_investor\": \"35bd3682-0a9f-42fa-a98e-24cba9e78729\",\n    \"id_fundraising\": \"164164dd-2b2c-4bbd-8d06-0d67e7ca242f\",\n    \"amount\": \"1000.00\",\n    \"percentage\": \"0.05\",\n    \"date\": \"2019-09-25T03:00:00.000Z\",\n    \"ted_proof_url\": null,\n    \"confirmed\": false,\n    \"created_date\": \"2019-09-25T01:59:29.077Z\",\n    \"active\": true\n}]",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "HTTP/1.1 500 Internal Server Error\n  {\n     \"code\": 9999,\n     \"message\": \"Requisição inválida\",\n     \"errors\": [{}]\n  }",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "src/modules/investment/controller.js",
+    "groupTitle": "Investment"
+  },
+  {
+    "type": "get",
+    "url": "/investment/investor/:id",
+    "title": "Get (By Investor ID)",
+    "name": "GetInvestmentsByInvestorId",
+    "group": "Investment",
+    "version": "1.0.0",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "uuid",
+            "optional": false,
+            "field": "ID",
+            "description": "<p>Investor ID</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n[{\n    \"id\": \"f77880cf-4864-4a27-b15c-34fae2566a38\",\n    \"id_investor\": \"35bd3682-0a9f-42fa-a98e-24cba9e78729\",\n    \"id_fundraising\": \"164164dd-2b2c-4bbd-8d06-0d67e7ca242f\",\n    \"amount\": \"1000.00\",\n    \"percentage\": \"0.05\",\n    \"date\": \"2019-09-25T03:00:00.000Z\",\n    \"ted_proof_url\": null,\n    \"confirmed\": false,\n    \"created_date\": \"2019-09-25T01:59:29.077Z\",\n    \"active\": true\n}]",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "HTTP/1.1 500 Internal Server Error\n  {\n     \"code\": 9999,\n     \"message\": \"Requisição inválida\",\n     \"errors\": [{}]\n  }",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "src/modules/investment/controller.js",
+    "groupTitle": "Investment"
+  },
+  {
+    "type": "get",
+    "url": "/investment/pending",
+    "title": "Get all pedings",
+    "name": "GetInvestmentsPendings",
+    "group": "Investment",
+    "version": "1.0.0",
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n[{\n    \"id\": \"f77880cf-4864-4a27-b15c-34fae2566a38\",\n    \"id_investor\": \"35bd3682-0a9f-42fa-a98e-24cba9e78729\",\n    \"id_fundraising\": \"164164dd-2b2c-4bbd-8d06-0d67e7ca242f\",\n    \"amount\": \"1000.00\",\n    \"percentage\": \"0.05\",\n    \"date\": \"2019-09-25T03:00:00.000Z\",\n    \"ted_proof_url\": null,\n    \"confirmed\": false,\n    \"created_date\": \"2019-09-25T01:59:29.077Z\",\n    \"active\": true\n}]",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "HTTP/1.1 500 Internal Server Error\n  {\n     \"code\": 9999,\n     \"message\": \"Requisição inválida\",\n     \"errors\": [{}]\n  }",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "src/modules/investment/controller.js",
+    "groupTitle": "Investment"
+  },
+  {
+    "type": "put",
+    "url": "/investment/ted",
+    "title": "TED Confirmation",
+    "name": "TEDConfirmation",
+    "group": "Investment",
+    "version": "1.0.0",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "uuid",
+            "optional": false,
+            "field": "ID",
+            "description": "<p>Investment ID</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "file",
+            "optional": false,
+            "field": "file",
+            "description": "<p>Image</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Request-Example:",
+          "content": "{\n   \"id\": \"647ac188-62c8-4618-8a0a-be14174aac49\",\n   \"file\": [buffer]\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n{\n   \"code\": \"S0000\",\n   \"message\": \"TED enviada com sucesso\",\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "HTTP/1.1 500 Internal Server Error\n{\n   \"code\": 9999,\n   \"message\": \"Dados da requisição inválidos\",\n   \"errors\": [{\n     \"msg\": \"Invalid value\",\n     \"param\": \"cnpj\",\n     \"location\": \"body\"\n   }]\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "src/modules/investment/controller.js",
+    "groupTitle": "Investment"
+  },
+  {
+    "type": "put",
+    "url": "/investment/confirm",
+    "title": "Investment Confirmation",
+    "name": "TEDConfirmation",
+    "group": "Investment",
+    "version": "1.0.0",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "array",
+            "optional": false,
+            "field": "confirmations",
+            "description": "<p>Investment IDs</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Request-Example:",
+          "content": "{\n   \"confirmations\": [\"791c50c6-f1eb-4efe-ba41-315d4e3c5e83\", \"a788426a-258c-49a5-a905-abec5bba222a\"]\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n{\n   \"code\": \"S0000\",\n   \"message\": \"Investimentos confirmados com sucesso\",\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "HTTP/1.1 500 Internal Server Error\n{\n   \"code\": 9999,\n   \"message\": \"Dados da requisição inválidos\",\n   \"errors\": [{\n     \"msg\": \"Invalid value\",\n     \"param\": \"cnpj\",\n     \"location\": \"body\"\n   }]\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "src/modules/investment/controller.js",
+    "groupTitle": "Investment"
+  },
+  {
+    "type": "post",
+    "url": "/investor/bank-account",
+    "title": "Create Bank Account",
+    "name": "CreateBankAccount",
+    "group": "Investor",
+    "version": "1.0.0",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "uuid",
+            "optional": false,
+            "field": "id_investor",
+            "description": "<p>investor ID</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "agency",
+            "description": "<p>Agency numer</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "account",
+            "description": "<p>Account number</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Request-Example:",
+          "content": "{\n    \"id_investor\": \"35bd3682-0a9f-42fa-a98e-24cba9e78729\",\n    \"agency\": \"1234\",\n    \"account\": \"1234567\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n{\n   \"code\": \"S0000\",\n   \"message\": \"Conta criada com sucesso\",\n   \"account\": [{\n     \"id\": \"1\",\n     \"id_investor\": \"35bd3682-0a9f-42fa-a98e-24cba9e78729\",\n     \"agency\": \"1234\",\n     \"account\": \"1234567\",\n     \"created_date\": \"2019-09-25T01:44:41.530Z\",\n     \"active\": true\n   }]\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "HTTP/1.1 500 Internal Server Error\n{\n   \"code\": 9999,\n   \"message\": \"Dados da requisição inválidos\",\n   \"errors\": [{\n     \"msg\": \"Invalid value\",\n     \"param\": \"cnpj\",\n     \"location\": \"body\"\n   }]\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "src/modules/investor-bank-account/controller.js",
+    "groupTitle": "Investor"
+  },
+  {
+    "type": "post",
+    "url": "/investor/document",
+    "title": "Create Documents",
+    "name": "CreateDocuments",
+    "group": "Investor",
+    "version": "1.0.0",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "params",
+            "description": "<p>Documents  Partner params em breve aqui</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Request-Example:",
+          "content": "{}",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n{\n   \"code\": \"S0000\",\n   \"message\": \"Documentos eviados com sucesso\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "HTTP/1.1 500 Internal Server Error\n{\n   \"code\": 9999,\n   \"message\": \"Dados da requisição inválidos\",\n   \"errors\": [{\n     \"msg\": \"Invalid value\",\n     \"param\": \"cnpj\",\n     \"location\": \"body\"\n   }]\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "src/modules/investor-document/controller.js",
+    "groupTitle": "Investor"
+  },
+  {
+    "type": "post",
+    "url": "/investor/phone",
+    "title": "Create Phone",
+    "name": "CreateInvestorPhone",
+    "group": "Investor",
+    "version": "1.0.0",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "uuid",
+            "optional": false,
+            "field": "id_investor",
+            "description": "<p>Investor ID</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "array",
+            "optional": false,
+            "field": "phones",
+            "description": "<p>Phones numbers</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Request-Example:",
+          "content": "{\n   \"id_investor\": \"eb76cd10-367b-447d-b238-fa8e9eef2a1f\",\n   \"phones\": [\"83988317864\"]\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n{\n   \"code\": \"S0000\",\n   \"message\": \"Telefone criado com sucesso\",\n   \"phone\": [{\n     \"id\": \"123\",\n     \"id_builder\": \"eb76cd10-367b-447d-b238-fa8e9eef2a1f\",\n     \"number\": \"83988317864\"\n   }]\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "HTTP/1.1 500 Internal Server Error\n{\n   \"code\": 9999,\n   \"message\": \"Dados da requisição inválidos\",\n   \"errors\": [{\n     \"msg\": \"Invalid value\",\n     \"param\": \"numero\",\n     \"location\": \"body\"\n   }]\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "src/modules/investor-phone/controller.js",
+    "groupTitle": "Investor"
+  },
+  {
+    "type": "post",
+    "url": "/investor",
+    "title": "Create",
+    "name": "Createinvestor",
+    "group": "Investor",
+    "version": "1.0.0",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "params",
+            "description": "<p>Investor params em breve aqui</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Request-Example:",
+          "content": "  {\n     \"investor\": {\n\t      \"id_user\": \"647ac188-62c8-4618-8a0a-be14174aac49\",\n\t      \"cpf\": \"06595512416\",\n\t      \"name\": \" Investidor Buildinvest\",\n\t      \"address_street\": \"Rua do investidor\",\n\t      \"address_number\": \"123\",\n\t      \"address_neighborhood\": \"Bairro do investidor\",\n\t      \"address_city\": \"Cidade do Investidor\",\n\t      \"address_state\": \"Estado do Investidor\",\n\t      \"address_country\": \"Pais do Investidor\",\n\t      \"address_cep\": \"58000000\"\n     },\n     \"phones\":[{\"number\":\"8332333333\"},{\"number\":\"8332344444\"}],\n     \"accounts\": [{\"agency\":\"1234\", \"account\":\"1234567\"}],\n     \"docs\": [[buffer], [buffer], [buffer]]\n  }",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n{\n   \"code\": 3000,\n   \"message\": \"Investidor criado com sucesso\",\n   \"investor\": {\n     \"id\": \"35bd3682-0a9f-42fa-a98e-24cba9e78729\",\n     \"id_user\": \"647ac188-62c8-4618-8a0a-be14174aac49\",\n     \"cpf\": \"06595512416\",\n     \"cnpj\": null,\n     \"name\": \" Investidor Buildinvest\",\n     \"company_name\": null,\n     \"address_street\": \"Rua do investidor\",\n     \"address_number\": \"123\",\n     \"address_neighborhood\": \"Bairro do investidor\",\n     \"address_city\": \"Cidade do Investidor\",\n     \"address_state\": \"Estado do Investidor\",\n     \"address_country\": \"Pais do Investidor\",\n     \"address_cep\": \"58000000\",\n     \"created_date\": \"2019-09-25T01:44:40.034Z\",\n     \"active\": true\n   }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "HTTP/1.1 500 Internal Server Error\n{\n   \"code\": 9999,\n   \"message\": \"Dados da requisição inválidos\",\n   \"errors\": [{\n     \"msg\": \"Invalid value\",\n     \"param\": \"cnpj\",\n     \"location\": \"body\"\n   }]\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "src/modules/investor/controller.js",
+    "groupTitle": "Investor"
+  },
+  {
+    "type": "delete",
+    "url": "/investor/:id/bank-account",
+    "title": "Delete Bank Account",
+    "name": "DeleteBankAccount",
+    "group": "Investor",
+    "version": "1.0.0",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "uuid",
+            "optional": false,
+            "field": "ID",
+            "description": "<p>Bank Account ID</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n{\n   \"code\": \"S0000\",\n   \"message\": \"Conta deletada com sucesso\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "HTTP/1.1 500 Internal Server Error\n{\n   \"code\": 9999,\n   \"message\": \"Dados da requisição inválidos\",\n   \"errors\": [{\n     \"msg\": \"Invalid value\",\n     \"param\": \"id\",\n     \"location\": \"body\"\n   }]\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "src/modules/investor-bank-account/controller.js",
+    "groupTitle": "Investor"
+  },
+  {
+    "type": "delete",
+    "url": "/investor/phone/:id",
+    "title": "Delete Phone",
+    "name": "DeleteInvestorPhone",
+    "group": "Investor",
+    "version": "1.0.0",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "uuid",
+            "optional": false,
+            "field": "ID",
+            "description": "<p>Investor Phone ID</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n{\n   \"code\": \"S0000\",\n   \"message\": \"Telefone deletado com sucesso\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "HTTP/1.1 500 Internal Server Error\n{\n   \"code\": 9999,\n   \"message\": \"Dados da requisição inválidos\",\n   \"errors\": [{\n     \"msg\": \"Invalid value\",\n     \"param\": \"id\",\n     \"location\": \"body\"\n   }]\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "src/modules/investor-phone/controller.js",
+    "groupTitle": "Investor"
+  },
+  {
+    "type": "get",
+    "url": "/investor/:id",
+    "title": "Get (By ID)",
+    "name": "GetInvestor",
+    "group": "Investor",
+    "version": "1.0.0",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "uuid",
+            "optional": false,
+            "field": "ID",
+            "description": "<p>Investor ID</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n{\n   \"email\": \"buildinvest@admin.com\",\n   \"username\": \"Buildinvest Admin\",\n   \"id\": \"35bd3682-0a9f-42fa-a98e-24cba9e78729\",\n   \"id_user\": \"647ac188-62c8-4618-8a0a-be14174aac49\",\n   \"cpf\": \"06595512416\",\n   \"cnpj\": null,\n   \"name\": \" Investidor Buildinvest\",\n   \"company_name\": null,\n   \"address_street\": \"Rua do investidor\",\n   \"address_number\": \"123\",\n   \"address_neighborhood\": \"Bairro do investidor\",\n   \"address_city\": \"Cidade do Investidor\",\n   \"address_state\": \"Estado do Investidor\",\n   \"address_country\": \"Pais do Investidor\",\n   \"address_cep\": \"58000000\",\n   \"created_date\": \"2019-09-25T01:44:40.034Z\",\n   \"active\": true,\n   \"phones\": [\n     {\n        \"id\": \"1\",\n        \"id_investor\": \"35bd3682-0a9f-42fa-a98e-24cba9e78729\",\n        \"number\": \"8332333333\"\n     },\n     {\n        \"id\": \"2\",\n        \"id_investor\": \"35bd3682-0a9f-42fa-a98e-24cba9e78729\",\n        \"number\": \"8332344444\"\n     }\n   ],\n   \"accounts\": [\n     {\n        \"id\": \"1\",\n        \"id_investor\": \"35bd3682-0a9f-42fa-a98e-24cba9e78729\",\n        \"agency\": \"1234\",\n        \"account\": \"1234567\",\n        \"created_date\": \"2019-09-25T01:44:41.530Z\",\n        \"active\": true\n     }\n   ]\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "HTTP/1.1 500 Internal Server Error\n{\n   \"code\": 9999,\n   \"message\": \"Dados da requisição inválidos\",\n   \"errors\": [{\n     \"msg\": \"Invalid value\",\n     \"param\": \"id\",\n     \"location\": \"body\"\n   }]\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "src/modules/investor/controller.js",
+    "groupTitle": "Investor"
+  },
+  {
+    "type": "get",
+    "url": "/investor/:id/bank-account",
+    "title": "Get Bank Account (By Investor ID)",
+    "name": "GetInvestorBankAccount",
+    "group": "Investor",
+    "version": "1.0.0",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "uuid",
+            "optional": false,
+            "field": "ID",
+            "description": "<p>Investor ID</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n[{\n    \"id\": \"1\",\n    \"id_investor\": \"35bd3682-0a9f-42fa-a98e-24cba9e78729\",\n    \"agency\": \"1234\",\n    \"account\": \"1234567\",\n    \"created_date\": \"2019-09-25T01:44:41.530Z\",\n    \"active\": true\n}]",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "HTTP/1.1 500 Internal Server Error\n{\n   \"code\": 9999,\n   \"message\": \"Dados da requisição inválidos\",\n   \"errors\": [{\n     \"msg\": \"Invalid value\",\n     \"param\": \"id\",\n     \"location\": \"body\"\n   }]\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "src/modules/investor-bank-account/controller.js",
+    "groupTitle": "Investor"
+  },
+  {
+    "type": "get",
+    "url": "/investor/user/:id",
+    "title": "Get (By User ID)",
+    "name": "GetInvestorByUserId",
+    "group": "Investor",
+    "version": "1.0.0",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "uuid",
+            "optional": false,
+            "field": "ID",
+            "description": "<p>User ID</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n{\n   \"email\": \"buildinvest@admin.com\",\n   \"username\": \"Buildinvest Admin\",\n   \"id\": \"35bd3682-0a9f-42fa-a98e-24cba9e78729\",\n   \"id_user\": \"647ac188-62c8-4618-8a0a-be14174aac49\",\n   \"cpf\": \"06595512416\",\n   \"cnpj\": null,\n   \"name\": \" Investidor Buildinvest\",\n   \"company_name\": null,\n   \"address_street\": \"Rua do investidor\",\n   \"address_number\": \"123\",\n   \"address_neighborhood\": \"Bairro do investidor\",\n   \"address_city\": \"Cidade do Investidor\",\n   \"address_state\": \"Estado do Investidor\",\n   \"address_country\": \"Pais do Investidor\",\n   \"address_cep\": \"58000000\",\n   \"created_date\": \"2019-09-25T01:44:40.034Z\",\n   \"active\": true,\n   \"phones\": [\n     {\n        \"id\": \"1\",\n        \"id_investor\": \"35bd3682-0a9f-42fa-a98e-24cba9e78729\",\n        \"number\": \"8332333333\"\n     },\n     {\n        \"id\": \"2\",\n        \"id_investor\": \"35bd3682-0a9f-42fa-a98e-24cba9e78729\",\n        \"number\": \"8332344444\"\n     }\n   ],\n   \"accounts\": [\n     {\n        \"id\": \"1\",\n        \"id_investor\": \"35bd3682-0a9f-42fa-a98e-24cba9e78729\",\n        \"agency\": \"1234\",\n        \"account\": \"1234567\",\n        \"created_date\": \"2019-09-25T01:44:41.530Z\",\n        \"active\": true\n     }\n   ]\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "HTTP/1.1 500 Internal Server Error\n{\n   \"code\": 9999,\n   \"message\": \"Dados da requisição inválidos\",\n   \"errors\": [{\n     \"msg\": \"Invalid value\",\n     \"param\": \"id\",\n     \"location\": \"body\"\n   }]\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "src/modules/investor/controller.js",
+    "groupTitle": "Investor"
+  },
+  {
+    "type": "get",
+    "url": "/investor/:id/document",
+    "title": "Get Documents (By Investor ID)",
+    "name": "GetInvestorDocuments",
+    "group": "Investor",
+    "version": "1.0.0",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "uuid",
+            "optional": false,
+            "field": "ID",
+            "description": "<p>Investor ID</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n[\n   {\n      \"id\": 1,\n      \"id_investor\": \"35bd3682-0a9f-42fa-a98e-24cba9e78729\",\n      \"url\": \"https://storage.googleapis.com/buildinvest/documents/545121513535151311.png\"\n      \"order\": 1\n   },\n   {\n      \"id\": 2,\n      \"id_investor\": \"35bd3682-0a9f-42fa-a98e-24cba9e78729\",\n      \"url\": \"https://storage.googleapis.com/buildinvest/documents/545121513535151312.png\"\n      \"order\": 2\n   },\n   {\n      \"id\": 3,\n      \"id_investor\": \"35bd3682-0a9f-42fa-a98e-24cba9e78729\",\n      \"url\": \"https://storage.googleapis.com/buildinvest/documents/545121513535151313.png\"\n      \"order\": 3\n   }\n]",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "HTTP/1.1 500 Internal Server Error\n{\n   \"code\": 9999,\n   \"message\": \"Dados da requisição inválidos\",\n   \"errors\": [{\n     \"msg\": \"Invalid value\",\n     \"param\": \"id\",\n     \"location\": \"body\"\n   }]\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "src/modules/investor-document/controller.js",
+    "groupTitle": "Investor"
+  },
+  {
+    "type": "get",
+    "url": "/investor/:id/phone",
+    "title": "Get Phone (By Investor ID)",
+    "name": "GetInvestorPhone",
+    "group": "Investor",
+    "version": "1.0.0",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "uuid",
+            "optional": false,
+            "field": "ID",
+            "description": "<p>Investor ID</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n[{\n   \"id\": 1,\n   \"id_investor\": \"eb76cd10-367b-447d-b238-fa8e9eef2a1f\",\n   \"number\": \"83988317864\"\n}]",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "HTTP/1.1 500 Internal Server Error\n{\n   \"code\": 9999,\n   \"message\": \"Dados da requisição inválidos\",\n   \"errors\": [{\n     \"msg\": \"Invalid value\",\n     \"param\": \"id\",\n     \"location\": \"body\"\n   }]\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "src/modules/investor-phone/controller.js",
+    "groupTitle": "Investor"
+  },
+  {
+    "type": "get",
+    "url": "/investor",
+    "title": "Get all",
+    "name": "GetInvestors",
+    "group": "Investor",
+    "version": "1.0.0",
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n[{\n    \"id\": \"35bd3682-0a9f-42fa-a98e-24cba9e78729\",\n    \"id_user\": \"647ac188-62c8-4618-8a0a-be14174aac49\",\n    \"cpf\": \"06595512416\",\n    \"cnpj\": null,\n    \"name\": \" Investidor Buildinvest\",\n    \"company_name\": null,\n    \"address_street\": \"Rua do investidor\",\n    \"address_number\": \"123\",\n    \"address_neighborhood\": \"Bairro do investidor\",\n    \"address_city\": \"Cidade do Investidor\",\n    \"address_state\": \"Estado do Investidor\",\n    \"address_country\": \"Pais do Investidor\",\n    \"address_cep\": \"58000000\",\n    \"created_date\": \"2019-09-25T01:44:40.034Z\",\n    \"active\": true\n}]",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "HTTP/1.1 500 Internal Server Error\n  {\n     \"code\": 9999,\n     \"message\": \"Requisição inválida\",\n     \"errors\": [{}]\n  }",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "src/modules/investor/controller.js",
+    "groupTitle": "Investor"
+  },
+  {
+    "type": "put",
+    "url": "/investor/document",
+    "title": "Resend Documents",
+    "name": "ResendDocuments",
+    "group": "Investor",
+    "version": "1.0.0",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "params",
+            "description": "<p>Documents  Partner params em breve aqui</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Request-Example:",
+          "content": "{}",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n{\n   \"code\": \"S0000\",\n   \"message\": \"Documentos eviados com sucesso\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "HTTP/1.1 500 Internal Server Error\n{\n   \"code\": 9999,\n   \"message\": \"Dados da requisição inválidos\",\n   \"errors\": [{\n     \"msg\": \"Invalid value\",\n     \"param\": \"id\",\n     \"location\": \"body\"\n   }]\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "src/modules/investor-document/controller.js",
+    "groupTitle": "Investor"
   },
   {
     "type": "post",
@@ -1315,14 +2484,7 @@
             "description": "<p>User ID</p>"
           }
         ]
-      },
-      "examples": [
-        {
-          "title": "Request-Example:",
-          "content": "{\n   \"id\": eb76cd10-367b-447d-b238-fa8e9eef2a1f\n}",
-          "type": "json"
-        }
-      ]
+      }
     },
     "success": {
       "examples": [

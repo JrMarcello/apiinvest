@@ -56,10 +56,6 @@ export const getAll = async (request, response) => {
  * @apiVersion 1.0.0
  *
  * @apiParam {uuid} ID Building ID
- * @apiParamExample {json} Request-Example:
- *   {
- *      "id": eb76cd10-367b-447d-b238-fa8e9eef2a1f
- *   }
  *
  * @apiSuccessExample Success-Response:
  *   HTTP/1.1 200 OK
@@ -115,10 +111,6 @@ export const getById = async (request, response) => {
  * @apiVersion 1.0.0
  *
  * @apiParam {uuid} ID Builder ID
- * @apiParamExample {json} Request-Example:
- *   {
- *      "id": eb76cd10-367b-447d-b238-fa8e9eef2a1f
- *   }
  *
  * @apiSuccessExample Success-Response:
  *   HTTP/1.1 200 OK

@@ -14,7 +14,7 @@ import * as repository from './repository'
  *   HTTP/1.1 200 OK
  *   [{
  *      "id": 1,
- *      "id_builder": "eb76cd10-367b-447d-b238-fa8e9eef2a1f",
+ *      "id_investor": "eb76cd10-367b-447d-b238-fa8e9eef2a1f",
  *      "number": "83988317864"
  *   }]
  *
