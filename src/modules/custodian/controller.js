@@ -10,11 +10,15 @@ import * as repository from './repository'
  *
  * @apiSuccessExample Success-Response:
  *   HTTP/1.1 200 OK
- *   {
- *      [
- *
- *      ]
- *   }
+ *   [{
+ *       "id": "647ac188-62c8-4618-8a0a-be14174aac49",
+ *       "cnpj": "34096667000151",
+ *       "company_name": "Custodiadora Default SA",
+ *       "company_fancy_name": "Custodiadora Default",
+ *       "phone": "8333334444",
+ *       "create_date": "2019-09-24T04:29:51.726Z",
+ *       "active": true
+ *   }]
  *
  * @apiErrorExample Error-Response:
  *   HTTP/1.1 500 Internal Server Error
@@ -41,15 +45,17 @@ export const getAll = async (request, response) => {
  * @apiVersion 1.0.0
  *
  * @apiParam {uuid} ID Custodian ID
- * @apiParamExample {json} Request-Example:
- *   {
- *      "id": eb76cd10-367b-447d-b238-fa8e9eef2a1f
- *   }
  *
  * @apiSuccessExample Success-Response:
  *   HTTP/1.1 200 OK
  *   {
- *
+ *      "id": "647ac188-62c8-4618-8a0a-be14174aac49",
+ *      "cnpj": "34096667000151",
+ *      "company_name": "Custodiadora Default SA",
+ *      "company_fancy_name": "Custodiadora Default",
+ *      "phone": "8333334444",
+ *      "create_date": "2019-09-24T04:29:51.726Z",
+ *      "active": true
  *   }
  *
  * @apiErrorExample Error-Response:
@@ -80,11 +86,17 @@ export const getById = async (request, response) => {
  * @apiGroup Custodian
  * @apiVersion 1.0.0
  *
- * @apiParam {string} params Custodian params em breve aqui
+ * @apiParam {string} cnpj Custodian cnpj
+ * @apiParam {string} company_name Custodian company name
+ * @apiParam {string} company_fancy_name Custodian company fancy name
+ * @apiParam {string} phone Custodian phone
  *
  * @apiParamExample {json} Request-Example:
  *   {
- *
+ *      "cnpj": "34096667000151",
+ *      "company_name": "Custodiadora Default SA",
+ *      "company_fancy_name": "Custodiadora Default",
+ *      "phone": "8333334444"
  *   }
  *
  * @apiSuccessExample Success-Response:
@@ -92,7 +104,15 @@ export const getById = async (request, response) => {
  *   {
  *      "code": "S0000",
  *      "message": "Custodiadora criada com sucesso",
- *      "builder": [{}]
+ *      "builder": [{
+ *        "id": "647ac188-62c8-4618-8a0a-be14174aac49",
+ *        "cnpj": "34096667000151",
+ *        "company_name": "Custodiadora Default SA",
+ *        "company_fancy_name": "Custodiadora Default",
+ *        "phone": "8333334444",
+ *        "create_date": "2019-09-24T04:29:51.726Z",
+ *        "active": true
+ *      }]
  *   }
  *
  * @apiErrorExample Error-Response:
@@ -125,11 +145,19 @@ export const create = async (request, response) => {
  * @apiGroup Custodian
  * @apiVersion 1.0.0
  *
- * @apiParam {string} params Custodian params em breve
+ * @apiParam {uuid} ID Custodian ID
+ * @apiParam {string} cnpj Custodian cnpj
+ * @apiParam {string} company_name Custodian company name
+ * @apiParam {string} company_fancy_name Custodian company fancy name
+ * @apiParam {string} phone Custodian phone
  *
  * @apiParamExample {json} Request-Example:
  *   {
- *
+ *      "id": "647ac188-62c8-4618-8a0a-be14174aac49",
+ *      "cnpj": "34096667000151",
+ *      "company_name": "Custodiadora Default SA",
+ *      "company_fancy_name": "Custodiadora Default",
+ *      "phone": "8333334444"
  *   }
  *
  * @apiSuccessExample Success-Response:
@@ -169,12 +197,8 @@ export const update = async (request, response) => {
  * @apiGroup Custodian
  * @apiVersion 1.0.0
  *
- * @apiParamExample {json} Request-Example:
- *   {
- *      "id": eb76cd10-367b-447d-b238-fa8e9eef2a1f
- *   }
- *
  * @apiParam {uuid} ID Custodian ID
+ *
  * @apiSuccessExample Success-Response:
  *   HTTP/1.1 200 OK
  *   {
