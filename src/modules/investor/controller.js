@@ -3,9 +3,38 @@ import constants from '@common/constants'
 import * as repository from './repository'
 
 /**
- * @param {Object} request - HTTP request
- * @param {Object} response - HTTP response
- * @returns {Object} HTTP response with status code and data
+ * @api {get} /investor Get all
+ * @apiName GetInvestors
+ * @apiGroup Investor
+ * @apiVersion 1.0.0
+ *
+ * @apiSuccessExample Success-Response:
+ *   HTTP/1.1 200 OK
+ *   [{
+ *       "id": "35bd3682-0a9f-42fa-a98e-24cba9e78729",
+ *       "id_user": "647ac188-62c8-4618-8a0a-be14174aac49",
+ *       "cpf": "06595512416",
+ *       "cnpj": null,
+ *       "name": " Investidor Buildinvest",
+ *       "company_name": null,
+ *       "address_street": "Rua do investidor",
+ *       "address_number": "123",
+ *       "address_neighborhood": "Bairro do investidor",
+ *       "address_city": "Cidade do Investidor",
+ *       "address_state": "Estado do Investidor",
+ *       "address_country": "Pais do Investidor",
+ *       "address_cep": "58000000",
+ *       "created_date": "2019-09-25T01:44:40.034Z",
+ *       "active": true
+ *   }]
+ *
+ * @apiErrorExample Error-Response:
+ *   HTTP/1.1 500 Internal Server Error
+ *     {
+ *        "code": 9999,
+ *        "message": "Requisição inválida",
+ *        "errors": [{}]
+ *     }
  */
 export const getAll = async (request, response) => {
   try {
@@ -18,9 +47,72 @@ export const getAll = async (request, response) => {
 }
 
 /**
- * @param {Object} request - HTTP request
- * @param {Object} response - HTTP response
- * @returns {Object} HTTP response with status code and data
+ * @api {get} /investor/:id Get (By ID)
+ * @apiName GetInvestor
+ * @apiGroup Investor
+ * @apiVersion 1.0.0
+ *
+ * @apiParam {uuid} ID Investor ID
+ * @apiParamExample {json} Request-Example:
+ *   {
+ *      "id": 35bd3682-0a9f-42fa-a98e-24cba9e78729
+ *   }
+ *
+ * @apiSuccessExample Success-Response:
+ *   HTTP/1.1 200 OK
+ *   {
+ *      "email": "buildinvest@admin.com",
+ *      "username": "Buildinvest Admin",
+ *      "id": "35bd3682-0a9f-42fa-a98e-24cba9e78729",
+ *      "id_user": "647ac188-62c8-4618-8a0a-be14174aac49",
+ *      "cpf": "06595512416",
+ *      "cnpj": null,
+ *      "name": " Investidor Buildinvest",
+ *      "company_name": null,
+ *      "address_street": "Rua do investidor",
+ *      "address_number": "123",
+ *      "address_neighborhood": "Bairro do investidor",
+ *      "address_city": "Cidade do Investidor",
+ *      "address_state": "Estado do Investidor",
+ *      "address_country": "Pais do Investidor",
+ *      "address_cep": "58000000",
+ *      "created_date": "2019-09-25T01:44:40.034Z",
+ *      "active": true,
+ *      "phones": [
+ *        {
+ *           "id": "1",
+ *           "id_investor": "35bd3682-0a9f-42fa-a98e-24cba9e78729",
+ *           "number": "8332333333"
+ *        },
+ *        {
+ *           "id": "2",
+ *           "id_investor": "35bd3682-0a9f-42fa-a98e-24cba9e78729",
+ *           "number": "8332344444"
+ *        }
+ *      ],
+ *      "accounts": [
+ *        {
+ *           "id": "1",
+ *           "id_investor": "35bd3682-0a9f-42fa-a98e-24cba9e78729",
+ *           "agency": "1234",
+ *           "account": "1234567",
+ *           "created_date": "2019-09-25T01:44:41.530Z",
+ *           "active": true
+ *        }
+ *      ]
+ *   }
+ *
+ * @apiErrorExample Error-Response:
+ *   HTTP/1.1 500 Internal Server Error
+ *   {
+ *      "code": 9999,
+ *      "message": "Dados da requisição inválidos",
+ *      "errors": [{
+ *        "msg": "Invalid value",
+ *        "param": "id",
+ *        "location": "body"
+ *      }]
+ *   }
  */
 export const getById = async (request, response) => {
   try {
@@ -33,9 +125,72 @@ export const getById = async (request, response) => {
 }
 
 /**
- * @param {Object} request - HTTP request
- * @param {Object} response - HTTP response
- * @returns {Object} HTTP response with status code and data
+ * @api {get} /investor/user/:id Get (By User ID)
+ * @apiName GetInvestorByUserId
+ * @apiGroup Investor
+ * @apiVersion 1.0.0
+ *
+ * @apiParam {uuid} ID User ID
+ * @apiParamExample {json} Request-Example:
+ *   {
+ *      "id": 35bd3682-0a9f-42fa-a98e-24cba9e78729
+ *   }
+ *
+ * @apiSuccessExample Success-Response:
+ *   HTTP/1.1 200 OK
+ *   {
+ *      "email": "buildinvest@admin.com",
+ *      "username": "Buildinvest Admin",
+ *      "id": "35bd3682-0a9f-42fa-a98e-24cba9e78729",
+ *      "id_user": "647ac188-62c8-4618-8a0a-be14174aac49",
+ *      "cpf": "06595512416",
+ *      "cnpj": null,
+ *      "name": " Investidor Buildinvest",
+ *      "company_name": null,
+ *      "address_street": "Rua do investidor",
+ *      "address_number": "123",
+ *      "address_neighborhood": "Bairro do investidor",
+ *      "address_city": "Cidade do Investidor",
+ *      "address_state": "Estado do Investidor",
+ *      "address_country": "Pais do Investidor",
+ *      "address_cep": "58000000",
+ *      "created_date": "2019-09-25T01:44:40.034Z",
+ *      "active": true,
+ *      "phones": [
+ *        {
+ *           "id": "1",
+ *           "id_investor": "35bd3682-0a9f-42fa-a98e-24cba9e78729",
+ *           "number": "8332333333"
+ *        },
+ *        {
+ *           "id": "2",
+ *           "id_investor": "35bd3682-0a9f-42fa-a98e-24cba9e78729",
+ *           "number": "8332344444"
+ *        }
+ *      ],
+ *      "accounts": [
+ *        {
+ *           "id": "1",
+ *           "id_investor": "35bd3682-0a9f-42fa-a98e-24cba9e78729",
+ *           "agency": "1234",
+ *           "account": "1234567",
+ *           "created_date": "2019-09-25T01:44:41.530Z",
+ *           "active": true
+ *        }
+ *      ]
+ *   }
+ *
+ * @apiErrorExample Error-Response:
+ *   HTTP/1.1 500 Internal Server Error
+ *   {
+ *      "code": 9999,
+ *      "message": "Dados da requisição inválidos",
+ *      "errors": [{
+ *        "msg": "Invalid value",
+ *        "param": "id",
+ *        "location": "body"
+ *      }]
+ *   }
  */
 export const getByUserId = async (request, response) => {
   try {
