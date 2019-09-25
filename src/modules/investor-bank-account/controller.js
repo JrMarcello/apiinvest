@@ -49,7 +49,9 @@ export const getByInvestorId = async (request, response) => {
  * @apiGroup Investor
  * @apiVersion 1.0.0
  *
- * @apiParam {string} params BankAccount Partner params em breve aqui
+ * @apiParam {uuid} id_investor investor ID
+ * @apiParam {string} agency Agency numer
+ * @apiParam {string} account Account number
  *
  * @apiParamExample {json} Request-Example:
  *   {
