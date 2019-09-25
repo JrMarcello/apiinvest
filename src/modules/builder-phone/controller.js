@@ -9,15 +9,11 @@ import * as repository from './repository'
  * @apiVersion 1.0.0
  *
  * @apiParam {uuid} ID Builder ID
- * @apiParamExample {json} Request-Example:
- *   {
- *      "id": "eb76cd10-367b-447d-b238-fa8e9eef2a1f"
- *   }
  *
  * @apiSuccessExample Success-Response:
  *   HTTP/1.1 200 OK
  *   [{
- *      "id": "123",
+ *      "id": 123,
  *      "id_builder": "eb76cd10-367b-447d-b238-fa8e9eef2a1f",
  *      "number": "83988317864"
  *   }]
@@ -50,12 +46,13 @@ export const getByBuilderId = async (request, response) => {
  * @apiGroup Builder
  * @apiVersion 1.0.0
  *
- * @apiParam {string} params Builder Phone params em breve aqui
+ * @apiParam {uuid} id_builder Builder ID
+ * @apiParam {array} phones Phones numbers
  *
  * @apiParamExample {json} Request-Example:
  *   {
  *      "id_builder": "eb76cd10-367b-447d-b238-fa8e9eef2a1f",
- *      "number": "83988317864"
+ *      "phones": ["83988317864"]
  *   }
  *
  * @apiSuccessExample Success-Response:
@@ -100,12 +97,8 @@ export const create = async (request, response) => {
  * @apiGroup Builder
  * @apiVersion 1.0.0
  *
- * @apiParamExample {json} Request-Example:
- *   {
- *      "id": eb76cd10-367b-447d-b238-fa8e9eef2a1f
- *   }
- *
  * @apiParam {uuid} ID Builder Phone ID
+ *
  * @apiSuccessExample Success-Response:
  *   HTTP/1.1 200 OK
  *   {
