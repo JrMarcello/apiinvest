@@ -23,13 +23,13 @@ export const getAll = () => {
  * @param {Interger} id - Investment ID
  * @returns {Promisse} - Returns a Promisse
  */
-export const getById = id => {
-  return db
+export const getById = async id => {
+  return (await db
     .select()
     .from(table)
     .where('id', id)
     .and('active', true)
-    .run()
+    .run())[0]
 }
 
 /**
