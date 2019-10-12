@@ -1,17 +1,17 @@
 import express from 'express'
 import * as controller from './controller'
-import * as validator from './validator'
+import validations from './validations'
 
 const router = express.Router()
 const USER_BASE_PAH = '/user'
 
 export default () => {
-  router.get(USER_BASE_PAH, validator.getAll(), controller.getAll) // REMOVER QUANDO EM PRODUCAO
-  router.get(`${USER_BASE_PAH}/:id`, validator.getById(), controller.getById)
-  router.post(USER_BASE_PAH, validator.create(), controller.create)
-  router.put(USER_BASE_PAH, validator.update(), controller.update)
-  router.delete(`${USER_BASE_PAH}/:id`, validator.remove(), controller.remove)
-  router.post(`${USER_BASE_PAH}/login`, validator.login(), controller.login)
+  router.get(USER_BASE_PAH, validations.getAll, controller.getAll)
+  router.get(`${USER_BASE_PAH}/:id`, validations.getById, controller.getById)
+  router.post(USER_BASE_PAH, validations.create, controller.create)
+  router.put(USER_BASE_PAH, validations.update, controller.update)
+  router.delete(`${USER_BASE_PAH}/:id`, validations.remove, controller.remove)
+  router.post(`${USER_BASE_PAH}/login`, validations.login, controller.login)
 
   return router
 }

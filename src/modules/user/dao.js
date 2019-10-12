@@ -2,7 +2,7 @@ import db from '@core/database'
 import { generateUUID } from '@common/utils'
 import bcrypt from 'bcrypt'
 
-const table = 'user'
+const table = '"user"'
 
 /**
  *  Find all Users
@@ -44,6 +44,21 @@ export const getByEmail = async email => {
     .select()
     .from(table)
     .where('email', email)
+    .and('active', true)
+    .run())[0]
+}
+
+/**
+ * Find User Profile by ID
+ *
+ * @param {Interger} id - Profile ID
+ * @returns {Promisse} - Returns a Promisse
+ */
+export const getProfile = async id => {
+  return (await db
+    .select()
+    .from('profile')
+    .where('id', id)
     .and('active', true)
     .run())[0]
 }

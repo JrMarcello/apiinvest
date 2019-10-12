@@ -1,5 +1,5 @@
 import express from 'express'
-import { checkAuth } from '@core/auth'
+import { checkAuth } from '@core/middlewares/auth'
 import multer from '@core/multer'
 import * as controller from './controller'
 

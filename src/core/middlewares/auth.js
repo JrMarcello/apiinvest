@@ -11,10 +11,6 @@ export const getToken = payload => jwt.sign(payload, env().SECRET_KEY, { algorit
 
 /**
  * Middiware to check if token is valid
- *
- * @param {*} req -
- * @param {*} res -
- * @param {*} next -
  */
 export const checkAuth = async (req, res, next) => {
   if (!req.headers || !req.headers.authorization) return res.status(401).send(constants.auth.error.UNAUTHORIZED)
@@ -24,6 +20,7 @@ export const checkAuth = async (req, res, next) => {
   if (!token) return res.status(401).send(constants.auth.error.UNAUTHORIZED)
 
   req.user = await jwt.verify(token, env().SECRET_KEY)
+  console.log(req.user)
 
   return next()
 }
