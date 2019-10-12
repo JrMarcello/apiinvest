@@ -1,6 +1,6 @@
 import bcrypt from 'bcrypt'
 import constants from '@common/constants'
-import { getToken } from '@core/auth'
+import { getToken } from '@core/middlewares/auth'
 import * as investor from '@modules/investor/repository'
 import * as builder from '@modules/builder/repository'
 import * as dao from './dao'
@@ -24,15 +24,15 @@ export const getAll = async params => {
 export const getById = async id => {
   const user = await dao.getById(id)
 
-  if (user && user.profile === 1) {
+  if (user && user.id_profile === 1) {
     user.investor = await investor.getByUserId(user.id)
   }
 
-  if (user && user.profile === 2) {
+  if (user && user.id_profile === 2) {
     user.builder = await builder.getByUserId(user.id)
   }
 
-  if (user && user.profile === 3) {
+  if (user && user.id_profile === 3) {
     user.investor = await investor.getByUserId(user.id)
     user.builder = await builder.getByUserId(user.id)
   }
@@ -87,6 +87,8 @@ export const login = async params => {
 
   if (!user || !bcrypt.compareSync(params.password, user.password))
     throw Error(constants.user.error.INVALID_USER_LOGIN.message)
+
+  user.profile = await dao.getProfile(user.id_profile)
 
   return getToken(user)
 }

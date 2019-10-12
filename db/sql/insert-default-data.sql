@@ -6,7 +6,7 @@ INSERT INTO "profile"
 	(name)
 VALUES
 	('Investidor'),
-	('Contrutor'),
+	('Construtor'),
 	('Admin');
 
 INSERT INTO "user" (
