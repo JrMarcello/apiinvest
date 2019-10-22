@@ -58,13 +58,13 @@ export const create = async data => {
   if (!data.investor || data.investor.length === 0) throw Error('Informe seus dados')
   if (!data.phones || data.phones.length === 0) throw Error('Informe pelo menos 1 telefone')
   if (!data.accounts || data.accounts.length === 0) throw Error('Informe pelo menos 1 conta bancária')
-  if (!data.files || data.files.length === 0) throw Error('Envie fotos dos seu documento e comprovante de residência')
-  if (data.files && data.files.length !== 3) throw Error('Numeros de fotos inválido')
+  // if (!data.files || data.files.length === 0) throw Error('Envie fotos dos seu documento e comprovante de residência')
+  // if (data.files && data.files.length !== 3) throw Error('Numeros de fotos inválido')
 
   const investor = await dao.create(data.investor)
   await phone.create({ id_investor: investor.id, phones: data.phones })
   await bankAccount.create({ id_investor: investor.id, accounts: data.accounts })
-  await document.create({ id_investor: investor.id, files: data.files })
+  // await document.create({ id_investor: investor.id, files: data.files })
 
   return investor
 }

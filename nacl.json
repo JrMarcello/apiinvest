@@ -1,24 +1,4 @@
 [{
-    "group": "Investidor",
-    "permissions": [
-      {
-        "resource": "user/*",
-        "methods": "*",
-        "action": "allow"
-      },
-      {
-        "resource": "investment",
-        "methods": "*",
-        "action": "allow"
-      },
-      {
-        "resource": "building",
-        "methods": "*",
-        "action": "allow"
-      }
-    ]
-  },
-  {
     "group": "Construtor",
     "permissions": [
       {
@@ -30,6 +10,26 @@
   },
   {
     "group": "Admin",
+    "permissions": [
+      {
+            "resource": "*",
+            "methods": "*",
+            "action": "allow"
+      }
+    ]
+  },
+  {
+    "group": "Investidor",
+    "permissions": [
+      {
+            "resource": "*",
+            "methods": "*",
+            "action": "allow"
+      }
+    ]
+  },
+  {
+    "group": "Construtor",
     "permissions": [
       {
             "resource": "*",
