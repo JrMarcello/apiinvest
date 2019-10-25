@@ -20,7 +20,6 @@ export const checkAuth = async (req, res, next) => {
   if (!token) return res.status(401).send(constants.auth.error.UNAUTHORIZED)
 
   req.user = await jwt.verify(token, env().SECRET_KEY)
-  console.log(req.user)
 
   return next()
 }
