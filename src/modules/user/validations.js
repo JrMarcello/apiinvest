@@ -60,7 +60,7 @@ const schemas = {
 export default {
   getAll: [checkAuth /* acl.authorize */, validate(schemas.getAll)],
   getById: [checkAuth /* acl.authorize */, validate(schemas.getById)],
-  create: [checkAuth /* acl.authorize */, validate(schemas.create)],
+  create: [/* acl.authorize */ validate(schemas.create)],
   update: [checkAuth /* acl.authorize */, validate(schemas.update)],
   remove: [checkAuth /* acl.authorize */, validate(schemas.remove)],
   login: [validate(schemas.login)]
