@@ -9,8 +9,8 @@ export default () => {
   router.get(USER_BASE_PAH, validations.getAll, controller.getAll)
   router.get(`${USER_BASE_PAH}/:id`, validations.getById, controller.getById)
   router.post(USER_BASE_PAH, validations.create, controller.create)
-  router.put(USER_BASE_PAH, validations.update, controller.update)
-  router.delete(`${USER_BASE_PAH}/:id`, validations.remove, controller.remove)
+  // router.put(USER_BASE_PAH, validations.update, controller.update)
+  // router.delete(`${USER_BASE_PAH}/:id`, validations.remove, controller.remove)
   router.post(`${USER_BASE_PAH}/login`, validations.login, controller.login)
 
   return router

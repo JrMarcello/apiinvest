@@ -63,8 +63,12 @@ export const getPendings = async params => {
 export const create = async data => {
   const investor = await getInvestor(data.id_investor)
 
-  if (!investor || !investorIsEnableToInvestments(investor)) {
+  if (!investor) {
     throw Error('Complete seu cadastro para começar a investir')
+  }
+
+  if (env().BLACK_LIST.includes(investor.cpf) || env().BLACK_LIST.includes(investor.cnpj)) {
+    throw Error('Socios não podem realizar investimentos')
   }
 
   const investment = await dao.create(data)
@@ -72,11 +76,6 @@ export const create = async data => {
   mailer.sendEmail(getEmailParams(investor))
 
   return investment
-}
-
-const investorIsEnableToInvestments = investor => {
-  // TODO
-  return !!investor
 }
 
 const getEmailParams = investor => {
