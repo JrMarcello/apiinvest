@@ -57,13 +57,11 @@ export const create = data => {
  * @returns {Promisse} - Returns a Promisse
  */
 export const update = data => {
-  const updateble = {
+  return dao.update({
     id: data.id,
     username: data.username,
     password: data.password
-  }
-
-  return dao.update(updateble)
+  })
 }
 
 /**

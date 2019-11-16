@@ -14,25 +14,4 @@ acl.config({
   }
 })
 
-// {
-//   "group": "Investidor",
-//   "permissions": [
-//     {
-//       "resource": "user/*",
-//       "methods": "*",
-//       "action": "allow"
-//     },
-//     {
-//       "resource": "investment",
-//       "methods": "*",
-//       "action": "allow"
-//     },
-//     {
-//       "resource": "building",
-//       "methods": "*",
-//       "action": "allow"
-//     }
-//   ]
-// },
-
 export default acl
