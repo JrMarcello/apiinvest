@@ -253,7 +253,7 @@ export const update = async (request, response) => {
 
 /**
  * @api {put} /user/me Update the loged User
- * @apiName UpdateUser
+ * @apiName UpdateUserMe
  * @apiGroup User
  * @apiVersion 1.0.0
  *
@@ -346,7 +346,7 @@ export const remove = async (request, response) => {
 
 /**
  * @api {delete} /user/me Delete
- * @apiName DeleteUser
+ * @apiName DeleteUserMe
  * @apiGroup User
  * @apiVersion 1.0.0
  *

@@ -25,6 +25,17 @@ export const getById = id => {
 }
 
 /**
+ * Find an Investment the a User by ID
+ *
+ * @param {Interger} idInvestor - Investor ID
+ * @param {Interger} id - Investment ID
+ * @returns {Promisse} - Returns a Promisse
+ */
+export const getByIdMe = (idInvestor, id) => {
+  return dao.getByIdMe(idInvestor, id)
+}
+
+/**
  * Find Investments by Investor ID
  *
  * @param {Interger} id - Investor ID
