@@ -27,7 +27,15 @@ export const getById = id => {
  * @returns {Promisse} - Returns a Promisse
  */
 export const create = data => {
-  return dao.create(data)
+  return dao.create({
+    cnpj: data.cnpj,
+    company_name: data.company_name,
+    company_fancy_name: data.company_fancy_name,
+    phone: data.phone,
+    agent_name: data.agent_name,
+    agent_email: data.agent_email,
+    agent_phone: data.agent_phone
+  })
 }
 
 /**
@@ -42,7 +50,10 @@ export const update = data => {
     cnpj: data.cnpj,
     company_name: data.company_name,
     company_fancy_name: data.company_fancy_name,
-    phone: data.phone
+    phone: data.phone,
+    agent_name: data.agent_name,
+    agent_email: data.agent_email,
+    agent_phone: data.agent_phone
   })
 }
 

@@ -51,7 +51,19 @@ export const create = async data => {
   if (!data.builder || data.builder.length === 0) throw Error('Informe seus dados')
   if (!data.phones || data.phones.length === 0) throw Error('Informe pelo menos 1 telefone')
 
-  const builder = await dao.create(data.builder)
+  const builder = await dao.create({
+    id: data.builder.id,
+    cnpj: data.builder.cnpj,
+    company_name: data.builder.company_name,
+    company_fancy_name: data.builder.company_fancy_name,
+    address_street: data.builder.address_street,
+    address_number: data.builder.address_number,
+    address_neighborhood: data.builder.address_neighborhood,
+    address_city: data.builder.address_city,
+    address_state: data.builder.address_state,
+    address_country: data.builder.address_country,
+    address_cep: data.builder.address_cep
+  })
 
   await phone.create({ id_builder: builder.id, phones: data.phones })
 

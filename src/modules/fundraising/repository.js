@@ -47,7 +47,16 @@ export const getByBuildingId = id => {
  * @returns {Promisse} - Returns a Promisse
  */
 export const create = data => {
-  return dao.create(data)
+  return dao.create({
+    id_building: data.id_building,
+    id_custodian: data.id_custodian,
+    amount: data.amount,
+    investment_min_value: data.investment_min_value,
+    investment_percentage: data.investment_percentage,
+    return_date: data.return_date,
+    initial_date: data.initial_date,
+    final_date: data.final_date
+  })
 }
 
 /**
@@ -59,7 +68,12 @@ export const create = data => {
 export const update = data => {
   return dao.update({
     id: data.id,
+    id_building: data.id_building,
+    id_custodian: data.id_custodian,
     amount: data.amount,
+    investment_min_value: data.investment_min_value,
+    investment_percentage: data.investment_percentage,
+    return_date: data.return_date,
     initial_date: data.initial_date,
     final_date: data.final_date
   })

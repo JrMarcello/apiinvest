@@ -125,13 +125,6 @@ export const tedConfirmation = async data => {
 export const confirm = async data => {
   if (!Array.isArray(data)) throw Error('Formato de dados inválido')
 
-  // const confirmations = data.map(id => {
-  //   return {
-  //     id,
-  //     confirmed: true
-  //   }
-  // })
-
   return dao.confirm(data)
 }
 

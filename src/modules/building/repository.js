@@ -53,7 +53,24 @@ export const getByBuilderId = async id => {
  * @returns {Promisse} - Returns a Promisse
  */
 export const create = data => {
-  return dao.create(data)
+  return dao.create({
+    id: data.id,
+    id_builder: data.id_builder,
+    cnpj: data.cnpj,
+    registration: data.registration,
+    name: data.name,
+    description: data.description,
+    address_street: data.address_street,
+    address_number: data.address_number,
+    address_neighborhood: data.address_neighborhood,
+    address_city: data.address_city,
+    address_state: data.address_state,
+    address_country: data.address_country,
+    address_cep: data.address_cep,
+    vgv: data.vgv,
+    initial_date: data.initial_date,
+    final_date: data.final_date
+  })
 }
 
 /**
@@ -67,7 +84,8 @@ export const update = data => {
 
   return dao.update({
     id: data.id,
-    spe: data.spe,
+    id_builder: data.id_builder,
+    cnpj: data.cnpj,
     registration: data.registration,
     name: data.name,
     description: data.description,
@@ -78,7 +96,7 @@ export const update = data => {
     address_state: data.address_state,
     address_country: data.address_country,
     address_cep: data.address_cep,
-    amount: data.amount,
+    vgv: data.vgv,
     initial_date: data.initial_date,
     final_date: data.final_date
   })
