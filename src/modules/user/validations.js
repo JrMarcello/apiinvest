@@ -1,6 +1,6 @@
-import { checkAuth } from '@core/middlewares/auth'
-// import acl from '@core/middlewares/acl'
-import validate from '@core/middlewares/validator'
+import { checkAuth } from '../../core/middlewares/auth'
+import acl from '../../core/middlewares/acl'
+import validate from '../../core/middlewares/validator'
 
 const schemas = {
   getAll: {},
@@ -58,10 +58,10 @@ const schemas = {
 }
 
 export default {
-  getAll: [checkAuth /* acl.authorize */, validate(schemas.getAll)],
-  getById: [checkAuth /* acl.authorize */, validate(schemas.getById)],
-  create: [/* acl.authorize */ validate(schemas.create)],
-  update: [checkAuth /* acl.authorize */, validate(schemas.update)],
-  remove: [checkAuth /* acl.authorize */, validate(schemas.remove)],
+  getAll: [checkAuth, acl.authorize, validate(schemas.getAll)],
+  getById: [checkAuth, acl.authorize, validate(schemas.getById)],
+  create: [validate(schemas.create)],
+  update: [checkAuth, acl.authorize, validate(schemas.update)],
+  remove: [checkAuth, acl.authorize, validate(schemas.remove)],
   login: [validate(schemas.login)]
 }

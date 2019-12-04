@@ -1,5 +1,5 @@
-import { logger } from '@common/utils'
-import constants from '@common/constants'
+import { logger } from '../../common/utils'
+import constants from '../../common/constants'
 import * as repository from './repository'
 
 /**
@@ -34,6 +34,45 @@ import * as repository from './repository'
 export const getAll = async (request, response) => {
   try {
     response.json(await repository.getAll(request.params))
+  } catch (err) {
+    logger().error(err)
+
+    response.status(500).json(constants.investment.error.NOT_FOUNDS)
+  }
+}
+
+/**
+ * @api {get} /investment/me Get all by me
+ * @apiName GetInvestmentsMe
+ * @apiGroup Investment
+ * @apiVersion 1.0.0
+ *
+ * @apiSuccessExample Success-Response:
+ *   HTTP/1.1 200 OK
+ *   [{
+ *       "id": "f77880cf-4864-4a27-b15c-34fae2566a38",
+ *       "id_investor": "35bd3682-0a9f-42fa-a98e-24cba9e78729",
+ *       "id_fundraising": "164164dd-2b2c-4bbd-8d06-0d67e7ca242f",
+ *       "amount": "1000.00",
+ *       "percentage": "0.05",
+ *       "date": "2019-09-25T03:00:00.000Z",
+ *       "ted_proof_url": null,
+ *       "confirmed": false,
+ *       "created_date": "2019-09-25T01:59:29.077Z",
+ *       "active": true
+ *   }]
+ *
+ * @apiErrorExample Error-Response:
+ *   HTTP/1.1 500 Internal Server Error
+ *     {
+ *        "code": 9999,
+ *        "message": "Requisição inválida",
+ *        "errors": [{}]
+ *     }
+ */
+export const getAllMe = async (request, response) => {
+  try {
+    response.json(await repository.getByInvestorId(request.user.id))
   } catch (err) {
     logger().error(err)
 
@@ -79,6 +118,51 @@ export const getAll = async (request, response) => {
 export const getById = async (request, response) => {
   try {
     response.json(await repository.getById(request.params.id))
+  } catch (err) {
+    logger().error(err)
+
+    response.status(500).json(constants.investment.error.NOT_FOUND)
+  }
+}
+
+/**
+ * @api {get} /investment/me/:id Get (By ID)
+ * @apiName GetInvestmentMe
+ * @apiGroup Investment
+ * @apiVersion 1.0.0
+ *
+ * @apiParam {uuid} ID Investment ID
+ *
+ * @apiSuccessExample Success-Response:
+ *   HTTP/1.1 200 OK
+ *   {
+ *      "id": "f77880cf-4864-4a27-b15c-34fae2566a38",
+ *      "id_investor": "35bd3682-0a9f-42fa-a98e-24cba9e78729",
+ *      "id_fundraising": "164164dd-2b2c-4bbd-8d06-0d67e7ca242f",
+ *      "amount": "1000.00",
+ *      "percentage": "0.05",
+ *      "date": "2019-09-25T03:00:00.000Z",
+ *      "ted_proof_url": null,
+ *      "confirmed": false,
+ *      "created_date": "2019-09-25T01:59:29.077Z",
+ *      "active": true
+ *   }
+ *
+ * @apiErrorExample Error-Response:
+ *   HTTP/1.1 500 Internal Server Error
+ *   {
+ *      "code": 9999,
+ *      "message": "Dados da requisição inválidos",
+ *      "errors": [{
+ *        "msg": "Invalid value",
+ *        "param": "id",
+ *        "location": "body"
+ *      }]
+ *   }
+ */
+export const getByIdMe = async (request, response) => {
+  try {
+    response.json(await repository.getByIdMe(request.user.id, request.params.id))
   } catch (err) {
     logger().error(err)
 

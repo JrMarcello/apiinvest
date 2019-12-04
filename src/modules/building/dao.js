@@ -1,5 +1,5 @@
-import db from '@core/database'
-import { generateUUID } from '@common/utils'
+import db from '../../core/database'
+import { generateUUID } from '../../common/utils'
 
 const table = 'building'
 
@@ -24,12 +24,14 @@ export const getAll = () => {
  * @returns {Promisse} - Returns a Promisse
  */
 export const getById = async id => {
-  return (await db
-    .select()
-    .from(table)
-    .where('id', id)
-    .and('active', true)
-    .run())[0]
+  return (
+    await db
+      .select()
+      .from(table)
+      .where('id', id)
+      .and('active', true)
+      .run()
+  )[0]
 }
 
 /**
@@ -39,12 +41,14 @@ export const getById = async id => {
  * @returns {Promisse} - Returns a Promisse
  */
 export const getByBuilderId = async id => {
-  return (await db
-    .select()
-    .from(table)
-    .where('id_builder', id)
-    .and('active', true)
-    .run())[0]
+  return (
+    await db
+      .select()
+      .from(table)
+      .where('id_builder', id)
+      .and('active', true)
+      .run()
+  )[0]
 }
 
 /**
@@ -56,11 +60,13 @@ export const getByBuilderId = async id => {
 export const create = async data => {
   data.id = await generateUUID()
 
-  return (await db
-    .insert(data)
-    .into(table)
-    .returning('*')
-    .run())[0]
+  return (
+    await db
+      .insert(data)
+      .into(table)
+      .returning('*')
+      .run()
+  )[0]
 }
 
 /**

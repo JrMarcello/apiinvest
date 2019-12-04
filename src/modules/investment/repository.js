@@ -1,6 +1,6 @@
-import * as mailer from '@core/mailer'
-import * as storage from '@core/storage'
-import { env } from '@common/utils'
+import * as mailer from '../../core/mailer'
+import * as storage from '../../core/storage'
+import { env } from '../../common/utils'
 import * as dao from './dao'
 import { getById as getInvestor } from '../investor/repository'
 
@@ -22,6 +22,17 @@ export const getAll = async params => {
  */
 export const getById = id => {
   return dao.getById(id)
+}
+
+/**
+ * Find an Investment the a User by ID
+ *
+ * @param {Interger} idInvestor - Investor ID
+ * @param {Interger} id - Investment ID
+ * @returns {Promisse} - Returns a Promisse
+ */
+export const getByIdMe = (idInvestor, id) => {
+  return dao.getByIdMe(idInvestor, id)
 }
 
 /**
@@ -63,8 +74,12 @@ export const getPendings = async params => {
 export const create = async data => {
   const investor = await getInvestor(data.id_investor)
 
-  if (!investor || !investorIsEnableToInvestments(investor)) {
+  if (!investor) {
     throw Error('Complete seu cadastro para começar a investir')
+  }
+
+  if (env().BLACK_LIST.includes(investor.cpf) || env().BLACK_LIST.includes(investor.cnpj)) {
+    throw Error('Socios não podem realizar investimentos')
   }
 
   const investment = await dao.create(data)
@@ -72,11 +87,6 @@ export const create = async data => {
   mailer.sendEmail(getEmailParams(investor))
 
   return investment
-}
-
-const investorIsEnableToInvestments = investor => {
-  // TODO
-  return !!investor
 }
 
 const getEmailParams = investor => {
@@ -114,13 +124,6 @@ export const tedConfirmation = async data => {
  */
 export const confirm = async data => {
   if (!Array.isArray(data)) throw Error('Formato de dados inválido')
-
-  // const confirmations = data.map(id => {
-  //   return {
-  //     id,
-  //     confirmed: true
-  //   }
-  // })
 
   return dao.confirm(data)
 }

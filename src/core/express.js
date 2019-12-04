@@ -7,7 +7,7 @@ import morgan from 'morgan'
 import path from 'path'
 import compression from 'compression'
 
-import { env } from '@common/utils'
+import { env } from '../common/utils'
 
 const server = express()
 

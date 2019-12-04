@@ -1,8 +1,8 @@
 import bcrypt from 'bcrypt'
-import constants from '@common/constants'
-import { getToken } from '@core/middlewares/auth'
-import * as investor from '@modules/investor/repository'
-import * as builder from '@modules/builder/repository'
+import constants from '../../common/constants'
+import { getToken } from '../../core/middlewares/auth'
+import * as investor from '../investor/repository'
+import * as builder from '../builder/repository'
 import * as dao from './dao'
 
 /**
@@ -57,13 +57,11 @@ export const create = data => {
  * @returns {Promisse} - Returns a Promisse
  */
 export const update = data => {
-  const updateble = {
+  return dao.update({
     id: data.id,
     username: data.username,
     password: data.password
-  }
-
-  return dao.update(updateble)
+  })
 }
 
 /**

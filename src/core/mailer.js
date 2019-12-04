@@ -1,5 +1,5 @@
 import nodemailer from 'nodemailer'
-import { env } from '@common/utils'
+import { env } from '../common/utils'
 
 const getTransporter = async () => {
   // Generate test SMTP service account from ethereal.email

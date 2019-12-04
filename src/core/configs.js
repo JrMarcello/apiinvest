@@ -32,5 +32,6 @@ export default {
     PROJECT_ID: process.env.PROJECT_ID,
     KEYFILE: process.env.KEYFILE_PATH,
     BUCKET: process.env.BUCKET
-  }
+  },
+  BLACK_LIST: process.env.BLACK_LIST
 }

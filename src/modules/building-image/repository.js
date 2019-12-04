@@ -1,4 +1,4 @@
-import * as storage from '@core/storage'
+import * as storage from '../../core/storage'
 import * as dao from './dao'
 
 /**

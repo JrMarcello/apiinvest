@@ -1,4 +1,4 @@
-import db from '@core/database'
+import db from '../../core/database'
 
 const table = 'investor_bank_account'
 
@@ -25,7 +25,7 @@ export const getByInvestorId = id => {
  */
 export const create = async data => {
   return db
-    .insert('id_investor', 'agency', 'account')
+    .insert('id_investor', 'bank_code', 'agency', 'account')
     .values(data)
     .into(table)
     .returning('*')

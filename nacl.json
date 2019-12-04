@@ -1,13 +1,4 @@
-[{
-    "group": "Construtor",
-    "permissions": [
-      {
-        "resource": "user",
-        "methods": "*",
-        "action": "allow"
-      }
-    ]
-  },
+[
   {
     "group": "Admin",
     "permissions": [
@@ -22,19 +13,39 @@
     "group": "Investidor",
     "permissions": [
       {
-            "resource": "*",
-            "methods": "*",
-            "action": "allow"
-      }
-    ]
-  },
-  {
-    "group": "Construtor",
-    "permissions": [
+        "resource": "user/me",
+        "methods": ["GET", "PUT", "DELETE"],
+        "action": "allow"
+      },
       {
-            "resource": "*",
-            "methods": "*",
-            "action": "allow"
+        "resource": "investment/me",
+        "methods": ["GET"],
+        "action": "allow"
+      },
+      {
+        "resource": "investment/",
+        "methods": ["POST"],
+        "action": "allow"
+      },
+      {
+        "resource": "investment/ted",
+        "methods": ["PUT"],
+        "action": "allow"
+      },
+      {
+        "resource": "investment/:id/cancel",
+        "methods": ["PUT"],
+        "action": "allow"
+      },
+      {
+        "resource": "building/:id",
+        "methods": ["GET"],
+        "action": "allow"
+      },
+      {
+        "resource": "building/available/",
+        "methods": ["GET"],
+        "action": "allow"
       }
     ]
   }

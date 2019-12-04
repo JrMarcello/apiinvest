@@ -13,13 +13,29 @@ INSERT INTO "user" (
 	id,
 	id_profile,
 	email,
-	username, password)
+	username, 
+	password
+)
 VALUES (
 	'647ac188-62c8-4618-8a0a-be14174aac49',
 	3,
-	'buildinvest@admin.com',
-	'Buildinvest Admin',
+	'admin@buildinvest.com.br',
+	'Admin Buildinvest',
 	'$2b$10$o8Av/20hYJX3IKRRUKK5UO/bfjWIbYTIpLc6dtlvnk8NrTxTdf9r2' --123456
+);
+
+INSERT INTO custodian (
+	id,
+	cnpj,
+	company_name,
+	company_fancy_name,
+	phone
+) VALUES (
+	'647ac188-62c8-4618-8a0a-be14174aac49',
+	'34096667000151',
+	'Custodiadora Default SA',
+	'Custodiadora Default',
+	'8333334444'
 );
 
 -- INSERT INTO builder (
@@ -88,20 +104,6 @@ VALUES (
 -- 	NOW(),
 -- 	NOW() + INTERVAL'1 year'
 -- );
-
-INSERT INTO custodian (
-	id,
-	cnpj,
-	company_name,
-	company_fancy_name,
-	phone
-) VALUES (
-	'647ac188-62c8-4618-8a0a-be14174aac49',
-	'34096667000151',
-	'Custodiadora Default SA',
-	'Custodiadora Default',
-	'8333334444'
-);
 
 -- INSERT INTO fundraising (
 -- 	id,

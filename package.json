@@ -2,6 +2,9 @@
   "name": "web-api",
   "version": "1.0.0",
   "description": "Buildinvest web api",
+  "private": true,
+  "author": "Marcello Jr",
+  "license": "ISC",
   "main": "./src/core/server.js",
   "scripts": {
     "docker-build": "docker build -t builinvest/web-api . && docker run --name web-api -p 3000:3000 builinvest/web-api",
@@ -9,53 +12,77 @@
     "docker-exec": "docker exec -it web-api /bin/bash",
     "start": "docker start web-api",
     "stop": "docker stop web-api",
-    "dev": "nodemon --exec babel-node ./src/core/server.js",
-    "build": "rm -rf build && babel -d ./build ./src",
-    "prod": "NODE_ENV=production node ./build/core/server.js",
+    "dev": "nodemon ./src/core/server.js",
+    "prod": "rm -rf build && sucrase ./src -d ./build --transforms imports && node ./build/core/server.js NODE_ENV=production ",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "lint": "eslint ./src"
+    "lint": "eslint ./src",
+    "apidoc": "apidoc -i ./src/**/modules/**/ -o ./public/api"
   },
-  "author": "Majun",
-  "license": "ISC",
   "dependencies": {
-    "@google-cloud/storage": "^3.3.0",
-    "bcrypt": "^3.0.6",
+    "@google-cloud/storage": "^3.5.0",
+    "bcrypt": "^3.0.7",
     "body-parser": "^1.19.0",
     "chalk": "^2.4.2",
     "compression": "^1.7.4",
     "cors": "^2.8.5",
-    "dotenv": "^8.1.0",
+    "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "express-acl": "^2.0.8",
-    "express-validator": "^6.2.0",
-    "glob": "^7.1.4",
-    "helmet": "^3.21.1",
+    "express-validator": "^6.3.0",
+    "glob": "^7.1.6",
+    "helmet": "^3.21.2",
     "jsonwebtoken": "^8.5.1",
     "logger": "0.0.1",
     "moment": "^2.24.0",
     "morgan": "^1.9.1",
     "multer": "^1.4.2",
-    "nodemailer": "^6.3.0",
-    "pg": "^7.12.1",
+    "nodemailer": "^6.3.1",
+    "pg": "^7.14.0",
     "ship-hold": "^2.0.2",
     "uuid": "^3.3.3",
     "winston": "^3.2.1",
     "winston-daily-rotate-file": "^3.10.0"
   },
   "devDependencies": {
-    "@babel/cli": "^7.6.0",
-    "@babel/core": "^7.6.0",
-    "@babel/node": "^7.6.1",
-    "@babel/preset-env": "^7.6.0",
-    "babel-plugin-module-resolver": "^3.2.0",
-    "eslint": "^6.4.0",
+    "eslint": "^6.7.2",
     "eslint-config-airbnb": "^18.0.1",
     "eslint-config-airbnb-base": "^14.0.0",
-    "eslint-config-prettier": "^6.3.0",
+    "eslint-config-prettier": "^6.7.0",
     "eslint-import-resolver-babel-module": "^5.1.0",
     "eslint-plugin-import": "^2.18.2",
     "eslint-plugin-prettier": "^3.1.1",
-    "nodemon": "^1.19.2",
-    "prettier": "^1.18.2"
+    "nodemon": "^1.19.4",
+    "prettier": "^1.19.1",
+    "sucrase": "^3.10.1"
+  },
+  "nodemonConfig": {
+    "execMap": {
+      "js": "sucrase-node ./src/core/server.js"
+    }
+  },
+  "eslintConfig": {
+    "extends": [
+      "airbnb-base",
+      "prettier"
+    ],
+    "plugins": [
+      "prettier"
+    ],
+    "rules": {
+      "prettier/prettier": [
+        "error"
+      ],
+      "global-require": 0,
+      "import/no-dynamic-require": 0,
+      "no-param-reassign": 0,
+      "import/prefer-default-export": 0,
+      "no-use-before-define": 0
+    }
+  },
+  "prettier": {
+    "eslintIntegration": true,
+    "printWidth": 120,
+    "semi": false,
+    "singleQuote": true
   }
 }

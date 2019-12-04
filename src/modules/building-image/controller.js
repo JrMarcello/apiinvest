@@ -1,5 +1,5 @@
-import { logger } from '@common/utils'
-import constants from '@common/constants'
+import { logger } from '../../common/utils'
+import constants from '../../common/constants'
 import * as repository from './repository'
 
 /**

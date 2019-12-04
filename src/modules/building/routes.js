@@ -1,5 +1,5 @@
 import express from 'express'
-import { checkAuth } from '@core/middlewares/auth'
+import { checkAuth } from '../../core/middlewares/auth'
 import * as controller from './controller'
 
 const router = express.Router()
