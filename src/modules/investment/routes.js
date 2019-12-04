@@ -1,6 +1,6 @@
 import express from 'express'
-import multer from '@core/multer'
-import { checkAuth } from '@core/middlewares/auth'
+import multer from '../../core/multer'
+import { checkAuth } from '../../core/middlewares/auth'
 import * as controller from './controller'
 
 const router = express.Router()

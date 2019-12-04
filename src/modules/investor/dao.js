@@ -1,5 +1,5 @@
-import db from '@core/database'
-import { generateUUID } from '@common/utils'
+import db from '../../core/database'
+import { generateUUID } from '../../common/utils'
 
 const table = 'investor'
 
@@ -49,12 +49,14 @@ export const getById = async id => {
  * @returns {Promisse} - Returns a Promisse
  */
 export const getByUserId = async id => {
-  return (await db
-    .select()
-    .from(table)
-    .where('id_user', id)
-    .and('active', true)
-    .run())[0]
+  return (
+    await db
+      .select()
+      .from(table)
+      .where('id_user', id)
+      .and('active', true)
+      .run()
+  )[0]
 }
 
 /**
@@ -66,11 +68,13 @@ export const getByUserId = async id => {
 export const create = async data => {
   data.id = await generateUUID()
 
-  return (await db
-    .insert(data)
-    .into(table)
-    .returning('*')
-    .run())[0]
+  return (
+    await db
+      .insert(data)
+      .into(table)
+      .returning('*')
+      .run()
+  )[0]
 }
 
 /**

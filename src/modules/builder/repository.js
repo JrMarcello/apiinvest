@@ -1,6 +1,6 @@
-import * as phone from '@modules/builder-phone/repository'
-import * as partner from '@modules/builder-partner/repository'
-import * as building from '@modules/building/repository'
+import * as phone from '../builder-phone/repository'
+import * as partner from '../builder-partner/repository'
+import * as building from '../building/repository'
 import * as dao from './dao'
 
 /**

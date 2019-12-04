@@ -1,5 +1,5 @@
-import * as image from '@modules/building-image/repository'
-import * as fundraising from '@modules/fundraising/repository'
+import * as image from '../building-image/repository'
+import * as fundraising from '../fundraising/repository'
 import * as dao from './dao'
 
 /**

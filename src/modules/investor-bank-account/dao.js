@@ -1,4 +1,4 @@
-import db from '@core/database'
+import db from '../../core/database'
 
 const table = 'investor_bank_account'
 

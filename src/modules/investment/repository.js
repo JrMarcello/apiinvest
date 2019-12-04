@@ -1,6 +1,6 @@
-import * as mailer from '@core/mailer'
-import * as storage from '@core/storage'
-import { env } from '@common/utils'
+import * as mailer from '../../core/mailer'
+import * as storage from '../../core/storage'
+import { env } from '../../common/utils'
 import * as dao from './dao'
 import { getById as getInvestor } from '../investor/repository'
 

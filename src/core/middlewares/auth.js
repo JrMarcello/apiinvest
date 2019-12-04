@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken'
-import { env } from '@common/utils'
-import constants from '@common/constants'
+import { env } from '../../common/utils'
+import constants from '../../common/constants'
 
 /**
  * Retrun an JWT token

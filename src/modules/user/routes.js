@@ -6,9 +6,9 @@ const router = express.Router()
 const USER_BASE_PAH = '/user'
 
 export default () => {
-  router.get(`${USER_BASE_PAH}/me`, validations.getMe, controller.getMe)
-  router.put(`${USER_BASE_PAH}/me`, validations.update, controller.updateMe)
-  router.delete(`${USER_BASE_PAH}/me`, validations.remove, controller.removeMe)
+  // router.get(`${USER_BASE_PAH}/me`, validations.getMe, controller.getMe)
+  // router.put(`${USER_BASE_PAH}/me`, validations.update, controller.updateMe)
+  // router.delete(`${USER_BASE_PAH}/me`, validations.remove, controller.removeMe)
 
   router.get(USER_BASE_PAH, validations.getAll, controller.getAll)
   router.get(`${USER_BASE_PAH}/:id`, validations.getById, controller.getById)

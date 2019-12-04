@@ -1,6 +1,6 @@
-import { checkAuth } from '@core/middlewares/auth'
-import acl from '@core/middlewares/acl'
-import validate from '@core/middlewares/validator'
+import { checkAuth } from '../../core/middlewares/auth'
+import acl from '../../core/middlewares/acl'
+import validate from '../../core/middlewares/validator'
 
 const schemas = {
   getAll: {},

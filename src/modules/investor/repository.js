@@ -1,6 +1,6 @@
-import * as phone from '@modules/investor-phone/repository'
-import * as bankAccount from '@modules/investor-bank-account/repository'
-import * as document from '@modules/investor-document/repository'
+import * as phone from '../investor-phone/repository'
+import * as bankAccount from '../investor-bank-account/repository'
+import * as document from '../investor-document/repository'
 import * as dao from './dao'
 
 /**

@@ -1,6 +1,6 @@
-import db from '@core/database'
-import { generateUUID } from '@common/utils'
 import bcrypt from 'bcrypt'
+import db from '../../core/database'
+import { generateUUID } from '../../common/utils'
 
 const table = '"user"'
 
@@ -25,12 +25,14 @@ export const getAll = () => {
  * @returns {Promisse} - Returns a Promisse
  */
 export const getById = async id => {
-  return (await db
-    .select()
-    .from(table)
-    .where('id', id)
-    .and('active', true)
-    .run())[0]
+  return (
+    await db
+      .select()
+      .from(table)
+      .where('id', id)
+      .and('active', true)
+      .run()
+  )[0]
 }
 
 /**
@@ -40,12 +42,14 @@ export const getById = async id => {
  * @returns {Promisse} - Returns a Promisse
  */
 export const getByEmail = async email => {
-  return (await db
-    .select()
-    .from(table)
-    .where('email', email)
-    .and('active', true)
-    .run())[0]
+  return (
+    await db
+      .select()
+      .from(table)
+      .where('email', email)
+      .and('active', true)
+      .run()
+  )[0]
 }
 
 /**
@@ -55,12 +59,14 @@ export const getByEmail = async email => {
  * @returns {Promisse} - Returns a Promisse
  */
 export const getProfile = async id => {
-  return (await db
-    .select()
-    .from('profile')
-    .where('id', id)
-    .and('active', true)
-    .run())[0]
+  return (
+    await db
+      .select()
+      .from('profile')
+      .where('id', id)
+      .and('active', true)
+      .run()
+  )[0]
 }
 
 /**

@@ -1,5 +1,5 @@
-import db from '@core/database'
-import { generateUUID } from '@common/utils'
+import db from '../../core/database'
+import { generateUUID } from '../../common/utils'
 
 const table = 'custodian'
 

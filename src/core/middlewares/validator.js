@@ -1,5 +1,5 @@
 import { checkSchema, validationResult } from 'express-validator'
-import constants from '@common/constants'
+import constants from '../../common/constants'
 
 export default validation => {
   return [

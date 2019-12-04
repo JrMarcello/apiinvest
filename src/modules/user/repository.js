@@ -1,8 +1,8 @@
 import bcrypt from 'bcrypt'
-import constants from '@common/constants'
-import { getToken } from '@core/middlewares/auth'
-import * as investor from '@modules/investor/repository'
-import * as builder from '@modules/builder/repository'
+import constants from '../../common/constants'
+import { getToken } from '../../core/middlewares/auth'
+import * as investor from '../investor/repository'
+import * as builder from '../builder/repository'
 import * as dao from './dao'
 
 /**

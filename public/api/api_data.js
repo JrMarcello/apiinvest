@@ -1582,6 +1582,47 @@ define({ "api": [
   },
   {
     "type": "get",
+    "url": "/investment/me/:id",
+    "title": "Get (By ID)",
+    "name": "GetInvestmentMe",
+    "group": "Investment",
+    "version": "1.0.0",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "uuid",
+            "optional": false,
+            "field": "ID",
+            "description": "<p>Investment ID</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n{\n   \"id\": \"f77880cf-4864-4a27-b15c-34fae2566a38\",\n   \"id_investor\": \"35bd3682-0a9f-42fa-a98e-24cba9e78729\",\n   \"id_fundraising\": \"164164dd-2b2c-4bbd-8d06-0d67e7ca242f\",\n   \"amount\": \"1000.00\",\n   \"percentage\": \"0.05\",\n   \"date\": \"2019-09-25T03:00:00.000Z\",\n   \"ted_proof_url\": null,\n   \"confirmed\": false,\n   \"created_date\": \"2019-09-25T01:59:29.077Z\",\n   \"active\": true\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "HTTP/1.1 500 Internal Server Error\n{\n   \"code\": 9999,\n   \"message\": \"Dados da requisição inválidos\",\n   \"errors\": [{\n     \"msg\": \"Invalid value\",\n     \"param\": \"id\",\n     \"location\": \"body\"\n   }]\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "src/modules/investment/controller.js",
+    "groupTitle": "Investment"
+  },
+  {
+    "type": "get",
     "url": "/investment",
     "title": "Get all",
     "name": "GetInvestments",
@@ -1628,6 +1669,34 @@ define({ "api": [
         ]
       }
     },
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n[{\n    \"id\": \"f77880cf-4864-4a27-b15c-34fae2566a38\",\n    \"id_investor\": \"35bd3682-0a9f-42fa-a98e-24cba9e78729\",\n    \"id_fundraising\": \"164164dd-2b2c-4bbd-8d06-0d67e7ca242f\",\n    \"amount\": \"1000.00\",\n    \"percentage\": \"0.05\",\n    \"date\": \"2019-09-25T03:00:00.000Z\",\n    \"ted_proof_url\": null,\n    \"confirmed\": false,\n    \"created_date\": \"2019-09-25T01:59:29.077Z\",\n    \"active\": true\n}]",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "HTTP/1.1 500 Internal Server Error\n  {\n     \"code\": 9999,\n     \"message\": \"Requisição inválida\",\n     \"errors\": [{}]\n  }",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "src/modules/investment/controller.js",
+    "groupTitle": "Investment"
+  },
+  {
+    "type": "get",
+    "url": "/investment/me",
+    "title": "Get all by me",
+    "name": "GetInvestmentsMe",
+    "group": "Investment",
+    "version": "1.0.0",
     "success": {
       "examples": [
         {
@@ -2467,6 +2536,62 @@ define({ "api": [
     "groupTitle": "User"
   },
   {
+    "type": "delete",
+    "url": "/user/me",
+    "title": "Delete",
+    "name": "DeleteUserMe",
+    "group": "User",
+    "version": "1.0.0",
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n{\n   \"code\": \"S0000\",\n   \"message\": \"Usuário deletado com sucesso\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "HTTP/1.1 500 Internal Server Error\n{\n   \"code\": 9999,\n   \"message\": \"Dados da requisição inválidos\",\n   \"errors\": [{}]\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "src/modules/user/controller.js",
+    "groupTitle": "User"
+  },
+  {
+    "type": "get",
+    "url": "/user/me",
+    "title": "Get the loged User",
+    "name": "GetMe",
+    "group": "User",
+    "version": "1.0.0",
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n{\n   \"code\": \"S0000\",\n   \"message\": \"Usuário criado com sucesso\",\n   \"user\": {\n     \"id\": \"eb76cd10-367b-447d-b238-fa8e9eef2a1f\",\n     \"id_profile\": 1,\n     \"email\": \"marcello@mail.com\",\n     \"username\": \"Marcello Jr\",\n     \"password\": \"$2b$10$qnkfSsxQEjdTW0CHGw1z0eR/vko.vhJrqpq.xeb/T0nR4R55VpNy.\",\n     \"avatar_url\": null,\n     \"create_date\": \"2019-09-14T19:25:26.560Z\",\n     \"active\": true\n   }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "HTTP/1.1 500 Internal Server Error\n{\n   \"code\": 9999,\n   \"message\": \"Dados da requisição inválidos\",\n   \"errors\": [{\n     \"msg\": \"Invalid value\",\n     \"param\": \"id\",\n     \"location\": \"body\"\n   }]\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "src/modules/user/controller.js",
+    "groupTitle": "User"
+  },
+  {
     "type": "get",
     "url": "/user/:id",
     "title": "Get (By ID)",
@@ -2595,6 +2720,68 @@ define({ "api": [
     "url": "/user",
     "title": "Update",
     "name": "UpdateUser",
+    "group": "User",
+    "version": "1.0.0",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "email",
+            "description": "<p>User email</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "username",
+            "description": "<p>User username</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "passwaord",
+            "description": "<p>User password</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Request-Example:",
+          "content": "{\n   \"email\": \"marcello@mail.com\",\n   \"username\": \"Marcello Jr\",\n   \"password\": \"123456\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n{\n   \"code\": \"S0000\",\n   \"message\": \"Usuário atualizado com sucesso\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "HTTP/1.1 500 Internal Server Error\n{\n   \"code\": 9999,\n   \"message\": \"Dados da requisição inválidos\",\n   \"errors\": [{\n     \"msg\": \"Invalid value\",\n     \"param\": \"email\",\n     \"location\": \"body\"\n   }]\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "src/modules/user/controller.js",
+    "groupTitle": "User"
+  },
+  {
+    "type": "put",
+    "url": "/user/me",
+    "title": "Update the loged User",
+    "name": "UpdateUserMe",
     "group": "User",
     "version": "1.0.0",
     "parameter": {

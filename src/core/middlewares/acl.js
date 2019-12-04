@@ -1,5 +1,5 @@
 import acl from 'express-acl'
-import { env } from '@common/utils'
+import { env } from '../../common/utils'
 
 acl.config({
   baseUrl: env().API_BASE_PATH,
