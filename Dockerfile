@@ -1,5 +1,5 @@
 #FROM node:alpine
-FROM node:12
+FROM node:slim
 
 WORKDIR /usr/buildinvest/api
 

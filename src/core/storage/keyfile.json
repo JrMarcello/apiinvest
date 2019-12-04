@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "beaming-oarlock-196813",
+  "private_key_id": "66812b297b87c6792538ffc89986d5b4e6dc1179",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQCjdFtgFkFnDbMu\no9vYq80JIZxXaI1bFjp1fWUSK8Fe7F42hR1XSKfeTyxYYAC/4D3ERV71bS1ZnSsi\nnzKOCxxW+Ss2bABkF7/YkSQDfs9lgVkrDB63+T5y/7yb4ooMBn9lj0pickdPJfB8\nIhXLaMkAktngpFH/LxWHRwSq4fAb5Q52KKL1nKXBrGKsT5S/WUwHegu/ZENqdMcR\ndqs5v8YmR/tz5tmuRVJrIqG21vW275R5+hjs5criUZJ1RFAWppJkhe/4KNfYkg9o\neBCgkA5QBLTGgIcqETGoxnZmCqgPs2rEvdy4Rmg/MwVd9wqpIBrpsp/szu/n5qiU\nFjlNx1GhAgMBAAECggEAEGxCuRELYbgT6on+rxK172av321rFH2TgpYGh3CbhXbQ\n0YAG7mvnp/PDBB8jPCQi+JsyuwyM663ZtWkS6ogtwQRYheeMk4H6Xd9ZY7uESZHZ\nPHTDil8R2fqdf/kfPy2Q88qVofYS+Z4Zf1NqZq1g0ryuhP5lmbLoohat3qCEYDz2\ndobpB/LDIV2qXzC4Pqpr3CIDvXUSjYUxfKFNdOEotOzzTCO6NWmYfO+/w7w5ILWd\ndi6JAPZBfWdszPgpzmXPg9gVYcHmVtPkSgLcUMk8r8VcCxevV23LiS/b7skt7QE1\nYbVHkfIaUnDi2UENn/RqKU/uBdzr5w+7eVpMZtozEQKBgQDfcI4xbt4cT1SYb3du\nklHs3huc/YVgwC26/h4yLpJ/mffB7tf8Ex8K/xo7uqksTQqy7qpcc2mwrwJ7hoQB\ndWu7Ozn1JLjKVEr8SXs2RGm21c4cl0paTtuhcTa74WorDzdeceKjnodk2e24ivZd\nB3TRN5tnFMYik1x8o0we/n9SCQKBgQC7RgxLaYklIKFCdn8VM1SLAPrVOHlxf40T\nS1P1qzZjmJ8tOJ+fe9dU+rbpoCfh97DqEPkhALD81PJC1uG2OhA0acgHn3T8jCav\nXVd70DoSvcVtvdXZOdUPfl8d+KmstRhwKjQTs4AyJ2/1Be+vBWYKytyrPWkBHbKN\n8q8Sp5aI2QKBgQDTiZ41Ur9ZkgmHH9C0kDabyFPgN2z1AjzJUhiIbesofz4/Dr7Q\n2dGD+ax+a+QKGw5MBQSo7mNbcPUquVl0gBR0eEgQvKludItherf50p87CARQsTMl\neI8aszKcgXagOZG0CqIFQerxIhmbo4RG4u5HvRuVZeeHiHgBUCCbH1qu8QKBgQCS\nhb/g0PWowtro8WWE5OBk0aNvZ/w8vRtX2TwbnpWzXxpLe14InhBgQLkUGWaa+fzF\nZfpFxBC2ALZ7bTy0IsHDAHCs5inV3qH12wYzrTuCpk/uCPVkPEdjE/C/tmqq4hX4\nzExqjarjks+Z2ccqHQM1tnroz+d0JBQr05D++3hgIQKBgG+KPzhMg1j7DIO6rNbi\nAjBA99WfR1Y2LwjMXkNlIWodWumEGrdUFChLzFwrjZq+ryQsTcD7OPD3PldMIgEG\n6njj+e1mZJaUlqbq2ds6J6rNO99ko6gW5JUi8LJ143VdtyDNtTIYvg5g0doPEtXo\nkq+UqT8rtlPIYzQanewFJij6\n-----END PRIVATE KEY-----\n",
+  "client_email": "apiimagensstorage@beaming-oarlock-196813.iam.gserviceaccount.com",
+  "client_id": "116360192306354900665",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/apiimagensstorage%40beaming-oarlock-196813.iam.gserviceaccount.com"
+}
