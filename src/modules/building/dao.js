@@ -40,15 +40,13 @@ export const getById = async id => {
  * @param {Interger} id - User ID
  * @returns {Promisse} - Returns a Promisse
  */
-export const getByBuilderId = async id => {
-  return (
-    await db
-      .select()
-      .from(table)
-      .where('id_builder', id)
-      .and('active', true)
-      .run()
-  )[0]
+export const getByBuilderId = id => {
+  return db
+    .select()
+    .from(table)
+    .where('id_builder', id)
+    .and('active', true)
+    .run()
 }
 
 /**
