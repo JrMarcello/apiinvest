@@ -44,11 +44,17 @@ import * as repository from './repository'
  */
 export const getAll = async (request, response) => {
   try {
-    response.json(await repository.getAll(request.params))
+    if (request.user.id_profile === 3) return response.json(await repository.getAll(request.params))
+
+    return response.status(403).json({
+      status: 'Acesso negado!',
+      success: false,
+      message: 'Você não está autorizado a acessar esse recurso'
+    })
   } catch (err) {
     logger().error(err)
 
-    response.status(500).json(err.message)
+    return response.status(500).json(err.message)
   }
 }
 
@@ -142,7 +148,56 @@ export const getAll = async (request, response) => {
  */
 export const getById = async (request, response) => {
   try {
-    response.json(await repository.getById(request.params.id))
+    response.json(await repository.getById(request.user.id_profile === 3 ? request.params.id : request.user.builder.id))
+  } catch (err) {
+    logger().error(err)
+
+    response.status(500).json(err)
+  }
+}
+
+/**
+ * @api {get} /builder//:id/buildings Get all Buildings (By Builder ID)
+ * @apiName GetAllBuildings
+ * @apiGroup Builder
+ * @apiVersion 1.0.0
+ *
+ * @apiSuccessExample Success-Response:
+ *   HTTP/1.1 200 OK
+ *   [{
+ *       "id": "69cb237c-c53a-4619-8433-d80719c0c18f",
+ *       "id_builder": "7de6982f-6989-45bd-97d4-973ebeb75295",
+ *       "spe": "34096667000199",
+ *       "registration": "789456",
+ *       "name": "Nome da obra",
+ *       "description": "Descrição da obra",
+ *       "address_street": "Rua da obraa",
+ *       "address_number": "123",
+ *       "address_neighborhood": "Bairro",
+ *       "address_city": "Cidade",
+ *       "address_state": "Estado",
+ *       "address_country": "Pais",
+ *       "address_cep": "58000000",
+ *       "amount": "1000000.00",
+ *       "initial_date": "2019-08-27T00:00:00.000Z",
+ *       "final_date": "2022-08-27T00:00:00.000Z",
+ *       "created_date": "2019-09-24T00:50:58.550Z",
+ *       "active": true
+ *   }]
+ *
+ * @apiErrorExample Error-Response:
+ *   HTTP/1.1 500 Internal Server Error
+ *     {
+ *        "code": 9999,
+ *        "message": "Requisição inválida",
+ *        "errors": [{}]
+ *     }
+ */
+export const getAllBuildingsById = async (request, response) => {
+  try {
+    response.json(
+      await repository.getAllBuildingsById(request.user.id_profile === 3 ? request.params.id : request.user.builder.id)
+    )
   } catch (err) {
     logger().error(err)
 
@@ -198,7 +253,7 @@ export const getById = async (request, response) => {
  */
 export const getByUserId = async (request, response) => {
   try {
-    response.json(await repository.getByUserId(request.params.id))
+    response.json(await repository.getByUserId(request.user.id_profile === 3 ? request.params.id : request.user.id))
   } catch (err) {
     logger().error(err)
 
@@ -294,6 +349,8 @@ export const getByUserId = async (request, response) => {
  */
 export const create = async (request, response) => {
   try {
+    if (request.user.id_profile !== 3) request.body.id_user = request.user.id
+
     const builder = await repository.create(request.body)
 
     response.json(Object.assign(constants.builder.success.CREATED, { builder }))
@@ -348,6 +405,8 @@ export const create = async (request, response) => {
  */
 export const update = async (request, response) => {
   try {
+    if (request.user.id_profile !== 3) request.body.id_user = request.user.id
+
     await repository.update(request.body)
 
     response.json(constants.builder.success.UPDATED)
@@ -391,7 +450,7 @@ export const update = async (request, response) => {
  */
 export const remove = async (request, response) => {
   try {
-    await repository.remove(request.params.id)
+    await repository.remove(request.user.id_profile === 3 ? request.params.id : request.user.builder.id)
 
     response.json(constants.builder.success.REMOVED)
   } catch (err) {

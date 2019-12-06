@@ -32,6 +32,16 @@ export const getById = async id => {
 }
 
 /**
+ *  Get all Buildings
+ *
+ * @param {Object} id - Builder ID
+ * @returns {Promisse} - Returns a Promisse
+ */
+export const getAllBuildingsById = async id => {
+  return dao.getAllBuildingsById(id)
+}
+
+/**
  * Find a Builder by User ID
  *
  * @param {Interger} id - User ID
@@ -53,6 +63,7 @@ export const create = async data => {
 
   const builder = await dao.create({
     id: data.builder.id,
+    id_user: data.builder.id_user,
     cnpj: data.builder.cnpj,
     company_name: data.builder.company_name,
     company_fancy_name: data.builder.company_fancy_name,
@@ -62,7 +73,8 @@ export const create = async data => {
     address_city: data.builder.address_city,
     address_state: data.builder.address_state,
     address_country: data.builder.address_country,
-    address_cep: data.builder.address_cep
+    address_cep: data.builder.address_cep,
+    logo_url: data.builder.logo_url
   })
 
   await phone.create({ id_builder: builder.id, phones: data.phones })

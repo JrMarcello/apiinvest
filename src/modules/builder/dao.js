@@ -1,5 +1,6 @@
 import db from '../../core/database'
 import { generateUUID } from '../../common/utils'
+import { getByBuilderId } from '../building/dao'
 
 const table = 'builder'
 
@@ -49,6 +50,16 @@ export const getByUserId = async id => {
       .and('active', true)
       .run()
   )[0]
+}
+
+/**
+ *  Find all Buildings
+ *
+ * @param {Object} id - Builder ID
+ * @returns {Promisse} - Returns a Promisse
+ */
+export const getAllBuildingsById = id => {
+  return getByBuilderId(id)
 }
 
 /**

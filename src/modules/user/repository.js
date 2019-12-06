@@ -88,5 +88,18 @@ export const login = async params => {
 
   user.profile = await dao.getProfile(user.id_profile)
 
+  if (user.id_profile === 1) {
+    user.investor = await investor.getByUserId(user.id)
+  }
+
+  if (user.id_profile === 2) {
+    user.builder = await builder.getByUserId(user.id)
+  }
+
+  if (user && user.id_profile === 3) {
+    user.investor = await investor.getByUserId(user.id)
+    user.builder = await builder.getByUserId(user.id)
+  }
+
   return getToken(user)
 }

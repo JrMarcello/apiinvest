@@ -105,7 +105,7 @@ export const getById = async (request, response) => {
 }
 
 /**
- * @api {get} /building/builder/:id Get (By Builder ID)
+ * @api {get} /building/builder/:id Get all (By Builder ID)
  * @apiName GetBuildingByBuilderId
  * @apiGroup Building
  * @apiVersion 1.0.0
