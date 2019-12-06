@@ -48,12 +48,14 @@ export const create = async data => {
 /**
  * Remove an Partner
  *
- * @param {Object} id - Partner id to be removed
+ * @param {Object} id - Builder ID
+ * @param {Object} id - Partner ID
  * @returns {Object} - Returns data
  */
-export const remove = id => {
+export const remove = (idBuilder, id) => {
   return db
     .delete(table)
-    .where('id', id)
+    .where('id_builder', idBuilder)
+    .and('id', id)
     .run()
 }

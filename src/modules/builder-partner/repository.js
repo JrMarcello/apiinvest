@@ -29,9 +29,10 @@ export const create = async data => {
 /**
  * Remove a Partner
  *
- * @param {Object} id - Partner id
+ * @param {Object} idBuiler - Builder ID
+ * @param {Object} id - Partner ID
  * @returns {Function} - Returns a Promisse
  */
-export const remove = id => {
-  return dao.remove(id)
+export const remove = (idBuilder, id) => {
+  return dao.remove(idBuilder, id)
 }

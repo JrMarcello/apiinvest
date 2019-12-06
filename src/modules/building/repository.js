@@ -35,15 +35,8 @@ export const getById = async id => {
  * @param {Interger} id - User ID
  * @returns {Promisse} - Returns a Promisse
  */
-export const getByBuilderId = async id => {
-  const building = await dao.getByBuilderId(id)
-
-  if (building) {
-    building.images = await image.getByBuildingId(building.id)
-    building.fundraisings = await fundraising.getByBuildingId(building.id)
-  }
-
-  return building
+export const getByBuilderId = id => {
+  return dao.getByBuilderId(id)
 }
 
 /**

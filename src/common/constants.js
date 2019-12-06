@@ -206,6 +206,19 @@ const constants = {
       NOT_REMOVED: { code: 3504, message: 'Erro ao tentar remover a imagem' }
     }
   },
+  builder_partner: {
+    // 90xx
+    success: {
+      CREATED: { code: 9000, message: 'Sócio criado com sucesso' },
+      REMOVED: { code: 9002, message: 'Sócio removido com sucesso' }
+    },
+    // 95xx
+    error: {
+      NOT_FOUNDS: { code: 3500, message: 'Ainda não existem sócios cadastradas' },
+      NOT_CREATED: { code: 3502, message: 'Erro ao tentar enviar o sócio' },
+      NOT_REMOVED: { code: 3504, message: 'Erro ao tentar remover o sócio' }
+    }
+  },
   validations: {
     INVALID_REQUEST_DATA: { code: 9999, message: 'Dados da requisição inválidos' },
     INVALID_DATA_FIELD: 'Dado inválido'

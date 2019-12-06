@@ -44,7 +44,9 @@ import * as repository from './repository'
  */
 export const getByBuilderId = async (request, response) => {
   try {
-    response.json(await repository.getByBuilderId(request.params.id))
+    response.json(
+      await repository.getByBuilderId(request.user.id_profile === 3 ? request.params.id : request.user.builder.id)
+    )
   } catch (err) {
     logger().error(err)
 
@@ -115,7 +117,10 @@ export const getByBuilderId = async (request, response) => {
  */
 export const create = async (request, response) => {
   try {
-    const partners = await repository.create(request.body.id_builder, request.body.partners)
+    const partners = await repository.create(
+      request.user.id_profile === 3 ? request.params.id : request.user.builder.id,
+      request.body.partners
+    )
 
     response.json(Object.assign(constants.builder_partner.success.CREATED, { partners }))
   } catch (err) {
@@ -158,7 +163,10 @@ export const create = async (request, response) => {
  */
 export const remove = async (request, response) => {
   try {
-    await repository.remove(request.params.id)
+    await repository.remove(
+      request.user.id_profile === 3 ? request.params.idBuilder : request.user.builder.id,
+      request.params.id
+    )
 
     response.json(constants.builder_partner.success.REMOVED)
   } catch (err) {
