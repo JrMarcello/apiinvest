@@ -3,12 +3,12 @@ import constants from '../../common/constants'
 import * as repository from './repository'
 
 /**
- * @api {get} /builder/:id/phone Get Phone (By Builder ID)
+ * @api {get} /builder/:idBuilder/phone Get Phone (By Builder ID)
  * @apiName GetBuilderPhone
  * @apiGroup Builder
  * @apiVersion 1.0.0
  *
- * @apiParam {uuid} ID Builder ID
+ * @apiParam {uuid} Builder ID Builder ID
  *
  * @apiSuccessExample Success-Response:
  *   HTTP/1.1 200 OK
@@ -32,28 +32,29 @@ import * as repository from './repository'
  */
 export const getByBuilderId = async (request, response) => {
   try {
-    response.json(await repository.getByBuilderId(request.params.id))
+    response.json(
+      await repository.getByBuilderId(
+        request.user.id_profile === 3 ? request.params.idBuilder : request.user.builder.id
+      )
+    )
   } catch (err) {
     logger().error(err)
 
-    response.status(500).json(err)
+    response.status(500).json(constants.builder_phone.error.NOT_FOUNDS)
   }
 }
 
 /**
- * @api {post} /builder/phone Create Phone
+ * @api {post} /builder/:idBuilder/phone Create Phone
  * @apiName CreateBuilderPhone
  * @apiGroup Builder
  * @apiVersion 1.0.0
  *
- * @apiParam {uuid} id_builder Builder ID
+ * @apiParam {uuid} idBuilder Builder ID
  * @apiParam {array} phones Phones numbers
  *
  * @apiParamExample {json} Request-Example:
- *   {
- *      "id_builder": "eb76cd10-367b-447d-b238-fa8e9eef2a1f",
- *      "phones": ["83988317864"]
- *   }
+ *   { "phones": [{ "83988317864" }] }
  *
  * @apiSuccessExample Success-Response:
  *   HTTP/1.1 200 OK
@@ -81,7 +82,10 @@ export const getByBuilderId = async (request, response) => {
  */
 export const create = async (request, response) => {
   try {
-    const phones = await repository.create(request.body.id_builder, request.body.phones)
+    const phones = await repository.create(
+      request.user.id_profile === 3 ? request.params.idBuilder : request.user.builder.id,
+      request.body.phones
+    )
 
     response.json(Object.assign(constants.builder_phone.success.CREATED, { phones }))
   } catch (err) {
@@ -92,12 +96,13 @@ export const create = async (request, response) => {
 }
 
 /**
- * @api {delete} /builder/phone/:id Delete Phone
+ * @api {delete} /builder/:idBuilder/phone/:id Delete Phone
  * @apiName DeleteBuilderPhone
  * @apiGroup Builder
  * @apiVersion 1.0.0
  *
- * @apiParam {uuid} ID Builder Phone ID
+ * @apiParam {uuid} idBuilder Builder ID
+ * @apiParam {int} id Phone ID
  *
  * @apiSuccessExample Success-Response:
  *   HTTP/1.1 200 OK
@@ -114,13 +119,16 @@ export const create = async (request, response) => {
  *      "errors": [{
  *        "msg": "Invalid value",
  *        "param": "id",
- *        "location": "body"
+ *        "location": "params"
  *      }]
  *   }
  */
 export const remove = async (request, response) => {
   try {
-    await repository.remove(request.params.id)
+    await repository.remove(
+      request.user.id_profile === 3 ? request.params.idBuilder : request.user.builder.id,
+      request.params.id
+    )
 
     response.json(constants.builder_phone.success.REMOVED)
   } catch (err) {

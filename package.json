@@ -13,7 +13,7 @@
     "start": "docker start web-api",
     "stop": "docker stop web-api",
     "dev": "nodemon ./src/core/server.js",
-    "prod": "rm -rf build && sucrase ./src -d ./build --transforms imports && node ./build/core/server.js NODE_ENV=production ",
+    "prod": "rm -rf build && sucrase ./src -d ./build --transforms imports && NODE_ENV=production node ./build/core/server.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "eslint ./src",
     "apidoc": "apidoc -i ./src/**/modules/**/ -o ./public/api"

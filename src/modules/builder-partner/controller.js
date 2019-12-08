@@ -3,7 +3,7 @@ import constants from '../../common/constants'
 import * as repository from './repository'
 
 /**
- * @api {get} /builder/:id/partner Get Partner (By Builder ID)
+ * @api {get} /builder/:idBuilder/partner Get Partner (By Builder ID)
  * @apiName GetBuilderPartner
  * @apiGroup Builder
  * @apiVersion 1.0.0
@@ -12,7 +12,7 @@ import * as repository from './repository'
  *
  * @apiSuccessExample Success-Response:
  *   HTTP/1.1 200 OK
- *   {
+ *   [{
  *      "id": "1",
  *      "id_builder": "7de6982f-6989-45bd-97d4-973ebeb75295",
  *      "name": "Nome do socio 1",
@@ -28,7 +28,7 @@ import * as repository from './repository'
  *      "address_country": "Pais",
  *      "address_cep": "58000000",
  *      "created_date": "2019-09-24T00:01:22.960Z"
- *   }
+ *   }]
  *
  * @apiErrorExample Error-Response:
  *   HTTP/1.1 500 Internal Server Error
@@ -38,70 +38,75 @@ import * as repository from './repository'
  *      "errors": [{
  *        "msg": "Invalid value",
  *        "param": "id",
- *        "location": "body"
+ *        "location": "params"
  *      }]
  *   }
  */
 export const getByBuilderId = async (request, response) => {
   try {
     response.json(
-      await repository.getByBuilderId(request.user.id_profile === 3 ? request.params.id : request.user.builder.id)
+      await repository.getByBuilderId(
+        request.user.id_profile === 3 ? request.params.idBuilder : request.user.builder.id
+      )
     )
   } catch (err) {
     logger().error(err)
 
-    response.status(500).json(err)
+    response.status(500).json(constants.builder_partner.error.NOT_FOUNDS)
   }
 }
 
 /**
- * @api {post} /builder/partner Create Partner
+ * @api {post} /builder/:idBuilder/partner Create Partner
  * @apiName CreateBuilderPartner
  * @apiGroup Builder
  * @apiVersion 1.0.0
  *
- * @apiParam {string} params Builder Partner params em breve aqui
+ * @apiParam {uuid} idBuilder Builder ID
+ * @apiParam {array} partners Partners data
  *
  * @apiParamExample {json} Request-Example:
- *   {
- *      "id_builder": "7de6982f-6989-45bd-97d4-973ebeb75295",
- *      "name": "Nome do socio 1",
- *      "company_name": null,
- *      "cpf": "06595212446",
- *      "cnpj": null,
- *      "phone": "8332447788",
- *      "address_street": "Rua do socio 1",
- *      "address_number": "123",
- *      "address_neighborhood": "Bairro",
- *      "address_city": "Cidade",
- *      "address_state": "Estado",
- *      "address_country": "Pais",
- *      "address_cep": "58000000"
+ *   { "partners": [{
+ *       "name": "Nome do socio 1",
+ *       "company_name": null,
+ *       "cpf": "06595212446",
+ *       "cnpj": null,
+ *       "phone": "8332447788",
+ *       "address_street": "Rua do socio 1",
+ *       "address_number": "123",
+ *       "address_neighborhood": "Bairro",
+ *       "address_city": "Cidade",
+ *       "address_state": "Estado",
+ *       "address_country": "Pais",
+ *       "address_cep": "58000000"
+ *     }]
  *   }
  *
  * @apiSuccessExample Success-Response:
  *   HTTP/1.1 200 OK
  *   {
- *      "code": "S0000",
- *      "message": "Construtora criada com sucesso",
- *      "builder": [{
- *        "id": "1",
- *        "id_builder": "7de6982f-6989-45bd-97d4-973ebeb75295",
- *        "name": "Nome do socio 1",
- *        "company_name": null,
- *        "cpf": "06595212446",
- *        "cnpj": null,
- *        "phone": "8332447788",
- *        "address_street": "Rua do socio 1",
- *        "address_number": "123",
- *        "address_neighborhood": "Bairro",
- *        "address_city": "Cidade",
- *        "address_state": "Estado",
- *        "address_country": "Pais",
- *        "address_cep": "58000000",
- *        "created_date": "2019-09-24T00:01:22.960Z"
- *      }]
- *   }
+ *      "code": 9000,
+ *      "message": "Sócio criado com sucesso",
+ *      "partners": [
+ *        {
+ *          "id": "4",
+ *          "id_builder": "3136962d-e525-4eb8-9721-ba7dc329d622",
+ *          "name": "Nome do socio 2",
+ *          "company_name": null,
+ *          "cpf": "06595212556",
+ *          "cnpj": null,
+ *          "phone": "8332447799",
+ *          "address_street": "Rua do socio 2",
+ *          "address_number": "321",
+ *          "address_neighborhood": "Bairro",
+ *          "address_city": "Cidade",
+ *          "address_state": "Estado",
+ *          "address_country": "Pais",
+ *          "address_cep": "58000000",
+ *          "created_date": "2019-12-08T18:31:15.589Z"
+ *        }
+ *      ]
+ *    }
  *
  * @apiErrorExample Error-Response:
  *   HTTP/1.1 500 Internal Server Error
@@ -118,7 +123,7 @@ export const getByBuilderId = async (request, response) => {
 export const create = async (request, response) => {
   try {
     const partners = await repository.create(
-      request.user.id_profile === 3 ? request.params.id : request.user.builder.id,
+      request.user.id_profile === 3 ? request.params.idBuilder : request.user.builder.id,
       request.body.partners
     )
 
@@ -131,17 +136,14 @@ export const create = async (request, response) => {
 }
 
 /**
- * @api {delete} /builder/partner/:id Delete Partner
+ * @api {delete} /builder/:idBuilder/partner/:id Delete Partner
  * @apiName DeleteBuilderPartner
  * @apiGroup Builder
  * @apiVersion 1.0.0
  *
- * @apiParamExample {json} Request-Example:
- *   {
- *      "id": eb76cd10-367b-447d-b238-fa8e9eef2a1f
- *   }
+ * @apiParam {uuid} idBuilder Builder ID
+ * @apiParam {int} id Partner ID
  *
- * @apiParam {uuid} ID Builder Partner ID
  * @apiSuccessExample Success-Response:
  *   HTTP/1.1 200 OK
  *   {
@@ -157,7 +159,7 @@ export const create = async (request, response) => {
  *      "errors": [{
  *        "msg": "Invalid value",
  *        "param": "id",
- *        "location": "body"
+ *        "location": "params"
  *      }]
  *   }
  */

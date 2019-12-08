@@ -19,12 +19,13 @@ const constants = {
       CREATED: { code: 'S0000', message: 'Usuário criado com sucesso' },
       UPDATED: { code: 'S0001', message: 'Usuário atualizado com sucesso' },
       REMOVED: { code: 'S0002', message: 'Usuário removido com sucesso' },
-      LOGGED: { code: 'S0003', message: 'Usuario logado' }
+      LOGGED: { code: 'S0003', message: 'Usuario logado' },
+      NOT_FOUNDS: { code: 2500, message: 'Ainda não existem usuários cadastrados' },
+      NOT_FOUND: { code: 2501, message: 'Usuario não encontrado' }
     },
     // E01xx
     error: {
-      NOT_FOUNDS: { code: 2500, message: 'Ainda não existem usuários cadastrados' },
-      NOT_FOUND: { code: 2501, message: 'Usuario não encontrado' },
+      NOT_FOUNDS: { code: 2500, message: 'Erro ao tetar buscar usuário' },
       NOT_CREATED: { code: 2502, message: 'Erro ao tentar criar o usuário' },
       NOT_UPDATED: { code: 2503, message: 'Erro ao tentar atualizar o usuário' },
       NOT_REMOVED: { code: 2504, message: 'Erro ao tentar remover o usuário' },
@@ -70,12 +71,13 @@ const constants = {
     success: {
       CREATED: { code: 5000, message: 'Construtora criada com sucesso' },
       UPDATED: { code: 5001, message: 'Construtora atualizada com sucesso' },
-      REMOVED: { code: 5002, message: 'Construtora removida com sucesso' }
+      REMOVED: { code: 5002, message: 'Construtora removida com sucesso' },
+      NOT_FOUNDS: { code: 5500, message: 'Ainda não existem construtoras cadastradas' },
+      NOT_FOUND: { code: 5501, message: 'Construtora não encontrada' }
     },
     // 55xx
     error: {
-      NOT_FOUNDS: { code: 5500, message: 'Ainda não existem construtoras cadastradas' },
-      NOT_FOUND: { code: 5501, message: 'Construtora não encontrada' },
+      NOT_FOUND: { code: 5501, message: 'Erro ao buscar construtora(s)' },
       NOT_CREATED: { code: 5502, message: 'Erro ao tentar criar a construtora' },
       NOT_UPDATED: { code: 5503, message: 'Erro ao tentar atualizar a construtora' },
       NOT_REMOVED: { code: 5504, message: 'Erro ao tentar remover a construtora' }
@@ -206,6 +208,19 @@ const constants = {
       NOT_REMOVED: { code: 3504, message: 'Erro ao tentar remover a imagem' }
     }
   },
+  builder_phone: {
+    // 90xx
+    success: {
+      CREATED: { code: 9000, message: 'Telefone criado com sucesso' },
+      REMOVED: { code: 9002, message: 'Telefone removido com sucesso' }
+    },
+    // 95xx
+    error: {
+      NOT_FOUNDS: { code: 3500, message: 'Erro ao tentar buscar telefones' },
+      NOT_CREATED: { code: 3502, message: 'Erro ao tentar criar telefone(s)' },
+      NOT_REMOVED: { code: 3504, message: 'Erro ao tentar remover o telefone' }
+    }
+  },
   builder_partner: {
     // 90xx
     success: {
@@ -214,8 +229,8 @@ const constants = {
     },
     // 95xx
     error: {
-      NOT_FOUNDS: { code: 3500, message: 'Ainda não existem sócios cadastradas' },
-      NOT_CREATED: { code: 3502, message: 'Erro ao tentar enviar o sócio' },
+      NOT_FOUNDS: { code: 3500, message: 'Erro ao tentar buscar sócios' },
+      NOT_CREATED: { code: 3502, message: 'Erro ao tentar criar o sócio' },
       NOT_REMOVED: { code: 3504, message: 'Erro ao tentar remover o sócio' }
     }
   },
