@@ -23,29 +23,31 @@ export const getAll = () => {
  * @param {Interger} id - Custodian ID
  * @returns {Promisse} - Returns a Promisse
  */
-export const getById = id => {
-  return db
-    .select()
-    .from(table)
-    .where('id', id)
-    .and('active', true)
-    .run()
+export const getById = async id => {
+  return (
+    await db
+      .select()
+      .from(table)
+      .where('id', id)
+      .and('active', true)
+      .run()
+  )[0]
 }
 
-/**
- * Find a Custodian by CNPJ
- *
- * @param {Interger} cnpj - Custodian CNPJ
- * @returns {Promisse} - Returns a Promisse
- */
-export const getByCNPJ = cnpj => {
-  return db
-    .select()
-    .from(table)
-    .where('cnpj', cnpj)
-    .and('active', true)
-    .run()
-}
+// /**
+//  * Find a Custodian by CNPJ
+//  *
+//  * @param {Interger} cnpj - Custodian CNPJ
+//  * @returns {Promisse} - Returns a Promisse
+//  */
+// export const getByCNPJ = cnpj => {
+//   return db
+//     .select()
+//     .from(table)
+//     .where('cnpj', cnpj)
+//     .and('active', true)
+//     .run()
+// }
 
 /**
  * Create an Custodian
