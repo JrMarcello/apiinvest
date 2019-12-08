@@ -41,7 +41,60 @@ import * as repository from './repository'
  */
 export const getAll = async (request, response) => {
   try {
-    response.json(await repository.getAll(request.params))
+    if (request.user.id_profile === 3) return response.json(await repository.getAll(request.params))
+
+    return response.status(403).json({
+      status: 'Acesso negado!',
+      success: false,
+      message: 'Você não está autorizado a acessar esse recurso'
+    })
+  } catch (err) {
+    logger().error(err)
+
+    return response.status(500).json(err.message)
+  }
+}
+
+/**
+ * @api {get} /building/avaliables Get all avaliables to investment
+ * @apiName GetBuildings
+ * @apiGroup Building
+ * @apiVersion 1.0.0
+ *
+ * @apiSuccessExample Success-Response:
+ *   HTTP/1.1 200 OK
+ *   [{
+ *       "id": "69cb237c-c53a-4619-8433-d80719c0c18f",
+ *       "id_builder": "7de6982f-6989-45bd-97d4-973ebeb75295",
+ *       "spe": "34096667000199",
+ *       "registration": "789456",
+ *       "name": "Nome da obra",
+ *       "description": "Descrição da obra",
+ *       "address_street": "Rua da obraa",
+ *       "address_number": "123",
+ *       "address_neighborhood": "Bairro",
+ *       "address_city": "Cidade",
+ *       "address_state": "Estado",
+ *       "address_country": "Pais",
+ *       "address_cep": "58000000",
+ *       "amount": "1000000.00",
+ *       "initial_date": "2019-08-27T00:00:00.000Z",
+ *       "final_date": "2022-08-27T00:00:00.000Z",
+ *       "created_date": "2019-09-24T00:50:58.550Z",
+ *       "active": true
+ *   }]
+ *
+ * @apiErrorExample Error-Response:
+ *   HTTP/1.1 500 Internal Server Error
+ *     {
+ *        "code": 9999,
+ *        "message": "Requisição inválida",
+ *        "errors": [{}]
+ *     }
+ */
+export const getAllAvaliables = async (request, response) => {
+  try {
+    response.json(await repository.getAllAvaliables(request.params))
   } catch (err) {
     logger().error(err)
 
@@ -163,8 +216,6 @@ export const getByBuilderId = async (request, response) => {
  * @apiGroup Building
  * @apiVersion 1.0.0
  *
- * @apiParam {string} params Building params em breve aqui
- *
  * @apiParamExample {json} Request-Example:
  *   {
  *      "id_builder": "7de6982f-6989-45bd-97d4-973ebeb75295",
@@ -197,7 +248,7 @@ export const getByBuilderId = async (request, response) => {
  *        "building": {
  *          "id": "69cb237c-c53a-4619-8433-d80719c0c18f",
  *          "id_builder": "7de6982f-6989-45bd-97d4-973ebeb75295",
- *          "spe": "34096667000199",
+ *          "cnpj": "34096667000199",
  *          "registration": "789456",
  *          "name": "Nome da obra",
  *          "description": "Descrição da obra",
@@ -208,7 +259,7 @@ export const getByBuilderId = async (request, response) => {
  *          "address_state": "Estado",
  *          "address_country": "Pais",
  *          "address_cep": "58000000",
- *          "amount": "1000000.00",
+ *          "vgv": "1000000.00",
  *          "initial_date": "2019-08-27T00:00:00.000Z",
  *          "final_date": "2022-08-27T00:00:00.000Z",
  *          "created_date": "2019-09-24T00:50:58.550Z",

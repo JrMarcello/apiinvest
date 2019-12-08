@@ -13,37 +13,16 @@ export const uploadFile = async (file, dirname) => {
   const bucketName = env().GOOGLE_CLOUD.BUCKET
   const fileName = `${Date.now()}.${file.mimetype.split('/')[1]}`
 
-  await storage
-    .bucket(bucketName)
-    .file(`${dirname}/${fileName}`)
-    .save(file.buffer)
+  // console.log(await storage.bucket(bucketName).exists())
+  // await storage.bucket(bucketName).getFiles()
+
+  // await storage
+  //   .bucket(bucketName)
+  //   .file(`${dirname}/${fileName}`)
+  //   .save(file.buffer)
 
   return `https://storage.googleapis.com/${bucketName}/${dirname}/${fileName}`
 }
-
-// /**
-//  * Pushes files to GCS
-//  *
-//  * @param {*} file
-//  * @param {*} dirname
-//  */
-// export const uploadFiles = async (files, dirname) => {
-//   const bucketName = env().GOOGLE_CLOUD.BUCKET
-
-//   let fileName
-//   const urls = files.map(file => {
-//     fileName = `${Date.now()}.${file.mimetype.split('/')[1]}`
-
-//     storage
-//       .bucket(bucketName)
-//       .file(`${dirname}/${fileName}`)
-//       .save(file.buffer)
-
-//     return `https://storage.googleapis.com/${bucketName}/${dirname}/${fileName}`
-//   })
-
-//   return urls
-// }
 
 /**
  * Remove file to GCS
@@ -51,14 +30,20 @@ export const uploadFile = async (file, dirname) => {
  * @param {*} url
  * @param {*} dirname
  */
-export const removeFile = async (urls, dirname) => {
+export const removeFile = async urls => {
   const bucketName = env().GOOGLE_CLOUD.BUCKET
-  console.log(dirname)
 
-  return urls.forEach(url => {
+  console.log(
     storage
       .bucket(bucketName)
-      .file(url)
-      .delete()
-  })
+      .file(urls[0])
+      .exists()
+  )
+
+  // return urls.forEach(url => {
+  //   storage
+  //     .bucket(bucketName)
+  //     .file(url)
+  //     .delete()
+  // })
 }

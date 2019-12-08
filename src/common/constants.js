@@ -199,13 +199,13 @@ const constants = {
     // 90xx
     success: {
       CREATED: { code: 9000, message: 'Comprovante enviado com sucesso' },
-      REMOVED: { code: 9002, message: 'Comprovante removido com sucesso' }
+      REMOVED: { code: 9002, message: 'Imagens removidas com sucesso' }
     },
     // 95xx
     error: {
       NOT_FOUNDS: { code: 3500, message: 'Ainda não existem imagens cadastradas' },
       NOT_CREATED: { code: 3502, message: 'Erro ao tentar enviar a imagem' },
-      NOT_REMOVED: { code: 3504, message: 'Erro ao tentar remover a imagem' }
+      REMOVED: { code: 3504, message: 'Erro ao tentar remover a imagem' }
     }
   },
   builder_phone: {

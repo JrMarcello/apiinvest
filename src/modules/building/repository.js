@@ -13,6 +13,16 @@ export const getAll = async params => {
 }
 
 /**
+ *  Get all avaliables to investments Buildings
+ *
+ * @param {Object} params - Params for query
+ * @returns {Promisse} - Returns a Promisse
+ */
+export const getAllAvaliables = async params => {
+  return dao.getAllAvaliables(params)
+}
+
+/**
  * Find a Building by ID
  *
  * @param {Interger} id - Building ID
@@ -77,7 +87,6 @@ export const update = data => {
 
   return dao.update({
     id: data.id,
-    id_builder: data.id_builder,
     cnpj: data.cnpj,
     registration: data.registration,
     name: data.name,
