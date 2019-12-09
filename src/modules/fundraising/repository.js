@@ -1,4 +1,6 @@
 import * as dao from './dao'
+import * as fundraisingDao from '../investment/dao'
+import constants from '../../common/constants'
 
 /**
  *  Get all Fundraisings
@@ -68,8 +70,6 @@ export const create = data => {
 export const update = data => {
   return dao.update({
     id: data.id,
-    id_building: data.id_building,
-    id_custodian: data.id_custodian,
     amount: data.amount,
     investment_min_value: data.investment_min_value,
     investment_percentage: data.investment_percentage,
@@ -98,7 +98,9 @@ export const finish = id => {
  * @param {Object} id - Fundraising id
  * @returns {Function} - Returns a Promisse
  */
-export const cancel = id => {
-  // TODO: Só cancelar se não tiver investimentos
-  return dao.cancel(id)
+export const remove = async id => {
+  if ((await fundraisingDao.getByFundraisingId(id)).length !== 0)
+    throw Error(constants.fundraising.error.NOT_REMOVED_INVESTMENT)
+
+  return dao.remove(id)
 }

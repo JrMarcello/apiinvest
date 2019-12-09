@@ -33,13 +33,14 @@ export const create = async data => {
 
 /**
  * Remove an Image
- *
- * @param {Object} id - Image id
+ * @param {uuid} idBuilding - Building ID
+ * @param {array} ids - Image id
  * @returns {Object} - Returns data
  */
-export const remove = id => {
+export const remove = (idBuilding, ids) => {
   return db
     .delete(table)
-    .where('id', id)
+    .where('id_building', idBuilding)
+    .and('id', 'IN', ids)
     .run()
 }

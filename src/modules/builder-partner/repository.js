@@ -13,12 +13,13 @@ export const getByBuilderId = id => {
 /**
  * Saves the Partner
  *
+ * @param {UUID} idBuilder - Builder ID
  * @param {Object} data - Partner data
  * @returns {Promisse} - Returns a Promisse
  */
-export const create = async data => {
-  const partners = data.partners.map(partner => {
-    partner.id_builder = data.id_builder
+export const create = async (idBuilder, data) => {
+  const partners = data.map(partner => {
+    partner.id_builder = idBuilder
 
     return partner
   })
@@ -29,9 +30,10 @@ export const create = async data => {
 /**
  * Remove a Partner
  *
- * @param {Object} id - Partner id
+ * @param {Object} idBuiler - Builder ID
+ * @param {Object} id - Partner ID
  * @returns {Function} - Returns a Promisse
  */
-export const remove = id => {
-  return dao.remove(id)
+export const remove = (idBuilder, id) => {
+  return dao.remove(idBuilder, id)
 }

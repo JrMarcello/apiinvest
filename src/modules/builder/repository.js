@@ -47,8 +47,16 @@ export const getAllBuildingsById = async id => {
  * @param {Interger} id - User ID
  * @returns {Promisse} - Returns a Promisse
  */
-export const getByUserId = id => {
-  return dao.getByUserId(id)
+export const getByUserId = async id => {
+  const builder = await dao.getByUserId(id)
+
+  if (builder) {
+    builder.phones = await phone.getByBuilderId(builder.id)
+    builder.partners = await partner.getByBuilderId(builder.id)
+    builder.buildings = await building.getByBuilderId(builder.id)
+  }
+
+  return builder
 }
 
 /**
@@ -77,10 +85,10 @@ export const create = async data => {
     logo_url: data.builder.logo_url
   })
 
-  await phone.create({ id_builder: builder.id, phones: data.phones })
+  await phone.create(builder.id, data.phones)
 
   if (data.partners && data.partners.length !== 0) {
-    await partner.create({ id_builder: builder.id, partners: data.partners })
+    await partner.create(builder.id, data.partners)
   }
 
   return builder
@@ -89,7 +97,7 @@ export const create = async data => {
 /**
  * Updates an Builder
  *
- * @param {Object} data - Builder data to be updated
+ * @param {Object} data - Builder data
  * @returns {Promisse} - Returns a Promisse
  */
 export const update = async data => {

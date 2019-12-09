@@ -1,14 +1,14 @@
 import express from 'express'
-import { checkAuth } from '../../core/middlewares/auth'
 import * as controller from './controller'
+import validations from './validations'
 
 const router = express.Router()
-const BUILDER_PARTNER_BASE_PAH = '/builder/partner'
+const BUILDER_PARTNER_BASE_PAH = '/builder/:idBuilder/partner'
 
 export default () => {
-  router.get('/builder/:id/partner', checkAuth, controller.getByBuilderId)
-  router.post(BUILDER_PARTNER_BASE_PAH, checkAuth, controller.create)
-  router.delete('/builder/:id/partner', checkAuth, controller.remove)
+  router.get(BUILDER_PARTNER_BASE_PAH, validations.getByBuilderId, controller.getByBuilderId)
+  router.post(BUILDER_PARTNER_BASE_PAH, validations.create, controller.create)
+  router.delete(`${BUILDER_PARTNER_BASE_PAH}/:id`, validations.remove, controller.remove)
 
   return router
 }

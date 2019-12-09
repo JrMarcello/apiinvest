@@ -12,38 +12,35 @@ export const getByBuildingId = id => {
 }
 
 /**
- * Saves the Image
+ * Saves Images
  *
- * @param {Object} filesBuffer - Files data
+ * @param {Object} idBuilding - Building ID
+ * @param {Object} imagesBuffer - Imgages data
  * @returns {Promisse} - Returns a Promisse
  */
-export const create = async data => {
-  const files = await Promise.all(
-    data.files.map(async file => {
+export const create = async (idBuilding, imagesBuffer) => {
+  const images = await Promise.all(
+    imagesBuffer.map(async image => {
       return {
-        id_building: data.id_building,
-        url: await storage.uploadFile(file, 'buildings')
+        id_building: idBuilding,
+        url: await storage.uploadFile(image, `building/${idBuilding}`)
       }
     })
   )
 
-  const images = dao.create(files)
-
-  return images
+  return dao.create(images)
 }
 
 /**
- * Remove an image
+ * Remove images
  *
- * @param {Object} ids - Image ids
+ * @param {uuid} idBuilding - Building ID
+ * @param {array} ids - Image IDs
  * @returns {Function} - Returns a Promisse
  */
-export const remove = ids => {
+export const remove = async (idBuilding, ids) => {
   // TODO
-  // Remover do GC
-  // Criar um getByIds()
-  // Ajustar o o remove() para suportar array
-  // Deletar tds getByIds() no GC
-  // Deletar tds na base
-  return dao.remove(ids)
+  // storage.removeFile(await dao.getByIDs(ids))
+
+  return dao.remove(idBuilding, ids)
 }

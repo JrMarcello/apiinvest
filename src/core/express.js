@@ -29,7 +29,6 @@ function setParsers() {
   server.use(compression())
 
   server.use(express.static('public'))
-  // server.set('showStackError', true)
 }
 
 function setRoutes() {

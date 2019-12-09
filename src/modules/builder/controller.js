@@ -54,7 +54,7 @@ export const getAll = async (request, response) => {
   } catch (err) {
     logger().error(err)
 
-    return response.status(500).json(err.message)
+    return response.status(500).json(constants.builder.error.NOT_FOUND)
   }
 }
 
@@ -142,7 +142,7 @@ export const getAll = async (request, response) => {
  *      "errors": [{
  *        "msg": "Invalid value",
  *        "param": "id",
- *        "location": "body"
+ *        "location": "params"
  *      }]
  *   }
  */
@@ -152,15 +152,17 @@ export const getById = async (request, response) => {
   } catch (err) {
     logger().error(err)
 
-    response.status(500).json(err)
+    response.status(500).json(constants.builder.error.NOT_FOUND)
   }
 }
 
 /**
- * @api {get} /builder//:id/buildings Get all Buildings (By Builder ID)
- * @apiName GetAllBuildings
+ * @api {get} /builder/:id/building Get all Buildings (By Builder ID)
+ * @apiName GetAllBuildingsByID
  * @apiGroup Builder
  * @apiVersion 1.0.0
+ *
+ * @apiParam {uuid} id Builder ID
  *
  * @apiSuccessExample Success-Response:
  *   HTTP/1.1 200 OK
@@ -190,7 +192,11 @@ export const getById = async (request, response) => {
  *     {
  *        "code": 9999,
  *        "message": "Requisição inválida",
- *        "errors": [{}]
+ *        "errors": [{
+ *          "msg": "Invalid value",
+ *          "param": "id",
+ *          "location": "params"
+ *        }]
  *     }
  */
 export const getAllBuildingsById = async (request, response) => {
@@ -201,7 +207,7 @@ export const getAllBuildingsById = async (request, response) => {
   } catch (err) {
     logger().error(err)
 
-    response.status(500).json(err)
+    response.status(500).json(constants.builder.error.NOT_FOUND)
   }
 }
 
@@ -211,7 +217,7 @@ export const getAllBuildingsById = async (request, response) => {
  * @apiGroup Builder
  * @apiVersion 1.0.0
  *
- * @apiParam {uuid} ID User ID
+ * @apiParam {uuid} id User ID
  *
  * @apiSuccessExample Success-Response:
  *   HTTP/1.1 200 OK
@@ -257,7 +263,7 @@ export const getByUserId = async (request, response) => {
   } catch (err) {
     logger().error(err)
 
-    response.status(500).json(err)
+    response.status(500).json(constants.builder.error.NOT_FOUND)
   }
 }
 
@@ -405,8 +411,6 @@ export const create = async (request, response) => {
  */
 export const update = async (request, response) => {
   try {
-    if (request.user.id_profile !== 3) request.body.id_user = request.user.id
-
     await repository.update(request.body)
 
     response.json(constants.builder.success.UPDATED)

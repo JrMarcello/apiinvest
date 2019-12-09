@@ -16,6 +16,9 @@ import * as repository from './repository'
  *       "company_name": "Custodiadora Default SA",
  *       "company_fancy_name": "Custodiadora Default",
  *       "phone": "8333334444",
+ *       "agent_name": "João da Silva",
+ *	     "agent_email": "joaosilva@custodiadora.com.br",
+ *	     "agent_phone": "83988317867",
  *       "create_date": "2019-09-24T04:29:51.726Z",
  *       "active": true
  *   }]
@@ -44,7 +47,7 @@ export const getAll = async (request, response) => {
  * @apiGroup Custodian
  * @apiVersion 1.0.0
  *
- * @apiParam {uuid} ID Custodian ID
+ * @apiParam {uuid} id Custodian ID
  *
  * @apiSuccessExample Success-Response:
  *   HTTP/1.1 200 OK
@@ -54,6 +57,9 @@ export const getAll = async (request, response) => {
  *      "company_name": "Custodiadora Default SA",
  *      "company_fancy_name": "Custodiadora Default",
  *      "phone": "8333334444",
+ *      "agent_name": "João da Silva",
+ *	    "agent_email": "joaosilva@custodiadora.com.br",
+ *	    "agent_phone": "83988317867",
  *      "create_date": "2019-09-24T04:29:51.726Z",
  *      "active": true
  *   }

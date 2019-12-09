@@ -5,7 +5,7 @@ const table = 'builder_phone'
 /**
  * Find Phones by Builder ID
  *
- * @param {Interger} id - Builder ID
+ * @param {number} id - Builder ID
  * @returns {Promisse} - Returns a Promisse
  */
 export const getByBuilderId = id => {
@@ -34,12 +34,14 @@ export const create = async data => {
 /**
  * Remove an Phone
  *
- * @param {Object} id - Phone id to be removed
- * @returns {Object} - Returns data
+ * @param {UUID} IdBuilder - Builder ID
+ * @param {number} id - Phone ID
+ * @returns {Promisse} - Returns a Promisse
  */
-export const remove = id => {
+export const remove = (idBuilder, id) => {
   return db
     .delete(table)
-    .where('id', id)
+    .where('id_builder', idBuilder)
+    .and('id', id)
     .run()
 }

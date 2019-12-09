@@ -35,19 +35,22 @@
       {
         "resource": "/building/:id",
         "methods": ["GET"],
-        "action": "allow",
-        "subroutes": [
-          {
-            "resource": "*",
-            "methods": "*",
-            "action": "deny"
-          }
-        ]
+        "action": "allow"
       },
       {
-        "resource": "/building/available/",
+        "resource": "/building/availables/",
         "methods": ["GET"],
         "action": "allow"
+      }
+    ]
+  },
+  {
+    "group": "Construtor",
+    "permissions": [
+      {
+        "resource": "*",
+        "methods": "*",
+        "action": "deny"
       }
     ]
   }

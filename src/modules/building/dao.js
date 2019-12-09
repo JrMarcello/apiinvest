@@ -18,6 +18,21 @@ export const getAll = () => {
 }
 
 /**
+ *  Find all avaliables to investment Builder
+ *
+ * @param {Object} data - Investment data to be updated
+ * @returns {Promisse} - Returns a Promisse
+ */
+export const getAllAvaliables = async data => {
+  const query = {
+    text: `SELECT * FROM ${table} b JOIN fundraising f ON (b.id = f.id_building AND f.active AND f.finished = false) WHERE b.active`
+    // values: [data]
+  }
+
+  return (await db.query(query)).rows
+}
+
+/**
  * Find a Builder by ID
  *
  * @param {Interger} id - Builder ID

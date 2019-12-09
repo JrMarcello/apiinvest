@@ -3,12 +3,12 @@ import constants from '../../common/constants'
 import * as repository from './repository'
 
 /**
- * @api {get} /building/:id/image Get Image (By Building ID)
+ * @api {get} /building/:idBuilding/image Get Image (By Building ID)
  * @apiName GetBuildingImage
  * @apiGroup Building
  * @apiVersion 1.0.0
  *
- * @apiParam {uuid} ID Building ID
+ * @apiParam {uuid} idBuilding Building ID
  *
  * @apiSuccessExample Success-Response:
  *   HTTP/1.1 200 OK
@@ -32,7 +32,7 @@ import * as repository from './repository'
  */
 export const getByBuildingId = async (request, response) => {
   try {
-    response.json(await repository.getByBuildingId(request.params.id))
+    response.json(await repository.getByBuildingId(request.params.idBuilding))
   } catch (err) {
     logger().error(err)
 
@@ -41,16 +41,15 @@ export const getByBuildingId = async (request, response) => {
 }
 
 /**
- * @api {post} /building/image Create Image
+ * @api {post} /building/:idBuilding/image Add Images
  * @apiName CreateBuilderImage
  * @apiGroup Building
  * @apiVersion 1.0.0
  *
- * @apiParam {string} params Builder iamge params em breve aqui
+ * @apiParam {uuid} idBuilding Building ID
  *
  * @apiParamExample {json} Request-Example:
  *   {
- *      "id_building": "eb76cd10-367b-447d-b238-fa8e9eef2a1f",
  *      "images": [[image buffer], [image buffer]]
  *   }
  *
@@ -66,16 +65,12 @@ export const getByBuildingId = async (request, response) => {
  *   {
  *      "code": 9999,
  *      "message": "Dados da requisição inválidos",
- *      "errors": [{
- *        "msg": "Invalid value",
- *        "param": "numero",
- *        "location": "body"
- *      }]
+ *      "errors": [{}]
  *   }
  */
 export const create = async (request, response) => {
   try {
-    const images = await repository.create({ id_building: request.body.id_building, files: request.files })
+    const images = await repository.create(request.params.idBuilding, request.files)
 
     response.json(Object.assign(constants.building_image.success.CREATED, { images }))
   } catch (err) {
@@ -86,17 +81,18 @@ export const create = async (request, response) => {
 }
 
 /**
- * @api {delete} /building/image/:id Delete Image
- * @apiName DeleteBuilderImage
+ * @api {delete} /building/:idBuilding/image Delete Images
+ * @apiName DeleteBuilderImages
  * @apiGroup Building
  * @apiVersion 1.0.0
  *
+ * @apiParam {uuid} idBuilder Builder ID
+ *
  * @apiParamExample {json} Request-Example:
  *   {
- *      "id": eb76cd10-367b-447d-b238-fa8e9eef2a1f
+ *      "ids": [1, 2]
  *   }
  *
- * @apiParam {uuid} ID Builder Phone ID
  * @apiSuccessExample Success-Response:
  *   HTTP/1.1 200 OK
  *   {
@@ -118,12 +114,12 @@ export const create = async (request, response) => {
  */
 export const remove = async (request, response) => {
   try {
-    await repository.remove(request.params.id)
+    await repository.remove(request.params.idBuilding, request.body.ids)
 
     response.json(constants.building_image.success.REMOVED)
   } catch (err) {
     logger().error(err)
 
-    response.status(500).json(constants.building_image.error.NOT_REMOVED)
+    response.status(500).json(constants.building_image.error.REMOVED)
   }
 }
