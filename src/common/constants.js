@@ -104,7 +104,8 @@ const constants = {
     success: {
       CREATED: { code: 6000, message: 'Captação criada com sucesso' },
       UPDATED: { code: 6001, message: 'Captação atualizada com sucesso' },
-      REMOVED: { code: 6002, message: 'Captação removida com sucesso' }
+      REMOVED: { code: 6002, message: 'Captação removida com sucesso' },
+      FINISHED: { code: 6000, message: 'Captação encerrada com sucesso' }
     },
     // 75xx
     error: {
@@ -112,7 +113,8 @@ const constants = {
       NOT_FOUND: { code: 6501, message: 'Captação não encontrada' },
       NOT_CREATED: { code: 6502, message: 'Erro ao tentar criar a captação' },
       NOT_UPDATED: { code: 6503, message: 'Erro ao tentar atualizar a captação' },
-      NOT_REMOVED: { code: 6504, message: 'Erro ao tentar remover a captação' }
+      NOT_REMOVED: { code: 6504, message: 'Erro ao tentar remover a captação' },
+      NOT_REMOVED_INVESTMENT: { code: 6504, message: 'Já existem investimentos realizados na captação' }
     }
   },
   custodian: {

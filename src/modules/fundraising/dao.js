@@ -100,7 +100,7 @@ export const update = data => {
  * @param {Object} id - Fundraising id to be canceled
  * @returns {Object} - Returns data
  */
-export const cancel = id => {
+export const remove = id => {
   return db
     .update(table)
     .set('active', false)

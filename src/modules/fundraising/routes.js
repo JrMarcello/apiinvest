@@ -1,19 +1,18 @@
 import express from 'express'
-import { checkAuth } from '../../core/middlewares/auth'
+import validations from './validations'
 import * as controller from './controller'
 
 const router = express.Router()
 const FUNDRAISING_BASE_PATH = '/fundraising'
 
 export default () => {
-  router.get(FUNDRAISING_BASE_PATH, checkAuth, controller.getAll)
-  router.get(`${FUNDRAISING_BASE_PATH}/:id`, checkAuth, controller.getById)
-  router.get(`/building/:id${FUNDRAISING_BASE_PATH}`, checkAuth, controller.getByBuildingId)
-  // router.get(`${FUNDRAISING_BASE_PATH}/custodian/:id`, checkAuth, controller.getByCustodianId)
-  router.post(FUNDRAISING_BASE_PATH, checkAuth, controller.create)
-  router.put(FUNDRAISING_BASE_PATH, checkAuth, controller.update)
-  router.put(`${FUNDRAISING_BASE_PATH}/:id/finish`, checkAuth, controller.finish)
-  router.put(`${FUNDRAISING_BASE_PATH}/:id/cancel`, checkAuth, controller.cancel)
+  router.get(FUNDRAISING_BASE_PATH, validations.getAll, controller.getAll)
+  router.get(`${FUNDRAISING_BASE_PATH}/:id`, validations.getById, controller.getById)
+  router.get(`${FUNDRAISING_BASE_PATH}/building/:idBuilding`, validations.getByBuildingId, controller.getByBuildingId)
+  router.post(FUNDRAISING_BASE_PATH, validations.create, controller.create)
+  router.put(FUNDRAISING_BASE_PATH, validations.update, controller.update)
+  router.put(`${FUNDRAISING_BASE_PATH}/:id/finish`, validations.finish, controller.finish)
+  router.delete(`${FUNDRAISING_BASE_PATH}/:id`, validations.remove, controller.remove)
 
   return router
 }

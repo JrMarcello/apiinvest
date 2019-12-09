@@ -15,6 +15,9 @@ import * as repository from './repository'
  *       "id_building": "e69738af-8619-4335-99b9-153da3f723c6",
  *       "id_custodian": null,
  *       "amount": "2536216.00",
+ *       "investment_min_value": "1000",
+ *       "investment_percentage": "0.05",
+ *       "return_date": "2022-12-15",
  *       "initial_date": "2019-09-24T03:00:00.000Z",
  *       "final_date": "2019-09-30T03:00:00.000Z",
  *       "finished": false,
@@ -46,20 +49,23 @@ export const getAll = async (request, response) => {
  * @apiGroup Fundraising
  * @apiVersion 1.0.0
  *
- * @apiParam {uuid} ID Fundraising ID
+ * @apiParam {uuid} id Fundraising ID
  *
  * @apiSuccessExample Success-Response:
  *   HTTP/1.1 200 OK
  *   {
- *      "id": "cd99df55-e99b-4db1-86cd-143430f1a19a",
- *      "id_building": "e69738af-8619-4335-99b9-153da3f723c6",
- *      "id_custodian": null,
- *      "amount": "2536216.00",
- *      "initial_date": "2019-09-24T03:00:00.000Z",
- *      "final_date": "2019-09-30T03:00:00.000Z",
- *      "finished": false,
- *      "created_date": "2019-09-24T19:08:56.438Z",
- *      "active": true
+ *       "id": "cd99df55-e99b-4db1-86cd-143430f1a19a",
+ *       "id_building": "e69738af-8619-4335-99b9-153da3f723c6",
+ *       "id_custodian": null,
+ *       "amount": "2536216.00",
+ *       "investment_min_value": "1000",
+ *       "investment_percentage": "0.05",
+ *       "return_date": "2022-12-15",
+ *       "initial_date": "2019-09-24T03:00:00.000Z",
+ *       "final_date": "2019-09-30T03:00:00.000Z",
+ *       "finished": false,
+ *       "created_date": "2019-09-24T19:08:56.438Z",
+ *       "active": true
  *   }
  *
  *  @apiErrorExample Error-Response:
@@ -70,7 +76,7 @@ export const getAll = async (request, response) => {
  *      "errors": [{
  *        "msg": "Invalid value",
  *        "param": "id",
- *        "location": "body"
+ *        "location": "params"
  *      }]
  *   }
  */
@@ -85,10 +91,12 @@ export const getById = async (request, response) => {
 }
 
 /**
- * @api {get} /fundraising Get (By Building ID)
- * @apiName GetFundraisingsByBuilding
+ * @api {get} /fundraising/building/:idBuilding Get (By Building ID)
+ * @apiName GetFundraisingsByBuildingID
  * @apiGroup Fundraising
  * @apiVersion 1.0.0
+ *
+ * @apiParam {uuid} idBuilding Building ID
  *
  * @apiSuccessExample Success-Response:
  *   HTTP/1.1 200 OK
@@ -97,6 +105,9 @@ export const getById = async (request, response) => {
  *       "id_building": "e69738af-8619-4335-99b9-153da3f723c6",
  *       "id_custodian": null,
  *       "amount": "2536216.00",
+ *       "investment_min_value": "1000",
+ *       "investment_percentage": "0.05",
+ *       "return_date": "2022-12-15",
  *       "initial_date": "2019-09-24T03:00:00.000Z",
  *       "final_date": "2019-09-30T03:00:00.000Z",
  *       "finished": false,
@@ -109,12 +120,16 @@ export const getById = async (request, response) => {
  *     {
  *        "code": 9999,
  *        "message": "Requisição inválida",
- *        "errors": [{}]
+ *        "errors": [{
+ *          "msg": "Invalid value",
+ *          "param": "idBuilding",
+ *          "location": "params"
+ *        }]
  *     }
  */
 export const getByBuildingId = async (request, response) => {
   try {
-    response.json(await repository.getByBuildingId(request.params.id))
+    response.json(await repository.getByBuildingId(request.params.idBuilding))
   } catch (err) {
     logger().error(err)
 
@@ -122,36 +137,22 @@ export const getByBuildingId = async (request, response) => {
   }
 }
 
-// /**
-//  * @param {Object} request - HTTP request
-//  * @param {Object} response - HTTP response
-//  * @returns {Object} HTTP response with status code and data
-//  */
-// export const getByCustodianId = async (request, response) => {
-//   try {
-//     response.json(await repository.getByCustodianId(request.params.id))
-//   } catch (err) {
-//     logger().error(err)
-
-//     response.status(500).json(err)
-//   }
-// }
-
 /**
  * @api {post} /fundraising Create
  * @apiName CreateFundraising
  * @apiGroup Fundraising
  * @apiVersion 1.0.0
  *
- * @apiParam {string} params Fundraising params em breve aqui
- *
  * @apiParamExample {json} Request-Example:
  *   {
- *      "id_building": "8dff5f89-dbd1-4db1-b3ac-ee4d3904429a",
- *      "id_custodian": "647ac188-62c8-4618-8a0a-be14174aac49",
- *      "amount": "1000.00",
- *      "initial_date": "2019-08-25",
- *      "final_date": "2020-02-25"
+ *      "id_building": "e69738af-8619-4335-99b9-153da3f723c6",
+ *      "id_custodian": null,
+ *      "amount": "2536216.00",
+ *      "investment_min_value": "1000",
+ *      "investment_percentage": "0.05",
+ *      "return_date": "2022-12-15",
+ *      "initial_date": "2019-09-24",
+ *      "final_date": "2019-09-30"
  *   }
  *
  * @apiSuccessExample Success-Response:
@@ -165,6 +166,9 @@ export const getByBuildingId = async (request, response) => {
  *           "id_building": "8dff5f89-dbd1-4db1-b3ac-ee4d3904429a",
  *           "id_custodian": "647ac188-62c8-4618-8a0a-be14174aac49",
  *           "amount": "1000.00",
+ *           "investment_min_value": "1000",
+ *           "investment_percentage": "0.05",
+ *           "return_date": "2022-12-15",
  *           "initial_date": "2019-08-25T03:00:00.000Z",
  *           "final_date": "2020-02-25T03:00:00.000Z",
  *           "finished": false,
@@ -204,12 +208,13 @@ export const create = async (request, response) => {
  * @apiGroup Fundraising
  * @apiVersion 1.0.0
  *
- * @apiParam {string} params Fundraising params em breve
- *
  * @apiParamExample {json} Request-Example:
  *   {
  *      "id": "164164dd-2b2c-4bbd-8d06-0d67e7ca242f",
- *      "amount": "1000.00",
+ *      "amount": "100000",
+ *      "investment_min_value": "1000",
+ *      "investment_percentage": "0.05",
+ *      "return_date": "2022-12-15",
  *      "initial_date": "2019-08-25",
  *      "final_date": "2020-02-25"
  *   }
@@ -251,6 +256,8 @@ export const update = async (request, response) => {
  * @apiGroup Fundraising
  * @apiVersion 1.0.0
  *
+ * @apiParam {uuid} id Fundraising ID
+ *
  * @apiSuccessExample Success-Response:
  *   HTTP/1.1 200 OK
  *   {
@@ -266,7 +273,7 @@ export const update = async (request, response) => {
  *      "errors": [{
  *        "msg": "Invalid value",
  *        "param": "id",
- *        "location": "body"
+ *        "location": "params"
  *      }]
  *   }
  */
@@ -283,16 +290,18 @@ export const finish = async (request, response) => {
 }
 
 /**
- * @api {put} /fundraising/:id/cancel Cancel
- * @apiName CancelFundraising
+ * @api {delete} /fundraising/:id Remove
+ * @apiName RemoveFundraising
  * @apiGroup Fundraising
  * @apiVersion 1.0.0
+ *
+ * @apiParam {uuid} id Fundraising ID
  *
  * @apiSuccessExample Success-Response:
  *   HTTP/1.1 200 OK
  *   {
  *      "code": "S0000",
- *      "message": "Captação cancelada com sucesso"
+ *      "message": "Captação removida com sucesso"
  *   }
  *
  * @apiErrorExample Error-Response:
@@ -303,13 +312,13 @@ export const finish = async (request, response) => {
  *      "errors": [{
  *        "msg": "Invalid value",
  *        "param": "id",
- *        "location": "body"
+ *        "location": "params"
  *      }]
  *   }
  */
-export const cancel = async (request, response) => {
+export const remove = async (request, response) => {
   try {
-    await repository.cancel(request.params.id)
+    await repository.remove(request.params.id)
 
     response.json(constants.fundraising.success.REMOVED)
   } catch (err) {
