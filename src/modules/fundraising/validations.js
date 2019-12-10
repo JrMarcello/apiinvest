@@ -16,6 +16,12 @@ const schemas = {
       errorMessage: 'ID inválido'
     }
   },
+  getAmountRaised: {
+    id: {
+      isUUID: true,
+      errorMessage: 'ID inválido'
+    }
+  },
   create: {},
   update: {},
   finish: {
@@ -38,6 +44,7 @@ export default {
   getAll: [checkAuth, acl.authorize, validate(schemas.getAll)],
   getById: [checkAuth, acl.authorize, validate(schemas.getById)],
   getByBuildingId: [checkAuth, acl.authorize, validate(schemas.getByBuildingId)],
+  getAmountRaised: [checkAuth, acl.authorize, validate(schemas.getAmountRaised)],
   create: [checkAuth, acl.authorize, validate(schemas.create)],
   update: [checkAuth, acl.authorize, validate(schemas.update)],
   finish: [checkAuth, acl.authorize, validate(schemas.finish)],

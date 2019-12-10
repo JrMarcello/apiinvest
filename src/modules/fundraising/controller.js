@@ -138,6 +138,37 @@ export const getByBuildingId = async (request, response) => {
 }
 
 /**
+ * @api {get} /fundraising/:id/amountraised Get Amount Raised
+ * @apiName GetAmountRaised
+ * @apiGroup Fundraising
+ * @apiVersion 1.0.0
+ *
+ * @apiParam {uuid} id Fundraising ID
+ *
+ * @apiSuccessExample Success-Response:
+ *   HTTP/1.1 200 OK
+ *   {
+ *
+ *   }
+ *
+ *  @apiErrorExample Error-Response:
+ *   HTTP/1.1 500 Internal Server Error
+ *   {
+ *      "code": 9999,
+ *      "message": "Erro ao buscar total captado",
+ *   }
+ */
+export const getAmountRaised = async (request, response) => {
+  try {
+    response.json(await repository.getAmountRaised(request.params.id))
+  } catch (err) {
+    logger().error(err)
+
+    response.status(500).json(constants.fundraising.error.AMOUNT_RAISED)
+  }
+}
+
+/**
  * @api {post} /fundraising Create
  * @apiName CreateFundraising
  * @apiGroup Fundraising

@@ -32,6 +32,16 @@ export const getByBuildingId = id => {
   return dao.getByBuildingId(id)
 }
 
+/**
+ * Search the amount raised by Fundraising ID
+ *
+ * @param {Interger} id - Fundraising ID
+ * @returns {Promisse} - Returns a Promisse
+ */
+export const getAmountRaised = id => {
+  return dao.getAmountRaised(id)
+}
+
 // /**
 //  * Find Fundraisings by Custodian ID
 //  *
