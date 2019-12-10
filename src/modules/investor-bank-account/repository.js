@@ -11,14 +11,15 @@ export const getByInvestorId = id => {
 }
 
 /**
- * Saves the Account
+ * Saves the Accounts
  *
+ * @param {uuid} idInvestor - Investor ID
  * @param {Object} data - Account data
  * @returns {Promisse} - Returns a Promisse
  */
-export const create = async data => {
-  const accounts = data.accounts.map(account => {
-    account.id_investor = data.id_investor
+export const create = async (idInvestor, data) => {
+  const accounts = data.map(account => {
+    account.id_investor = idInvestor
 
     return account
   })
@@ -29,9 +30,10 @@ export const create = async data => {
 /**
  * Remove an Account
  *
- * @param {Object} id - Account id
+ * @param {uuid} idInvestor - Investor ID
+ * @param {int} id - Account id
  * @returns {Function} - Returns a Promisse
  */
-export const remove = id => {
-  return dao.remove(id)
+export const remove = (idInvestor, id) => {
+  return dao.remove(idInvestor, id)
 }

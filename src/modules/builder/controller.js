@@ -38,8 +38,7 @@ import * as repository from './repository'
  *   HTTP/1.1 500 Internal Server Error
  *     {
  *        "code": 9999,
- *        "message": "Requisição inválida",
- *        "errors": [{}]
+ *        "message": "Erro ao buscar construtora(s)",
  *     }
  */
 export const getAll = async (request, response) => {
@@ -411,6 +410,8 @@ export const create = async (request, response) => {
  */
 export const update = async (request, response) => {
   try {
+    if (request.user.id_profile !== 3) request.body.id = request.user.builder.id
+
     await repository.update(request.body)
 
     response.json(constants.builder.success.UPDATED)

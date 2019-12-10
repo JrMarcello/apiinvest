@@ -1,14 +1,14 @@
 import express from 'express'
-import { checkAuth } from '../../core/middlewares/auth'
+import validations from './validations'
 import * as controller from './controller'
 
 const router = express.Router()
-const INVESTOR_BANK_ACCOUNT_BASE_PAH = '/investor/bank-account'
+const INVESTOR_BANK_ACCOUNT_BASE_PAH = '/investor/:idInvestor/bank-account'
 
 export default () => {
-  router.get('/investor/:id/bank-account', checkAuth, controller.getByInvestorId)
-  router.post(INVESTOR_BANK_ACCOUNT_BASE_PAH, checkAuth, controller.create)
-  router.delete('/investor/:id/bank-account', checkAuth, controller.remove)
+  router.get(INVESTOR_BANK_ACCOUNT_BASE_PAH, validations.getByInvestorId, controller.getByInvestorId)
+  router.post(INVESTOR_BANK_ACCOUNT_BASE_PAH, validations.create, controller.create)
+  router.delete(`${INVESTOR_BANK_ACCOUNT_BASE_PAH}/:id`, validations.remove, controller.remove)
 
   return router
 }

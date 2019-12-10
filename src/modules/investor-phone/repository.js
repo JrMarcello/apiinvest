@@ -11,14 +11,15 @@ export const getByInvestorId = id => {
 }
 
 /**
- * Saves the Phone
+ * Saves the Phones
  *
- * @param {Object} data - Phone data
+ * @param {uuid} idInvestor - Investor ID
+ * @param {array} data - Phone data
  * @returns {Promisse} - Returns a Promisse
  */
-export const create = async data => {
-  const phones = data.phones.map(phone => {
-    phone.id_investor = data.id_investor
+export const create = async (idInvestor, data) => {
+  const phones = data.map(phone => {
+    phone.id_investor = idInvestor
 
     return phone
   })
@@ -29,9 +30,10 @@ export const create = async data => {
 /**
  * Remove a Phone
  *
- * @param {Object} id - Phone id
+ * @param {uuid} idInvestor - Investor ID
+ * @param {int} id - Phone ID
  * @returns {Function} - Returns a Promisse
  */
-export const remove = id => {
-  return dao.remove(id)
+export const remove = (idInvestor, id) => {
+  return dao.remove(idInvestor, id)
 }

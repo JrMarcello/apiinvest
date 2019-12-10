@@ -3,12 +3,12 @@ import constants from '../../common/constants'
 import * as repository from './repository'
 
 /**
- * @api {get} /investor/:id/document Get Documents (By Investor ID)
+ * @api {get} /investor/:idInvestor/document Get Documents (By Investor ID)
  * @apiName GetInvestorDocuments
  * @apiGroup Investor
  * @apiVersion 1.0.0
  *
- * @apiParam {uuid} ID Investor ID
+ * @apiParam {uuid} idInvestor Investor ID
  *
  * @apiSuccessExample Success-Response:
  *   HTTP/1.1 200 OK
@@ -47,24 +47,30 @@ import * as repository from './repository'
  */
 export const getByInvestorId = async (request, response) => {
   try {
-    response.json(await repository.getByInvestorId(request.params.id))
+    if (request.user.id_profile === 3) return response.json(await repository.getByInvestorId(request.params.idInvestor))
+
+    return response.status(403).json({
+      status: 'Acesso negado!',
+      success: false,
+      message: 'Você não está autorizado a acessar esse recurso'
+    })
   } catch (err) {
     logger().error(err)
 
-    response.status(500).json(err)
+    return response.status(500).json(err)
   }
 }
 
 /**
- * @api {post} /investor/document Create Documents
+ * @api {post} /investor/:id/document Create Documents
  * @apiName CreateDocuments
  * @apiGroup Investor
  * @apiVersion 1.0.0
  *
- * @apiParam {string} params Documents  Partner params em breve aqui
- *
  * @apiParamExample {json} Request-Example:
- *   {}
+ *   {
+ *      "docs": [[buffer], [buffer], [buffer]]
+ *   }
  *
  * @apiSuccessExample Success-Response:
  *   HTTP/1.1 200 OK
@@ -78,58 +84,15 @@ export const getByInvestorId = async (request, response) => {
  *   {
  *      "code": 9999,
  *      "message": "Dados da requisição inválidos",
- *      "errors": [{
- *        "msg": "Invalid value",
- *        "param": "cnpj",
- *        "location": "body"
- *      }]
+ *      "errors": [{}]
  *   }
  */
 export const create = async (request, response) => {
   try {
-    const documents = await repository.create(request.body.id_investor, request.files)
-
-    response.json(Object.assign(constants.investor_document.success.CREATED, { documents }))
-  } catch (err) {
-    logger().error(err)
-
-    response.status(500).json(constants.investor_document.error.NOT_CREATED)
-  }
-}
-
-/**
- * @api {put} /investor/document Resend Documents
- * @apiName ResendDocuments
- * @apiGroup Investor
- * @apiVersion 1.0.0
- *
- * @apiParam {string} params Documents  Partner params em breve aqui
- *
- * @apiParamExample {json} Request-Example:
- *   {}
- *
- * @apiSuccessExample Success-Response:
- *   HTTP/1.1 200 OK
- *   {
- *      "code": "S0000",
- *      "message": "Documentos eviados com sucesso"
- *   }
- *
- * @apiErrorExample Error-Response:
- *   HTTP/1.1 500 Internal Server Error
- *   {
- *      "code": 9999,
- *      "message": "Dados da requisição inválidos",
- *      "errors": [{
- *        "msg": "Invalid value",
- *        "param": "id",
- *        "location": "body"
- *      }]
- *   }
- */
-export const resend = async (request, response) => {
-  try {
-    const documents = await repository.resend(request.body.id_investor, request.files)
+    const documents = await repository.create(
+      request.user.id_profile === 3 ? request.params.idInvestor : request.user.investor.id,
+      request.files
+    )
 
     response.json(Object.assign(constants.investor_document.success.CREATED, { documents }))
   } catch (err) {

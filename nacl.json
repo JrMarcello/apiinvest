@@ -18,6 +18,11 @@
         "action": "allow"
       },
       {
+        "resource": "/investor/*",
+        "methods": ["GET", "POST", "PUT"],
+        "action": "allow"
+      },
+      {
         "resource": "/investment/*",
         "methods": ["GET", "POST"],
         "action": "allow"
