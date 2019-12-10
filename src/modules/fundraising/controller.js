@@ -148,7 +148,7 @@ export const getByBuildingId = async (request, response) => {
  * @apiSuccessExample Success-Response:
  *   HTTP/1.1 200 OK
  *   {
- *
+ *      "amount": 100000
  *   }
  *
  *  @apiErrorExample Error-Response:
