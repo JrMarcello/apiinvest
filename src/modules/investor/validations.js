@@ -10,13 +10,13 @@ const schemas = {
       errorMessage: 'ID inválido'
     }
   },
-  getByBuildingId: {
-    idBuilding: {
+  getByUserId: {
+    id: {
       isUUID: true,
       errorMessage: 'ID inválido'
     }
   },
-  getAmountRaised: {
+  getAllInvestmentsById: {
     id: {
       isUUID: true,
       errorMessage: 'ID inválido'
@@ -24,13 +24,6 @@ const schemas = {
   },
   create: {},
   update: {},
-  finish: {
-    id: {
-      in: ['params'],
-      isUUID: true,
-      errorMessage: 'ID inválido'
-    }
-  },
   remove: {
     id: {
       in: ['params'],
@@ -43,10 +36,8 @@ const schemas = {
 export default {
   getAll: [checkAuth, acl.authorize, validate(schemas.getAll)],
   getById: [checkAuth, acl.authorize, validate(schemas.getById)],
-  getByBuildingId: [checkAuth, acl.authorize, validate(schemas.getByBuildingId)],
-  getAmountRaised: [checkAuth, acl.authorize, validate(schemas.getAmountRaised)],
+  getByUserId: [checkAuth, acl.authorize, validate(schemas.getByUserId)],
+  getAllInvestmentsById: [checkAuth, acl.authorize, validate(schemas.getAllInvestmentsById)],
   create: [checkAuth, acl.authorize, validate(schemas.create)],
-  update: [checkAuth, acl.authorize, validate(schemas.update)],
-  finish: [checkAuth, acl.authorize, validate(schemas.finish)],
-  remove: [checkAuth, acl.authorize, validate(schemas.remove)]
+  update: [checkAuth, acl.authorize, validate(schemas.update)]
 }

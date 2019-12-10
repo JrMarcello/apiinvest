@@ -30,13 +30,13 @@ export const uploadFile = async (file, dirname) => {
  * @param {*} url
  * @param {*} dirname
  */
-export const removeFile = async urls => {
+export const removeFiles = async files => {
   const bucketName = env().GOOGLE_CLOUD.BUCKET
 
   console.log(
     storage
       .bucket(bucketName)
-      .file(urls[0])
+      .file(files[0].url)
       .exists()
   )
 

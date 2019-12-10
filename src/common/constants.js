@@ -33,7 +33,7 @@ const constants = {
     }
   },
   investor: {
-    // S01xx
+    // S1xxx
     success: {
       CREATED: { code: 3000, message: 'Investidor criado com sucesso' },
       UPDATED: { code: 3001, message: 'Investidor atualizado com sucesso' },
@@ -42,10 +42,12 @@ const constants = {
     // E01xx
     error: {
       NOT_FOUNDS: { code: 3500, message: 'Ainda não existem investidores cadastrados' },
-      NOT_FOUND: { code: 3501, message: 'Investidor não encontrado' },
+      NOT_FOUND: { code: 3501, message: 'Erro ao buscar Investidor(es)' },
       NOT_CREATED: { code: 3502, message: 'Erro ao tentar criar o investidor' },
       NOT_UPDATED: { code: 3503, message: 'Erro ao tentar atualizar o investidor' },
-      NOT_REMOVED: { code: 3504, message: 'Erro ao tentar remover o investidor' }
+      NOT_REMOVED: { code: 3504, message: 'Erro ao tentar remover o investidor' },
+
+      CREATE_INVALID_DATA: { code: 'S1000', message: 'Dados inválidos' }
     }
   },
   investment: {
@@ -114,7 +116,8 @@ const constants = {
       NOT_CREATED: { code: 6502, message: 'Erro ao tentar criar a captação' },
       NOT_UPDATED: { code: 6503, message: 'Erro ao tentar atualizar a captação' },
       NOT_REMOVED: { code: 6504, message: 'Erro ao tentar remover a captação' },
-      NOT_REMOVED_INVESTMENT: { code: 6504, message: 'Já existem investimentos realizados na captação' }
+      NOT_REMOVED_INVESTMENT: { code: 6504, message: 'Já existem investimentos realizados na captação' },
+      AMOUNT_RAISED: { code: 6501, message: 'Erro ao buscar total captado' }
     }
   },
   custodian: {

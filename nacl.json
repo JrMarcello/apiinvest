@@ -18,6 +18,11 @@
         "action": "allow"
       },
       {
+        "resource": "/investor/*",
+        "methods": ["GET", "POST", "PUT"],
+        "action": "allow"
+      },
+      {
         "resource": "/investment/*",
         "methods": ["GET", "POST"],
         "action": "allow"
@@ -39,6 +44,11 @@
       },
       {
         "resource": "/building/availables/",
+        "methods": ["GET"],
+        "action": "allow"
+      },
+      {
+        "resource": "/fundraising/:id/amountraised",
         "methods": ["GET"],
         "action": "allow"
       }

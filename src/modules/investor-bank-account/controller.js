@@ -3,18 +3,19 @@ import constants from '../../common/constants'
 import * as repository from './repository'
 
 /**
- * @api {get} /investor/:id/bank-account Get Bank Account (By Investor ID)
+ * @api {get} /investor/:idInvestor/bank-account Get Bank Account (By Investor ID)
  * @apiName GetInvestorBankAccount
  * @apiGroup Investor
  * @apiVersion 1.0.0
  *
- * @apiParam {uuid} ID Investor ID
+ * @apiParam {uuid} idInvestor Investor ID
  *
  * @apiSuccessExample Success-Response:
  *   HTTP/1.1 200 OK
  *   [{
  *       "id": "1",
  *       "id_investor": "35bd3682-0a9f-42fa-a98e-24cba9e78729",
+ *       "bank_code": "001",
  *       "agency": "1234",
  *       "account": "1234567",
  *       "created_date": "2019-09-25T01:44:41.530Z",
@@ -28,14 +29,18 @@ import * as repository from './repository'
  *      "message": "Dados da requisição inválidos",
  *      "errors": [{
  *        "msg": "Invalid value",
- *        "param": "id",
- *        "location": "body"
+ *        "param": "idInvestor",
+ *        "location": "params"
  *      }]
  *   }
  */
 export const getByInvestorId = async (request, response) => {
   try {
-    response.json(await repository.getByInvestorId(request.params.id))
+    response.json(
+      await repository.getByInvestorId(
+        request.user.id_profile === 3 ? request.params.idInvestor : request.user.investor.id
+      )
+    )
   } catch (err) {
     logger().error(err)
 
@@ -44,20 +49,21 @@ export const getByInvestorId = async (request, response) => {
 }
 
 /**
- * @api {post} /investor/bank-account Create Bank Account
+ * @api {post} /investor/:idInvestor/bank-account Create Bank Account
  * @apiName CreateBankAccount
  * @apiGroup Investor
  * @apiVersion 1.0.0
  *
- * @apiParam {uuid} id_investor investor ID
- * @apiParam {string} agency Agency numer
- * @apiParam {string} account Account number
+ * @apiParam {uuid} idInvestor Investor ID
+ * @apiParam {array} accounts Bank Account data
  *
  * @apiParamExample {json} Request-Example:
  *   {
- *       "id_investor": "35bd3682-0a9f-42fa-a98e-24cba9e78729",
- *       "agency": "1234",
- *       "account": "1234567"
+ *       "accounts": [{
+ *         "bank_code": "001",
+ *         "agency": "1234",
+ *         "account": "1234567"
+ *        }]
  *   }
  *
  * @apiSuccessExample Success-Response:
@@ -68,6 +74,7 @@ export const getByInvestorId = async (request, response) => {
  *      "account": [{
  *        "id": "1",
  *        "id_investor": "35bd3682-0a9f-42fa-a98e-24cba9e78729",
+ *        "bank_code": "001",
  *        "agency": "1234",
  *        "account": "1234567",
  *        "created_date": "2019-09-25T01:44:41.530Z",
@@ -89,7 +96,10 @@ export const getByInvestorId = async (request, response) => {
  */
 export const create = async (request, response) => {
   try {
-    const accounts = await repository.create(request.body.id_investor, request.body.accounts)
+    const accounts = await repository.create(
+      request.user.id_profile === 3 ? request.params.idInvestor : request.user.investor.id,
+      request.body.accounts
+    )
 
     response.json(Object.assign(constants.investor_bank_account.success.CREATED, { accounts }))
   } catch (err) {
@@ -100,12 +110,13 @@ export const create = async (request, response) => {
 }
 
 /**
- * @api {delete} /investor/:id/bank-account Delete Bank Account
+ * @api {delete} /investor/:idInvestor/bank-account/:id Delete Bank Account
  * @apiName DeleteBankAccount
  * @apiGroup Investor
  * @apiVersion 1.0.0
  *
- * @apiParam {uuid} ID Bank Account ID
+ * @apiParam {uuid} idInvestor Investor ID
+ * @apiParam {int} id Bank Account ID
  *
  * @apiSuccessExample Success-Response:
  *   HTTP/1.1 200 OK
@@ -128,7 +139,10 @@ export const create = async (request, response) => {
  */
 export const remove = async (request, response) => {
   try {
-    await repository.remove(request.params.id)
+    await repository.remove(
+      request.user.id_profile === 3 ? request.params.idInvestor : request.user.investor.id,
+      request.params.id
+    )
 
     response.json(constants.investor_bank_account.success.REMOVED)
   } catch (err) {

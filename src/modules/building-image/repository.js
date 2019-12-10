@@ -40,7 +40,7 @@ export const create = async (idBuilding, imagesBuffer) => {
  */
 export const remove = async (idBuilding, ids) => {
   // TODO
-  // storage.removeFile(await dao.getByIDs(ids))
+  // storage.removeFiles(await dao.getByIDs(ids))
 
   return dao.remove(idBuilding, ids)
 }

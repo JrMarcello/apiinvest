@@ -14,54 +14,38 @@ export const getByInvestorId = id => {
 /**
  * Saves the Documents
  *
- * @param {Object} filesBuffer - Files data
+ * @param {uuid} idInvestor - Investor ID
+ * @param {Object} imagesBuffer - Imgages data
  * @returns {Promisse} - Returns a Promisse
  */
-export const create = async data => {
+export const create = async (idInvestor, imagesBuffer) => {
+  await remove(idInvestor)
+
   const files = await Promise.all(
-    data.files.map(async (file, i) => {
+    imagesBuffer.map(async (file, i) => {
       return {
-        id_investor: data.id_investor,
-        url: await storage.uploadFile(file, 'documents'),
+        id_investor: idInvestor,
+        url: await storage.uploadFile(file, `documents/${idInvestor}`),
         order: i
       }
     })
   )
-  const documents = dao.create(files)
 
-  return documents
-
-  // Retirar o async/await do storage.uploadFile
-  // return data.files.forEach((file, i) => {
-  //   dao.create({
-  //     id_investor: data.id_investor,
-  //     url: storage.uploadFile(file, 'documents'),
-  //     order: i
-  //   })
-  // })
-}
-
-/**
- * Resend the Documents
- *
- * @param {Object} filesBuffer - Files data
- * @returns {Promisse} - Returns a Promisse
- */
-export const resend = async data => {
-  removeAll(data.id_investor)
-  return create(data)
+  return dao.create(files)
 }
 
 /**
  * Remove all Documents of a Investor
  *
- * @param {Object} id - Investor ID
+ * @param {uuid} id - Investor ID
  * @returns {Promisse} - Returns a Promisse
  */
-export const removeAll = async id => {
-  const urls = await getByInvestorId(id)
+export const remove = async id => {
+  const docs = await getByInvestorId(id)
 
-  storage.removeFiles(urls, 'documents')
+  if (!docs || docs.length === 0) return false
 
-  return dao.removeAll(id)
+  storage.removeFiles(docs)
+
+  return dao.remove(id)
 }

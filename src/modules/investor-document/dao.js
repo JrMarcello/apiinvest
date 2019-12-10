@@ -17,7 +17,7 @@ export const getByInvestorId = id => {
 }
 
 /**
- * Create an Document
+ * Create Documents
  *
  * @param {Object} data - Document data to be saved
  * @returns {Promisse} - Returns a Promisse
@@ -28,5 +28,18 @@ export const create = async data => {
     .values(data)
     .into(table)
     .returning('*')
+    .run()
+}
+
+/**
+ * Remove docs
+ *
+ * @param {uuid} idInvestor - Investor ID
+ * @returns {Object} - Returns data
+ */
+export const remove = idInvestor => {
+  return db
+    .delete(table)
+    .where('id_investor', idInvestor)
     .run()
 }

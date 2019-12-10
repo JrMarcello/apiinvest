@@ -18,7 +18,7 @@ export const getByInvestorId = id => {
 }
 
 /**
- * Create an Account
+ * Create Accounts
  *
  * @param {Object} data - Account data to be saved
  * @returns {Promisse} - Returns a Promisse
@@ -35,13 +35,15 @@ export const create = async data => {
 /**
  * Remove an Account
  *
+ * @param {uuid} idInvestor - Investor ID
  * @param {Object} id - Account id to be removed
  * @returns {Object} - Returns data
  */
-export const remove = id => {
+export const remove = (idInvestor, id) => {
   return db
     .update(table)
     .set('active', false)
     .where('id', id)
+    .and('id_investor', idInvestor)
     .run()
 }

@@ -17,12 +17,12 @@ export const getByInvestorId = id => {
 }
 
 /**
- * Create an Phone
+ * Create Phones
  *
  * @param {Object} data - Phone data to be saved
  * @returns {Promisse} - Returns a Promisse
  */
-export const create = async data => {
+export const create = data => {
   return db
     .insert('id_investor', 'number')
     .values(data)
@@ -34,12 +34,14 @@ export const create = async data => {
 /**
  * Remove an Phone
  *
- * @param {Object} id - Phone id to be removed
+ * @param {uuid} idInvestor - Investor ID
+ * @param {int} id - Phone ID
  * @returns {Object} - Returns data
  */
-export const remove = id => {
+export const remove = (idInvestor, id) => {
   return db
     .delete(table)
     .where('id', id)
+    .and('id_investor', idInvestor)
     .run()
 }

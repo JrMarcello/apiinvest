@@ -1,5 +1,6 @@
 import db from '../../core/database'
 import { generateUUID } from '../../common/utils'
+import * as investmentDao from '../investment/dao'
 
 const table = 'fundraising'
 
@@ -20,7 +21,7 @@ export const getAll = () => {
 /**
  * Find a Fundraising by ID
  *
- * @param {Interger} id - Fundraising ID
+ * @param {uuid} id - Fundraising ID
  * @returns {Promisse} - Returns a Promisse
  */
 export const getById = async id => {
@@ -32,6 +33,18 @@ export const getById = async id => {
       .and('active', true)
       .run()
   )[0]
+}
+
+/**
+ *  Get amount raised
+ *
+ * @param {uuid} id - Fundraising ID
+ * @returns {Promisse} - Returns a Promisse
+ */
+export const getAmountRaised = async id => {
+  return {
+    amount: (await investmentDao.getByFundraisingId(id)).reduce((sum, investment) => sum + investment.amount, 0)
+  }
 }
 
 /**

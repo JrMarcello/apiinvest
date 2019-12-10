@@ -1,15 +1,14 @@
 import express from 'express'
-import { checkAuth } from '../../core/middlewares/auth'
+import validations from './validations'
 import multer from '../../core/multer'
 import * as controller from './controller'
 
 const router = express.Router()
-const INVESTOR_DOCUMENT_BASE_PAH = '/investor/document'
+const INVESTOR_DOCUMENT_BASE_PAH = '/investor/:idInvestor/document'
 
 export default () => {
-  router.get('/investor/:id/document', checkAuth, controller.getByInvestorId)
-  router.post(INVESTOR_DOCUMENT_BASE_PAH, checkAuth, multer.array('files', 3), controller.create)
-  router.put(INVESTOR_DOCUMENT_BASE_PAH, checkAuth, controller.resend)
+  router.get(INVESTOR_DOCUMENT_BASE_PAH, validations.getByInvestorId, controller.getByInvestorId)
+  router.post(INVESTOR_DOCUMENT_BASE_PAH, validations.create, multer.array('docs', 3), controller.create)
 
   return router
 }

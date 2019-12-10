@@ -1,5 +1,5 @@
 import express from 'express'
-import { checkAuth } from '../../core/middlewares/auth'
+import validations from './validations'
 import multer from '../../core/multer'
 import * as controller from './controller'
 
@@ -7,12 +7,12 @@ const router = express.Router()
 const INVESTOR_BASE_PAH = '/investor'
 
 export default () => {
-  router.get(INVESTOR_BASE_PAH, checkAuth, controller.getAll)
-  router.get(`${INVESTOR_BASE_PAH}/user/:id`, checkAuth, controller.getByUserId)
-  router.get(`${INVESTOR_BASE_PAH}/:id`, checkAuth, controller.getById)
-  router.post(INVESTOR_BASE_PAH, checkAuth, multer.array('docs'), controller.create)
-  // router.put(INVESTOR_BASE_PAH, checkAuth, controller.update)
-  // router.delete(`${INVESTOR_BASE_PAH}/:id`, checkAuth, controller.remove)
+  router.get(INVESTOR_BASE_PAH, validations.getAll, controller.getAll)
+  router.get(`${INVESTOR_BASE_PAH}/user/:id`, validations.getByUserId, controller.getByUserId)
+  router.get(`${INVESTOR_BASE_PAH}/:id`, validations.getById, controller.getById)
+  router.get(`${INVESTOR_BASE_PAH}/:id/investment`, validations.getAllInvestmentsById, controller.getAllInvestmentsById)
+  router.post(INVESTOR_BASE_PAH, validations.create, multer.array('docs'), controller.create)
+  router.put(INVESTOR_BASE_PAH, validations.update, controller.update)
 
   return router
 }
