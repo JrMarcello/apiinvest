@@ -3,8 +3,8 @@ import * as dao from './dao'
 /**
  *  Get all Custodians
  *
- * @param {Object} params - Params for query
- * @returns {Promisse} - Returns a Promisse
+ * @param {object} params - Params for query
+ * @returns - Returns a object
  */
 export const getAll = async params => {
   return dao.getAll(params)
@@ -13,8 +13,8 @@ export const getAll = async params => {
 /**
  * Find a Custodian by ID
  *
- * @param {Interger} id - Custodian ID
- * @returns {Promisse} - Returns a Promisse
+ * @param {string} id - Custodian ID
+ * @returns - Returns a object
  */
 export const getById = id => {
   return dao.getById(id)
@@ -23,8 +23,8 @@ export const getById = id => {
 /**
  * Saves a Custodian
  *
- * @param {Object} data - Custodian data
- * @returns {Promisse} - Returns a Promisse
+ * @param {object} data - Custodian data
+ * @returns - Returns a object
  */
 export const create = data => {
   return dao.create({
@@ -41,8 +41,8 @@ export const create = data => {
 /**
  * Updates an Custodian
  *
- * @param {Object} data - Custodian data
- * @returns {Promisse} - Returns a Promisse
+ * @param {object} data - Custodian data
+ * @returns - Returns a object
  */
 export const update = data => {
   return dao.update({
@@ -60,8 +60,8 @@ export const update = data => {
 /**
  * Remove an Custodian
  *
- * @param {Object} id - Custodian ID
- * @returns {Function} - Returns a Promisse
+ * @param {string} id - Custodian ID
+ * @returns - Returns a object
  */
 export const remove = id => {
   return dao.remove(id)
