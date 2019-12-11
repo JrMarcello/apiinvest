@@ -28,12 +28,12 @@ export const create = async (idBuilder, data) => {
 }
 
 /**
- * Remove a Phone
+ * Remove Phones
  *
- * @param {Object} idBuilder - Builder ID
- * @param {Object} id - Phone ID
- * @returns {Function} - Returns a Promisse
+ * @param {string} idBuilder - Builder ID
+ * @param {number[]} ids - Phone IDs
+ * @returns - Returns a Promisse
  */
-export const remove = (idBuilder, id) => {
-  return dao.remove(idBuilder, id)
+export const remove = (idBuilder, ids) => {
+  return dao.remove(idBuilder, ids)
 }

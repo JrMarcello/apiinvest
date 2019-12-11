@@ -6,8 +6,8 @@ import * as dao from './dao'
 /**
  *  Get all Builders
  *
- * @param {Object} params - Params for query
- * @returns {Promisse} - Returns a Promisse
+ * @param {object} params - Params for query
+ * @returns - Returns a object
  */
 export const getAll = async params => {
   return dao.getAll(params)
@@ -16,8 +16,8 @@ export const getAll = async params => {
 /**
  * Find a Builder by ID
  *
- * @param {Interger} id - Builder ID
- * @returns {Promisse} - Returns a Promisse
+ * @param {string} id - Builder ID
+ * @returns - Returns a object
  */
 export const getById = async id => {
   const builder = await dao.getById(id)
@@ -34,8 +34,8 @@ export const getById = async id => {
 /**
  *  Get all Buildings
  *
- * @param {Object} id - Builder ID
- * @returns {Promisse} - Returns a Promisse
+ * @param {string} id - Builder ID
+ * @returns - Returns a object
  */
 export const getAllBuildingsById = async id => {
   return dao.getAllBuildingsById(id)
@@ -44,8 +44,8 @@ export const getAllBuildingsById = async id => {
 /**
  * Find a Builder by User ID
  *
- * @param {Interger} id - User ID
- * @returns {Promisse} - Returns a Promisse
+ * @param {string} id - User ID
+ * @returns - Returns a object
  */
 export const getByUserId = async id => {
   const builder = await dao.getByUserId(id)
@@ -62,8 +62,8 @@ export const getByUserId = async id => {
 /**
  * Saves a Builder
  *
- * @param {Object} data - Builder data to be saved
- * @returns {Promisse} - Returns a Promisse
+ * @param {object} data - Builder data
+ * @returns - Returns a object
  */
 export const create = async data => {
   if (!data.builder || data.builder.length === 0) throw Error('Informe seus dados')
@@ -97,8 +97,8 @@ export const create = async data => {
 /**
  * Updates an Builder
  *
- * @param {Object} data - Builder data
- * @returns {Promisse} - Returns a Promisse
+ * @param {object} data - Builder data
+ * @returns - Returns a object
  */
 export const update = async data => {
   if (!data || data.length === 0) throw Error('Invalid data')
@@ -121,8 +121,8 @@ export const update = async data => {
 /**
  * Remove an Builder
  *
- * @param {Object} id - Builder id
- * @returns {Function} - Returns a Promisse
+ * @param {string} id - Builder ID
+ * @returns - Returns a object
  */
 export const remove = id => {
   return dao.remove(id)

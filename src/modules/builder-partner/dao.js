@@ -6,7 +6,7 @@ const table = 'builder_partner'
  * Find Partners by Builder ID
  *
  * @param {number} id - Builder ID
- * @returns {Promisse} - Returns a Promisse
+ * @returns - Returns a Promisse
  */
 export const getByBuilderId = id => {
   return db
@@ -17,10 +17,10 @@ export const getByBuilderId = id => {
 }
 
 /**
- * Create an Partner
+ * Create Partners
  *
- * @param {number} data - Partner data to be saved
- * @returns {Promisse} - Returns a Promisse
+ * @param {Object} data - Partner data to be saved
+ * @returns - Returns a Promisse
  */
 export const create = async data => {
   return db
@@ -46,16 +46,16 @@ export const create = async data => {
 }
 
 /**
- * Remove an Partner
+ * Remove Partners
  *
- * @param {UUID} id - Builder ID
- * @param {number} id - Partner ID
- * @returns {Promise} - Returns a Promisse
+ * @param {string} idBuilder - Builder ID
+ * @param {number[]} ids - Partner ID
+ * @returns - Returns a Promisse
  */
-export const remove = (idBuilder, id) => {
+export const remove = (idBuilder, ids) => {
   return db
     .delete(table)
     .where('id_builder', idBuilder)
-    .and('id', id)
+    .and('id', 'IN', ids)
     .run()
 }

@@ -16,11 +16,6 @@ const schemas = {
       in: ['params'],
       isUUID: true,
       errorMessage: 'ID inválido'
-    },
-    id: {
-      in: ['params'],
-      isInt: true,
-      errorMessage: 'ID inválido'
     }
   }
 }
