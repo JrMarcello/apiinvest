@@ -68,6 +68,24 @@ export const getByInvestorId = id => {
 }
 
 /**
+ * Find count of Investmes from Investor
+ *
+ * @param {uuid} id - Investor ID
+ * @returns {Promisse} - Returns a Promisse
+ */
+export const getCountByInvestorId = async id => {
+  return (
+    await db
+      .select('count(id)')
+      .from(table)
+      .where('id_investor', id)
+      .and('confirmed', true)
+      .and('active', true)
+      .run()
+  )[0]
+}
+
+/**
  * Find Investments by Fundraising ID
  *
  * @param {Interger} id - Fundraising ID

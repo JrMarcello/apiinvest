@@ -31,9 +31,9 @@ export const create = async (idInvestor, data) => {
  * Remove a Phone
  *
  * @param {uuid} idInvestor - Investor ID
- * @param {int} id - Phone ID
+ * @param {array} id s- Phone IDs
  * @returns {Function} - Returns a Promisse
  */
-export const remove = (idInvestor, id) => {
-  return dao.remove(idInvestor, id)
+export const remove = (idInvestor, ids) => {
+  return dao.remove(idInvestor, ids)
 }

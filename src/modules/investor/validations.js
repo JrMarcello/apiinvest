@@ -22,6 +22,12 @@ const schemas = {
       errorMessage: 'ID inválido'
     }
   },
+  getInvestmentsCount: {
+    id: {
+      isUUID: true,
+      errorMessage: 'ID inválido'
+    }
+  },
   create: {},
   update: {},
   remove: {
@@ -38,6 +44,7 @@ export default {
   getById: [checkAuth, acl.authorize, validate(schemas.getById)],
   getByUserId: [checkAuth, acl.authorize, validate(schemas.getByUserId)],
   getAllInvestmentsById: [checkAuth, acl.authorize, validate(schemas.getAllInvestmentsById)],
+  getInvestmentsCount: [checkAuth, acl.authorize, validate(schemas.getInvestmentsCount)],
   create: [checkAuth, acl.authorize, validate(schemas.create)],
   update: [checkAuth, acl.authorize, validate(schemas.update)]
 }

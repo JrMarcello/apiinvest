@@ -33,17 +33,17 @@ export const create = async data => {
 }
 
 /**
- * Remove an Account
+ * Remove Accounts
  *
  * @param {uuid} idInvestor - Investor ID
- * @param {Object} id - Account id to be removed
+ * @param {Object} ids - Account id to be removed
  * @returns {Object} - Returns data
  */
-export const remove = (idInvestor, id) => {
+export const remove = (idInvestor, ids) => {
   return db
     .update(table)
     .set('active', false)
-    .where('id', id)
-    .and('id_investor', idInvestor)
+    .where('id_investor', idInvestor)
+    .and('id', 'IN', ids)
     .run()
 }

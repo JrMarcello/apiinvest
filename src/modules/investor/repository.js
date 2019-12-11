@@ -58,6 +58,16 @@ export const getAllInvestmentsById = async id => {
 }
 
 /**
+ *  GGet the total number of investments from Investor
+ *
+ * @param {Object} id - Investor ID
+ * @returns {Promisse} - Returns a Promisse
+ */
+export const getInvestmentsCount = async id => {
+  return dao.getInvestmentsCount(id)
+}
+
+/**
  * Saves a Investor
  *
  * @param {Object} data - Investor data to be saved
@@ -67,8 +77,7 @@ export const create = async data => {
   if (!data || data.length === 0 || !data.investor || data.investor.length === 0) throw Error('Dados inválidos')
   if (!data.phones || data.phones.length === 0) throw Error('Telefone é um dado obrigatório')
   if (!data.accounts || data.accounts.length === 0) throw Error('Conta bancária é um dado obrigatório')
-  if (!data.files || data.files.length !== 3)
-    throw Error('Envie fotos do seu documento (frente e verso) e comprovante de residência')
+  if (!data.files || data.files.length !== 3) throw Error('Envie fotos do seu documento (frente e verso) e comprovante de residência')
 
   const investor = await dao.create(data.investor)
 

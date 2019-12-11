@@ -1,6 +1,6 @@
 import db from '../../core/database'
 import { generateUUID } from '../../common/utils'
-import { getByInvestorId } from '../investment/dao'
+import * as investmentDao from '../investment/dao'
 
 const table = 'investor'
 
@@ -67,7 +67,17 @@ export const getByUserId = async id => {
  * @returns {Promisse} - Returns a Promisse
  */
 export const getAllInvestmentsById = id => {
-  return getByInvestorId(id)
+  return investmentDao.getByInvestorId(id)
+}
+
+/**
+ *  Find count of Investmes from Investor
+ *
+ * @param {Object} id - Investor ID
+ * @returns {Promisse} - Returns a Promisse
+ */
+export const getInvestmentsCount = id => {
+  return investmentDao.getCountByInvestorId(id)
 }
 
 /**

@@ -32,16 +32,16 @@ export const create = data => {
 }
 
 /**
- * Remove an Phone
+ * Remove Phones
  *
  * @param {uuid} idInvestor - Investor ID
- * @param {int} id - Phone ID
+ * @param {int} ids - Phone ID
  * @returns {Object} - Returns data
  */
-export const remove = (idInvestor, id) => {
+export const remove = (idInvestor, ids) => {
   return db
     .delete(table)
-    .where('id', id)
-    .and('id_investor', idInvestor)
+    .where('id_investor', idInvestor)
+    .and('id', 'IN', ids)
     .run()
 }

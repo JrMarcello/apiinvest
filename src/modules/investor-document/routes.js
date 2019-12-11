@@ -4,7 +4,7 @@ import multer from '../../core/multer'
 import * as controller from './controller'
 
 const router = express.Router()
-const INVESTOR_DOCUMENT_BASE_PAH = '/investor/:idInvestor/document'
+const INVESTOR_DOCUMENT_BASE_PAH = '/investor/:idInvestor/documents'
 
 export default () => {
   router.get(INVESTOR_DOCUMENT_BASE_PAH, validations.getByInvestorId, controller.getByInvestorId)

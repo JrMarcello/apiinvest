@@ -3,7 +3,7 @@ import constants from '../../common/constants'
 import * as repository from './repository'
 
 /**
- * @api {get} /investor/:idInvestor/bank-account Get Bank Account (By Investor ID)
+ * @api {get} /investor/:idInvestor/bank-accounts Get Bank Account (By Investor ID)
  * @apiName GetInvestorBankAccount
  * @apiGroup Investor
  * @apiVersion 1.0.0
@@ -36,11 +36,7 @@ import * as repository from './repository'
  */
 export const getByInvestorId = async (request, response) => {
   try {
-    response.json(
-      await repository.getByInvestorId(
-        request.user.id_profile === 3 ? request.params.idInvestor : request.user.investor.id
-      )
-    )
+    response.json(await repository.getByInvestorId(request.user.id_profile === 3 ? request.params.idInvestor : request.user.investor.id))
   } catch (err) {
     logger().error(err)
 
@@ -49,7 +45,7 @@ export const getByInvestorId = async (request, response) => {
 }
 
 /**
- * @api {post} /investor/:idInvestor/bank-account Create Bank Account
+ * @api {post} /investor/:idInvestor/bank-accounts Create Bank Account
  * @apiName CreateBankAccount
  * @apiGroup Investor
  * @apiVersion 1.0.0
@@ -110,13 +106,17 @@ export const create = async (request, response) => {
 }
 
 /**
- * @api {delete} /investor/:idInvestor/bank-account/:id Delete Bank Account
+ * @api {delete} /investor/:idInvestor/bank-accounts Delete Investor Bank Accounts
  * @apiName DeleteBankAccount
  * @apiGroup Investor
  * @apiVersion 1.0.0
  *
  * @apiParam {uuid} idInvestor Investor ID
- * @apiParam {int} id Bank Account ID
+ *
+ * @apiParamExample {json} Request-Example:
+ *   {
+ *       "ids": [1, 2]
+ *   }
  *
  * @apiSuccessExample Success-Response:
  *   HTTP/1.1 200 OK
@@ -139,10 +139,7 @@ export const create = async (request, response) => {
  */
 export const remove = async (request, response) => {
   try {
-    await repository.remove(
-      request.user.id_profile === 3 ? request.params.idInvestor : request.user.investor.id,
-      request.params.id
-    )
+    await repository.remove(request.user.id_profile === 3 ? request.params.idInvestor : request.user.investor.id, request.body.ids)
 
     response.json(constants.investor_bank_account.success.REMOVED)
   } catch (err) {

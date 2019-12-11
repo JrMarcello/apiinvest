@@ -3,7 +3,7 @@ import constants from '../../common/constants'
 import * as repository from './repository'
 
 /**
- * @api {get} /investor/:idInvestor/document Get Documents (By Investor ID)
+ * @api {get} /investor/:idInvestor/documents Get Documents (By Investor ID)
  * @apiName GetInvestorDocuments
  * @apiGroup Investor
  * @apiVersion 1.0.0
@@ -62,7 +62,7 @@ export const getByInvestorId = async (request, response) => {
 }
 
 /**
- * @api {post} /investor/:id/document Create Documents
+ * @api {post} /investor/:id/documents Create Documents
  * @apiName CreateDocuments
  * @apiGroup Investor
  * @apiVersion 1.0.0
