@@ -5,8 +5,8 @@ const table = 'builder_phone'
 /**
  * Find Phones by Builder ID
  *
- * @param {number} id - Builder ID
- * @returns - Returns a Promisse
+ * @param {string} id - Builder ID
+ * @returns - Returns a object
  */
 export const getByBuilderId = id => {
   return db
@@ -20,7 +20,7 @@ export const getByBuilderId = id => {
  * Create an Phone
  *
  * @param {object} data - Phone data to be saved
- * @returns - Returns a Promisse
+ * @returns - Returns a object
  */
 export const create = async data => {
   return db
@@ -36,7 +36,7 @@ export const create = async data => {
  *
  * @param {string} IdBuilder - Builder ID
  * @param {number[]} ids - Phone IDs
- * @returns - Returns a Promisse
+ * @returns - Returns a object
  */
 export const remove = (idBuilder, ids) => {
   return db

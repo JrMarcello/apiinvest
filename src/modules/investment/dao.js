@@ -6,8 +6,8 @@ const table = 'investment'
 /**
  *  Find all Investments
  *
- * @param {Object} params - Params for query
- * @returns {Promisse} - Returns a Promisse
+ * @param {object} params - Params for query
+ * @returns - Returns a object
  */
 export const getAll = () => {
   return db
@@ -20,8 +20,8 @@ export const getAll = () => {
 /**
  * Find a Investment by ID
  *
- * @param {Interger} id - Investment ID
- * @returns {Promisse} - Returns a Promisse
+ * @param {string} id - Investment ID
+ * @returns - Returns a object
  */
 export const getById = async id => {
   return (
@@ -37,8 +37,8 @@ export const getById = async id => {
 /**
  * Find a Investment by ID
  *
- * @param {Interger} id - Investment ID
- * @returns {Promisse} - Returns a Promisse
+ * @param {string} id - Investment ID
+ * @returns - Returns a object
  */
 export const getByIdMe = async (idInvestor, id) => {
   return (
@@ -55,8 +55,8 @@ export const getByIdMe = async (idInvestor, id) => {
 /**
  * Find Investments by Investor ID
  *
- * @param {Interger} id - Investor ID
- * @returns {Promisse} - Returns a Promisse
+ * @param {string} id - Investor ID
+ * @returns - Returns a object
  */
 export const getByInvestorId = id => {
   return db
@@ -70,8 +70,8 @@ export const getByInvestorId = id => {
 /**
  * Find count of Investmes from Investor
  *
- * @param {uuid} id - Investor ID
- * @returns {Promisse} - Returns a Promisse
+ * @param {string} id - Investor ID
+ * @returns - Returns a object
  */
 export const getCountByInvestorId = async id => {
   return (
@@ -88,8 +88,8 @@ export const getCountByInvestorId = async id => {
 /**
  * Find Investments by Fundraising ID
  *
- * @param {Interger} id - Fundraising ID
- * @returns {Promisse} - Returns a Promisse
+ * @param {strning} id - Fundraising ID
+ * @returns - Returns a object
  */
 export const getByFundraisingId = id => {
   return db
@@ -103,8 +103,8 @@ export const getByFundraisingId = id => {
 /**
  *  Find all pendings Investments
  *
- * @param {Object} params - Params for query
- * @returns {Promisse} - Returns a Promisse
+ * @param {object} params - Params for query
+ * @returns - Returns a object
  */
 export const getPendings = async () => {
   const query = `SELECT * FROM ${table} WHERE ted_proof_url IS NOT NULL AND confirmed = false AND active`
@@ -115,8 +115,8 @@ export const getPendings = async () => {
 /**
  * Create an Investment
  *
- * @param {Object} data - Investment data to be saved
- * @returns {Promisse} - Returns a Promisse
+ * @param {object} data - Investment data to be saved
+ * @returns - Returns a object
  */
 export const create = async data => {
   data.id = await generateUUID()
@@ -131,8 +131,8 @@ export const create = async data => {
 /**
  * Update an Investment
  *
- * @param {Object} data - Investment data to be updated
- * @returns {Promisse} - Returns a Promisse
+ * @param {object} data - Investment data
+ * @returns - Returns a object
  */
 export const confirm = async data => {
   const query = {
@@ -146,8 +146,8 @@ export const confirm = async data => {
 /**
  * Update an Investment
  *
- * @param {Object} data - Investment data to be updated
- * @returns {Promisse} - Returns a Promisse
+ * @param {object} data - Investment data
+ * @returns - Returns a object
  */
 export const update = data => {
   return db
@@ -160,8 +160,8 @@ export const update = data => {
 /**
  * Cancel an Investment
  *
- * @param {Object} id - Investment id
- * @returns {Object} - Returns data
+ * @param {string} id - Investment ID
+ * @returns - Returns data
  */
 export const cancel = id => {
   return db

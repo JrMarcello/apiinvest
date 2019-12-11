@@ -5,8 +5,8 @@ const table = 'builder_partner'
 /**
  * Find Partners by Builder ID
  *
- * @param {number} id - Builder ID
- * @returns - Returns a Promisse
+ * @param {string} id - Builder ID
+ * @returns - Returns a object
  */
 export const getByBuilderId = id => {
   return db
@@ -19,8 +19,8 @@ export const getByBuilderId = id => {
 /**
  * Create Partners
  *
- * @param {Object} data - Partner data to be saved
- * @returns - Returns a Promisse
+ * @param {object} data - Partner data to be saved
+ * @returns - Returns a object
  */
 export const create = async data => {
   return db
@@ -50,7 +50,7 @@ export const create = async data => {
  *
  * @param {string} idBuilder - Builder ID
  * @param {number[]} ids - Partner ID
- * @returns - Returns a Promisse
+ * @returns - Returns a object
  */
 export const remove = (idBuilder, ids) => {
   return db
