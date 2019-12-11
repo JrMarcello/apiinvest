@@ -7,8 +7,8 @@ const table = 'fundraising'
 /**
  *  Find all Fundraising
  *
- * @param {Object} params - Params for query
- * @returns {Promisse} - Returns a Promisse
+ * @param {object} params - Params for query
+ * @returns - Returns a object
  */
 export const getAll = () => {
   return db
@@ -21,8 +21,8 @@ export const getAll = () => {
 /**
  * Find a Fundraising by ID
  *
- * @param {uuid} id - Fundraising ID
- * @returns {Promisse} - Returns a Promisse
+ * @param {string} id - Fundraising ID
+ * @returns - Returns a object
  */
 export const getById = async id => {
   return (
@@ -38,8 +38,8 @@ export const getById = async id => {
 /**
  *  Get amount raised
  *
- * @param {uuid} id - Fundraising ID
- * @returns {Promisse} - Returns a Promisse
+ * @param {string} id - Fundraising ID
+ * @returns - Returns a object
  */
 export const getAmountRaised = async id => {
   return {
@@ -50,8 +50,8 @@ export const getAmountRaised = async id => {
 /**
  * Find Fundraisings by Building ID
  *
- * @param {Interger} id - Building ID
- * @returns {Promisse} - Returns a Promisse
+ * @param {string} id - Building ID
+ * @returns - Returns a object
  */
 export const getByBuildingId = id => {
   return db
@@ -62,26 +62,11 @@ export const getByBuildingId = id => {
     .run()
 }
 
-// /**
-//  * Find Fundraisings by Custodian ID
-//  *
-//  * @param {Interger} id - Custodian ID
-//  * @returns {Promisse} - Returns a Promisse
-//  */
-// export const getByCustodianId = id => {
-//   return db
-//     .select()
-//     .from(table)
-//     .where('id_custodian', id)
-//     .and('active', true)
-//     .run()
-// }
-
 /**
  * Create an Fundraising
  *
- * @param {Object} data - Fundraising data to be saved
- * @returns {Promisse} - Returns a Promisse
+ * @param {object} data - Fundraising data
+ * @returns - Returns a object
  */
 export const create = async data => {
   data.id = await generateUUID()
@@ -96,8 +81,8 @@ export const create = async data => {
 /**
  * Update an Fundraising
  *
- * @param {Object} data - Fundraising data to be updated
- * @returns {Promisse} - Returns a Promisse
+ * @param {object} data - Fundraising data
+ * @returns - Returns a object
  */
 export const update = data => {
   return db
@@ -110,8 +95,8 @@ export const update = data => {
 /**
  * Cancel an Fundraising
  *
- * @param {Object} id - Fundraising id to be canceled
- * @returns {Object} - Returns data
+ * @param {string} id - Fundraising ID
+ * @returns - Returns data
  */
 export const remove = id => {
   return db
