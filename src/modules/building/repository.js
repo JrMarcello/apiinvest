@@ -5,8 +5,8 @@ import * as dao from './dao'
 /**
  *  Get all Buildings
  *
- * @param {Object} params - Params for query
- * @returns {Promisse} - Returns a Promisse
+ * @param {object} params - Params for query
+ * @returns - Returns a object
  */
 export const getAll = async params => {
   return dao.getAll(params)
@@ -15,8 +15,8 @@ export const getAll = async params => {
 /**
  *  Get all avaliables to investments Buildings
  *
- * @param {Object} params - Params for query
- * @returns {Promisse} - Returns a Promisse
+ * @param {object} params - Params for query
+ * @returns - Returns a object
  */
 export const getAllAvaliables = async params => {
   return dao.getAllAvaliables(params)
@@ -25,8 +25,8 @@ export const getAllAvaliables = async params => {
 /**
  * Find a Building by ID
  *
- * @param {Interger} id - Building ID
- * @returns {Promisse} - Returns a Promisse
+ * @param {string} id - Building ID
+ * @returns - Returns a object
  */
 export const getById = async id => {
   const building = await dao.getById(id)
@@ -42,8 +42,8 @@ export const getById = async id => {
 /**
  * Find Buildings by Builder ID
  *
- * @param {Interger} id - User ID
- * @returns {Promisse} - Returns a Promisse
+ * @param {string} id - User ID
+ * @returns - Returns a object
  */
 export const getByBuilderId = id => {
   return dao.getByBuilderId(id)
@@ -52,8 +52,8 @@ export const getByBuilderId = id => {
 /**
  * Saves a Building
  *
- * @param {Object} data - Building data to be saved
- * @returns {Promisse} - Returns a Promisse
+ * @param {object} data - Building data
+ * @returns - Returns a object
  */
 export const create = data => {
   return dao.create({
@@ -79,8 +79,8 @@ export const create = data => {
 /**
  * Updates an Building
  *
- * @param {Object} data - Building data to be updated
- * @returns {Promisse} - Returns a Promisse
+ * @param {object} data - Building data
+ * @returns - Returns a object
  */
 export const update = data => {
   if (!data || data.length === 0) throw Error('Dados inválidos')
@@ -107,8 +107,8 @@ export const update = data => {
 /**
  * Remove an Building
  *
- * @param {Object} id - Building id
- * @returns {Function} - Returns a Promisse
+ * @param {string} id - Building ID
+ * @returns - Returns a object
  */
 export const remove = id => {
   return dao.remove(id)

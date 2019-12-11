@@ -3,7 +3,7 @@ import constants from '../../common/constants'
 import * as repository from './repository'
 
 /**
- * @api {get} /building/:idBuilding/image Get Image (By Building ID)
+ * @api {get} /building/:idBuilding/images Get Image (By Building ID)
  * @apiName GetBuildingImage
  * @apiGroup Building
  * @apiVersion 1.0.0
@@ -41,7 +41,7 @@ export const getByBuildingId = async (request, response) => {
 }
 
 /**
- * @api {post} /building/:idBuilding/image Add Images
+ * @api {post} /building/:idBuilding/images Add Images
  * @apiName CreateBuilderImage
  * @apiGroup Building
  * @apiVersion 1.0.0
@@ -81,7 +81,7 @@ export const create = async (request, response) => {
 }
 
 /**
- * @api {delete} /building/:idBuilding/image Delete Images
+ * @api {delete} /building/:idBuilding/images Delete Images
  * @apiName DeleteBuilderImages
  * @apiGroup Building
  * @apiVersion 1.0.0
