@@ -3,7 +3,7 @@ import constants from '../../common/constants'
 import * as repository from './repository'
 
 /**
- * @api {get} /builder/:idBuilder/partner Get Partner (By Builder ID)
+ * @api {get} /builder/:idBuilder/partners Get Partners (By Builder ID)
  * @apiName GetBuilderPartner
  * @apiGroup Builder
  * @apiVersion 1.0.0
@@ -44,11 +44,7 @@ import * as repository from './repository'
  */
 export const getByBuilderId = async (request, response) => {
   try {
-    response.json(
-      await repository.getByBuilderId(
-        request.user.id_profile === 3 ? request.params.idBuilder : request.user.builder.id
-      )
-    )
+    response.json(await repository.getByBuilderId(request.user.id_profile === 3 ? request.params.idBuilder : request.user.builder.id))
   } catch (err) {
     logger().error(err)
 
@@ -57,7 +53,7 @@ export const getByBuilderId = async (request, response) => {
 }
 
 /**
- * @api {post} /builder/:idBuilder/partner Create Partner
+ * @api {post} /builder/:idBuilder/partners Create Partners
  * @apiName CreateBuilderPartner
  * @apiGroup Builder
  * @apiVersion 1.0.0
@@ -136,13 +132,15 @@ export const create = async (request, response) => {
 }
 
 /**
- * @api {delete} /builder/:idBuilder/partner/:id Delete Partner
+ * @api {delete} /builder/:idBuilder/partners Delete Partners
  * @apiName DeleteBuilderPartner
  * @apiGroup Builder
  * @apiVersion 1.0.0
  *
  * @apiParam {uuid} idBuilder Builder ID
- * @apiParam {int} id Partner ID
+ *
+ * @apiParamExample {json} Request-Example:
+ *   { "ids": [1, 2] }
  *
  * @apiSuccessExample Success-Response:
  *   HTTP/1.1 200 OK
@@ -165,10 +163,7 @@ export const create = async (request, response) => {
  */
 export const remove = async (request, response) => {
   try {
-    await repository.remove(
-      request.user.id_profile === 3 ? request.params.idBuilder : request.user.builder.id,
-      request.params.id
-    )
+    await repository.remove(request.user.id_profile === 3 ? request.params.idBuilder : request.user.builder.id, request.body.id)
 
     response.json(constants.builder_partner.success.REMOVED)
   } catch (err) {

@@ -3,8 +3,8 @@ import * as dao from './dao'
 /**
  * Find an Account by Investor ID
  *
- * @param {Interger} id - Investor ID
- * @returns {Promisse} - Returns a Promisse
+ * @param {string} id - Investor ID
+ * @returns - Returns a object
  */
 export const getByInvestorId = id => {
   return dao.getByInvestorId(id)
@@ -13,9 +13,9 @@ export const getByInvestorId = id => {
 /**
  * Saves the Accounts
  *
- * @param {uuid} idInvestor - Investor ID
- * @param {Object} data - Account data
- * @returns {Promisse} - Returns a Promisse
+ * @param {string} idInvestor - Investor ID
+ * @param {object[]} data - Account data
+ * @returns - Returns a object
  */
 export const create = async (idInvestor, data) => {
   const accounts = data.map(account => {
@@ -28,12 +28,12 @@ export const create = async (idInvestor, data) => {
 }
 
 /**
- * Remove an Account
+ * Remove Accounts
  *
- * @param {uuid} idInvestor - Investor ID
- * @param {int} id - Account id
- * @returns {Function} - Returns a Promisse
+ * @param {string} idInvestor - Investor ID
+ * @param {number[]} ids - Account IDs
+ * @returns - Returns a object
  */
-export const remove = (idInvestor, id) => {
-  return dao.remove(idInvestor, id)
+export const remove = (idInvestor, ids) => {
+  return dao.remove(idInvestor, ids)
 }

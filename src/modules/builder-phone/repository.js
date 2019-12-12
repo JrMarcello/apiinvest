@@ -3,8 +3,8 @@ import * as dao from './dao'
 /**
  * Find a Phone by Builder ID
  *
- * @param {Interger} id - Builder ID
- * @returns {Promisse} - Returns a Promisse
+ * @param {string} id - Builder ID
+ * @returns - Returns a object
  */
 export const getByBuilderId = id => {
   return dao.getByBuilderId(id)
@@ -13,9 +13,9 @@ export const getByBuilderId = id => {
 /**
  * Saves the Phone
  *
- * @param {UUID} idBuilder - Builder ID
+ * @param {string} idBuilder - Builder ID
  * @param {Object[]} data - Phone data
- * @returns {Promisse} - Returns a Promisse
+ * @returns - Returns a object
  */
 export const create = async (idBuilder, data) => {
   const phones = data.map(phone => {
@@ -28,12 +28,12 @@ export const create = async (idBuilder, data) => {
 }
 
 /**
- * Remove a Phone
+ * Remove Phones
  *
- * @param {Object} idBuilder - Builder ID
- * @param {Object} id - Phone ID
- * @returns {Function} - Returns a Promisse
+ * @param {string} idBuilder - Builder ID
+ * @param {number[]} ids - Phone IDs
+ * @returns - Returns a object
  */
-export const remove = (idBuilder, id) => {
-  return dao.remove(idBuilder, id)
+export const remove = (idBuilder, ids) => {
+  return dao.remove(idBuilder, ids)
 }

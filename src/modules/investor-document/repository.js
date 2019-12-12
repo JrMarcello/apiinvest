@@ -4,8 +4,8 @@ import * as dao from './dao'
 /**
  * Find an Document by Investor ID
  *
- * @param {Interger} id - Investor ID
- * @returns {Promisse} - Returns a Promisse
+ * @param {string} id - Investor ID
+ * @returns - Returns a object
  */
 export const getByInvestorId = id => {
   return dao.getByInvestorId(id)
@@ -14,9 +14,9 @@ export const getByInvestorId = id => {
 /**
  * Saves the Documents
  *
- * @param {uuid} idInvestor - Investor ID
- * @param {Object} imagesBuffer - Imgages data
- * @returns {Promisse} - Returns a Promisse
+ * @param {string} idInvestor - Investor ID
+ * @param {object[]} imagesBuffer - Imgages data
+ * @returns - Returns a object
  */
 export const create = async (idInvestor, imagesBuffer) => {
   await remove(idInvestor)
@@ -37,8 +37,8 @@ export const create = async (idInvestor, imagesBuffer) => {
 /**
  * Remove all Documents of a Investor
  *
- * @param {uuid} id - Investor ID
- * @returns {Promisse} - Returns a Promisse
+ * @param {string} id - Investor ID
+ * @returns - Returns a object
  */
 export const remove = async id => {
   const docs = await getByInvestorId(id)

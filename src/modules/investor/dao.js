@@ -1,14 +1,14 @@
 import db from '../../core/database'
 import { generateUUID } from '../../common/utils'
-import { getByInvestorId } from '../investment/dao'
+import * as investmentDao from '../investment/dao'
 
 const table = 'investor'
 
 /**
  *  Find all Investors
  *
- * @param {Object} params - Params for query
- * @returns {Promisse} - Returns a Promisse
+ * @param {object} params - Params for query
+ * @returns - Returns a object
  */
 export const getAll = () => {
   return db
@@ -21,8 +21,8 @@ export const getAll = () => {
 /**
  * Find a Investor by ID
  *
- * @param {Interger} id - Investor ID
- * @returns {Promisse} - Returns a Promisse
+ * @param {string} id - Investor ID
+ * @returns - Returns a object
  */
 export const getById = async id => {
   const query = {
@@ -46,8 +46,8 @@ export const getById = async id => {
 /**
  * Find a Investor by User ID
  *
- * @param {Interger} id - User ID
- * @returns {Promisse} - Returns a Promisse
+ * @param {string} id - User ID
+ * @returns - Returns a object
  */
 export const getByUserId = async id => {
   return (
@@ -63,18 +63,60 @@ export const getByUserId = async id => {
 /**
  *  Find all Investmes from Investor
  *
- * @param {Object} id - Investor ID
- * @returns {Promisse} - Returns a Promisse
+ * @param {string} id - Investor ID
+ * @returns - Returns a object
  */
 export const getAllInvestmentsById = id => {
-  return getByInvestorId(id)
+  return investmentDao.getByInvestorId(id)
+}
+
+/**
+ *  Find count of Investmes from Investor
+ *
+ * @param {string} id - Investor ID
+ * @returns - Returns a object
+ */
+export const getInvestmentsCount = id => {
+  return investmentDao.getCountByInvestorId(id)
+}
+
+/**
+ *  Find the invested amount from Investor
+ *
+ * @param {string} id - Investor ID
+ * @returns - Returns a object
+ */
+export const getInvestedAmount = async id => {
+  return { amount: (await investmentDao.getInvestedAmount(id)).sum || 0 }
+}
+
+/**
+ *  Find the amount received from Investor
+ *
+ * @param {string} id - Investor ID
+ * @returns - Returns a object
+ */
+export const getReceivedAmount = async id => {
+  return { amount: (await investmentDao.getReceivedAmount(id)).sum || 0 }
+}
+
+/**
+ *  Find the prohected amount from Investor
+ *
+ * @param {string} id - Investor ID
+ * @returns - Returns a object
+ */
+export const getProjectedAmount = async id => {
+  return {
+    amount: (await investmentDao.getByInvestorId(id)).reduce((sum, investment) => sum + investment.amount, 0)
+  }
 }
 
 /**
  * Create an Investor
  *
- * @param {Object} data - Investor data to be saved
- * @returns {Promisse} - Returns a Promisse
+ * @param {object} data - Investor data
+ * @returns - Returns a object
  */
 export const create = async data => {
   data.id = await generateUUID()
@@ -91,8 +133,8 @@ export const create = async data => {
 /**
  * Update an Investor
  *
- * @param {Object} data - Investor data to be updated
- * @returns {Promisse} - Returns a Promisse
+ * @param {object} data - Investor data
+ * @returns - Returns a object
  */
 export const update = data => {
   return db
@@ -105,8 +147,8 @@ export const update = data => {
 /**
  * Remove an Investor
  *
- * @param {Object} id - Investor id to be removed
- * @returns {Object} - Returns data
+ * @param {string} id - Investor ID
+ * @returns - Returns data
  */
 export const remove = id => {
   return db

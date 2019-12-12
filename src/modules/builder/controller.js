@@ -156,7 +156,7 @@ export const getById = async (request, response) => {
 }
 
 /**
- * @api {get} /builder/:id/building Get all Buildings (By Builder ID)
+ * @api {get} /builder/:id/buildings Get all Buildings (By Builder ID)
  * @apiName GetAllBuildingsByID
  * @apiGroup Builder
  * @apiVersion 1.0.0
@@ -200,9 +200,7 @@ export const getById = async (request, response) => {
  */
 export const getAllBuildingsById = async (request, response) => {
   try {
-    response.json(
-      await repository.getAllBuildingsById(request.user.id_profile === 3 ? request.params.id : request.user.builder.id)
-    )
+    response.json(await repository.getAllBuildingsById(request.user.id_profile === 3 ? request.params.id : request.user.builder.id))
   } catch (err) {
     logger().error(err)
 

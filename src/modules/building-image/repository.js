@@ -4,8 +4,8 @@ import * as dao from './dao'
 /**
  * Find Images by Building ID
  *
- * @param {Interger} id - Building ID
- * @returns {Promisse} - Returns a Promisse
+ * @param {string} id - Building ID
+ * @returns - Returns a object
  */
 export const getByBuildingId = id => {
   return dao.getByBuildingId(id)
@@ -14,9 +14,9 @@ export const getByBuildingId = id => {
 /**
  * Saves Images
  *
- * @param {Object} idBuilding - Building ID
- * @param {Object} imagesBuffer - Imgages data
- * @returns {Promisse} - Returns a Promisse
+ * @param {string} idBuilding - Building ID
+ * @param {buffer[]} imagesBuffer - Imgages data
+ * @returns - Returns a object
  */
 export const create = async (idBuilding, imagesBuffer) => {
   const images = await Promise.all(
@@ -34,9 +34,9 @@ export const create = async (idBuilding, imagesBuffer) => {
 /**
  * Remove images
  *
- * @param {uuid} idBuilding - Building ID
- * @param {array} ids - Image IDs
- * @returns {Function} - Returns a Promisse
+ * @param {string} idBuilding - Building ID
+ * @param {number[]} ids - Image IDs
+ * @returns - Returns a object
  */
 export const remove = async (idBuilding, ids) => {
   // TODO

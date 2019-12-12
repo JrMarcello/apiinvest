@@ -5,8 +5,8 @@ const table = 'investor_bank_account'
 /**
  * Find Accounts by Investor ID
  *
- * @param {Interger} id - Investor ID
- * @returns {Promisse} - Returns a Promisse
+ * @param {string} id - Investor ID
+ * @returns - Returns a object
  */
 export const getByInvestorId = id => {
   return db
@@ -20,8 +20,8 @@ export const getByInvestorId = id => {
 /**
  * Create Accounts
  *
- * @param {Object} data - Account data to be saved
- * @returns {Promisse} - Returns a Promisse
+ * @param {object[]} data - Account data
+ * @returns - Returns a object
  */
 export const create = async data => {
   return db
@@ -33,17 +33,17 @@ export const create = async data => {
 }
 
 /**
- * Remove an Account
+ * Remove Accounts
  *
- * @param {uuid} idInvestor - Investor ID
- * @param {Object} id - Account id to be removed
- * @returns {Object} - Returns data
+ * @param {string} idInvestor - Investor ID
+ * @param {numnber[]} ids - Account IDs
+ * @returns - Returns data
  */
-export const remove = (idInvestor, id) => {
+export const remove = (idInvestor, ids) => {
   return db
     .update(table)
     .set('active', false)
-    .where('id', id)
-    .and('id_investor', idInvestor)
+    .where('id_investor', idInvestor)
+    .and('id', 'IN', ids)
     .run()
 }

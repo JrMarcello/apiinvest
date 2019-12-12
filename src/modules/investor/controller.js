@@ -117,13 +117,11 @@ export const getAll = async (request, response) => {
  */
 export const getById = async (request, response) => {
   try {
-    response.json(
-      await repository.getById(request.user.id_profile === 3 ? request.params.id : request.user.investor.id)
-    )
+    response.json(await repository.getById(request.user.id_profile === 3 ? request.params.id : request.user.investor.id))
   } catch (err) {
     logger().error(err)
 
-    response.status(500).json(err)
+    response.status(500).json(constants.investor.error.NOT_FOUND)
   }
 }
 
@@ -197,12 +195,12 @@ export const getByUserId = async (request, response) => {
   } catch (err) {
     logger().error(err)
 
-    response.status(500).json(err)
+    response.status(500).json(constants.investor.error.NOT_FOUND)
   }
 }
 
 /**
- * @api {get} /investor/:id/investment Get all from Investor
+ * @api {get} /investor/:id/investments Get all from Investor
  * @apiName getAllInvestmentsById
  * @apiGroup Investor
  * @apiVersion 1.0.0
@@ -236,15 +234,147 @@ export const getByUserId = async (request, response) => {
  */
 export const getAllInvestmentsById = async (request, response) => {
   try {
-    response.json(
-      await repository.getAllInvestmentsById(
-        request.user.id_profile === 3 ? request.params.id : request.user.investor.id
-      )
-    )
+    response.json(await repository.getAllInvestmentsById(request.user.id_profile === 3 ? request.params.id : request.user.investor.id))
   } catch (err) {
     logger().error(err)
 
-    response.status(500).json(constants.builder.error.NOT_FOUND)
+    response.status(500).json(constants.investor.error.NOT_FOUND)
+  }
+}
+
+/**
+ * @api {get} /investor/:id/investments/count Get the total number of investments from Investor
+ * @apiName getInvestmentsCount
+ * @apiGroup Investor
+ * @apiVersion 1.0.0
+ *
+ * @apiSuccessExample Success-Response:
+ *   HTTP/1.1 200 OK
+ *   {
+ *       "count": 13
+ *   }
+ *
+ * @apiErrorExample Error-Response:
+ *   HTTP/1.1 500 Internal Server Error
+ *     {
+ *        "code": 9999,
+ *        "message": "Requisição inválida",
+ *        "errors": [{
+ *          "msg": "Invalid value",
+ *          "param": "id",
+ *          "location": "params"
+ *        }]
+ *     }
+ */
+export const getInvestmentsCount = async (request, response) => {
+  try {
+    response.json(await repository.getInvestmentsCount(request.user.id_profile === 3 ? request.params.id : request.user.investor.id))
+  } catch (err) {
+    logger().error(err)
+
+    response.status(500).json(constants.investor.error.NOT_FOUND)
+  }
+}
+
+/**
+ * @api {get} /investor/:id/investments/invested-amount Get the invested amount from Investor
+ * @apiName getInvestedAmount
+ * @apiGroup Investor
+ * @apiVersion 1.0.0
+ *
+ * @apiSuccessExample Success-Response:
+ *   HTTP/1.1 200 OK
+ *   {
+ *       "amount": 21564.78
+ *   }
+ *
+ * @apiErrorExample Error-Response:
+ *   HTTP/1.1 500 Internal Server Error
+ *     {
+ *        "code": 9999,
+ *        "message": "Requisição inválida",
+ *        "errors": [{
+ *          "msg": "Invalid value",
+ *          "param": "id",
+ *          "location": "params"
+ *        }]
+ *     }
+ */
+export const getInvestedAmount = async (request, response) => {
+  try {
+    response.json(await repository.getInvestedAmount(request.user.id_profile === 3 ? request.params.id : request.user.investor.id))
+  } catch (err) {
+    logger().error(err)
+
+    response.status(500).json(constants.investor.error.NOT_FOUND)
+  }
+}
+
+/**
+ * @api {get} /investor/:id/investments/received-amount Get the amount received from Investor
+ * @apiName getReceivedAmount
+ * @apiGroup Investor
+ * @apiVersion 1.0.0
+ *
+ * @apiSuccessExample Success-Response:
+ *   HTTP/1.1 200 OK
+ *   {
+ *       "amount": 21564.78
+ *   }
+ *
+ * @apiErrorExample Error-Response:
+ *   HTTP/1.1 500 Internal Server Error
+ *     {
+ *        "code": 9999,
+ *        "message": "Requisição inválida",
+ *        "errors": [{
+ *          "msg": "Invalid value",
+ *          "param": "id",
+ *          "location": "params"
+ *        }]
+ *     }
+ */
+export const getReceivedAmount = async (request, response) => {
+  try {
+    response.json(await repository.getReceivedAmount(request.user.id_profile === 3 ? request.params.id : request.user.investor.id))
+  } catch (err) {
+    logger().error(err)
+
+    response.status(500).json(constants.investor.error.NOT_FOUND)
+  }
+}
+
+/**
+ * @api {get} /investor/:id/investments/projected-amount Get the projected amount from Investor
+ * @apiName getProjectedAmount
+ * @apiGroup Investor
+ * @apiVersion 1.0.0
+ *
+ * @apiSuccessExample Success-Response:
+ *   HTTP/1.1 200 OK
+ *   {
+ *       "amount": 21564.78
+ *   }
+ *
+ * @apiErrorExample Error-Response:
+ *   HTTP/1.1 500 Internal Server Error
+ *     {
+ *        "code": 9999,
+ *        "message": "Requisição inválida",
+ *        "errors": [{
+ *          "msg": "Invalid value",
+ *          "param": "id",
+ *          "location": "params"
+ *        }]
+ *     }
+ */
+export const getProjectedAmount = async (request, response) => {
+  try {
+    response.json(await repository.getProjectedAmount(request.user.id_profile === 3 ? request.params.id : request.user.investor.id))
+  } catch (err) {
+    logger().error(err)
+
+    response.status(500).json(constants.investor.error.NOT_FOUND)
   }
 }
 

@@ -6,8 +6,8 @@ const table = 'building'
 /**
  *  Find all Builder
  *
- * @param {Object} params - Params for query
- * @returns {Promisse} - Returns a Promisse
+ * @param {object} params - Params for query
+ * @returns - Returns a object
  */
 export const getAll = () => {
   return db
@@ -20,10 +20,10 @@ export const getAll = () => {
 /**
  *  Find all avaliables to investment Builder
  *
- * @param {Object} data - Investment data to be updated
- * @returns {Promisse} - Returns a Promisse
+ * @param {object} params - Params for query
+ * @returns - Returns a object
  */
-export const getAllAvaliables = async data => {
+export const getAllAvaliables = async () => {
   const query = {
     text: `SELECT * FROM ${table} b JOIN fundraising f ON (b.id = f.id_building AND f.active AND f.finished = false) WHERE b.active`
     // values: [data]
@@ -35,8 +35,8 @@ export const getAllAvaliables = async data => {
 /**
  * Find a Builder by ID
  *
- * @param {Interger} id - Builder ID
- * @returns {Promisse} - Returns a Promisse
+ * @param {string} id - Builder ID
+ * @returns - Returns a object
  */
 export const getById = async id => {
   return (
@@ -52,8 +52,8 @@ export const getById = async id => {
 /**
  * Find a Builder by User ID
  *
- * @param {Interger} id - User ID
- * @returns {Promisse} - Returns a Promisse
+ * @param {string} id - User ID
+ * @returns - Returns a object
  */
 export const getByBuilderId = id => {
   return db
@@ -67,8 +67,8 @@ export const getByBuilderId = id => {
 /**
  * Create an Builder
  *
- * @param {Object} data - Builder data to be saved
- * @returns {Promisse} - Returns a Promisse
+ * @param {object} data - Builder data
+ * @returns - Returns a object
  */
 export const create = async data => {
   data.id = await generateUUID()
@@ -85,8 +85,8 @@ export const create = async data => {
 /**
  * Update an Builder
  *
- * @param {Object} data - Builder data to be updated
- * @returns {Promisse} - Returns a Promisse
+ * @param {object} data - Builder data
+ * @returns - Returns a object
  */
 export const update = data => {
   return db
@@ -99,8 +99,8 @@ export const update = data => {
 /**
  * Remove an Builder
  *
- * @param {Object} id - Builder id to be removed
- * @returns {Object} - Returns data
+ * @param {stringt} id - Builder ID
+ * @returns - Returns data
  */
 export const remove = id => {
   return db

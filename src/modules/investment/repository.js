@@ -7,8 +7,8 @@ import { getById as getInvestor } from '../investor/repository'
 /**
  *  Get all Investments from database.
  *
- * @param {Object} params - Params for query
- * @returns {Promisse} - Returns a Promisse
+ * @param {object} params - Params for query
+ * @returns - Returns a object
  */
 export const getAll = async params => {
   return dao.getAll(params)
@@ -17,29 +17,18 @@ export const getAll = async params => {
 /**
  * Find an Investment by ID
  *
- * @param {Interger} id - Investment ID
- * @returns {Promisse} - Returns a Promisse
+ * @param {string} id - Investment ID
+ * @returns - Returns a object
  */
 export const getById = id => {
   return dao.getById(id)
 }
 
 /**
- * Find an Investment the a User by ID
- *
- * @param {Interger} idInvestor - Investor ID
- * @param {Interger} id - Investment ID
- * @returns {Promisse} - Returns a Promisse
- */
-export const getByIdMe = (idInvestor, id) => {
-  return dao.getByIdMe(idInvestor, id)
-}
-
-/**
  * Find Investments by Investor ID
  *
- * @param {Interger} id - Investor ID
- * @returns {Promisse} - Returns a Promisse
+ * @param {string} id - Investor ID
+ * @returns - Returns a object
  */
 export const getByInvestorId = id => {
   return dao.getByInvestorId(id)
@@ -48,8 +37,8 @@ export const getByInvestorId = id => {
 /**
  * Find Investments by Fundraising ID
  *
- * @param {Interger} id - Fundraising ID
- * @returns {Promisse} - Returns a Promisse
+ * @param {string} id - Fundraising ID
+ * @returns - Returns a object
  */
 export const getByFundraisingId = id => {
   return dao.getByFundraisingId(id)
@@ -58,8 +47,8 @@ export const getByFundraisingId = id => {
 /**
  *  Get all pendings Investments
  *
- * @param {Object} params - Params for query
- * @returns {Promisse} - Returns a Promisse
+ * @param {object} params - Params for query
+ * @returns - Returns a object
  */
 export const getPendings = async params => {
   return dao.getPendings(params)
@@ -68,8 +57,8 @@ export const getPendings = async params => {
 /**
  * Saves an Investment in database
  *
- * @param {Object} data - Investment data to be saved
- * @returns {Promisse} - Returns a Promisse
+ * @param {object} data - Investment data
+ * @returns - Returns a object
  */
 export const create = async data => {
   const investor = await getInvestor(data.id_investor)
@@ -89,6 +78,10 @@ export const create = async data => {
   return investment
 }
 
+/**
+ * @param {object} investor - Investor data
+ * @return - Returns a object
+ */
 const getEmailParams = investor => {
   return {
     from: env().emails.contact,
@@ -102,8 +95,8 @@ const getEmailParams = investor => {
 /**
  * Send TED proof for an Investment
  *
- * @param {Object} data - TED proof
- * @returns {Promisse} - Returns a Promisse
+ * @param {object} data - TED proof
+ * @returns - Returns a object
  */
 export const tedConfirmation = async data => {
   if (!data || !data.file) throw Error()
@@ -119,8 +112,8 @@ export const tedConfirmation = async data => {
 /**
  * Confirm an Investment
  *
- * @param {Object} data - Investment IDs
- * @returns {Promisse} - Returns a Promisse
+ * @param {object[]} data - Investment IDs
+ * @returns - Returns a object
  */
 export const confirm = async data => {
   if (!Array.isArray(data)) throw Error('Formato de dados inválido')
@@ -131,8 +124,8 @@ export const confirm = async data => {
 /**
  * Cancel an Investment
  *
- * @param {Object} id - Investment id
- * @returns {Function} - Returns a Promisse
+ * @param {object} id - Investment ID
+ * @returns - Returns a object
  */
 export const cancel = id => {
   return dao.cancel(id)

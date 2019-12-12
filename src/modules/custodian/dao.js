@@ -6,8 +6,8 @@ const table = 'custodian'
 /**
  *  Find all Custodians
  *
- * @param {Object} params - Params for query
- * @returns {Promisse} - Returns a Promisse
+ * @param {object} params - Params for query
+ * @returns - Returns a object
  */
 export const getAll = () => {
   return db
@@ -20,8 +20,8 @@ export const getAll = () => {
 /**
  * Find a Custodian by ID
  *
- * @param {Interger} id - Custodian ID
- * @returns {Promisse} - Returns a Promisse
+ * @param {string} id - Custodian ID
+ * @returns - Returns a object
  */
 export const getById = async id => {
   return (
@@ -34,26 +34,11 @@ export const getById = async id => {
   )[0]
 }
 
-// /**
-//  * Find a Custodian by CNPJ
-//  *
-//  * @param {Interger} cnpj - Custodian CNPJ
-//  * @returns {Promisse} - Returns a Promisse
-//  */
-// export const getByCNPJ = cnpj => {
-//   return db
-//     .select()
-//     .from(table)
-//     .where('cnpj', cnpj)
-//     .and('active', true)
-//     .run()
-// }
-
 /**
  * Create an Custodian
  *
- * @param {Object} data - Custodian data
- * @returns {Promisse} - Returns a Promisse
+ * @param {object} data - Custodian data
+ * @returns - Returns a object
  */
 export const create = async data => {
   data.id = await generateUUID()
@@ -68,8 +53,8 @@ export const create = async data => {
 /**
  * Update an Custodian
  *
- * @param {Object} data - Custodian data
- * @returns {Promisse} - Returns a Promisse
+ * @param {object} data - Custodian data
+ * @returns - Returns a object
  */
 export const update = data => {
   return db
@@ -82,8 +67,8 @@ export const update = data => {
 /**
  * Remove an Custodian
  *
- * @param {Object} id - Custodian ID
- * @returns {Object} - Returns data
+ * @param {string} id - Custodian ID
+ * @returns - Returns data
  */
 export const remove = id => {
   return db

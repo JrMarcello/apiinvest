@@ -5,8 +5,8 @@ import constants from '../../common/constants'
 /**
  *  Get all Fundraisings
  *
- * @param {Object} params - Params for query
- * @returns {Promisse} - Returns a Promisse
+ * @param {object} params - Params for query
+ * @returns - Returns a object
  */
 export const getAll = async params => {
   return dao.getAll(params)
@@ -15,8 +15,8 @@ export const getAll = async params => {
 /**
  * Find a Fundraising by ID
  *
- * @param {Interger} id - Fundraising ID
- * @returns {Promisse} - Returns a Promisse
+ * @param {string} id - Fundraising ID
+ * @returns - Returns a object
  */
 export const getById = id => {
   return dao.getById(id)
@@ -25,8 +25,8 @@ export const getById = id => {
 /**
  * Find Fundraisings by Building ID
  *
- * @param {Interger} id - Building ID
- * @returns {Promisse} - Returns a Promisse
+ * @param {string} id - Building ID
+ * @returns - Returns a object
  */
 export const getByBuildingId = id => {
   return dao.getByBuildingId(id)
@@ -35,28 +35,18 @@ export const getByBuildingId = id => {
 /**
  * Search the amount raised by Fundraising ID
  *
- * @param {Interger} id - Fundraising ID
- * @returns {Promisse} - Returns a Promisse
+ * @param {string} id - Fundraising ID
+ * @returns - Returns a object
  */
 export const getAmountRaised = id => {
   return dao.getAmountRaised(id)
 }
 
-// /**
-//  * Find Fundraisings by Custodian ID
-//  *
-//  * @param {Interger} id - Custodian ID
-//  * @returns {Promisse} - Returns a Promisse
-//  */
-// export const getByCustodianId = id => {
-//   return dao.getByCustodianId(id)
-// }
-
 /**
  * Saves a Fundraising
  *
- * @param {Object} data - Fundraising data to be saved
- * @returns {Promisse} - Returns a Promisse
+ * @param {object} data - Fundraising data
+ * @returns - Returns a object
  */
 export const create = data => {
   return dao.create({
@@ -74,8 +64,8 @@ export const create = data => {
 /**
  * Updates an Fundraising
  *
- * @param {Object} data - Fundraising data to be updated
- * @returns {Promisse} - Returns a Promisse
+ * @param {object} data - Fundraising data
+ * @returns - Returns a object
  */
 export const update = data => {
   return dao.update({
@@ -92,8 +82,8 @@ export const update = data => {
 /**
  * Finish a Fundraising
  *
- * @param {Object} data - Fundraising data to be updated
- * @returns {Promisse} - Returns a Promisse
+ * @param {object} data - Fundraising data
+ * @returns - Returns a object
  */
 export const finish = id => {
   return dao.update({
@@ -105,12 +95,11 @@ export const finish = id => {
 /**
  * Cancel an Fundraising
  *
- * @param {Object} id - Fundraising id
- * @returns {Function} - Returns a Promisse
+ * @param {string} id - Fundraising ID
+ * @returns - Returns a object
  */
 export const remove = async id => {
-  if ((await fundraisingDao.getByFundraisingId(id)).length !== 0)
-    throw Error(constants.fundraising.error.NOT_REMOVED_INVESTMENT)
+  if ((await fundraisingDao.getByFundraisingId(id)).length !== 0) throw Error(constants.fundraising.error.NOT_REMOVED_INVESTMENT)
 
   return dao.remove(id)
 }

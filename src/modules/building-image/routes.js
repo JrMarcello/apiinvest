@@ -4,7 +4,7 @@ import multer from '../../core/multer'
 import * as controller from './controller'
 
 const router = express.Router()
-const BUILDING_IMAGE_BASE_PAH = '/building/:idBuilding/image'
+const BUILDING_IMAGE_BASE_PAH = '/building/:idBuilding/images'
 
 export default () => {
   router.get(BUILDING_IMAGE_BASE_PAH, validations.getByBuildingId, controller.getByBuildingId)

@@ -5,8 +5,8 @@ const table = 'building_image'
 /**
  * Find Images by Building ID
  *
- * @param {Interger} id - Building ID
- * @returns {Promisse} - Returns a Promisse
+ * @param {string} id - Building ID
+ * @returns - Returns a object
  */
 export const getByBuildingId = id => {
   return db
@@ -17,10 +17,10 @@ export const getByBuildingId = id => {
 }
 
 /**
- * Create an Image
+ * Create Images
  *
- * @param {Object} data - Image data to be saved
- * @returns {Promisse} - Returns a Promisse
+ * @param {object} data - Image data
+ * @returns - Returns a object
  */
 export const create = async data => {
   return db
@@ -32,10 +32,11 @@ export const create = async data => {
 }
 
 /**
- * Remove an Image
- * @param {uuid} idBuilding - Building ID
- * @param {array} ids - Image id
- * @returns {Object} - Returns data
+ * Remove Images
+ *
+ * @param {string} idBuilding - Building ID
+ * @param {number[]} ids - Image id
+ * @returns - Returns object
  */
 export const remove = (idBuilding, ids) => {
   return db

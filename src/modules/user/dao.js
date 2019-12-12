@@ -7,8 +7,8 @@ const table = '"user"'
 /**
  *  Find all Users
  *
- * @param {Object} params - Params for query
- * @returns {Promisse} - Returns a Promisse
+ * @param {object} params - Params for query
+ * @returns - Returns a object
  */
 export const getAll = () => {
   return db
@@ -21,8 +21,8 @@ export const getAll = () => {
 /**
  * Find a User by ID
  *
- * @param {Interger} id - User ID
- * @returns {Promisse} - Returns a Promisse
+ * @param {string} id - User ID
+ * @returns - Returns a object
  */
 export const getById = async id => {
   return (
@@ -38,8 +38,8 @@ export const getById = async id => {
 /**
  * Find a User by email
  *
- * @param {Interger} email - User email
- * @returns {Promisse} - Returns a Promisse
+ * @param {string} email - User email
+ * @returns - Returns a object
  */
 export const getByEmail = async email => {
   return (
@@ -55,8 +55,8 @@ export const getByEmail = async email => {
 /**
  * Find User Profile by ID
  *
- * @param {Interger} id - Profile ID
- * @returns {Promisse} - Returns a Promisse
+ * @param {number} id - Profile ID
+ * @returns - Returns a object
  */
 export const getProfile = async id => {
   return (
@@ -72,8 +72,8 @@ export const getProfile = async id => {
 /**
  * Create an User
  *
- * @param {Object} data - User data to be saved
- * @returns {Promisse} - Returns a Promisse
+ * @param {object} data - User data
+ * @returns - Returns a object
  */
 export const create = async data => {
   data.id = await generateUUID()
@@ -89,8 +89,8 @@ export const create = async data => {
 /**
  * Update an User
  *
- * @param {Object} data - User data to be updated
- * @returns {Promisse} - Returns a Promisse
+ * @param {object} data - User data
+ * @returns - Returns a object
  */
 export const update = data => {
   if (data.password) data.password = bcrypt.hashSync(data.password, 10)
@@ -105,8 +105,8 @@ export const update = data => {
 /**
  * Remove an User
  *
- * @param {Object} id - User id to be removed
- * @returns {Object} - Returns data
+ * @param {string} id - User ID
+ * @returns - Returns data
  */
 export const remove = id => {
   return db

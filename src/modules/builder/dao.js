@@ -8,7 +8,7 @@ const table = 'builder'
  *  Find all Builders
  *
  * @param {Object} params - Params for query
- * @returns {Promisse} - Returns a Promisse
+ * @returns - Returns a object
  */
 export const getAll = () => {
   return db
@@ -21,8 +21,8 @@ export const getAll = () => {
 /**
  * Find a Builder by ID
  *
- * @param {Interger} id - Builder ID
- * @returns {Promisse} - Returns a Promisse
+ * @param {string} id - Builder ID
+ * @returns - Returns a object
  */
 export const getById = async id => {
   return (
@@ -38,8 +38,8 @@ export const getById = async id => {
 /**
  * Find a Builder by User ID
  *
- * @param {Interger} id - User ID
- * @returns {Promisse} - Returns a Promisse
+ * @param {string} id - User ID
+ * @returns - Returns a object
  */
 export const getByUserId = async id => {
   return (
@@ -55,8 +55,8 @@ export const getByUserId = async id => {
 /**
  *  Find all Buildings
  *
- * @param {Object} id - Builder ID
- * @returns {Promisse} - Returns a Promisse
+ * @param {string} id - Builder ID
+ * @returns - Returns a obeject
  */
 export const getAllBuildingsById = id => {
   return getByBuilderId(id)
@@ -65,8 +65,8 @@ export const getAllBuildingsById = id => {
 /**
  * Create an Builder
  *
- * @param {Object} data - Builder data to be saved
- * @returns {Promisse} - Returns a Promisse
+ * @param {object} data - Builder data
+ * @returns - Returns a object
  */
 export const create = async data => {
   data.id = await generateUUID()
@@ -83,8 +83,8 @@ export const create = async data => {
 /**
  * Update an Builder
  *
- * @param {Object} data - Builder data to be updated
- * @returns {Promisse} - Returns a Promisse
+ * @param {object} data - Builder data
+ * @returns - Returns a object
  */
 export const update = data => {
   return db
@@ -97,8 +97,8 @@ export const update = data => {
 /**
  * Remove an Builder
  *
- * @param {Object} id - Builder id to be removed
- * @returns {Object} - Returns data
+ * @param {string} id - Builder id to be removed
+ * @returns - Returns data
  */
 export const remove = id => {
   return db

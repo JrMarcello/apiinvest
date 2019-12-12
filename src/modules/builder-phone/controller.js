@@ -3,7 +3,7 @@ import constants from '../../common/constants'
 import * as repository from './repository'
 
 /**
- * @api {get} /builder/:idBuilder/phone Get Phone (By Builder ID)
+ * @api {get} /builder/:idBuilder/phones Get Phone (By Builder ID)
  * @apiName GetBuilderPhone
  * @apiGroup Builder
  * @apiVersion 1.0.0
@@ -32,11 +32,7 @@ import * as repository from './repository'
  */
 export const getByBuilderId = async (request, response) => {
   try {
-    response.json(
-      await repository.getByBuilderId(
-        request.user.id_profile === 3 ? request.params.idBuilder : request.user.builder.id
-      )
-    )
+    response.json(await repository.getByBuilderId(request.user.id_profile === 3 ? request.params.idBuilder : request.user.builder.id))
   } catch (err) {
     logger().error(err)
 
@@ -45,7 +41,7 @@ export const getByBuilderId = async (request, response) => {
 }
 
 /**
- * @api {post} /builder/:idBuilder/phone Create Phone
+ * @api {post} /builder/:idBuilder/phones Create Phone
  * @apiName CreateBuilderPhone
  * @apiGroup Builder
  * @apiVersion 1.0.0
@@ -96,13 +92,15 @@ export const create = async (request, response) => {
 }
 
 /**
- * @api {delete} /builder/:idBuilder/phone/:id Delete Phone
+ * @api {delete} /builder/:idBuilder/phones Delete Phones
  * @apiName DeleteBuilderPhone
  * @apiGroup Builder
  * @apiVersion 1.0.0
  *
  * @apiParam {uuid} idBuilder Builder ID
- * @apiParam {int} id Phone ID
+ *
+ * @apiParamExample {json} Request-Example:
+ *   { "ids": [1, 2] }
  *
  * @apiSuccessExample Success-Response:
  *   HTTP/1.1 200 OK
@@ -125,10 +123,7 @@ export const create = async (request, response) => {
  */
 export const remove = async (request, response) => {
   try {
-    await repository.remove(
-      request.user.id_profile === 3 ? request.params.idBuilder : request.user.builder.id,
-      request.params.id
-    )
+    await repository.remove(request.user.id_profile === 3 ? request.params.idBuilder : request.user.builder.id, request.body.ids)
 
     response.json(constants.builder_phone.success.REMOVED)
   } catch (err) {
