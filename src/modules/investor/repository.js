@@ -78,6 +78,16 @@ export const getInvestedAmount = id => {
 }
 
 /**
+ *  Get the amount received from Investor
+ *
+ * @param {string} id - Investor ID
+ * @returns - Returns a object
+ */
+export const getReceivedAmount = id => {
+  return dao.getReceivedAmount(id)
+}
+
+/**
  * Saves a Investor
  *
  * @param {object} data - Investor data

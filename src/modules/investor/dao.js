@@ -91,6 +91,16 @@ export const getInvestedAmount = async id => {
 }
 
 /**
+ *  Find the amount received from Investor
+ *
+ * @param {string} id - Investor ID
+ * @returns - Returns a object
+ */
+export const getReceivedAmount = async id => {
+  return { amount: (await investmentDao.getReceivedAmount(id)).sum || 0 }
+}
+
+/**
  * Create an Investor
  *
  * @param {object} data - Investor data

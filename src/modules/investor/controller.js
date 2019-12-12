@@ -311,6 +311,40 @@ export const getInvestedAmount = async (request, response) => {
 }
 
 /**
+ * @api {get} /investor/:id/investments/received-amount Get the amount received from Investor
+ * @apiName getReceivedAmount
+ * @apiGroup Investor
+ * @apiVersion 1.0.0
+ *
+ * @apiSuccessExample Success-Response:
+ *   HTTP/1.1 200 OK
+ *   {
+ *       "amount": 21564.78
+ *   }
+ *
+ * @apiErrorExample Error-Response:
+ *   HTTP/1.1 500 Internal Server Error
+ *     {
+ *        "code": 9999,
+ *        "message": "Requisição inválida",
+ *        "errors": [{
+ *          "msg": "Invalid value",
+ *          "param": "id",
+ *          "location": "params"
+ *        }]
+ *     }
+ */
+export const getReceivedAmount = async (request, response) => {
+  try {
+    response.json(await repository.getReceivedAmount(request.user.id_profile === 3 ? request.params.id : request.user.investor.id))
+  } catch (err) {
+    logger().error(err)
+
+    response.status(500).json(constants.investor.error.NOT_FOUND)
+  }
+}
+
+/**
  * @api {post} /investor Create
  * @apiName Createinvestor
  * @apiGroup Investor

@@ -34,6 +34,12 @@ const schemas = {
       errorMessage: 'ID inválido'
     }
   },
+  getReceivedAmount: {
+    id: {
+      isUUID: true,
+      errorMessage: 'ID inválido'
+    }
+  },
   create: {},
   update: {},
   remove: {
@@ -52,6 +58,7 @@ export default {
   getAllInvestmentsById: [checkAuth, acl.authorize, validate(schemas.getAllInvestmentsById)],
   getInvestmentsCount: [checkAuth, acl.authorize, validate(schemas.getInvestmentsCount)],
   getInvestedAmount: [checkAuth, acl.authorize, validate(schemas.getInvestedAmount)],
+  getReceivedAmount: [checkAuth, acl.authorize, validate(schemas.getReceivedAmount)],
   create: [checkAuth, acl.authorize, validate(schemas.create)],
   update: [checkAuth, acl.authorize, validate(schemas.update)]
 }

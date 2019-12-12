@@ -113,7 +113,7 @@ export const getCountByInvestorId = async id => {
 }
 
 /**
- * Find count of Investmes from Investor
+ * Find the invested amount from Investor
  *
  * @param {string} id - Investor ID
  * @returns - Returns a object
@@ -122,6 +122,24 @@ export const getInvestedAmount = async id => {
   return (
     await db
       .select('sum(amount)')
+      .from(table)
+      .where('id_investor', id)
+      .and('confirmed', true)
+      .and('active', true)
+      .run()
+  )[0]
+}
+
+/**
+ * Find the amount received from Investor
+ *
+ * @param {string} id - Investor ID
+ * @returns - Returns a object
+ */
+export const getReceivedAmount = async id => {
+  return (
+    await db
+      .select('sum(amount_returned)')
       .from(table)
       .where('id_investor', id)
       .and('confirmed', true)
