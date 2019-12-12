@@ -101,6 +101,18 @@ export const getReceivedAmount = async id => {
 }
 
 /**
+ *  Find the prohected amount from Investor
+ *
+ * @param {string} id - Investor ID
+ * @returns - Returns a object
+ */
+export const getProjectedAmount = async id => {
+  return {
+    amount: (await investmentDao.getByInvestorId(id)).reduce((sum, investment) => sum + investment.amount, 0)
+  }
+}
+
+/**
  * Create an Investor
  *
  * @param {object} data - Investor data

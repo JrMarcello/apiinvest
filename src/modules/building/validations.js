@@ -5,21 +5,9 @@ import validate from '../../core/middlewares/validator'
 const schemas = {
   getAll: {},
   getAllAvaliables: {},
-  getById: {
-    id: {
-      isUUID: true,
-      errorMessage: 'ID inválido'
-    }
-  },
-  getByBuilderId: {
-    id: {
-      isUUID: true,
-      errorMessage: 'ID inválido'
-    }
-  },
   create: {},
   update: {},
-  remove: {
+  validateID: {
     id: {
       in: ['params'],
       isUUID: true,
@@ -31,9 +19,9 @@ const schemas = {
 export default {
   getAll: [checkAuth, acl.authorize, validate(schemas.getAll)],
   getAllAvaliables: [checkAuth, acl.authorize, validate(schemas.getAllAvaliables)],
-  getById: [checkAuth, acl.authorize, validate(schemas.getById)],
-  getByBuilderId: [checkAuth, acl.authorize, validate(schemas.getByBuilderId)],
+  getById: [checkAuth, acl.authorize, validate(schemas.validateID)],
+  getByBuilderId: [checkAuth, acl.authorize, validate(schemas.validateID)],
   create: [checkAuth, acl.authorize, validate(schemas.create)],
   update: [checkAuth, acl.authorize, validate(schemas.update)],
-  remove: [checkAuth, acl.authorize, validate(schemas.remove)]
+  remove: [checkAuth, acl.authorize, validate(schemas.validateID)]
 }

@@ -3,25 +3,18 @@ import acl from '../../core/middlewares/acl'
 import validate from '../../core/middlewares/validator'
 
 const schemas = {
-  getByInvestorId: {
+  validateID: {
     idInvestor: {
       in: ['params'],
       isUUID: true,
       errorMessage: 'ID inválido'
     }
   },
-  create: {},
-  remove: {
-    idInvestor: {
-      in: ['params'],
-      isUUID: true,
-      errorMessage: 'ID inválido'
-    }
-  }
+  create: {}
 }
 
 export default {
-  getByInvestorId: [checkAuth, acl.authorize, validate(schemas.getByInvestorId)],
+  getByInvestorId: [checkAuth, acl.authorize, validate(schemas.validateID)],
   create: [checkAuth, acl.authorize, validate(schemas.create)],
-  remove: [checkAuth, acl.authorize, validate(schemas.remove)]
+  remove: [checkAuth, acl.authorize, validate(schemas.validateID)]
 }

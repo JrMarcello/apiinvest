@@ -4,47 +4,10 @@ import validate from '../../core/middlewares/validator'
 
 const schemas = {
   getAll: {},
-  getById: {
-    id: {
-      isUUID: true,
-      errorMessage: 'ID inválido'
-    }
-  },
-  getByUserId: {
-    id: {
-      isUUID: true,
-      errorMessage: 'ID inválido'
-    }
-  },
-  getAllInvestmentsById: {
-    id: {
-      isUUID: true,
-      errorMessage: 'ID inválido'
-    }
-  },
-  getInvestmentsCount: {
-    id: {
-      isUUID: true,
-      errorMessage: 'ID inválido'
-    }
-  },
-  getInvestedAmount: {
-    id: {
-      isUUID: true,
-      errorMessage: 'ID inválido'
-    }
-  },
-  getReceivedAmount: {
-    id: {
-      isUUID: true,
-      errorMessage: 'ID inválido'
-    }
-  },
   create: {},
   update: {},
-  remove: {
+  validateID: {
     id: {
-      in: ['params'],
       isUUID: true,
       errorMessage: 'ID inválido'
     }
@@ -53,12 +16,13 @@ const schemas = {
 
 export default {
   getAll: [checkAuth, acl.authorize, validate(schemas.getAll)],
-  getById: [checkAuth, acl.authorize, validate(schemas.getById)],
-  getByUserId: [checkAuth, acl.authorize, validate(schemas.getByUserId)],
-  getAllInvestmentsById: [checkAuth, acl.authorize, validate(schemas.getAllInvestmentsById)],
-  getInvestmentsCount: [checkAuth, acl.authorize, validate(schemas.getInvestmentsCount)],
-  getInvestedAmount: [checkAuth, acl.authorize, validate(schemas.getInvestedAmount)],
-  getReceivedAmount: [checkAuth, acl.authorize, validate(schemas.getReceivedAmount)],
+  getById: [checkAuth, acl.authorize, validate(schemas.validateID)],
+  getByUserId: [checkAuth, acl.authorize, validate(schemas.validateID)],
+  getAllInvestmentsById: [checkAuth, acl.authorize, validate(schemas.validateID)],
+  getInvestmentsCount: [checkAuth, acl.authorize, validate(schemas.validateID)],
+  getInvestedAmount: [checkAuth, acl.authorize, validate(schemas.validateID)],
+  getReceivedAmount: [checkAuth, acl.authorize, validate(schemas.validateID)],
+  getProjectedAmount: [checkAuth, acl.authorize, validate(schemas.validateID)],
   create: [checkAuth, acl.authorize, validate(schemas.create)],
   update: [checkAuth, acl.authorize, validate(schemas.update)]
 }

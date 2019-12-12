@@ -88,6 +88,16 @@ export const getReceivedAmount = id => {
 }
 
 /**
+ *  Get the projected amount from Investor
+ *
+ * @param {string} id - Investor ID
+ * @returns - Returns a object
+ */
+export const getProjectedAmount = id => {
+  return dao.getProjectedAmount(id)
+}
+
+/**
  * Saves a Investor
  *
  * @param {object} data - Investor data

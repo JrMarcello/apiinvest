@@ -4,8 +4,9 @@ import validate from '../../core/middlewares/validator'
 
 const schemas = {
   getAll: {},
-  getById: {
+  validateID: {
     id: {
+      in: ['params'],
       isUUID: true,
       errorMessage: 'ID inválido'
     }
@@ -16,37 +17,17 @@ const schemas = {
       errorMessage: 'ID inválido'
     }
   },
-  getAmountRaised: {
-    id: {
-      isUUID: true,
-      errorMessage: 'ID inválido'
-    }
-  },
   create: {},
-  update: {},
-  finish: {
-    id: {
-      in: ['params'],
-      isUUID: true,
-      errorMessage: 'ID inválido'
-    }
-  },
-  remove: {
-    id: {
-      in: ['params'],
-      isUUID: true,
-      errorMessage: 'ID inválido'
-    }
-  }
+  update: {}
 }
 
 export default {
   getAll: [checkAuth, acl.authorize, validate(schemas.getAll)],
-  getById: [checkAuth, acl.authorize, validate(schemas.getById)],
+  getById: [checkAuth, acl.authorize, validate(schemas.validateID)],
   getByBuildingId: [checkAuth, acl.authorize, validate(schemas.getByBuildingId)],
-  getAmountRaised: [checkAuth, acl.authorize, validate(schemas.getAmountRaised)],
+  getAmountRaised: [checkAuth, acl.authorize, validate(schemas.validateID)],
   create: [checkAuth, acl.authorize, validate(schemas.create)],
   update: [checkAuth, acl.authorize, validate(schemas.update)],
-  finish: [checkAuth, acl.authorize, validate(schemas.finish)],
-  remove: [checkAuth, acl.authorize, validate(schemas.remove)]
+  finish: [checkAuth, acl.authorize, validate(schemas.validateID)],
+  remove: [checkAuth, acl.authorize, validate(schemas.validateID)]
 }
