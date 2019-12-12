@@ -5,8 +5,8 @@ const table = 'investor_phone'
 /**
  * Find Phones by Investor ID
  *
- * @param {Interger} id - Investor ID
- * @returns {Promisse} - Returns a Promisse
+ * @param {string} id - Investor ID
+ * @returns - Returns a object
  */
 export const getByInvestorId = id => {
   return db
@@ -19,8 +19,8 @@ export const getByInvestorId = id => {
 /**
  * Create Phones
  *
- * @param {Object} data - Phone data to be saved
- * @returns {Promisse} - Returns a Promisse
+ * @param {object[]} data - Phone data
+ * @returns - Returns a object
  */
 export const create = data => {
   return db
@@ -34,9 +34,9 @@ export const create = data => {
 /**
  * Remove Phones
  *
- * @param {uuid} idInvestor - Investor ID
- * @param {int} ids - Phone ID
- * @returns {Object} - Returns data
+ * @param {string} idInvestor - Investor ID
+ * @param {number[]} ids - Phone IDs
+ * @returns - Returns data
  */
 export const remove = (idInvestor, ids) => {
   return db

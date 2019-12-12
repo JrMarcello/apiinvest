@@ -5,8 +5,8 @@ const table = 'investor_document'
 /**
  * Find Documents by Investor ID
  *
- * @param {Interger} id - Investor ID
- * @returns {Promisse} - Returns a Promisse
+ * @param {string} id - Investor ID
+ * @returns - Returns a object
  */
 export const getByInvestorId = id => {
   return db
@@ -19,8 +19,8 @@ export const getByInvestorId = id => {
 /**
  * Create Documents
  *
- * @param {Object} data - Document data to be saved
- * @returns {Promisse} - Returns a Promisse
+ * @param {object[]} data - Document data to be saved
+ * @returns - Returns a object
  */
 export const create = async data => {
   return db
@@ -34,8 +34,8 @@ export const create = async data => {
 /**
  * Remove docs
  *
- * @param {uuid} idInvestor - Investor ID
- * @returns {Object} - Returns data
+ * @param {string} idInvestor - Investor ID
+ * @returns - Returns data
  */
 export const remove = idInvestor => {
   return db

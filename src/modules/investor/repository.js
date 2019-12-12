@@ -6,8 +6,8 @@ import * as dao from './dao'
 /**
  *  Get all Investors
  *
- * @param {Object} params - Params for query
- * @returns {Promisse} - Returns a Promisse
+ * @param {object} params - Params for query
+ * @returns - Returns a object
  */
 export const getAll = async params => {
   return dao.getAll(params)
@@ -16,8 +16,8 @@ export const getAll = async params => {
 /**
  * Find a Investor by ID
  *
- * @param {Interger} id - Investor ID
- * @returns {Promisse} - Returns a Promisse
+ * @param {string} id - Investor ID
+ * @returns - Returns a object
  */
 export const getById = async id => {
   const investor = await dao.getById(id)
@@ -33,8 +33,8 @@ export const getById = async id => {
 /**
  * Find a Investor by User ID
  *
- * @param {Interger} id - User ID
- * @returns {Promisse} - Returns a Promisse
+ * @param {string} id - User ID
+ * @returns - Returns a object
  */
 export const getByUserId = async id => {
   const investor = await dao.getByUserId(id)
@@ -50,8 +50,8 @@ export const getByUserId = async id => {
 /**
  *  Get all Investments
  *
- * @param {Object} id - Investor ID
- * @returns {Promisse} - Returns a Promisse
+ * @param {string} id - Investor ID
+ * @returns - Returns a object
  */
 export const getAllInvestmentsById = async id => {
   return dao.getAllInvestmentsById(id)
@@ -60,8 +60,8 @@ export const getAllInvestmentsById = async id => {
 /**
  *  GGet the total number of investments from Investor
  *
- * @param {Object} id - Investor ID
- * @returns {Promisse} - Returns a Promisse
+ * @param {string} id - Investor ID
+ * @returns - Returns a object
  */
 export const getInvestmentsCount = async id => {
   return dao.getInvestmentsCount(id)
@@ -70,8 +70,8 @@ export const getInvestmentsCount = async id => {
 /**
  * Saves a Investor
  *
- * @param {Object} data - Investor data to be saved
- * @returns {Promisse} - Returns a Promisse
+ * @param {object} data - Investor data
+ * @returns - Returns a object
  */
 export const create = async data => {
   if (!data || data.length === 0 || !data.investor || data.investor.length === 0) throw Error('Dados inválidos')
@@ -91,8 +91,8 @@ export const create = async data => {
 /**
  * Updates an Investor
  *
- * @param {Object} data - Investor data to be updated
- * @returns {Promisse} - Returns a Promisse
+ * @param {object} data - Investor data
+ * @returns - Returns a object
  */
 export const update = data => {
   if (!data || data.length === 0) throw Error('Dados inválidos')
@@ -116,8 +116,8 @@ export const update = data => {
 /**
  * Remove an Investor
  *
- * @param {Object} id - Investor id
- * @returns {Function} - Returns a Promisse
+ * @param {object} id - Investor id
+ * @returns - Returns a object
  */
 export const remove = id => {
   return dao.remove(id)
