@@ -68,24 +68,6 @@ export const getByInvestorId = id => {
 }
 
 /**
- * Find count of Investmes from Investor
- *
- * @param {string} id - Investor ID
- * @returns - Returns a object
- */
-export const getCountByInvestorId = async id => {
-  return (
-    await db
-      .select('count(id)')
-      .from(table)
-      .where('id_investor', id)
-      .and('confirmed', true)
-      .and('active', true)
-      .run()
-  )[0]
-}
-
-/**
  * Find Investments by Fundraising ID
  *
  * @param {strning} id - Fundraising ID
@@ -110,6 +92,42 @@ export const getPendings = async () => {
   const query = `SELECT * FROM ${table} WHERE ted_proof_url IS NOT NULL AND confirmed = false AND active`
 
   return (await db.query(query)).rows
+}
+
+/**
+ * Find count of Investmes from Investor
+ *
+ * @param {string} id - Investor ID
+ * @returns - Returns a object
+ */
+export const getCountByInvestorId = async id => {
+  return (
+    await db
+      .select('count(id)')
+      .from(table)
+      .where('id_investor', id)
+      .and('confirmed', true)
+      .and('active', true)
+      .run()
+  )[0]
+}
+
+/**
+ * Find count of Investmes from Investor
+ *
+ * @param {string} id - Investor ID
+ * @returns - Returns a object
+ */
+export const getInvestedAmount = async id => {
+  return (
+    await db
+      .select('sum(amount)')
+      .from(table)
+      .where('id_investor', id)
+      .and('confirmed', true)
+      .and('active', true)
+      .run()
+  )[0]
 }
 
 /**

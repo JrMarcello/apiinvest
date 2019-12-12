@@ -9,7 +9,7 @@ import * as dao from './dao'
  * @param {object} params - Params for query
  * @returns - Returns a object
  */
-export const getAll = async params => {
+export const getAll = params => {
   return dao.getAll(params)
 }
 
@@ -53,18 +53,28 @@ export const getByUserId = async id => {
  * @param {string} id - Investor ID
  * @returns - Returns a object
  */
-export const getAllInvestmentsById = async id => {
+export const getAllInvestmentsById = id => {
   return dao.getAllInvestmentsById(id)
 }
 
 /**
- *  GGet the total number of investments from Investor
+ *  Get the total number of investments from Investor
  *
  * @param {string} id - Investor ID
  * @returns - Returns a object
  */
-export const getInvestmentsCount = async id => {
+export const getInvestmentsCount = id => {
   return dao.getInvestmentsCount(id)
+}
+
+/**
+ *  Get the invested amount from Investor
+ *
+ * @param {string} id - Investor ID
+ * @returns - Returns a object
+ */
+export const getInvestedAmount = id => {
+  return dao.getInvestedAmount(id)
 }
 
 /**

@@ -81,6 +81,16 @@ export const getInvestmentsCount = id => {
 }
 
 /**
+ *  Find the invested amount from Investor
+ *
+ * @param {string} id - Investor ID
+ * @returns - Returns a object
+ */
+export const getInvestedAmount = async id => {
+  return { amount: (await investmentDao.getInvestedAmount(id)).sum || 0 }
+}
+
+/**
  * Create an Investor
  *
  * @param {object} data - Investor data
