@@ -8,8 +8,8 @@ import * as dao from './dao'
 /**
  *  Get all Users
  *
- * @param {Object} params - Params for query
- * @returns {Promisse} - Returns a Promisse
+ * @param {object} params - Params for query
+ * @returns - Returns a object
  */
 export const getAll = async params => {
   return dao.getAll(params)
@@ -18,8 +18,8 @@ export const getAll = async params => {
 /**
  * Find a User by ID
  *
- * @param {Interger} id - User ID
- * @returns {Promisse} - Returns a Promisse
+ * @param {string} id - User ID
+ * @returns - Returns a object
  */
 export const getById = async id => {
   const user = await dao.getById(id)
@@ -43,8 +43,8 @@ export const getById = async id => {
 /**
  * Saves a User
  *
- * @param {Object} data - User data to be saved
- * @returns {Promisse} - Returns a Promisse
+ * @param {object} data - User data
+ * @returns - Returns a object
  */
 export const create = data => {
   return dao.create(data)
@@ -53,8 +53,8 @@ export const create = data => {
 /**
  * Updates an User
  *
- * @param {Object} data - User data to be updated
- * @returns {Promisse} - Returns a Promisse
+ * @param {object} data - User data
+ * @returns - Returns a object
  */
 export const update = data => {
   return dao.update({
@@ -67,8 +67,8 @@ export const update = data => {
 /**
  * Remove an User
  *
- * @param {Object} id - User data to be removed
- * @returns {Function} - Returns a Promisse
+ * @param {string} id - User ID
+ * @returns - Returns a object
  */
 export const remove = id => {
   return dao.remove(id)
@@ -77,14 +77,13 @@ export const remove = id => {
 /**
  * Login an User, given an email and password
  *
- * @param {Object} params - User data to be updated
- * @returns {Promisse} - Returns a Promisse
+ * @param {object} params - Login data
+ * @returns - Returns a object
  */
 export const login = async params => {
   const user = await dao.getByEmail(params.email)
 
-  if (!user || !bcrypt.compareSync(params.password, user.password))
-    throw Error(constants.user.error.INVALID_USER_LOGIN.message)
+  if (!user || !bcrypt.compareSync(params.password, user.password)) throw Error(constants.user.error.INVALID_USER_LOGIN.message)
 
   user.profile = await dao.getProfile(user.id_profile)
 
