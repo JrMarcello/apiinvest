@@ -49,8 +49,8 @@ define({ "api": [
   },
   {
     "type": "post",
-    "url": "/builder/partner",
-    "title": "Create Partner",
+    "url": "/builder/:idBuilder/partners",
+    "title": "Create Partners",
     "name": "CreateBuilderPartner",
     "group": "Builder",
     "version": "1.0.0",
@@ -59,17 +59,24 @@ define({ "api": [
         "Parameter": [
           {
             "group": "Parameter",
-            "type": "string",
+            "type": "uuid",
             "optional": false,
-            "field": "params",
-            "description": "<p>Builder Partner params em breve aqui</p>"
+            "field": "idBuilder",
+            "description": "<p>Builder ID</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "array",
+            "optional": false,
+            "field": "partners",
+            "description": "<p>Partners data</p>"
           }
         ]
       },
       "examples": [
         {
           "title": "Request-Example:",
-          "content": "{\n   \"id_builder\": \"7de6982f-6989-45bd-97d4-973ebeb75295\",\n   \"name\": \"Nome do socio 1\",\n   \"company_name\": null,\n   \"cpf\": \"06595212446\",\n   \"cnpj\": null,\n   \"phone\": \"8332447788\",\n   \"address_street\": \"Rua do socio 1\",\n   \"address_number\": \"123\",\n   \"address_neighborhood\": \"Bairro\",\n   \"address_city\": \"Cidade\",\n   \"address_state\": \"Estado\",\n   \"address_country\": \"Pais\",\n   \"address_cep\": \"58000000\"\n}",
+          "content": "{ \"partners\": [{\n    \"name\": \"Nome do socio 1\",\n    \"company_name\": null,\n    \"cpf\": \"06595212446\",\n    \"cnpj\": null,\n    \"phone\": \"8332447788\",\n    \"address_street\": \"Rua do socio 1\",\n    \"address_number\": \"123\",\n    \"address_neighborhood\": \"Bairro\",\n    \"address_city\": \"Cidade\",\n    \"address_state\": \"Estado\",\n    \"address_country\": \"Pais\",\n    \"address_cep\": \"58000000\"\n  }]\n}",
           "type": "json"
         }
       ]
@@ -78,7 +85,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "HTTP/1.1 200 OK\n{\n   \"code\": \"S0000\",\n   \"message\": \"Construtora criada com sucesso\",\n   \"builder\": [{\n     \"id\": \"1\",\n     \"id_builder\": \"7de6982f-6989-45bd-97d4-973ebeb75295\",\n     \"name\": \"Nome do socio 1\",\n     \"company_name\": null,\n     \"cpf\": \"06595212446\",\n     \"cnpj\": null,\n     \"phone\": \"8332447788\",\n     \"address_street\": \"Rua do socio 1\",\n     \"address_number\": \"123\",\n     \"address_neighborhood\": \"Bairro\",\n     \"address_city\": \"Cidade\",\n     \"address_state\": \"Estado\",\n     \"address_country\": \"Pais\",\n     \"address_cep\": \"58000000\",\n     \"created_date\": \"2019-09-24T00:01:22.960Z\"\n   }]\n}",
+          "content": "HTTP/1.1 200 OK\n{\n   \"code\": 9000,\n   \"message\": \"Sócio criado com sucesso\",\n   \"partners\": [\n     {\n       \"id\": \"4\",\n       \"id_builder\": \"3136962d-e525-4eb8-9721-ba7dc329d622\",\n       \"name\": \"Nome do socio 2\",\n       \"company_name\": null,\n       \"cpf\": \"06595212556\",\n       \"cnpj\": null,\n       \"phone\": \"8332447799\",\n       \"address_street\": \"Rua do socio 2\",\n       \"address_number\": \"321\",\n       \"address_neighborhood\": \"Bairro\",\n       \"address_city\": \"Cidade\",\n       \"address_state\": \"Estado\",\n       \"address_country\": \"Pais\",\n       \"address_cep\": \"58000000\",\n       \"created_date\": \"2019-12-08T18:31:15.589Z\"\n     }\n   ]\n }",
           "type": "json"
         }
       ]
@@ -97,7 +104,7 @@ define({ "api": [
   },
   {
     "type": "post",
-    "url": "/builder/phone",
+    "url": "/builder/:idBuilder/phones",
     "title": "Create Phone",
     "name": "CreateBuilderPhone",
     "group": "Builder",
@@ -109,7 +116,7 @@ define({ "api": [
             "group": "Parameter",
             "type": "uuid",
             "optional": false,
-            "field": "id_builder",
+            "field": "idBuilder",
             "description": "<p>Builder ID</p>"
           },
           {
@@ -124,7 +131,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Request-Example:",
-          "content": "{\n   \"id_builder\": \"eb76cd10-367b-447d-b238-fa8e9eef2a1f\",\n   \"phones\": [\"83988317864\"]\n}",
+          "content": "{ \"phones\": [{ \"83988317864\" }] }",
           "type": "json"
         }
       ]
@@ -200,30 +207,30 @@ define({ "api": [
   },
   {
     "type": "delete",
-    "url": "/builder/partner/:id",
-    "title": "Delete Partner",
+    "url": "/builder/:idBuilder/partners",
+    "title": "Delete Partners",
     "name": "DeleteBuilderPartner",
     "group": "Builder",
     "version": "1.0.0",
     "parameter": {
-      "examples": [
-        {
-          "title": "Request-Example:",
-          "content": "{\n   \"id\": eb76cd10-367b-447d-b238-fa8e9eef2a1f\n}",
-          "type": "json"
-        }
-      ],
       "fields": {
         "Parameter": [
           {
             "group": "Parameter",
             "type": "uuid",
             "optional": false,
-            "field": "ID",
-            "description": "<p>Builder Partner ID</p>"
+            "field": "idBuilder",
+            "description": "<p>Builder ID</p>"
           }
         ]
-      }
+      },
+      "examples": [
+        {
+          "title": "Request-Example:",
+          "content": "{ \"ids\": [1, 2] }",
+          "type": "json"
+        }
+      ]
     },
     "success": {
       "examples": [
@@ -238,7 +245,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Error-Response:",
-          "content": "HTTP/1.1 500 Internal Server Error\n{\n   \"code\": 9999,\n   \"message\": \"Dados da requisição inválidos\",\n   \"errors\": [{\n     \"msg\": \"Invalid value\",\n     \"param\": \"id\",\n     \"location\": \"body\"\n   }]\n}",
+          "content": "HTTP/1.1 500 Internal Server Error\n{\n   \"code\": 9999,\n   \"message\": \"Dados da requisição inválidos\",\n   \"errors\": [{\n     \"msg\": \"Invalid value\",\n     \"param\": \"id\",\n     \"location\": \"params\"\n   }]\n}",
           "type": "json"
         }
       ]
@@ -248,8 +255,8 @@ define({ "api": [
   },
   {
     "type": "delete",
-    "url": "/builder/phone/:id",
-    "title": "Delete Phone",
+    "url": "/builder/:idBuilder/phones",
+    "title": "Delete Phones",
     "name": "DeleteBuilderPhone",
     "group": "Builder",
     "version": "1.0.0",
@@ -260,11 +267,18 @@ define({ "api": [
             "group": "Parameter",
             "type": "uuid",
             "optional": false,
-            "field": "ID",
-            "description": "<p>Builder Phone ID</p>"
+            "field": "idBuilder",
+            "description": "<p>Builder ID</p>"
           }
         ]
-      }
+      },
+      "examples": [
+        {
+          "title": "Request-Example:",
+          "content": "{ \"ids\": [1, 2] }",
+          "type": "json"
+        }
+      ]
     },
     "success": {
       "examples": [
@@ -279,12 +293,53 @@ define({ "api": [
       "examples": [
         {
           "title": "Error-Response:",
-          "content": "HTTP/1.1 500 Internal Server Error\n{\n   \"code\": 9999,\n   \"message\": \"Dados da requisição inválidos\",\n   \"errors\": [{\n     \"msg\": \"Invalid value\",\n     \"param\": \"id\",\n     \"location\": \"body\"\n   }]\n}",
+          "content": "HTTP/1.1 500 Internal Server Error\n{\n   \"code\": 9999,\n   \"message\": \"Dados da requisição inválidos\",\n   \"errors\": [{\n     \"msg\": \"Invalid value\",\n     \"param\": \"id\",\n     \"location\": \"params\"\n   }]\n}",
           "type": "json"
         }
       ]
     },
     "filename": "src/modules/builder-phone/controller.js",
+    "groupTitle": "Builder"
+  },
+  {
+    "type": "get",
+    "url": "/builder/:id/buildings",
+    "title": "Get all Buildings (By Builder ID)",
+    "name": "GetAllBuildingsByID",
+    "group": "Builder",
+    "version": "1.0.0",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "uuid",
+            "optional": false,
+            "field": "id",
+            "description": "<p>Builder ID</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n[{\n    \"id\": \"69cb237c-c53a-4619-8433-d80719c0c18f\",\n    \"id_builder\": \"7de6982f-6989-45bd-97d4-973ebeb75295\",\n    \"spe\": \"34096667000199\",\n    \"registration\": \"789456\",\n    \"name\": \"Nome da obra\",\n    \"description\": \"Descrição da obra\",\n    \"address_street\": \"Rua da obraa\",\n    \"address_number\": \"123\",\n    \"address_neighborhood\": \"Bairro\",\n    \"address_city\": \"Cidade\",\n    \"address_state\": \"Estado\",\n    \"address_country\": \"Pais\",\n    \"address_cep\": \"58000000\",\n    \"amount\": \"1000000.00\",\n    \"initial_date\": \"2019-08-27T00:00:00.000Z\",\n    \"final_date\": \"2022-08-27T00:00:00.000Z\",\n    \"created_date\": \"2019-09-24T00:50:58.550Z\",\n    \"active\": true\n}]",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "HTTP/1.1 500 Internal Server Error\n  {\n     \"code\": 9999,\n     \"message\": \"Requisição inválida\",\n     \"errors\": [{\n       \"msg\": \"Invalid value\",\n       \"param\": \"id\",\n       \"location\": \"params\"\n     }]\n  }",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "src/modules/builder/controller.js",
     "groupTitle": "Builder"
   },
   {
@@ -320,7 +375,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Error-Response:",
-          "content": "HTTP/1.1 500 Internal Server Error\n{\n   \"code\": 9999,\n   \"message\": \"Dados da requisição inválidos\",\n   \"errors\": [{\n     \"msg\": \"Invalid value\",\n     \"param\": \"id\",\n     \"location\": \"body\"\n   }]\n}",
+          "content": "HTTP/1.1 500 Internal Server Error\n{\n   \"code\": 9999,\n   \"message\": \"Dados da requisição inválidos\",\n   \"errors\": [{\n     \"msg\": \"Invalid value\",\n     \"param\": \"id\",\n     \"location\": \"params\"\n   }]\n}",
           "type": "json"
         }
       ]
@@ -342,7 +397,7 @@ define({ "api": [
             "group": "Parameter",
             "type": "uuid",
             "optional": false,
-            "field": "ID",
+            "field": "id",
             "description": "<p>User ID</p>"
           }
         ]
@@ -371,8 +426,8 @@ define({ "api": [
   },
   {
     "type": "get",
-    "url": "/builder/:id/partner",
-    "title": "Get Partner (By Builder ID)",
+    "url": "/builder/:idBuilder/partners",
+    "title": "Get Partners (By Builder ID)",
     "name": "GetBuilderPartner",
     "group": "Builder",
     "version": "1.0.0",
@@ -393,7 +448,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "HTTP/1.1 200 OK\n{\n   \"id\": \"1\",\n   \"id_builder\": \"7de6982f-6989-45bd-97d4-973ebeb75295\",\n   \"name\": \"Nome do socio 1\",\n   \"company_name\": null,\n   \"cpf\": \"06595212446\",\n   \"cnpj\": null,\n   \"phone\": \"8332447788\",\n   \"address_street\": \"Rua do socio 1\",\n   \"address_number\": \"123\",\n   \"address_neighborhood\": \"Bairro\",\n   \"address_city\": \"Cidade\",\n   \"address_state\": \"Estado\",\n   \"address_country\": \"Pais\",\n   \"address_cep\": \"58000000\",\n   \"created_date\": \"2019-09-24T00:01:22.960Z\"\n}",
+          "content": "HTTP/1.1 200 OK\n[{\n   \"id\": \"1\",\n   \"id_builder\": \"7de6982f-6989-45bd-97d4-973ebeb75295\",\n   \"name\": \"Nome do socio 1\",\n   \"company_name\": null,\n   \"cpf\": \"06595212446\",\n   \"cnpj\": null,\n   \"phone\": \"8332447788\",\n   \"address_street\": \"Rua do socio 1\",\n   \"address_number\": \"123\",\n   \"address_neighborhood\": \"Bairro\",\n   \"address_city\": \"Cidade\",\n   \"address_state\": \"Estado\",\n   \"address_country\": \"Pais\",\n   \"address_cep\": \"58000000\",\n   \"created_date\": \"2019-09-24T00:01:22.960Z\"\n}]",
           "type": "json"
         }
       ]
@@ -402,7 +457,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Error-Response:",
-          "content": "HTTP/1.1 500 Internal Server Error\n{\n   \"code\": 9999,\n   \"message\": \"Dados da requisição inválidos\",\n   \"errors\": [{\n     \"msg\": \"Invalid value\",\n     \"param\": \"id\",\n     \"location\": \"body\"\n   }]\n}",
+          "content": "HTTP/1.1 500 Internal Server Error\n{\n   \"code\": 9999,\n   \"message\": \"Dados da requisição inválidos\",\n   \"errors\": [{\n     \"msg\": \"Invalid value\",\n     \"param\": \"id\",\n     \"location\": \"params\"\n   }]\n}",
           "type": "json"
         }
       ]
@@ -412,7 +467,7 @@ define({ "api": [
   },
   {
     "type": "get",
-    "url": "/builder/:id/phone",
+    "url": "/builder/:idBuilder/phones",
     "title": "Get Phone (By Builder ID)",
     "name": "GetBuilderPhone",
     "group": "Builder",
@@ -424,8 +479,8 @@ define({ "api": [
             "group": "Parameter",
             "type": "uuid",
             "optional": false,
-            "field": "ID",
-            "description": "<p>Builder ID</p>"
+            "field": "Builder",
+            "description": "<p>ID Builder ID</p>"
           }
         ]
       }
@@ -471,7 +526,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Error-Response:",
-          "content": "HTTP/1.1 500 Internal Server Error\n  {\n     \"code\": 9999,\n     \"message\": \"Requisição inválida\",\n     \"errors\": [{}]\n  }",
+          "content": "HTTP/1.1 500 Internal Server Error\n  {\n     \"code\": 9999,\n     \"message\": \"Erro ao buscar construtora(s)\",\n  }",
           "type": "json"
         }
       ]
@@ -529,8 +584,8 @@ define({ "api": [
   },
   {
     "type": "post",
-    "url": "/building/image",
-    "title": "Create Image",
+    "url": "/building/:idBuilding/images",
+    "title": "Add Images",
     "name": "CreateBuilderImage",
     "group": "Building",
     "version": "1.0.0",
@@ -539,17 +594,17 @@ define({ "api": [
         "Parameter": [
           {
             "group": "Parameter",
-            "type": "string",
+            "type": "uuid",
             "optional": false,
-            "field": "params",
-            "description": "<p>Builder iamge params em breve aqui</p>"
+            "field": "idBuilding",
+            "description": "<p>Building ID</p>"
           }
         ]
       },
       "examples": [
         {
           "title": "Request-Example:",
-          "content": "{\n   \"id_building\": \"eb76cd10-367b-447d-b238-fa8e9eef2a1f\",\n   \"images\": [[image buffer], [image buffer]]\n}",
+          "content": "{\n   \"images\": [[image buffer], [image buffer]]\n}",
           "type": "json"
         }
       ]
@@ -567,7 +622,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Error-Response:",
-          "content": "HTTP/1.1 500 Internal Server Error\n{\n   \"code\": 9999,\n   \"message\": \"Dados da requisição inválidos\",\n   \"errors\": [{\n     \"msg\": \"Invalid value\",\n     \"param\": \"numero\",\n     \"location\": \"body\"\n   }]\n}",
+          "content": "HTTP/1.1 500 Internal Server Error\n{\n   \"code\": 9999,\n   \"message\": \"Dados da requisição inválidos\",\n   \"errors\": [{}]\n}",
           "type": "json"
         }
       ]
@@ -583,17 +638,6 @@ define({ "api": [
     "group": "Building",
     "version": "1.0.0",
     "parameter": {
-      "fields": {
-        "Parameter": [
-          {
-            "group": "Parameter",
-            "type": "string",
-            "optional": false,
-            "field": "params",
-            "description": "<p>Building params em breve aqui</p>"
-          }
-        ]
-      },
       "examples": [
         {
           "title": "Request-Example:",
@@ -606,7 +650,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "HTTP/1.1 200 OK\n{\n   \"code\": \"S0000\",\n   \"message\": \"Obra criada com sucesso\",\n   \"builder\": [{\n     \"code\": 6000,\n     \"message\": \"Obra criada com sucesso\",\n     \"building\": {\n       \"id\": \"69cb237c-c53a-4619-8433-d80719c0c18f\",\n       \"id_builder\": \"7de6982f-6989-45bd-97d4-973ebeb75295\",\n       \"spe\": \"34096667000199\",\n       \"registration\": \"789456\",\n       \"name\": \"Nome da obra\",\n       \"description\": \"Descrição da obra\",\n       \"address_street\": \"Rua da obraa\",\n       \"address_number\": \"123\",\n       \"address_neighborhood\": \"Bairro\",\n       \"address_city\": \"Cidade\",\n       \"address_state\": \"Estado\",\n       \"address_country\": \"Pais\",\n       \"address_cep\": \"58000000\",\n       \"amount\": \"1000000.00\",\n       \"initial_date\": \"2019-08-27T00:00:00.000Z\",\n       \"final_date\": \"2022-08-27T00:00:00.000Z\",\n       \"created_date\": \"2019-09-24T00:50:58.550Z\",\n       \"active\": true\n     }\n   }]\n}",
+          "content": "HTTP/1.1 200 OK\n{\n   \"code\": \"S0000\",\n   \"message\": \"Obra criada com sucesso\",\n   \"builder\": [{\n     \"code\": 6000,\n     \"message\": \"Obra criada com sucesso\",\n     \"building\": {\n       \"id\": \"69cb237c-c53a-4619-8433-d80719c0c18f\",\n       \"id_builder\": \"7de6982f-6989-45bd-97d4-973ebeb75295\",\n       \"cnpj\": \"34096667000199\",\n       \"registration\": \"789456\",\n       \"name\": \"Nome da obra\",\n       \"description\": \"Descrição da obra\",\n       \"address_street\": \"Rua da obraa\",\n       \"address_number\": \"123\",\n       \"address_neighborhood\": \"Bairro\",\n       \"address_city\": \"Cidade\",\n       \"address_state\": \"Estado\",\n       \"address_country\": \"Pais\",\n       \"address_cep\": \"58000000\",\n       \"vgv\": \"1000000.00\",\n       \"initial_date\": \"2019-08-27T00:00:00.000Z\",\n       \"final_date\": \"2022-08-27T00:00:00.000Z\",\n       \"created_date\": \"2019-09-24T00:50:58.550Z\",\n       \"active\": true\n     }\n   }]\n}",
           "type": "json"
         }
       ]
@@ -625,30 +669,30 @@ define({ "api": [
   },
   {
     "type": "delete",
-    "url": "/building/image/:id",
-    "title": "Delete Image",
-    "name": "DeleteBuilderImage",
+    "url": "/building/:idBuilding/images",
+    "title": "Delete Images",
+    "name": "DeleteBuilderImages",
     "group": "Building",
     "version": "1.0.0",
     "parameter": {
-      "examples": [
-        {
-          "title": "Request-Example:",
-          "content": "{\n   \"id\": eb76cd10-367b-447d-b238-fa8e9eef2a1f\n}",
-          "type": "json"
-        }
-      ],
       "fields": {
         "Parameter": [
           {
             "group": "Parameter",
             "type": "uuid",
             "optional": false,
-            "field": "ID",
-            "description": "<p>Builder Phone ID</p>"
+            "field": "idBuilder",
+            "description": "<p>Builder ID</p>"
           }
         ]
-      }
+      },
+      "examples": [
+        {
+          "title": "Request-Example:",
+          "content": "{\n   \"ids\": [1, 2]\n}",
+          "type": "json"
+        }
+      ]
     },
     "success": {
       "examples": [
@@ -763,7 +807,7 @@ define({ "api": [
   {
     "type": "get",
     "url": "/building/builder/:id",
-    "title": "Get (By Builder ID)",
+    "title": "Get all (By Builder ID)",
     "name": "GetBuildingByBuilderId",
     "group": "Building",
     "version": "1.0.0",
@@ -803,7 +847,7 @@ define({ "api": [
   },
   {
     "type": "get",
-    "url": "/building/:id/image",
+    "url": "/building/:idBuilding/images",
     "title": "Get Image (By Building ID)",
     "name": "GetBuildingImage",
     "group": "Building",
@@ -815,7 +859,7 @@ define({ "api": [
             "group": "Parameter",
             "type": "uuid",
             "optional": false,
-            "field": "ID",
+            "field": "idBuilding",
             "description": "<p>Building ID</p>"
           }
         ]
@@ -846,6 +890,34 @@ define({ "api": [
     "type": "get",
     "url": "/building",
     "title": "Get all",
+    "name": "GetBuildings",
+    "group": "Building",
+    "version": "1.0.0",
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n[{\n    \"id\": \"69cb237c-c53a-4619-8433-d80719c0c18f\",\n    \"id_builder\": \"7de6982f-6989-45bd-97d4-973ebeb75295\",\n    \"spe\": \"34096667000199\",\n    \"registration\": \"789456\",\n    \"name\": \"Nome da obra\",\n    \"description\": \"Descrição da obra\",\n    \"address_street\": \"Rua da obraa\",\n    \"address_number\": \"123\",\n    \"address_neighborhood\": \"Bairro\",\n    \"address_city\": \"Cidade\",\n    \"address_state\": \"Estado\",\n    \"address_country\": \"Pais\",\n    \"address_cep\": \"58000000\",\n    \"amount\": \"1000000.00\",\n    \"initial_date\": \"2019-08-27T00:00:00.000Z\",\n    \"final_date\": \"2022-08-27T00:00:00.000Z\",\n    \"created_date\": \"2019-09-24T00:50:58.550Z\",\n    \"active\": true\n}]",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "HTTP/1.1 500 Internal Server Error\n  {\n     \"code\": 9999,\n     \"message\": \"Requisição inválida\",\n     \"errors\": [{}]\n  }",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "src/modules/building/controller.js",
+    "groupTitle": "Building"
+  },
+  {
+    "type": "get",
+    "url": "/building/avaliables",
+    "title": "Get all avaliables to investment",
     "name": "GetBuildings",
     "group": "Building",
     "version": "1.0.0",
@@ -1042,7 +1114,7 @@ define({ "api": [
             "group": "Parameter",
             "type": "uuid",
             "optional": false,
-            "field": "ID",
+            "field": "id",
             "description": "<p>Custodian ID</p>"
           }
         ]
@@ -1052,7 +1124,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "HTTP/1.1 200 OK\n{\n   \"id\": \"647ac188-62c8-4618-8a0a-be14174aac49\",\n   \"cnpj\": \"34096667000151\",\n   \"company_name\": \"Custodiadora Default SA\",\n   \"company_fancy_name\": \"Custodiadora Default\",\n   \"phone\": \"8333334444\",\n   \"create_date\": \"2019-09-24T04:29:51.726Z\",\n   \"active\": true\n}",
+          "content": "  HTTP/1.1 200 OK\n  {\n     \"id\": \"647ac188-62c8-4618-8a0a-be14174aac49\",\n     \"cnpj\": \"34096667000151\",\n     \"company_name\": \"Custodiadora Default SA\",\n     \"company_fancy_name\": \"Custodiadora Default\",\n     \"phone\": \"8333334444\",\n     \"agent_name\": \"João da Silva\",\n\t    \"agent_email\": \"joaosilva@custodiadora.com.br\",\n\t    \"agent_phone\": \"83988317867\",\n     \"create_date\": \"2019-09-24T04:29:51.726Z\",\n     \"active\": true\n  }",
           "type": "json"
         }
       ]
@@ -1080,7 +1152,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "HTTP/1.1 200 OK\n[{\n    \"id\": \"647ac188-62c8-4618-8a0a-be14174aac49\",\n    \"cnpj\": \"34096667000151\",\n    \"company_name\": \"Custodiadora Default SA\",\n    \"company_fancy_name\": \"Custodiadora Default\",\n    \"phone\": \"8333334444\",\n    \"create_date\": \"2019-09-24T04:29:51.726Z\",\n    \"active\": true\n}]",
+          "content": "  HTTP/1.1 200 OK\n  [{\n      \"id\": \"647ac188-62c8-4618-8a0a-be14174aac49\",\n      \"cnpj\": \"34096667000151\",\n      \"company_name\": \"Custodiadora Default SA\",\n      \"company_fancy_name\": \"Custodiadora Default\",\n      \"phone\": \"8333334444\",\n      \"agent_name\": \"João da Silva\",\n\t     \"agent_email\": \"joaosilva@custodiadora.com.br\",\n\t     \"agent_phone\": \"83988317867\",\n      \"create_date\": \"2019-09-24T04:29:51.726Z\",\n      \"active\": true\n  }]",
           "type": "json"
         }
       ]
@@ -1174,34 +1246,6 @@ define({ "api": [
     "groupTitle": "Custodian"
   },
   {
-    "type": "put",
-    "url": "/fundraising/:id/cancel",
-    "title": "Cancel",
-    "name": "CancelFundraising",
-    "group": "Fundraising",
-    "version": "1.0.0",
-    "success": {
-      "examples": [
-        {
-          "title": "Success-Response:",
-          "content": "HTTP/1.1 200 OK\n{\n   \"code\": \"S0000\",\n   \"message\": \"Captação cancelada com sucesso\"\n}",
-          "type": "json"
-        }
-      ]
-    },
-    "error": {
-      "examples": [
-        {
-          "title": "Error-Response:",
-          "content": "HTTP/1.1 500 Internal Server Error\n{\n   \"code\": 9999,\n   \"message\": \"Dados da requisição inválidos\",\n   \"errors\": [{\n     \"msg\": \"Invalid value\",\n     \"param\": \"id\",\n     \"location\": \"body\"\n   }]\n}",
-          "type": "json"
-        }
-      ]
-    },
-    "filename": "src/modules/fundraising/controller.js",
-    "groupTitle": "Fundraising"
-  },
-  {
     "type": "post",
     "url": "/fundraising",
     "title": "Create",
@@ -1209,21 +1253,10 @@ define({ "api": [
     "group": "Fundraising",
     "version": "1.0.0",
     "parameter": {
-      "fields": {
-        "Parameter": [
-          {
-            "group": "Parameter",
-            "type": "string",
-            "optional": false,
-            "field": "params",
-            "description": "<p>Fundraising params em breve aqui</p>"
-          }
-        ]
-      },
       "examples": [
         {
           "title": "Request-Example:",
-          "content": "{\n   \"id_building\": \"8dff5f89-dbd1-4db1-b3ac-ee4d3904429a\",\n   \"id_custodian\": \"647ac188-62c8-4618-8a0a-be14174aac49\",\n   \"amount\": \"1000.00\",\n   \"initial_date\": \"2019-08-25\",\n   \"final_date\": \"2020-02-25\"\n}",
+          "content": "{\n   \"id_building\": \"e69738af-8619-4335-99b9-153da3f723c6\",\n   \"id_custodian\": null,\n   \"amount\": \"2536216.00\",\n   \"investment_min_value\": \"1000\",\n   \"investment_percentage\": \"0.05\",\n   \"return_date\": \"2022-12-15\",\n   \"initial_date\": \"2019-09-24\",\n   \"final_date\": \"2019-09-30\"\n}",
           "type": "json"
         }
       ]
@@ -1232,7 +1265,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "HTTP/1.1 200 OK\n{\n   \"code\": 6000,\n   \"message\": \"Captação criada com sucesso\",\n   \"fundraising\": [\n     {\n        \"id\": \"164164dd-2b2c-4bbd-8d06-0d67e7ca242f\",\n        \"id_building\": \"8dff5f89-dbd1-4db1-b3ac-ee4d3904429a\",\n        \"id_custodian\": \"647ac188-62c8-4618-8a0a-be14174aac49\",\n        \"amount\": \"1000.00\",\n        \"initial_date\": \"2019-08-25T03:00:00.000Z\",\n        \"final_date\": \"2020-02-25T03:00:00.000Z\",\n        \"finished\": false,\n        \"created_date\": \"2019-09-25T00:32:04.442Z\",\n        \"active\": true\n     }\n   ]\n}",
+          "content": "HTTP/1.1 200 OK\n{\n   \"code\": 6000,\n   \"message\": \"Captação criada com sucesso\",\n   \"fundraising\": [\n     {\n        \"id\": \"164164dd-2b2c-4bbd-8d06-0d67e7ca242f\",\n        \"id_building\": \"8dff5f89-dbd1-4db1-b3ac-ee4d3904429a\",\n        \"id_custodian\": \"647ac188-62c8-4618-8a0a-be14174aac49\",\n        \"amount\": \"1000.00\",\n        \"investment_min_value\": \"1000\",\n        \"investment_percentage\": \"0.05\",\n        \"return_date\": \"2022-12-15\",\n        \"initial_date\": \"2019-08-25T03:00:00.000Z\",\n        \"final_date\": \"2020-02-25T03:00:00.000Z\",\n        \"finished\": false,\n        \"created_date\": \"2019-09-25T00:32:04.442Z\",\n        \"active\": true\n     }\n   ]\n}",
           "type": "json"
         }
       ]
@@ -1256,6 +1289,19 @@ define({ "api": [
     "name": "FinishFundraising",
     "group": "Fundraising",
     "version": "1.0.0",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "uuid",
+            "optional": false,
+            "field": "id",
+            "description": "<p>Fundraising ID</p>"
+          }
+        ]
+      }
+    },
     "success": {
       "examples": [
         {
@@ -1269,7 +1315,48 @@ define({ "api": [
       "examples": [
         {
           "title": "Error-Response:",
-          "content": "HTTP/1.1 500 Internal Server Error\n{\n   \"code\": 9999,\n   \"message\": \"Dados da requisição inválidos\",\n   \"errors\": [{\n     \"msg\": \"Invalid value\",\n     \"param\": \"id\",\n     \"location\": \"body\"\n   }]\n}",
+          "content": "HTTP/1.1 500 Internal Server Error\n{\n   \"code\": 9999,\n   \"message\": \"Dados da requisição inválidos\",\n   \"errors\": [{\n     \"msg\": \"Invalid value\",\n     \"param\": \"id\",\n     \"location\": \"params\"\n   }]\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "src/modules/fundraising/controller.js",
+    "groupTitle": "Fundraising"
+  },
+  {
+    "type": "get",
+    "url": "/fundraising/:id/amountraised",
+    "title": "Get Amount Raised",
+    "name": "GetAmountRaised",
+    "group": "Fundraising",
+    "version": "1.0.0",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "uuid",
+            "optional": false,
+            "field": "id",
+            "description": "<p>Fundraising ID</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n{\n   \"amount\": 100000\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "HTTP/1.1 500 Internal Server Error\n{\n   \"code\": 9999,\n   \"message\": \"Erro ao buscar total captado\",\n}",
           "type": "json"
         }
       ]
@@ -1291,7 +1378,7 @@ define({ "api": [
             "group": "Parameter",
             "type": "uuid",
             "optional": false,
-            "field": "ID",
+            "field": "id",
             "description": "<p>Fundraising ID</p>"
           }
         ]
@@ -1301,7 +1388,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "HTTP/1.1 200 OK\n{\n   \"id\": \"cd99df55-e99b-4db1-86cd-143430f1a19a\",\n   \"id_building\": \"e69738af-8619-4335-99b9-153da3f723c6\",\n   \"id_custodian\": null,\n   \"amount\": \"2536216.00\",\n   \"initial_date\": \"2019-09-24T03:00:00.000Z\",\n   \"final_date\": \"2019-09-30T03:00:00.000Z\",\n   \"finished\": false,\n   \"created_date\": \"2019-09-24T19:08:56.438Z\",\n   \"active\": true\n}",
+          "content": "HTTP/1.1 200 OK\n{\n    \"id\": \"cd99df55-e99b-4db1-86cd-143430f1a19a\",\n    \"id_building\": \"e69738af-8619-4335-99b9-153da3f723c6\",\n    \"id_custodian\": null,\n    \"amount\": \"2536216.00\",\n    \"investment_min_value\": \"1000\",\n    \"investment_percentage\": \"0.05\",\n    \"return_date\": \"2022-12-15\",\n    \"initial_date\": \"2019-09-24T03:00:00.000Z\",\n    \"final_date\": \"2019-09-30T03:00:00.000Z\",\n    \"finished\": false,\n    \"created_date\": \"2019-09-24T19:08:56.438Z\",\n    \"active\": true\n}",
           "type": "json"
         }
       ]
@@ -1310,7 +1397,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Error-Response:",
-          "content": "HTTP/1.1 500 Internal Server Error\n{\n   \"code\": 9999,\n   \"message\": \"Dados da requisição inválidos\",\n   \"errors\": [{\n     \"msg\": \"Invalid value\",\n     \"param\": \"id\",\n     \"location\": \"body\"\n   }]\n}",
+          "content": "HTTP/1.1 500 Internal Server Error\n{\n   \"code\": 9999,\n   \"message\": \"Dados da requisição inválidos\",\n   \"errors\": [{\n     \"msg\": \"Invalid value\",\n     \"param\": \"id\",\n     \"location\": \"params\"\n   }]\n}",
           "type": "json"
         }
       ]
@@ -1329,7 +1416,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "HTTP/1.1 200 OK\n[{\n    \"id\": \"cd99df55-e99b-4db1-86cd-143430f1a19a\",\n    \"id_building\": \"e69738af-8619-4335-99b9-153da3f723c6\",\n    \"id_custodian\": null,\n    \"amount\": \"2536216.00\",\n    \"initial_date\": \"2019-09-24T03:00:00.000Z\",\n    \"final_date\": \"2019-09-30T03:00:00.000Z\",\n    \"finished\": false,\n    \"created_date\": \"2019-09-24T19:08:56.438Z\",\n    \"active\": true\n}]",
+          "content": "HTTP/1.1 200 OK\n[{\n    \"id\": \"cd99df55-e99b-4db1-86cd-143430f1a19a\",\n    \"id_building\": \"e69738af-8619-4335-99b9-153da3f723c6\",\n    \"id_custodian\": null,\n    \"amount\": \"2536216.00\",\n    \"investment_min_value\": \"1000\",\n    \"investment_percentage\": \"0.05\",\n    \"return_date\": \"2022-12-15\",\n    \"initial_date\": \"2019-09-24T03:00:00.000Z\",\n    \"final_date\": \"2019-09-30T03:00:00.000Z\",\n    \"finished\": false,\n    \"created_date\": \"2019-09-24T19:08:56.438Z\",\n    \"active\": true\n}]",
           "type": "json"
         }
       ]
@@ -1348,16 +1435,29 @@ define({ "api": [
   },
   {
     "type": "get",
-    "url": "/fundraising",
+    "url": "/fundraising/building/:idBuilding",
     "title": "Get (By Building ID)",
-    "name": "GetFundraisingsByBuilding",
+    "name": "GetFundraisingsByBuildingID",
     "group": "Fundraising",
     "version": "1.0.0",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "uuid",
+            "optional": false,
+            "field": "idBuilding",
+            "description": "<p>Building ID</p>"
+          }
+        ]
+      }
+    },
     "success": {
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "HTTP/1.1 200 OK\n[{\n    \"id\": \"cd99df55-e99b-4db1-86cd-143430f1a19a\",\n    \"id_building\": \"e69738af-8619-4335-99b9-153da3f723c6\",\n    \"id_custodian\": null,\n    \"amount\": \"2536216.00\",\n    \"initial_date\": \"2019-09-24T03:00:00.000Z\",\n    \"final_date\": \"2019-09-30T03:00:00.000Z\",\n    \"finished\": false,\n    \"created_date\": \"2019-09-24T19:08:56.438Z\",\n    \"active\": true\n}]",
+          "content": "HTTP/1.1 200 OK\n[{\n    \"id\": \"cd99df55-e99b-4db1-86cd-143430f1a19a\",\n    \"id_building\": \"e69738af-8619-4335-99b9-153da3f723c6\",\n    \"id_custodian\": null,\n    \"amount\": \"2536216.00\",\n    \"investment_min_value\": \"1000\",\n    \"investment_percentage\": \"0.05\",\n    \"return_date\": \"2022-12-15\",\n    \"initial_date\": \"2019-09-24T03:00:00.000Z\",\n    \"final_date\": \"2019-09-30T03:00:00.000Z\",\n    \"finished\": false,\n    \"created_date\": \"2019-09-24T19:08:56.438Z\",\n    \"active\": true\n}]",
           "type": "json"
         }
       ]
@@ -1366,7 +1466,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Error-Response:",
-          "content": "HTTP/1.1 500 Internal Server Error\n  {\n     \"code\": 9999,\n     \"message\": \"Requisição inválida\",\n     \"errors\": [{}]\n  }",
+          "content": "HTTP/1.1 500 Internal Server Error\n  {\n     \"code\": 9999,\n     \"message\": \"Requisição inválida\",\n     \"errors\": [{\n       \"msg\": \"Invalid value\",\n       \"param\": \"idBuilding\",\n       \"location\": \"params\"\n     }]\n  }",
           "type": "json"
         }
       ]
@@ -1416,10 +1516,10 @@ define({ "api": [
     "groupTitle": "Fundraising"
   },
   {
-    "type": "put",
-    "url": "/fundraising",
-    "title": "Update",
-    "name": "UpdateFundraising",
+    "type": "delete",
+    "url": "/fundraising/:id",
+    "title": "Remove",
+    "name": "RemoveFundraising",
     "group": "Fundraising",
     "version": "1.0.0",
     "parameter": {
@@ -1427,17 +1527,47 @@ define({ "api": [
         "Parameter": [
           {
             "group": "Parameter",
-            "type": "string",
+            "type": "uuid",
             "optional": false,
-            "field": "params",
-            "description": "<p>Fundraising params em breve</p>"
+            "field": "id",
+            "description": "<p>Fundraising ID</p>"
           }
         ]
-      },
+      }
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n{\n   \"code\": \"S0000\",\n   \"message\": \"Captação removida com sucesso\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "HTTP/1.1 500 Internal Server Error\n{\n   \"code\": 9999,\n   \"message\": \"Dados da requisição inválidos\",\n   \"errors\": [{\n     \"msg\": \"Invalid value\",\n     \"param\": \"id\",\n     \"location\": \"params\"\n   }]\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "src/modules/fundraising/controller.js",
+    "groupTitle": "Fundraising"
+  },
+  {
+    "type": "put",
+    "url": "/fundraising",
+    "title": "Update",
+    "name": "UpdateFundraising",
+    "group": "Fundraising",
+    "version": "1.0.0",
+    "parameter": {
       "examples": [
         {
           "title": "Request-Example:",
-          "content": "{\n   \"id\": \"164164dd-2b2c-4bbd-8d06-0d67e7ca242f\",\n   \"amount\": \"1000.00\",\n   \"initial_date\": \"2019-08-25\",\n   \"final_date\": \"2020-02-25\"\n}",
+          "content": "{\n   \"id\": \"164164dd-2b2c-4bbd-8d06-0d67e7ca242f\",\n   \"amount\": \"100000\",\n   \"investment_min_value\": \"1000\",\n   \"investment_percentage\": \"0.05\",\n   \"return_date\": \"2022-12-15\",\n   \"initial_date\": \"2019-08-25\",\n   \"final_date\": \"2020-02-25\"\n}",
           "type": "json"
         }
       ]
@@ -1851,7 +1981,7 @@ define({ "api": [
   },
   {
     "type": "post",
-    "url": "/investor/bank-account",
+    "url": "/investor/:idInvestor/bank-accounts",
     "title": "Create Bank Account",
     "name": "CreateBankAccount",
     "group": "Investor",
@@ -1863,29 +1993,22 @@ define({ "api": [
             "group": "Parameter",
             "type": "uuid",
             "optional": false,
-            "field": "id_investor",
-            "description": "<p>investor ID</p>"
+            "field": "idInvestor",
+            "description": "<p>Investor ID</p>"
           },
           {
             "group": "Parameter",
-            "type": "string",
+            "type": "array",
             "optional": false,
-            "field": "agency",
-            "description": "<p>Agency numer</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "string",
-            "optional": false,
-            "field": "account",
-            "description": "<p>Account number</p>"
+            "field": "accounts",
+            "description": "<p>Bank Account data</p>"
           }
         ]
       },
       "examples": [
         {
           "title": "Request-Example:",
-          "content": "{\n    \"id_investor\": \"35bd3682-0a9f-42fa-a98e-24cba9e78729\",\n    \"agency\": \"1234\",\n    \"account\": \"1234567\"\n}",
+          "content": "{\n    \"accounts\": [{\n      \"bank_code\": \"001\",\n      \"agency\": \"1234\",\n      \"account\": \"1234567\"\n     }]\n}",
           "type": "json"
         }
       ]
@@ -1894,7 +2017,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "HTTP/1.1 200 OK\n{\n   \"code\": \"S0000\",\n   \"message\": \"Conta criada com sucesso\",\n   \"account\": [{\n     \"id\": \"1\",\n     \"id_investor\": \"35bd3682-0a9f-42fa-a98e-24cba9e78729\",\n     \"agency\": \"1234\",\n     \"account\": \"1234567\",\n     \"created_date\": \"2019-09-25T01:44:41.530Z\",\n     \"active\": true\n   }]\n}",
+          "content": "HTTP/1.1 200 OK\n{\n   \"code\": \"S0000\",\n   \"message\": \"Conta criada com sucesso\",\n   \"account\": [{\n     \"id\": \"1\",\n     \"id_investor\": \"35bd3682-0a9f-42fa-a98e-24cba9e78729\",\n     \"bank_code\": \"001\",\n     \"agency\": \"1234\",\n     \"account\": \"1234567\",\n     \"created_date\": \"2019-09-25T01:44:41.530Z\",\n     \"active\": true\n   }]\n}",
           "type": "json"
         }
       ]
@@ -1913,27 +2036,16 @@ define({ "api": [
   },
   {
     "type": "post",
-    "url": "/investor/document",
+    "url": "/investor/:id/documents",
     "title": "Create Documents",
     "name": "CreateDocuments",
     "group": "Investor",
     "version": "1.0.0",
     "parameter": {
-      "fields": {
-        "Parameter": [
-          {
-            "group": "Parameter",
-            "type": "string",
-            "optional": false,
-            "field": "params",
-            "description": "<p>Documents  Partner params em breve aqui</p>"
-          }
-        ]
-      },
       "examples": [
         {
           "title": "Request-Example:",
-          "content": "{}",
+          "content": "{\n   \"docs\": [[buffer], [buffer], [buffer]]\n}",
           "type": "json"
         }
       ]
@@ -1951,7 +2063,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Error-Response:",
-          "content": "HTTP/1.1 500 Internal Server Error\n{\n   \"code\": 9999,\n   \"message\": \"Dados da requisição inválidos\",\n   \"errors\": [{\n     \"msg\": \"Invalid value\",\n     \"param\": \"cnpj\",\n     \"location\": \"body\"\n   }]\n}",
+          "content": "HTTP/1.1 500 Internal Server Error\n{\n   \"code\": 9999,\n   \"message\": \"Dados da requisição inválidos\",\n   \"errors\": [{}]\n}",
           "type": "json"
         }
       ]
@@ -1961,7 +2073,7 @@ define({ "api": [
   },
   {
     "type": "post",
-    "url": "/investor/phone",
+    "url": "/investor/:idInvestor/phones",
     "title": "Create Phone",
     "name": "CreateInvestorPhone",
     "group": "Investor",
@@ -1973,7 +2085,7 @@ define({ "api": [
             "group": "Parameter",
             "type": "uuid",
             "optional": false,
-            "field": "id_investor",
+            "field": "idInvestor",
             "description": "<p>Investor ID</p>"
           },
           {
@@ -1988,7 +2100,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Request-Example:",
-          "content": "{\n   \"id_investor\": \"eb76cd10-367b-447d-b238-fa8e9eef2a1f\",\n   \"phones\": [\"83988317864\"]\n}",
+          "content": "{\n   \"phones\": [{\"number\":\"83988317864\"}, {\"number\":\"83988776655\"}]\n}",
           "type": "json"
         }
       ]
@@ -2022,21 +2134,10 @@ define({ "api": [
     "group": "Investor",
     "version": "1.0.0",
     "parameter": {
-      "fields": {
-        "Parameter": [
-          {
-            "group": "Parameter",
-            "type": "string",
-            "optional": false,
-            "field": "params",
-            "description": "<p>Investor params em breve aqui</p>"
-          }
-        ]
-      },
       "examples": [
         {
           "title": "Request-Example:",
-          "content": "  {\n     \"investor\": {\n\t      \"id_user\": \"647ac188-62c8-4618-8a0a-be14174aac49\",\n\t      \"cpf\": \"06595512416\",\n\t      \"name\": \" Investidor Buildinvest\",\n\t      \"address_street\": \"Rua do investidor\",\n\t      \"address_number\": \"123\",\n\t      \"address_neighborhood\": \"Bairro do investidor\",\n\t      \"address_city\": \"Cidade do Investidor\",\n\t      \"address_state\": \"Estado do Investidor\",\n\t      \"address_country\": \"Pais do Investidor\",\n\t      \"address_cep\": \"58000000\"\n     },\n     \"phones\":[{\"number\":\"8332333333\"},{\"number\":\"8332344444\"}],\n     \"accounts\": [{\"agency\":\"1234\", \"account\":\"1234567\"}],\n     \"docs\": [[buffer], [buffer], [buffer]]\n  }",
+          "content": "  {\n     \"investor\": {\n\t      \"id_user\": \"647ac188-62c8-4618-8a0a-be14174aac49\",\n\t      \"cpf\": \"06595512416\",\n\t      \"name\": \" Investidor Buildinvest\",\n\t      \"address_street\": \"Rua do investidor\",\n\t      \"address_number\": \"123\",\n\t      \"address_neighborhood\": \"Bairro do investidor\",\n\t      \"address_city\": \"Cidade do Investidor\",\n\t      \"address_state\": \"Estado do Investidor\",\n\t      \"address_country\": \"Pais do Investidor\",\n\t      \"address_cep\": \"58000000\"\n     },\n     \"phones\":[{\"number\":\"8332333333\"},{\"number\":\"8332344444\"}],\n     \"accounts\": [{\"agency\":\"1234\", \"account\":\"1234567\"}]\n     \"docs\": [[buffer], [buffer], [buffer]]\n  }",
           "type": "json"
         }
       ]
@@ -2064,8 +2165,8 @@ define({ "api": [
   },
   {
     "type": "delete",
-    "url": "/investor/:id/bank-account",
-    "title": "Delete Bank Account",
+    "url": "/investor/:idInvestor/bank-accounts",
+    "title": "Delete Investor Bank Accounts",
     "name": "DeleteBankAccount",
     "group": "Investor",
     "version": "1.0.0",
@@ -2076,11 +2177,18 @@ define({ "api": [
             "group": "Parameter",
             "type": "uuid",
             "optional": false,
-            "field": "ID",
-            "description": "<p>Bank Account ID</p>"
+            "field": "idInvestor",
+            "description": "<p>Investor ID</p>"
           }
         ]
-      }
+      },
+      "examples": [
+        {
+          "title": "Request-Example:",
+          "content": "{\n    \"ids\": [1, 2]\n}",
+          "type": "json"
+        }
+      ]
     },
     "success": {
       "examples": [
@@ -2105,7 +2213,7 @@ define({ "api": [
   },
   {
     "type": "delete",
-    "url": "/investor/phone/:id",
+    "url": "/investor/:idInvestor/phones/",
     "title": "Delete Phone",
     "name": "DeleteInvestorPhone",
     "group": "Investor",
@@ -2117,11 +2225,18 @@ define({ "api": [
             "group": "Parameter",
             "type": "uuid",
             "optional": false,
-            "field": "ID",
-            "description": "<p>Investor Phone ID</p>"
+            "field": "idInvestor",
+            "description": "<p>Phone ID</p>"
           }
         ]
-      }
+      },
+      "examples": [
+        {
+          "title": "Request-Example:",
+          "content": "{\n   \"ids\": [1, 2]\n}",
+          "type": "json"
+        }
+      ]
     },
     "success": {
       "examples": [
@@ -2136,7 +2251,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Error-Response:",
-          "content": "HTTP/1.1 500 Internal Server Error\n{\n   \"code\": 9999,\n   \"message\": \"Dados da requisição inválidos\",\n   \"errors\": [{\n     \"msg\": \"Invalid value\",\n     \"param\": \"id\",\n     \"location\": \"body\"\n   }]\n}",
+          "content": "HTTP/1.1 500 Internal Server Error\n{\n   \"code\": 9999,\n   \"message\": \"Dados da requisição inválidos\",\n   \"errors\": [{\n     \"msg\": \"Invalid value\",\n     \"param\": \"id\",\n     \"location\": \"params\"\n   }]\n}",
           "type": "json"
         }
       ]
@@ -2168,7 +2283,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "HTTP/1.1 200 OK\n{\n   \"email\": \"buildinvest@admin.com\",\n   \"username\": \"Buildinvest Admin\",\n   \"id\": \"35bd3682-0a9f-42fa-a98e-24cba9e78729\",\n   \"id_user\": \"647ac188-62c8-4618-8a0a-be14174aac49\",\n   \"cpf\": \"06595512416\",\n   \"cnpj\": null,\n   \"name\": \" Investidor Buildinvest\",\n   \"company_name\": null,\n   \"address_street\": \"Rua do investidor\",\n   \"address_number\": \"123\",\n   \"address_neighborhood\": \"Bairro do investidor\",\n   \"address_city\": \"Cidade do Investidor\",\n   \"address_state\": \"Estado do Investidor\",\n   \"address_country\": \"Pais do Investidor\",\n   \"address_cep\": \"58000000\",\n   \"created_date\": \"2019-09-25T01:44:40.034Z\",\n   \"active\": true,\n   \"phones\": [\n     {\n        \"id\": \"1\",\n        \"id_investor\": \"35bd3682-0a9f-42fa-a98e-24cba9e78729\",\n        \"number\": \"8332333333\"\n     },\n     {\n        \"id\": \"2\",\n        \"id_investor\": \"35bd3682-0a9f-42fa-a98e-24cba9e78729\",\n        \"number\": \"8332344444\"\n     }\n   ],\n   \"accounts\": [\n     {\n        \"id\": \"1\",\n        \"id_investor\": \"35bd3682-0a9f-42fa-a98e-24cba9e78729\",\n        \"agency\": \"1234\",\n        \"account\": \"1234567\",\n        \"created_date\": \"2019-09-25T01:44:41.530Z\",\n        \"active\": true\n     }\n   ]\n}",
+          "content": "HTTP/1.1 200 OK\n{\n   \"id\": \"35bd3682-0a9f-42fa-a98e-24cba9e78729\",\n   \"email\": \"buildinvest@admin.com\",\n   \"username\": \"Buildinvest Admin\",\n   \"id_user\": \"647ac188-62c8-4618-8a0a-be14174aac49\",\n   \"cpf\": \"06595512416\",\n   \"cnpj\": null,\n   \"name\": \" Investidor Buildinvest\",\n   \"company_name\": null,\n   \"address_street\": \"Rua do investidor\",\n   \"address_number\": \"123\",\n   \"address_neighborhood\": \"Bairro do investidor\",\n   \"address_city\": \"Cidade do Investidor\",\n   \"address_state\": \"Estado do Investidor\",\n   \"address_country\": \"Pais do Investidor\",\n   \"address_cep\": \"58000000\",\n   \"created_date\": \"2019-09-25T01:44:40.034Z\",\n   \"active\": true,\n   \"phones\": [\n     {\n        \"id\": \"1\",\n        \"id_investor\": \"35bd3682-0a9f-42fa-a98e-24cba9e78729\",\n        \"number\": \"8332333333\"\n     },\n     {\n        \"id\": \"2\",\n        \"id_investor\": \"35bd3682-0a9f-42fa-a98e-24cba9e78729\",\n        \"number\": \"8332344444\"\n     }\n   ],\n   \"accounts\": [\n     {\n        \"id\": \"1\",\n        \"id_investor\": \"35bd3682-0a9f-42fa-a98e-24cba9e78729\",\n        \"agency\": \"1234\",\n        \"account\": \"1234567\",\n        \"created_date\": \"2019-09-25T01:44:41.530Z\",\n        \"active\": true\n     }\n   ]\n}",
           "type": "json"
         }
       ]
@@ -2177,7 +2292,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Error-Response:",
-          "content": "HTTP/1.1 500 Internal Server Error\n{\n   \"code\": 9999,\n   \"message\": \"Dados da requisição inválidos\",\n   \"errors\": [{\n     \"msg\": \"Invalid value\",\n     \"param\": \"id\",\n     \"location\": \"body\"\n   }]\n}",
+          "content": "HTTP/1.1 500 Internal Server Error\n{\n   \"code\": 9999,\n   \"message\": \"Dados da requisição inválidos\",\n   \"errors\": [{\n     \"msg\": \"Invalid value\",\n     \"param\": \"id\",\n     \"location\": \"params\"\n   }]\n}",
           "type": "json"
         }
       ]
@@ -2187,7 +2302,7 @@ define({ "api": [
   },
   {
     "type": "get",
-    "url": "/investor/:id/bank-account",
+    "url": "/investor/:idInvestor/bank-accounts",
     "title": "Get Bank Account (By Investor ID)",
     "name": "GetInvestorBankAccount",
     "group": "Investor",
@@ -2199,7 +2314,7 @@ define({ "api": [
             "group": "Parameter",
             "type": "uuid",
             "optional": false,
-            "field": "ID",
+            "field": "idInvestor",
             "description": "<p>Investor ID</p>"
           }
         ]
@@ -2209,7 +2324,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "HTTP/1.1 200 OK\n[{\n    \"id\": \"1\",\n    \"id_investor\": \"35bd3682-0a9f-42fa-a98e-24cba9e78729\",\n    \"agency\": \"1234\",\n    \"account\": \"1234567\",\n    \"created_date\": \"2019-09-25T01:44:41.530Z\",\n    \"active\": true\n}]",
+          "content": "HTTP/1.1 200 OK\n[{\n    \"id\": \"1\",\n    \"id_investor\": \"35bd3682-0a9f-42fa-a98e-24cba9e78729\",\n    \"bank_code\": \"001\",\n    \"agency\": \"1234\",\n    \"account\": \"1234567\",\n    \"created_date\": \"2019-09-25T01:44:41.530Z\",\n    \"active\": true\n}]",
           "type": "json"
         }
       ]
@@ -2218,7 +2333,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Error-Response:",
-          "content": "HTTP/1.1 500 Internal Server Error\n{\n   \"code\": 9999,\n   \"message\": \"Dados da requisição inválidos\",\n   \"errors\": [{\n     \"msg\": \"Invalid value\",\n     \"param\": \"id\",\n     \"location\": \"body\"\n   }]\n}",
+          "content": "HTTP/1.1 500 Internal Server Error\n{\n   \"code\": 9999,\n   \"message\": \"Dados da requisição inválidos\",\n   \"errors\": [{\n     \"msg\": \"Invalid value\",\n     \"param\": \"idInvestor\",\n     \"location\": \"params\"\n   }]\n}",
           "type": "json"
         }
       ]
@@ -2259,7 +2374,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Error-Response:",
-          "content": "HTTP/1.1 500 Internal Server Error\n{\n   \"code\": 9999,\n   \"message\": \"Dados da requisição inválidos\",\n   \"errors\": [{\n     \"msg\": \"Invalid value\",\n     \"param\": \"id\",\n     \"location\": \"body\"\n   }]\n}",
+          "content": "HTTP/1.1 500 Internal Server Error\n{\n   \"code\": 9999,\n   \"message\": \"Dados da requisição inválidos\",\n   \"errors\": [{\n     \"msg\": \"Invalid value\",\n     \"param\": \"id\",\n     \"location\": \"params\"\n   }]\n}",
           "type": "json"
         }
       ]
@@ -2269,7 +2384,7 @@ define({ "api": [
   },
   {
     "type": "get",
-    "url": "/investor/:id/document",
+    "url": "/investor/:idInvestor/documents",
     "title": "Get Documents (By Investor ID)",
     "name": "GetInvestorDocuments",
     "group": "Investor",
@@ -2281,7 +2396,7 @@ define({ "api": [
             "group": "Parameter",
             "type": "uuid",
             "optional": false,
-            "field": "ID",
+            "field": "idInvestor",
             "description": "<p>Investor ID</p>"
           }
         ]
@@ -2310,7 +2425,7 @@ define({ "api": [
   },
   {
     "type": "get",
-    "url": "/investor/:id/phone",
+    "url": "/investor/:idInvestor/phones",
     "title": "Get Phone (By Investor ID)",
     "name": "GetInvestorPhone",
     "group": "Investor",
@@ -2322,7 +2437,7 @@ define({ "api": [
             "group": "Parameter",
             "type": "uuid",
             "optional": false,
-            "field": "ID",
+            "field": "idInvestor",
             "description": "<p>Investor ID</p>"
           }
         ]
@@ -2341,7 +2456,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Error-Response:",
-          "content": "HTTP/1.1 500 Internal Server Error\n{\n   \"code\": 9999,\n   \"message\": \"Dados da requisição inválidos\",\n   \"errors\": [{\n     \"msg\": \"Invalid value\",\n     \"param\": \"id\",\n     \"location\": \"body\"\n   }]\n}",
+          "content": "HTTP/1.1 500 Internal Server Error\n{\n   \"code\": 9999,\n   \"message\": \"Dados da requisição inválidos\",\n   \"errors\": [{\n     \"msg\": \"Invalid value\",\n     \"param\": \"id\",\n     \"location\": \"params\"\n   }]\n}",
           "type": "json"
         }
       ]
@@ -2369,7 +2484,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Error-Response:",
-          "content": "HTTP/1.1 500 Internal Server Error\n  {\n     \"code\": 9999,\n     \"message\": \"Requisição inválida\",\n     \"errors\": [{}]\n  }",
+          "content": "HTTP/1.1 500 Internal Server Error\n  {\n     \"code\": 9999,\n     \"message\": \"Requisição inválida\",\n  }",
           "type": "json"
         }
       ]
@@ -2378,37 +2493,17 @@ define({ "api": [
     "groupTitle": "Investor"
   },
   {
-    "type": "put",
-    "url": "/investor/document",
-    "title": "Resend Documents",
-    "name": "ResendDocuments",
+    "type": "get",
+    "url": "/investor/:id/investments",
+    "title": "Get all from Investor",
+    "name": "getAllInvestmentsById",
     "group": "Investor",
     "version": "1.0.0",
-    "parameter": {
-      "fields": {
-        "Parameter": [
-          {
-            "group": "Parameter",
-            "type": "string",
-            "optional": false,
-            "field": "params",
-            "description": "<p>Documents  Partner params em breve aqui</p>"
-          }
-        ]
-      },
-      "examples": [
-        {
-          "title": "Request-Example:",
-          "content": "{}",
-          "type": "json"
-        }
-      ]
-    },
     "success": {
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "HTTP/1.1 200 OK\n{\n   \"code\": \"S0000\",\n   \"message\": \"Documentos eviados com sucesso\"\n}",
+          "content": "HTTP/1.1 200 OK\n[{\n    \"id\": \"f77880cf-4864-4a27-b15c-34fae2566a38\",\n    \"id_investor\": \"35bd3682-0a9f-42fa-a98e-24cba9e78729\",\n    \"id_fundraising\": \"164164dd-2b2c-4bbd-8d06-0d67e7ca242f\",\n    \"amount\": \"1000.00\",\n    \"amount_returned\": null,\n    \"date\": \"2019-09-25T03:00:00.000Z\",\n    \"ted_proof_url\": null,\n    \"confirmed\": false,\n    \"created_date\": \"2019-09-25T01:59:29.077Z\",\n    \"active\": true\n}]",
           "type": "json"
         }
       ]
@@ -2417,12 +2512,124 @@ define({ "api": [
       "examples": [
         {
           "title": "Error-Response:",
-          "content": "HTTP/1.1 500 Internal Server Error\n{\n   \"code\": 9999,\n   \"message\": \"Dados da requisição inválidos\",\n   \"errors\": [{\n     \"msg\": \"Invalid value\",\n     \"param\": \"id\",\n     \"location\": \"body\"\n   }]\n}",
+          "content": "HTTP/1.1 500 Internal Server Error\n  {\n     \"code\": 9999,\n     \"message\": \"Requisição inválida\",\n     \"errors\": [{\n       \"msg\": \"Invalid value\",\n       \"param\": \"id\",\n       \"location\": \"params\"\n     }]\n  }",
           "type": "json"
         }
       ]
     },
-    "filename": "src/modules/investor-document/controller.js",
+    "filename": "src/modules/investor/controller.js",
+    "groupTitle": "Investor"
+  },
+  {
+    "type": "get",
+    "url": "/investor/:id/investments/invested-amount",
+    "title": "Get the invested amount from Investor",
+    "name": "getInvestedAmount",
+    "group": "Investor",
+    "version": "1.0.0",
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n{\n    \"amount\": 21564.78\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "HTTP/1.1 500 Internal Server Error\n  {\n     \"code\": 9999,\n     \"message\": \"Requisição inválida\",\n     \"errors\": [{\n       \"msg\": \"Invalid value\",\n       \"param\": \"id\",\n       \"location\": \"params\"\n     }]\n  }",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "src/modules/investor/controller.js",
+    "groupTitle": "Investor"
+  },
+  {
+    "type": "get",
+    "url": "/investor/:id/investments/count",
+    "title": "Get the total number of investments from Investor",
+    "name": "getInvestmentsCount",
+    "group": "Investor",
+    "version": "1.0.0",
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n{\n    \"count\": 13\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "HTTP/1.1 500 Internal Server Error\n  {\n     \"code\": 9999,\n     \"message\": \"Requisição inválida\",\n     \"errors\": [{\n       \"msg\": \"Invalid value\",\n       \"param\": \"id\",\n       \"location\": \"params\"\n     }]\n  }",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "src/modules/investor/controller.js",
+    "groupTitle": "Investor"
+  },
+  {
+    "type": "get",
+    "url": "/investor/:id/investments/projected-amount",
+    "title": "Get the projected amount from Investor",
+    "name": "getProjectedAmount",
+    "group": "Investor",
+    "version": "1.0.0",
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n{\n    \"amount\": 21564.78\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "HTTP/1.1 500 Internal Server Error\n  {\n     \"code\": 9999,\n     \"message\": \"Requisição inválida\",\n     \"errors\": [{\n       \"msg\": \"Invalid value\",\n       \"param\": \"id\",\n       \"location\": \"params\"\n     }]\n  }",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "src/modules/investor/controller.js",
+    "groupTitle": "Investor"
+  },
+  {
+    "type": "get",
+    "url": "/investor/:id/investments/received-amount",
+    "title": "Get the amount received from Investor",
+    "name": "getReceivedAmount",
+    "group": "Investor",
+    "version": "1.0.0",
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n{\n    \"amount\": 21564.78\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "HTTP/1.1 500 Internal Server Error\n  {\n     \"code\": 9999,\n     \"message\": \"Requisição inválida\",\n     \"errors\": [{\n       \"msg\": \"Invalid value\",\n       \"param\": \"id\",\n       \"location\": \"params\"\n     }]\n  }",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "src/modules/investor/controller.js",
     "groupTitle": "Investor"
   },
   {
@@ -2519,62 +2726,6 @@ define({ "api": [
         {
           "title": "Success-Response:",
           "content": "HTTP/1.1 200 OK\n{\n   \"code\": \"S0000\",\n   \"message\": \"Usuário deletado com sucesso\"\n}",
-          "type": "json"
-        }
-      ]
-    },
-    "error": {
-      "examples": [
-        {
-          "title": "Error-Response:",
-          "content": "HTTP/1.1 500 Internal Server Error\n{\n   \"code\": 9999,\n   \"message\": \"Dados da requisição inválidos\",\n   \"errors\": [{\n     \"msg\": \"Invalid value\",\n     \"param\": \"id\",\n     \"location\": \"body\"\n   }]\n}",
-          "type": "json"
-        }
-      ]
-    },
-    "filename": "src/modules/user/controller.js",
-    "groupTitle": "User"
-  },
-  {
-    "type": "delete",
-    "url": "/user/me",
-    "title": "Delete",
-    "name": "DeleteUserMe",
-    "group": "User",
-    "version": "1.0.0",
-    "success": {
-      "examples": [
-        {
-          "title": "Success-Response:",
-          "content": "HTTP/1.1 200 OK\n{\n   \"code\": \"S0000\",\n   \"message\": \"Usuário deletado com sucesso\"\n}",
-          "type": "json"
-        }
-      ]
-    },
-    "error": {
-      "examples": [
-        {
-          "title": "Error-Response:",
-          "content": "HTTP/1.1 500 Internal Server Error\n{\n   \"code\": 9999,\n   \"message\": \"Dados da requisição inválidos\",\n   \"errors\": [{}]\n}",
-          "type": "json"
-        }
-      ]
-    },
-    "filename": "src/modules/user/controller.js",
-    "groupTitle": "User"
-  },
-  {
-    "type": "get",
-    "url": "/user/me",
-    "title": "Get the loged User",
-    "name": "GetMe",
-    "group": "User",
-    "version": "1.0.0",
-    "success": {
-      "examples": [
-        {
-          "title": "Success-Response:",
-          "content": "HTTP/1.1 200 OK\n{\n   \"code\": \"S0000\",\n   \"message\": \"Usuário criado com sucesso\",\n   \"user\": {\n     \"id\": \"eb76cd10-367b-447d-b238-fa8e9eef2a1f\",\n     \"id_profile\": 1,\n     \"email\": \"marcello@mail.com\",\n     \"username\": \"Marcello Jr\",\n     \"password\": \"$2b$10$qnkfSsxQEjdTW0CHGw1z0eR/vko.vhJrqpq.xeb/T0nR4R55VpNy.\",\n     \"avatar_url\": null,\n     \"create_date\": \"2019-09-14T19:25:26.560Z\",\n     \"active\": true\n   }\n}",
           "type": "json"
         }
       ]
@@ -2778,42 +2929,11 @@ define({ "api": [
     "groupTitle": "User"
   },
   {
-    "type": "put",
-    "url": "/user/me",
-    "title": "Update the loged User",
-    "name": "UpdateUserMe",
-    "group": "User",
-    "version": "1.0.0",
     "parameter": {
-      "fields": {
-        "Parameter": [
-          {
-            "group": "Parameter",
-            "type": "string",
-            "optional": false,
-            "field": "email",
-            "description": "<p>User email</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "string",
-            "optional": false,
-            "field": "username",
-            "description": "<p>User username</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "string",
-            "optional": false,
-            "field": "passwaord",
-            "description": "<p>User password</p>"
-          }
-        ]
-      },
       "examples": [
         {
           "title": "Request-Example:",
-          "content": "{\n   \"email\": \"marcello@mail.com\",\n   \"username\": \"Marcello Jr\",\n   \"password\": \"123456\"\n}",
+          "content": "  {\n\t    \"id\": \"647ac188-62c8-4618-8a0a-be14174aac49\",\n\t    \"cpf\": \"06595512416\",\n     \"cnpj\": null\n\t    \"name\": \" Investidor Buildinvest\",\n     \"company_name\": null,\n\t    \"address_street\": \"Rua do investidor\",\n\t    \"address_number\": \"123\",\n\t    \"address_neighborhood\": \"Bairro do investidor\",\n\t    \"address_city\": \"Cidade do Investidor\",\n\t    \"address_state\": \"Estado do Investidor\",\n\t    \"address_country\": \"Pais do Investidor\",\n\t    \"address_cep\": \"58000000\"\n  }",
           "type": "json"
         }
       ]
@@ -2822,7 +2942,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "HTTP/1.1 200 OK\n{\n   \"code\": \"S0000\",\n   \"message\": \"Usuário atualizado com sucesso\"\n}",
+          "content": "HTTP/1.1 200 OK\n{\n   \"code\": 3000,\n   \"message\": \"Investidor atualizado com sucesso\",\n}",
           "type": "json"
         }
       ]
@@ -2831,12 +2951,17 @@ define({ "api": [
       "examples": [
         {
           "title": "Error-Response:",
-          "content": "HTTP/1.1 500 Internal Server Error\n{\n   \"code\": 9999,\n   \"message\": \"Dados da requisição inválidos\",\n   \"errors\": [{\n     \"msg\": \"Invalid value\",\n     \"param\": \"email\",\n     \"location\": \"body\"\n   }]\n}",
+          "content": "HTTP/1.1 500 Internal Server Error\n{\n   \"code\": 9999,\n   \"message\": \"Dados da requisição inválidos\",\n   \"errors\": [{\n     \"msg\": \"Invalid value\",\n     \"param\": \"cpf\",\n     \"location\": \"body\"\n   }]\n}",
           "type": "json"
         }
       ]
     },
-    "filename": "src/modules/user/controller.js",
-    "groupTitle": "User"
+    "type": "",
+    "url": "",
+    "version": "0.0.0",
+    "filename": "src/modules/investor/controller.js",
+    "group": "_home_majun_Desenvolvimento_Workspace_Projects_buildinvest_web_api_src_modules_investor_controller_js",
+    "groupTitle": "_home_majun_Desenvolvimento_Workspace_Projects_buildinvest_web_api_src_modules_investor_controller_js",
+    "name": ""
   }
 ] });

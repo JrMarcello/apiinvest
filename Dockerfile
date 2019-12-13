@@ -1,14 +1,13 @@
-#FROM node:alpine
-FROM node:slim
+FROM node:alpine
 
 WORKDIR /usr/buildinvest/api
 
 COPY package*.json ./
 
-#RUN apk --no-cache --update --virtual build-dependencies add python make g++
+RUN apk --no-cache --update --virtual build-dependencies add python make g++
 RUN npm install
 #RUN npm rebuild bcrypt --build-from-source \
-#RUN apk del build-dependencies
+RUN apk del build-dependencies
 
 COPY . .
 

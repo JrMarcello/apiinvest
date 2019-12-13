@@ -7,9 +7,6 @@ const router = express.Router()
 const INVESTIMENT_BASE_PATH = '/investment'
 
 export default () => {
-  // router.get(`${INVESTIMENT_BASE_PATH}/me`, checkAuth, controller.getAllMe)
-  // router.get(`${INVESTIMENT_BASE_PATH}/me/:id`, checkAuth, controller.getByIdMe)
-
   router.get(INVESTIMENT_BASE_PATH, checkAuth, controller.getAll)
   router.get(`${INVESTIMENT_BASE_PATH}/pending`, checkAuth, controller.getPendings)
   router.get(`${INVESTIMENT_BASE_PATH}/investor/:id`, checkAuth, controller.getByInvestorId)
