@@ -21,9 +21,21 @@ export const getAll = () => {
  * Find a Investment by ID
  *
  * @param {string} id - Investment ID
+ * @param {string} idInvestor - Investor ID
  * @returns - Returns a object
  */
-export const getById = async id => {
+export const getById = async (id, idInvestor) => {
+  if (idInvestor)
+    return (
+      await db
+        .select()
+        .from(table)
+        .where('id', id)
+        .and('id_investor', idInvestor)
+        .and('active', true)
+        .run()
+    )[0]
+
   return (
     await db
       .select()
@@ -89,9 +101,31 @@ export const getByFundraisingId = id => {
  * @returns - Returns a object
  */
 export const getPendings = async () => {
-  const query = `SELECT * FROM ${table} WHERE ted_proof_url IS NOT NULL AND confirmed = false AND active`
+  return db
+    .select()
+    .from(table)
+    .where('ted_proof_url', 'IS NOT', null)
+    .and('confirmed', false)
+    .and('active', true)
+    .run()
+}
 
-  return (await db.query(query)).rows
+/**
+ * Find amount of Investmes from Fundraising
+ *
+ * @param {string} id - Fundraising ID
+ * @returns - Returns a object
+ */
+export const getAmountByFundraisingId = async id => {
+  return (
+    await db
+      .select('sum(amount)')
+      .from(table)
+      .where('id_fundraising', id)
+      .and('confirmed', true)
+      .and('active', true)
+      .run()
+  )[0]
 }
 
 /**
@@ -165,41 +199,60 @@ export const create = async data => {
 }
 
 /**
- * Update an Investment
+ * Set TED proof for an Investment
  *
- * @param {object} data - Investment data
+ * @param {object} file - TED proof
+ * @param {string} id - Investment ID
+ * @param {string} idInvestor - Investor ID
  * @returns - Returns a object
  */
-export const confirm = async data => {
+export const sendTED = (url, id, idInvestor) => {
+  if (idInvestor)
+    return db
+      .update(table)
+      .set('ted_proof_url', url)
+      .where('id', id)
+      .and('id_investor', idInvestor)
+      .run()
+
+  return db
+    .update(table)
+    .set('ted_proof_url', url)
+    .where('id', id)
+    .run()
+}
+
+/**
+ * Update an Investment
+ *
+ * @param {object[]} investments - Investment IDs
+ * @returns - Returns a object
+ */
+export const confirm = async investments => {
   const query = {
-    text: `UPDATE ${table} SET confirmed = true WHERE id = ANY($1::uuid[])`,
-    values: [data]
+    text: `UPDATE ${table} SET confirmed = true WHERE id = ANY($1::uuid[]) AND ted_proof_url IS NOT null`,
+    values: [investments]
   }
 
   return (await db.query(query)).rows[0]
 }
 
 /**
- * Update an Investment
- *
- * @param {object} data - Investment data
- * @returns - Returns a object
- */
-export const update = data => {
-  return db
-    .update(table)
-    .set(data)
-    .where('id', data.id)
-    .run()
-}
-
-/**
  * Cancel an Investment
  *
  * @param {string} id - Investment ID
+ * @param {string} idInvestor - Investor ID
  * @returns - Returns data
  */
-export const cancel = id => {
+export const cancel = (id, idInvestor) => {
+  if (idInvestor)
+    return db
+      .update(table)
+      .set('active', false)
+      .where('id', id)
+      .and('id_investor', idInvestor)
+      .run()
+
   return db
     .update(table)
     .set('active', false)

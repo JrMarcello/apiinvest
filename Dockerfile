@@ -1,4 +1,4 @@
-FROM node:alpine
+FROM node:lts-alpine
 
 WORKDIR /usr/buildinvest/api
 
@@ -11,6 +11,9 @@ RUN apk del build-dependencies
 
 COPY . .
 
+#RUN npm install apidoc -g
+#RUN apidoc -i ./src/**/modules/**/ -o ./public/api
+
 EXPOSE 3000
 
-CMD ["npm", "run", "dev"]
+CMD ["npm", "run", "prod"]

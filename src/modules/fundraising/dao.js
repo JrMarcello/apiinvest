@@ -42,9 +42,7 @@ export const getById = async id => {
  * @returns - Returns a object
  */
 export const getAmountRaised = async id => {
-  return {
-    amount: (await investmentDao.getByFundraisingId(id)).reduce((sum, investment) => sum + investment.amount, 0)
-  }
+  return { amount: (await investmentDao.getAmountByFundraisingId(id)).sum || 0 }
 }
 
 /**

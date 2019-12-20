@@ -108,7 +108,7 @@ export const getReceivedAmount = async id => {
  */
 export const getProjectedAmount = async id => {
   return {
-    amount: (await investmentDao.getByInvestorId(id)).reduce((sum, investment) => sum + investment.amount, 0)
+    amount: (await investmentDao.getByInvestorId(id)).reduce((sum, investment) => sum + parseFloat(investment.amount), 0)
   }
 }
 

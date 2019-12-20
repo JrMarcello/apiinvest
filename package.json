@@ -9,7 +9,7 @@
   "scripts": {
     "docker-build": "docker build -t builinvest/web-api . && docker run --name web-api -p 3000:3000 builinvest/web-api",
     "docker-rebuild": "docker rm web-api && docker rmi builinvest/web-api && npm run docker-build",
-    "docker-exec": "docker exec -it web-api /bin/bash",
+    "docker-exec": "docker exec -it web-api /bin/sh",
     "start": "docker start web-api",
     "stop": "docker stop web-api",
     "dev": "nodemon ./src/core/server.js",

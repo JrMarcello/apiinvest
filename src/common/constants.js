@@ -54,7 +54,7 @@ const constants = {
     // 40xx
     success: {
       CREATE: { code: 4000, message: 'Investimento criado com sucesso' },
-      REMOVE: { code: 4002, message: 'Investimento removido com sucesso' },
+      CANCEL: { code: 4002, message: 'Investimento cancelado com sucesso' },
       TED_CONFIRMATION: { code: 4003, message: 'Comprovante de TED enviado' },
       CONFIRMATION: { code: 4004, message: 'Investimento(s) comnfirmado' }
     },

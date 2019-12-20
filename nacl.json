@@ -23,18 +23,33 @@
         "action": "allow"
       },
       {
-        "resource": "/investment/*",
-        "methods": ["GET", "POST"],
+        "resource": "/investment",
+        "methods": ["POST"],
         "action": "allow"
       },
       {
-        "resource": "/investment/ted",
+        "resource": "/investment/investor/:id",
+        "methods": ["GET"],
+        "action": "allow"
+      },
+      {
+        "resource": "/investment/pendings",
+        "methods": ["GET"],
+        "action": "deny"
+      },
+      {
+        "resource": "/investment/:id",
+        "methods": ["GET", "DELETE"],
+        "action": "allow"
+      },
+      {
+        "resource": "/investment/:id/ted",
         "methods": ["PUT"],
         "action": "allow"
       },
       {
-        "resource": "/investment/:id/cancel",
-        "methods": ["PUT"],
+        "resource": "/investment/:id",
+        "methods": ["DELETE"],
         "action": "allow"
       },
       {
