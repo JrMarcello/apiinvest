@@ -15,7 +15,7 @@ import * as repository from './repository'
  *       "id_investor": "35bd3682-0a9f-42fa-a98e-24cba9e78729",
  *       "id_fundraising": "164164dd-2b2c-4bbd-8d06-0d67e7ca242f",
  *       "amount": "1000.00",
- *       "percentage": "0.05",
+ *       "amount_returned": "0",
  *       "date": "2019-09-25T03:00:00.000Z",
  *       "ted_proof_url": null,
  *       "confirmed": false,
@@ -33,50 +33,17 @@ import * as repository from './repository'
  */
 export const getAll = async (request, response) => {
   try {
-    response.json(await repository.getAll(request.params))
+    if (request.user.id_profile === 3) return response.json(await repository.getAll(request.params))
+
+    return response.status(403).json({
+      status: 'Acesso negado!',
+      success: false,
+      message: 'Você não está autorizado a acessar esse recurso'
+    })
   } catch (err) {
     logger().error(err)
 
-    response.status(500).json(constants.investment.error.NOT_FOUNDS)
-  }
-}
-
-/**
- * @api {get} /investment/me Get all by me
- * @apiName GetInvestmentsMe
- * @apiGroup Investment
- * @apiVersion 1.0.0
- *
- * @apiSuccessExample Success-Response:
- *   HTTP/1.1 200 OK
- *   [{
- *       "id": "f77880cf-4864-4a27-b15c-34fae2566a38",
- *       "id_investor": "35bd3682-0a9f-42fa-a98e-24cba9e78729",
- *       "id_fundraising": "164164dd-2b2c-4bbd-8d06-0d67e7ca242f",
- *       "amount": "1000.00",
- *       "percentage": "0.05",
- *       "date": "2019-09-25T03:00:00.000Z",
- *       "ted_proof_url": null,
- *       "confirmed": false,
- *       "created_date": "2019-09-25T01:59:29.077Z",
- *       "active": true
- *   }]
- *
- * @apiErrorExample Error-Response:
- *   HTTP/1.1 500 Internal Server Error
- *     {
- *        "code": 9999,
- *        "message": "Requisição inválida",
- *        "errors": [{}]
- *     }
- */
-export const getAllMe = async (request, response) => {
-  try {
-    response.json(await repository.getByInvestorId(request.user.id))
-  } catch (err) {
-    logger().error(err)
-
-    response.status(500).json(constants.investment.error.NOT_FOUNDS)
+    return response.status(500).json(Object.assign(constants.investment.error.NOT_FOUNDS, { errors: err.message }))
   }
 }
 
@@ -86,23 +53,23 @@ export const getAllMe = async (request, response) => {
  * @apiGroup Investment
  * @apiVersion 1.0.0
  *
- * @apiParam {uuid} ID Investment ID
+ * @apiParam {uuid} id Investment ID
  *
  * @apiSuccessExample Success-Response:
  *   HTTP/1.1 200 OK
  *   {
- *      "id": "f77880cf-4864-4a27-b15c-34fae2566a38",
- *      "id_investor": "35bd3682-0a9f-42fa-a98e-24cba9e78729",
- *      "id_fundraising": "164164dd-2b2c-4bbd-8d06-0d67e7ca242f",
- *      "amount": "1000.00",
- *      "percentage": "0.05",
+ *      "id": "5e891a4e-9195-412a-9f02-135f632c15d0",
+ *      "id_investor": "a897eacd-2681-4e08-8062-c8f7e174bace",
+ *      "id_fundraising": "54b07d12-e847-4158-9569-71fd1bf1da29",
+ *      "amount": "1500.00",
+ *      "amount_returned": null,
  *      "date": "2019-09-25T03:00:00.000Z",
  *      "ted_proof_url": null,
  *      "confirmed": false,
- *      "created_date": "2019-09-25T01:59:29.077Z",
+ *      "created_date": "2019-12-17T01:20:56.397Z",
  *      "active": true
  *   }
- *
+ 
  * @apiErrorExample Error-Response:
  *   HTTP/1.1 500 Internal Server Error
  *   {
@@ -111,62 +78,17 @@ export const getAllMe = async (request, response) => {
  *      "errors": [{
  *        "msg": "Invalid value",
  *        "param": "id",
- *        "location": "body"
+ *        "location": "params"
  *      }]
  *   }
  */
 export const getById = async (request, response) => {
   try {
-    response.json(await repository.getById(request.params.id))
+    response.json(await repository.getById(request.params.id, request.user.id_profile === 3 ? null : request.user.investor.id))
   } catch (err) {
     logger().error(err)
 
-    response.status(500).json(constants.investment.error.NOT_FOUND)
-  }
-}
-
-/**
- * @api {get} /investment/me/:id Get (By ID)
- * @apiName GetInvestmentMe
- * @apiGroup Investment
- * @apiVersion 1.0.0
- *
- * @apiParam {uuid} ID Investment ID
- *
- * @apiSuccessExample Success-Response:
- *   HTTP/1.1 200 OK
- *   {
- *      "id": "f77880cf-4864-4a27-b15c-34fae2566a38",
- *      "id_investor": "35bd3682-0a9f-42fa-a98e-24cba9e78729",
- *      "id_fundraising": "164164dd-2b2c-4bbd-8d06-0d67e7ca242f",
- *      "amount": "1000.00",
- *      "percentage": "0.05",
- *      "date": "2019-09-25T03:00:00.000Z",
- *      "ted_proof_url": null,
- *      "confirmed": false,
- *      "created_date": "2019-09-25T01:59:29.077Z",
- *      "active": true
- *   }
- *
- * @apiErrorExample Error-Response:
- *   HTTP/1.1 500 Internal Server Error
- *   {
- *      "code": 9999,
- *      "message": "Dados da requisição inválidos",
- *      "errors": [{
- *        "msg": "Invalid value",
- *        "param": "id",
- *        "location": "body"
- *      }]
- *   }
- */
-export const getByIdMe = async (request, response) => {
-  try {
-    response.json(await repository.getByIdMe(request.user.id, request.params.id))
-  } catch (err) {
-    logger().error(err)
-
-    response.status(500).json(constants.investment.error.NOT_FOUND)
+    response.status(500).json(Object.assign(constants.investment.error.NOT_FOUND, { errors: err.message }))
   }
 }
 
@@ -176,20 +98,20 @@ export const getByIdMe = async (request, response) => {
  * @apiGroup Investment
  * @apiVersion 1.0.0
  *
- * @apiParam {uuid} ID Investor ID
+ * @apiParam {uuid} id Investor ID
  *
  * @apiSuccessExample Success-Response:
  *   HTTP/1.1 200 OK
  *   [{
- *       "id": "f77880cf-4864-4a27-b15c-34fae2566a38",
- *       "id_investor": "35bd3682-0a9f-42fa-a98e-24cba9e78729",
- *       "id_fundraising": "164164dd-2b2c-4bbd-8d06-0d67e7ca242f",
- *       "amount": "1000.00",
- *       "percentage": "0.05",
+ *       "id": "5e891a4e-9195-412a-9f02-135f632c15d0",
+ *       "id_investor": "a897eacd-2681-4e08-8062-c8f7e174bace",
+ *       "id_fundraising": "54b07d12-e847-4158-9569-71fd1bf1da29",
+ *       "amount": "1500.00",
+ *       "amount_returned": null,
  *       "date": "2019-09-25T03:00:00.000Z",
  *       "ted_proof_url": null,
  *       "confirmed": false,
- *       "created_date": "2019-09-25T01:59:29.077Z",
+ *       "created_date": "2019-12-17T01:20:56.397Z",
  *       "active": true
  *   }]
  *
@@ -203,11 +125,11 @@ export const getByIdMe = async (request, response) => {
  */
 export const getByInvestorId = async (request, response) => {
   try {
-    response.json(await repository.getByInvestorId(request.params.id))
+    response.json(await repository.getByInvestorId(request.user.id_profile === 3 ? request.params.id : request.user.investor.id))
   } catch (err) {
     logger().error(err)
 
-    response.status(500).json(constants.investment.error.NOT_FOUNDS)
+    response.status(500).json(Object.assign(constants.investment.error.NOT_FOUNDS, { errors: err.message }))
   }
 }
 
@@ -217,20 +139,20 @@ export const getByInvestorId = async (request, response) => {
  * @apiGroup Fundraising
  * @apiVersion 1.0.0
  *
- * @apiParam {uuid} ID Fundraising ID
+ * @apiParam {uuid} id Fundraising ID
  *
  * @apiSuccessExample Success-Response:
  *   HTTP/1.1 200 OK
  *   [{
- *       "id": "f77880cf-4864-4a27-b15c-34fae2566a38",
- *       "id_investor": "35bd3682-0a9f-42fa-a98e-24cba9e78729",
- *       "id_fundraising": "164164dd-2b2c-4bbd-8d06-0d67e7ca242f",
- *       "amount": "1000.00",
- *       "percentage": "0.05",
- *       "date": "2019-09-25T03:00:00.000Z",
- *       "ted_proof_url": null,
+ *       "id": "5e891a4e-9195-412a-9f02-135f632c15d0",
+ *       "id_investor": "a897eacd-2681-4e08-8062-c8f7e174bace",
+ *       "id_fundraising": "54b07d12-e847-4158-9569-71fd1bf1da29",
+ *       "amount": "1500.00",
+ *       "amount_returned": null,
+ *      "date": "2019-09-25T03:00:00.000Z",
+ *        "ted_proof_url": null,
  *       "confirmed": false,
- *       "created_date": "2019-09-25T01:59:29.077Z",
+ *       "created_date": "2019-12-17T01:20:56.397Z",
  *       "active": true
  *   }]
  *
@@ -244,16 +166,22 @@ export const getByInvestorId = async (request, response) => {
  */
 export const getByFundraisingId = async (request, response) => {
   try {
-    response.json(await repository.getByFundraisingId(request.params.id))
+    if (request.user.id_profile === 3) return response.json(await repository.getByFundraisingId(request.params.id))
+
+    return response.status(403).json({
+      status: 'Acesso negado!',
+      success: false,
+      message: 'Você não está autorizado a acessar esse recurso'
+    })
   } catch (err) {
     logger().error(err)
 
-    response.status(500).json(err)
+    return response.status(500).json(Object.assign(constants.investment.error.NOT_FOUNDS, { errors: err.message }))
   }
 }
 
 /**
- * @api {get} /investment/pending Get all pedings
+ * @api {get} /investment/pendings Get all pedings
  * @apiName GetInvestmentsPendings
  * @apiGroup Investment
  * @apiVersion 1.0.0
@@ -261,15 +189,15 @@ export const getByFundraisingId = async (request, response) => {
  * @apiSuccessExample Success-Response:
  *   HTTP/1.1 200 OK
  *   [{
- *       "id": "f77880cf-4864-4a27-b15c-34fae2566a38",
- *       "id_investor": "35bd3682-0a9f-42fa-a98e-24cba9e78729",
- *       "id_fundraising": "164164dd-2b2c-4bbd-8d06-0d67e7ca242f",
- *       "amount": "1000.00",
- *       "percentage": "0.05",
+ *       "id": "5e891a4e-9195-412a-9f02-135f632c15d0",
+ *       "id_investor": "a897eacd-2681-4e08-8062-c8f7e174bace",
+ *       "id_fundraising": "54b07d12-e847-4158-9569-71fd1bf1da29",
+ *       "amount": "1500.00",
+ *       "amount_returned": null,
  *       "date": "2019-09-25T03:00:00.000Z",
- *       "ted_proof_url": null,
+ *        "ted_proof_url": null,
  *       "confirmed": false,
- *       "created_date": "2019-09-25T01:59:29.077Z",
+ *       "created_date": "2019-12-17T01:20:56.397Z",
  *       "active": true
  *   }]
  *
@@ -283,11 +211,17 @@ export const getByFundraisingId = async (request, response) => {
  */
 export const getPendings = async (request, response) => {
   try {
-    response.json(await repository.getPendings(request.params))
+    if (request.user.id_profile === 3) return response.json(await repository.getPendings(request.params))
+
+    return response.status(403).json({
+      status: 'Acesso negado!',
+      success: false,
+      message: 'Você não está autorizado a acessar esse recurso'
+    })
   } catch (err) {
     logger().error(err)
 
-    response.status(500).json(constants.investment.error.NOT_FOUNDS)
+    return response.status(500).json(Object.assign(constants.investment.error.NOT_FOUNDS, { errors: err.message }))
   }
 }
 
@@ -297,15 +231,12 @@ export const getPendings = async (request, response) => {
  * @apiGroup Investment
  * @apiVersion 1.0.0
  *
- * @apiParam {string} params Investment params em breve aqui
- *
  * @apiParamExample {json} Request-Example:
  *   {
  *      "id_investor": "35bd3682-0a9f-42fa-a98e-24cba9e78729",
  *      "id_fundraising": "164164dd-2b2c-4bbd-8d06-0d67e7ca242f",
  *      "amount": 1000,
- *      "percentage": 0.05,
- *      "date": "2019-09-25"
+ *      "date": "2019-11-16"
  *   }
  *
  *
@@ -314,25 +245,28 @@ export const getPendings = async (request, response) => {
  *   {
  *      "code": 4000,
  *      "message": "Investimento criado com sucesso",
- *      "investment": [{
- *           "id": "f77880cf-4864-4a27-b15c-34fae2566a38",
- *           "id_investor": "35bd3682-0a9f-42fa-a98e-24cba9e78729",
- *           "id_fundraising": "164164dd-2b2c-4bbd-8d06-0d67e7ca242f",
- *           "amount": "1000.00",
- *           "percentage": "0.05",
+ *      "investment": [
+ *        {
+ *           "id": "5e891a4e-9195-412a-9f02-135f632c15d0",
+ *           "id_investor": "a897eacd-2681-4e08-8062-c8f7e174bace",
+ *           "id_fundraising": "54b07d12-e847-4158-9569-71fd1bf1da29",
+ *           "amount": "1500.00",
+ *           "amount_returned": null,
  *           "date": "2019-09-25T03:00:00.000Z",
  *           "ted_proof_url": null,
  *           "confirmed": false,
- *           "created_date": "2019-09-25T01:59:29.077Z",
+ *           "created_date": "2019-12-17T01:20:56.397Z",
  *           "active": true
- *      }]
+ *        }
+ *      ]
  *   }
  *
  * @apiErrorExample Error-Response:
  *   HTTP/1.1 500 Internal Server Error
  *   {
  *      "code": 4502,
- *      "message": "Erro ao tentar criar a investimento"
+ *      "message": "Erro ao tentar criar a investimento",
+ *      "errors": "Valor abaixo do mínimo nescessário"
  *   }
  */
 export const create = async (request, response) => {
@@ -343,22 +277,21 @@ export const create = async (request, response) => {
   } catch (err) {
     logger().error(err)
 
-    response.status(500).json(constants.investment.error.CREATE)
+    response.status(500).json(Object.assign(constants.investment.error.CREATE, { errors: err.message }))
   }
 }
 
 /**
- * @api {put} /investment/ted TED Confirmation
+ * @api {put} /investment/:id/ted TED Confirmation
  * @apiName TEDConfirmation
  * @apiGroup Investment
  * @apiVersion 1.0.0
  *
- * @apiParam {uuid} ID Investment ID
+ * @apiParam {uuid} id Investment ID
  * @apiParam {file} file Image
  *
  * @apiParamExample {json} Request-Example:
  *   {
- *      "id": "647ac188-62c8-4618-8a0a-be14174aac49",
  *      "file": [buffer]
  *   }
  *
@@ -366,7 +299,7 @@ export const create = async (request, response) => {
  *   HTTP/1.1 200 OK
  *   {
  *      "code": "S0000",
- *      "message": "TED enviada com sucesso",
+ *      "message": "Comprovante de TED enviado com sucesso",
  *   }
  *
  * @apiErrorExample Error-Response:
@@ -374,28 +307,24 @@ export const create = async (request, response) => {
  *   {
  *      "code": 9999,
  *      "message": "Dados da requisição inválidos",
- *      "errors": [{
- *        "msg": "Invalid value",
- *        "param": "cnpj",
- *        "location": "body"
- *      }]
+ *      "errors": [{}]
  *   }
  */
-export const tedConfirmation = async (request, response) => {
+export const sendTED = async (request, response) => {
   try {
-    await repository.tedConfirmation(Object.assign(request.body, { file: request.file }))
+    await repository.sendTED(request.file, request.params.id, request.user.id_profile === 3 ? null : request.user.investor.id)
 
     response.json(constants.investment.success.TED_CONFIRMATION)
   } catch (err) {
     logger().error(err)
 
-    response.status(500).json(constants.investment.error.TED_CONFIRMATION)
+    response.status(500).json(Object.assign(constants.investment.error.TED_CONFIRMATION, { errors: err.message }))
   }
 }
 
 /**
  * @api {put} /investment/confirm Investment Confirmation
- * @apiName TEDConfirmation
+ * @apiName InvestmentConfirmation
  * @apiGroup Investment
  * @apiVersion 1.0.0
  *
@@ -403,7 +332,7 @@ export const tedConfirmation = async (request, response) => {
  *
  * @apiParamExample {json} Request-Example:
  *   {
- *      "confirmations": ["791c50c6-f1eb-4efe-ba41-315d4e3c5e83", "a788426a-258c-49a5-a905-abec5bba222a"]
+ *      "investments": ["791c50c6-f1eb-4efe-ba41-315d4e3c5e83", "a788426a-258c-49a5-a905-abec5bba222a"]
  *   }
  *
  * @apiSuccessExample Success-Response:
@@ -418,30 +347,35 @@ export const tedConfirmation = async (request, response) => {
  *   {
  *      "code": 9999,
  *      "message": "Dados da requisição inválidos",
- *      "errors": [{
- *        "msg": "Invalid value",
- *        "param": "cnpj",
- *        "location": "body"
- *      }]
+ *      "errors": [{}]
  *   }
  */
 export const confirm = async (request, response) => {
   try {
-    await repository.confirm(request.body.confirmations)
+    if (request.user.id_profile === 3) {
+      await repository.confirm(request.body.investments)
+      return response.json(constants.investment.success.CONFIRMATION)
+    }
 
-    response.json(constants.investment.success.CONFIRMATION)
+    return response.status(403).json({
+      status: 'Acesso negado!',
+      success: false,
+      message: 'Você não está autorizado a acessar esse recurso'
+    })
   } catch (err) {
     logger().error(err)
 
-    response.status(500).json(constants.investment.error.CONFIRMATION)
+    return response.status(500).json(Object.assign(constants.investment.error.CONFIRMATION, { errors: err.message }))
   }
 }
 
 /**
- * @api {put} /investment/:id/cancel Cancel
+ * @api {delete} /investment/:id Cancel
  * @apiName CancelInvestment
  * @apiGroup Investment
  * @apiVersion 1.0.0
+ *
+ * @apiParam {uuid} id Investment ID
  *
  * @apiSuccessExample Success-Response:
  *   HTTP/1.1 200 OK
@@ -455,21 +389,17 @@ export const confirm = async (request, response) => {
  *   {
  *      "code": 9999,
  *      "message": "Dados da requisição inválidos",
- *      "errors": [{
- *        "msg": "Invalid value",
- *        "param": "id",
- *        "location": "body"
- *      }]
+ *      "errors": [{}]
  *   }
  */
 export const cancel = async (request, response) => {
   try {
-    await repository.cancel(request.params.id)
+    await repository.cancel(request.params.id, request.user.id_profile === 3 ? null : request.user.investor.id)
 
     response.json(constants.investment.success.CANCEL)
   } catch (err) {
     logger().error(err)
 
-    response.status(500).json(constants.investment.error.CANCEL)
+    response.status(500).json(Object.assign(constants.investment.error.CANCEL, { errors: err.message }))
   }
 }

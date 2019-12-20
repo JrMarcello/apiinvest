@@ -2,7 +2,8 @@ import * as mailer from '../../core/mailer'
 import * as storage from '../../core/storage'
 import { env } from '../../common/utils'
 import * as dao from './dao'
-import { getById as getInvestor } from '../investor/repository'
+import * as repositoryInvestor from '../investor/repository'
+import * as repositoryFundraising from '../fundraising/repository'
 
 /**
  *  Get all Investments from database.
@@ -18,10 +19,11 @@ export const getAll = async params => {
  * Find an Investment by ID
  *
  * @param {string} id - Investment ID
+ * @param {string} idInvestor - Investor ID
  * @returns - Returns a object
  */
-export const getById = id => {
-  return dao.getById(id)
+export const getById = (id, idInvestor) => {
+  return dao.getById(id, idInvestor)
 }
 
 /**
@@ -61,15 +63,16 @@ export const getPendings = async params => {
  * @returns - Returns a object
  */
 export const create = async data => {
-  const investor = await getInvestor(data.id_investor)
+  const investor = await repositoryInvestor.getById(data.id_investor)
 
-  if (!investor) {
-    throw Error('Complete seu cadastro para começar a investir')
-  }
+  if (!investor) throw Error('Complete seu cadastro para começar a investir')
 
-  if (env().BLACK_LIST.includes(investor.cpf) || env().BLACK_LIST.includes(investor.cnpj)) {
+  if (env().BLACK_LIST.includes(investor.cpf) || env().BLACK_LIST.includes(investor.cnpj))
     throw Error('Socios não podem realizar investimentos')
-  }
+
+  const fundraising = await repositoryFundraising.getById(data.id_fundraising)
+
+  if (!fundraising || data.amount < fundraising.investment_min_value) throw Error('Valor abaixo do mínimo nescessário')
 
   const investment = await dao.create(data)
 
@@ -95,38 +98,42 @@ const getEmailParams = investor => {
 /**
  * Send TED proof for an Investment
  *
- * @param {object} data - TED proof
+ * @param {object} file - TED proof
+ * @param {string} id - Investment ID
+ * @param {string} idInvestor - Investor ID
  * @returns - Returns a object
  */
-export const tedConfirmation = async data => {
-  if (!data || !data.file) throw Error()
+export const sendTED = async (file, id, idInvestor) => {
+  if (!file) throw Error('Comprovante de TED não anexado')
 
-  const url = await storage.uploadFile(data.file, 'teds')
+  const url = await storage.uploadFile(file, `teds/${id}`)
 
-  return dao.update({
-    id: data.id,
-    ted_proof_url: url
-  })
+  return dao.sendTED(url, id, idInvestor)
 }
 
 /**
  * Confirm an Investment
  *
- * @param {object[]} data - Investment IDs
+ * @param {object[]} investments - Investment IDs
  * @returns - Returns a object
  */
-export const confirm = async data => {
-  if (!Array.isArray(data)) throw Error('Formato de dados inválido')
+export const confirm = async investments => {
+  if (!Array.isArray(investments)) throw Error('Formato de dados inválido')
 
-  return dao.confirm(data)
+  return dao.confirm(investments)
 }
 
 /**
  * Cancel an Investment
  *
- * @param {object} id - Investment ID
+ * @param {string} id - Investment ID
+ * @param {string} idInvestor - Investor ID
  * @returns - Returns a object
  */
-export const cancel = id => {
-  return dao.cancel(id)
+export const cancel = (id, idInvestor) => {
+  const investment = getById(id)
+
+  if (!investment || investment.ted_proof_url !== null) throw new Error('Não é possivel cancelar investimentos com TED e/ou confirmados!')
+
+  return dao.cancel(id, idInvestor)
 }
