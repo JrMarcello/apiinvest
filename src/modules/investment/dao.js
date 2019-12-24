@@ -183,6 +183,28 @@ export const getReceivedAmount = async id => {
 }
 
 /**
+ * Get Fundraising's investors
+ *
+ * @param {string} id - Fundraising ID
+ * @returns - Returns a object
+ */
+export const getInvestorsByFundraisingId = async id => {
+  const query = {
+    text: `SELECT 
+               b.id,
+               b.name,
+               c.avatar_url
+           FROM ${table} a 
+               JOIN investor b ON (a.id_investor = b.id) 
+               JOIN "user" c ON (b.id_user = c.id) 
+           WHERE a.id_fundraising = $1`,
+    values: [id]
+  }
+
+  return (await db.query(query)).rows
+}
+
+/**
  * Create an Investment
  *
  * @param {object} data - Investment data to be saved

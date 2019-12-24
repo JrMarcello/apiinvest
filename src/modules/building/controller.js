@@ -56,8 +56,8 @@ export const getAll = async (request, response) => {
 }
 
 /**
- * @api {get} /building/avaliables Get all avaliables to investment
- * @apiName GetBuildings
+ * @api {get} /building/avaliables Get avaliables
+ * @apiName GetAvaliablesBuildings
  * @apiGroup Building
  * @apiVersion 1.0.0
  *

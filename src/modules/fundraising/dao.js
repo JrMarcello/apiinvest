@@ -46,6 +46,16 @@ export const getAmountRaised = async id => {
 }
 
 /**
+ *  Get Fundraising's investors
+ *
+ * @param {string} id - Fundraising ID
+ * @returns - Returns a object
+ */
+export const getInvestorsByFundraisingId = id => {
+  return investmentDao.getInvestorsByFundraisingId(id)
+}
+
+/**
  * Find Fundraisings by Building ID
  *
  * @param {string} id - Building ID

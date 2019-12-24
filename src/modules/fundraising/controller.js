@@ -169,6 +169,46 @@ export const getAmountRaised = async (request, response) => {
 }
 
 /**
+ * @api {get} /fundraising/:id/investors Get Fundraising's investors
+ * @apiName GetFundraisingInvestors
+ * @apiGroup Fundraising
+ * @apiVersion 1.0.0
+ *
+ * @apiParam {uuid} id Fundraising ID
+ *
+ * @apiSuccessExample Success-Response:
+ *   HTTP/1.1 200 OK
+ *   [
+ *      {
+ *         "id": "a897eacd-2681-4e08-8062-c8f7e174bace",
+ *         "name": "Investidor Buildinvest",
+ *         "avatar_url": null
+ *      },
+ *      {
+ *         "id": "a897eacd-2681-4e08-8062-c8f7e174bace",
+ *         "name": "Investidor Buildinvest",
+ *         "avatar_url": null
+ *      }
+ *   ]
+ *
+ *  @apiErrorExample Error-Response:
+ *   HTTP/1.1 500 Internal Server Error
+ *   {
+ *      "code": 9999,
+ *      "message": "Erro ao buscar os Investidores da Captação",
+ *   }
+ */
+export const getInvestorsByFundraisingId = async (request, response) => {
+  try {
+    response.json(await repository.getInvestorsByFundraisingId(request.params.id))
+  } catch (err) {
+    logger().error(err)
+
+    response.status(500).json(constants.fundraising.error.INVESTORS)
+  }
+}
+
+/**
  * @api {post} /fundraising Create
  * @apiName CreateFundraising
  * @apiGroup Fundraising
