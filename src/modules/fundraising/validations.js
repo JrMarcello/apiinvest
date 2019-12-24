@@ -26,6 +26,7 @@ export default {
   getById: [checkAuth, acl.authorize, validate(schemas.validateID)],
   getByBuildingId: [checkAuth, acl.authorize, validate(schemas.getByBuildingId)],
   getAmountRaised: [checkAuth, acl.authorize, validate(schemas.validateID)],
+  getInvestorsByFundraisingId: [checkAuth, acl.authorize, validate(schemas.validateID)],
   create: [checkAuth, acl.authorize, validate(schemas.create)],
   update: [checkAuth, acl.authorize, validate(schemas.update)],
   finish: [checkAuth, acl.authorize, validate(schemas.validateID)],

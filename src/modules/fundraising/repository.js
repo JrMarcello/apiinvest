@@ -43,6 +43,16 @@ export const getAmountRaised = id => {
 }
 
 /**
+ * Get Fundraising's investors
+ *
+ * @param {string} id - Fundraising ID
+ * @returns - Returns a object
+ */
+export const getInvestorsByFundraisingId = id => {
+  return dao.getInvestorsByFundraisingId(id)
+}
+
+/**
  * Saves a Fundraising
  *
  * @param {object} data - Fundraising data

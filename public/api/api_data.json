@@ -765,6 +765,34 @@
   },
   {
     "type": "get",
+    "url": "/building/avaliables",
+    "title": "Get avaliables",
+    "name": "GetAvaliablesBuildings",
+    "group": "Building",
+    "version": "1.0.0",
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n[{\n    \"id\": \"69cb237c-c53a-4619-8433-d80719c0c18f\",\n    \"id_builder\": \"7de6982f-6989-45bd-97d4-973ebeb75295\",\n    \"spe\": \"34096667000199\",\n    \"registration\": \"789456\",\n    \"name\": \"Nome da obra\",\n    \"description\": \"Descrição da obra\",\n    \"address_street\": \"Rua da obraa\",\n    \"address_number\": \"123\",\n    \"address_neighborhood\": \"Bairro\",\n    \"address_city\": \"Cidade\",\n    \"address_state\": \"Estado\",\n    \"address_country\": \"Pais\",\n    \"address_cep\": \"58000000\",\n    \"amount\": \"1000000.00\",\n    \"initial_date\": \"2019-08-27T00:00:00.000Z\",\n    \"final_date\": \"2022-08-27T00:00:00.000Z\",\n    \"created_date\": \"2019-09-24T00:50:58.550Z\",\n    \"active\": true\n}]",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "HTTP/1.1 500 Internal Server Error\n  {\n     \"code\": 9999,\n     \"message\": \"Requisição inválida\",\n     \"errors\": [{}]\n  }",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "src/modules/building/controller.js",
+    "groupTitle": "Building"
+  },
+  {
+    "type": "get",
     "url": "/building/:id",
     "title": "Get (By ID)",
     "name": "GetBuilding",
@@ -890,34 +918,6 @@
     "type": "get",
     "url": "/building",
     "title": "Get all",
-    "name": "GetBuildings",
-    "group": "Building",
-    "version": "1.0.0",
-    "success": {
-      "examples": [
-        {
-          "title": "Success-Response:",
-          "content": "HTTP/1.1 200 OK\n[{\n    \"id\": \"69cb237c-c53a-4619-8433-d80719c0c18f\",\n    \"id_builder\": \"7de6982f-6989-45bd-97d4-973ebeb75295\",\n    \"spe\": \"34096667000199\",\n    \"registration\": \"789456\",\n    \"name\": \"Nome da obra\",\n    \"description\": \"Descrição da obra\",\n    \"address_street\": \"Rua da obraa\",\n    \"address_number\": \"123\",\n    \"address_neighborhood\": \"Bairro\",\n    \"address_city\": \"Cidade\",\n    \"address_state\": \"Estado\",\n    \"address_country\": \"Pais\",\n    \"address_cep\": \"58000000\",\n    \"amount\": \"1000000.00\",\n    \"initial_date\": \"2019-08-27T00:00:00.000Z\",\n    \"final_date\": \"2022-08-27T00:00:00.000Z\",\n    \"created_date\": \"2019-09-24T00:50:58.550Z\",\n    \"active\": true\n}]",
-          "type": "json"
-        }
-      ]
-    },
-    "error": {
-      "examples": [
-        {
-          "title": "Error-Response:",
-          "content": "HTTP/1.1 500 Internal Server Error\n  {\n     \"code\": 9999,\n     \"message\": \"Requisição inválida\",\n     \"errors\": [{}]\n  }",
-          "type": "json"
-        }
-      ]
-    },
-    "filename": "src/modules/building/controller.js",
-    "groupTitle": "Building"
-  },
-  {
-    "type": "get",
-    "url": "/building/avaliables",
-    "title": "Get all avaliables to investment",
     "name": "GetBuildings",
     "group": "Building",
     "version": "1.0.0",
@@ -1398,6 +1398,47 @@
         {
           "title": "Error-Response:",
           "content": "HTTP/1.1 500 Internal Server Error\n{\n   \"code\": 9999,\n   \"message\": \"Dados da requisição inválidos\",\n   \"errors\": [{\n     \"msg\": \"Invalid value\",\n     \"param\": \"id\",\n     \"location\": \"params\"\n   }]\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "src/modules/fundraising/controller.js",
+    "groupTitle": "Fundraising"
+  },
+  {
+    "type": "get",
+    "url": "/fundraising/:id/investors",
+    "title": "Get Fundraising's investors",
+    "name": "GetFundraisingInvestors",
+    "group": "Fundraising",
+    "version": "1.0.0",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "uuid",
+            "optional": false,
+            "field": "id",
+            "description": "<p>Fundraising ID</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n[\n   {\n      \"id\": \"a897eacd-2681-4e08-8062-c8f7e174bace\",\n      \"name\": \"Investidor Buildinvest\",\n      \"avatar_url\": null\n   },\n   {\n      \"id\": \"a897eacd-2681-4e08-8062-c8f7e174bace\",\n      \"name\": \"Investidor Buildinvest\",\n      \"avatar_url\": null\n   }\n]",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "HTTP/1.1 500 Internal Server Error\n{\n   \"code\": 9999,\n   \"message\": \"Erro ao buscar os Investidores da Captação\",\n}",
           "type": "json"
         }
       ]

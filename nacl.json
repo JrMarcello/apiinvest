@@ -66,6 +66,11 @@
         "resource": "/fundraising/:id/amountraised",
         "methods": ["GET"],
         "action": "allow"
+      },
+      {
+        "resource": "/fundraising/:id/investors",
+        "methods": ["GET"],
+        "action": "allow"
       }
     ]
   },
