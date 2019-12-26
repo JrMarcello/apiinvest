@@ -25,7 +25,7 @@ export const getAll = () => {
  */
 export const getAllAvaliables = async () => {
   const query = {
-    text: `SELECT * FROM ${table} b JOIN fundraising f ON (b.id = f.id_building AND f.active AND f.finished = false) WHERE b.active`
+    text: `SELECT b.* FROM ${table} b JOIN fundraising f ON (b.id = f.id_building AND f.active AND f.finished = false) WHERE b.active`
     // values: [data]
   }
 
