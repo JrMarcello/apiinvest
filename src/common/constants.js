@@ -102,24 +102,27 @@ const constants = {
       CONFIRMATION: { code: '4506', message: 'Erro ao confirmar o(s) investimento(s)' }
     }
   },
-
-  builder: {
-    // 50xx
+  fundraising: {
+    // S05xx
     success: {
-      CREATED: { code: 5000, message: 'Construtora criada com sucesso' },
-      UPDATED: { code: 5001, message: 'Construtora atualizada com sucesso' },
-      REMOVED: { code: 5002, message: 'Construtora removida com sucesso' },
-      NOT_FOUNDS: { code: 5500, message: 'Ainda não existem construtoras cadastradas' },
-      NOT_FOUND: { code: 5501, message: 'Construtora não encontrada' }
+      CREATE: { code: 'S0501', message: 'Captação criada com sucesso' },
+      UPDATE: { code: 'S0502', message: 'Captação atualizada com sucesso' },
+      REMOVE: { code: 'S0503', message: 'Captação deletada com sucesso' },
+      FINISH: { code: 'S0504', message: 'Captação encerrada com sucesso' }
     },
-    // 55xx
+    // E05xx
     error: {
-      NOT_FOUND: { code: 5501, message: 'Erro ao buscar construtora(s)' },
-      NOT_CREATED: { code: 5502, message: 'Erro ao tentar criar a construtora' },
-      NOT_UPDATED: { code: 5503, message: 'Erro ao tentar atualizar a construtora' },
-      NOT_REMOVED: { code: 5504, message: 'Erro ao tentar remover a construtora' }
+      NOT_FOUND: { code: 'E0501', message: 'Erro ao buscar a(s) Captação(ões)' },
+      AMOUNT_RAISED: { code: 'E0502', message: 'Erro ao buscar total captado' },
+      INVESTORS: { code: 'E0503', message: 'Erro ao buscar os Investidores da Captação' },
+      CREATE: { code: 'E0504', message: 'Erro ao criar a captação' },
+      UPDATE: { code: 'E0505', message: 'Erro ao atualizar a captação' },
+      REMOVE: { code: 'E0506', message: 'Erro ao deletar a captação' },
+      FINISH: { code: 'S0504', message: 'Erro ao encerrar a captação' },
+      NOT_REMOVED_INVESTMENT: { code: 'E0507', message: 'Já existem investimentos realizados na captação' }
     }
   },
+
   building: {
     // 60xx
     success: {
@@ -136,24 +139,17 @@ const constants = {
       NOT_REMOVED: { code: 6504, message: 'Erro ao tentar remover a obra' }
     }
   },
-  fundraising: {
-    // 70xx
+  building_image: {
+    // 90xx
     success: {
-      CREATED: { code: 6000, message: 'Captação criada com sucesso' },
-      UPDATED: { code: 6001, message: 'Captação atualizada com sucesso' },
-      REMOVED: { code: 6002, message: 'Captação removida com sucesso' },
-      FINISHED: { code: 6000, message: 'Captação encerrada com sucesso' }
+      CREATED: { code: 9000, message: 'Comprovante enviado com sucesso' },
+      REMOVED: { code: 9002, message: 'Imagens removidas com sucesso' }
     },
-    // 75xx
+    // 95xx
     error: {
-      NOT_FOUNDS: { code: 6500, message: 'Ainda não existem captações cadastradas' },
-      NOT_FOUND: { code: 6501, message: 'Captação não encontrada' },
-      NOT_CREATED: { code: 6502, message: 'Erro ao tentar criar a captação' },
-      NOT_UPDATED: { code: 6503, message: 'Erro ao tentar atualizar a captação' },
-      NOT_REMOVED: { code: 6504, message: 'Erro ao tentar remover a captação' },
-      NOT_REMOVED_INVESTMENT: { code: 6504, message: 'Já existem investimentos realizados na captação' },
-      AMOUNT_RAISED: { code: 6501, message: 'Erro ao buscar total captado' },
-      INVESTORS: { code: 6501, message: 'Erro ao buscar os Investidores da Captação' }
+      NOT_FOUNDS: { code: 3500, message: 'Ainda não existem imagens cadastradas' },
+      NOT_CREATED: { code: 3502, message: 'Erro ao tentar enviar a imagem' },
+      REMOVED: { code: 3504, message: 'Erro ao tentar remover a imagem' }
     }
   },
   custodian: {
@@ -172,36 +168,39 @@ const constants = {
       NOT_REMOVED: { code: 6504, message: 'Erro ao tentar remover o custodiador' }
     }
   },
-  partner: {
-    // 80xx
+  builder: {
+    // 50xx
     success: {
-      CREATED: { code: 6000, message: 'Sócio criado com sucesso' },
-      UPDATED: { code: 6001, message: 'Sócio atualizado com sucesso' },
-      REMOVED: { code: 6002, message: 'Sócio removido com sucesso' }
+      CREATED: { code: 5000, message: 'Construtora criada com sucesso' },
+      UPDATED: { code: 5001, message: 'Construtora atualizada com sucesso' },
+      REMOVED: { code: 5002, message: 'Construtora removida com sucesso' },
+      NOT_FOUNDS: { code: 5500, message: 'Ainda não existem construtoras cadastradas' },
+      NOT_FOUND: { code: 5501, message: 'Construtora não encontrada' }
     },
-    // 85xx
+    // 55xx
     error: {
-      NOT_FOUNDS: { code: 6500, message: 'Ainda não existem sócios cadastrados' },
-      NOT_FOUND: { code: 6501, message: 'Sócio não encontrado' },
-      NOT_CREATED: { code: 6502, message: 'Erro ao tentar criar o sócio' },
-      NOT_UPDATED: { code: 6503, message: 'Erro ao tentar atualizar o sócio' },
-      NOT_REMOVED: { code: 6504, message: 'Erro ao tentar remover o sócio' }
+      NOT_FOUND: { code: 5501, message: 'Erro ao buscar construtora(s)' },
+      NOT_CREATED: { code: 5502, message: 'Erro ao tentar criar a construtora' },
+      NOT_UPDATED: { code: 5503, message: 'Erro ao tentar atualizar a construtora' },
+      NOT_REMOVED: { code: 5504, message: 'Erro ao tentar remover a construtora' }
     }
   },
-
-  building_image: {
-    // 90xx
-    success: {
-      CREATED: { code: 9000, message: 'Comprovante enviado com sucesso' },
-      REMOVED: { code: 9002, message: 'Imagens removidas com sucesso' }
-    },
-    // 95xx
-    error: {
-      NOT_FOUNDS: { code: 3500, message: 'Ainda não existem imagens cadastradas' },
-      NOT_CREATED: { code: 3502, message: 'Erro ao tentar enviar a imagem' },
-      REMOVED: { code: 3504, message: 'Erro ao tentar remover a imagem' }
-    }
-  },
+  // partner: {
+  //   // 80xx
+  //   success: {
+  //     CREATED: { code: 6000, message: 'Sócio criado com sucesso' },
+  //     UPDATED: { code: 6001, message: 'Sócio atualizado com sucesso' },
+  //     REMOVED: { code: 6002, message: 'Sócio removido com sucesso' }
+  //   },
+  //   // 85xx
+  //   error: {
+  //     NOT_FOUNDS: { code: 6500, message: 'Ainda não existem sócios cadastrados' },
+  //     NOT_FOUND: { code: 6501, message: 'Sócio não encontrado' },
+  //     NOT_CREATED: { code: 6502, message: 'Erro ao tentar criar o sócio' },
+  //     NOT_UPDATED: { code: 6503, message: 'Erro ao tentar atualizar o sócio' },
+  //     NOT_REMOVED: { code: 6504, message: 'Erro ao tentar remover o sócio' }
+  //   }
+  // },
   builder_phone: {
     // 90xx
     success: {

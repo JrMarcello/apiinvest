@@ -39,7 +39,7 @@ export const getAll = async (request, response) => {
   } catch (err) {
     logger().error(err)
 
-    response.status(500).json(err.message)
+    response.status(500).json(constants.fundraising.error.NOT_FOUND)
   }
 }
 
@@ -86,7 +86,7 @@ export const getById = async (request, response) => {
   } catch (err) {
     logger().error(err)
 
-    response.status(500).json(err)
+    response.status(500).json(constants.fundraising.error.NOT_FOUND)
   }
 }
 
@@ -133,7 +133,7 @@ export const getByBuildingId = async (request, response) => {
   } catch (err) {
     logger().error(err)
 
-    response.status(500).json(err)
+    response.status(500).json(constants.fundraising.error.NOT_FOUND)
   }
 }
 
@@ -265,11 +265,11 @@ export const create = async (request, response) => {
   try {
     const fundraising = await repository.create(request.body)
 
-    response.json(Object.assign(constants.fundraising.success.CREATED, { fundraising }))
+    response.json(Object.assign(constants.fundraising.success.CREATE, { fundraising }))
   } catch (err) {
     logger().error(err)
 
-    response.status(500).json(constants.fundraising.error.NOT_CREATED)
+    response.status(500).json(constants.fundraising.error.CREATE)
   }
 }
 
@@ -313,11 +313,11 @@ export const update = async (request, response) => {
   try {
     await repository.update(request.body)
 
-    response.json(constants.fundraising.success.UPDATED)
+    response.json(constants.fundraising.success.UPDATE)
   } catch (err) {
     logger().error(err)
 
-    response.status(500).json(constants.fundraising.error.NOT_UPDATED)
+    response.status(500).json(constants.fundraising.error.UPDATE)
   }
 }
 
@@ -352,11 +352,11 @@ export const finish = async (request, response) => {
   try {
     await repository.finish(request.params.id)
 
-    response.json(constants.fundraising.success.FINISHED)
+    response.json(constants.fundraising.success.FINISH)
   } catch (err) {
     logger().error(err)
 
-    response.status(500).json(constants.fundraising.error.FINISHED)
+    response.status(500).json(constants.fundraising.error.FINISH)
   }
 }
 
@@ -391,10 +391,10 @@ export const remove = async (request, response) => {
   try {
     await repository.remove(request.params.id)
 
-    response.json(constants.fundraising.success.REMOVED)
+    response.json(constants.fundraising.success.REMOVE)
   } catch (err) {
     logger().error(err)
 
-    response.status(500).json(constants.fundraising.error.NOT_REMOVED)
+    response.status(500).json(constants.fundraising.error.REMOVE)
   }
 }
