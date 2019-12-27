@@ -18,37 +18,74 @@ const constants = {
     success: {
       CREATE: { code: 'S0200', message: 'Usuário criado com sucesso' },
       UPDATE: { code: 'S0201', message: 'Usuário atualizado com sucesso' },
-      REMOVE: { code: 'S0202', message: 'Usuário removido com sucesso' },
+      REMOVE: { code: 'S0202', message: 'Usuário deletado com sucesso' },
       LOGGED: { code: 'S0203', message: 'Usuario logado' }
     },
     // E02xx
     error: {
       CREATE: { code: 'E0200', message: 'Erro ao criar o Usuário' },
       UPDATE: { code: 'E0201', message: 'Erro ao atualizar Usuário' },
-      REMOVE: { code: 'E0202', message: 'Erro ao remover Usuário' },
+      REMOVE: { code: 'E0202', message: 'Erro ao deletar Usuário' },
       LOGGED: { code: 'E0203', message: 'Erro ao realizar login' },
       NOT_FOUND: { code: 'E0204', message: 'Erro ao buscar Usuário(s)' }
     }
   },
-
   investor: {
     // S03xx
     success: {
-      CREATED: { code: 3000, message: 'Investidor criado com sucesso' },
-      UPDATED: { code: 3001, message: 'Investidor atualizado com sucesso' },
-      REMOVED: { code: 3002, message: 'Investidor removido com sucesso' }
+      CREATE: { code: 'S0300', message: 'Investidor criado com sucesso' },
+      UPDATE: { code: 'S0301', message: 'Investidor atualizado com sucesso' }
     },
     // E03xx
     error: {
-      NOT_FOUNDS: { code: 3500, message: 'Ainda não existem investidores cadastrados' },
-      NOT_FOUND: { code: 3501, message: 'Erro ao buscar Investidor(es)' },
-      NOT_CREATED: { code: 3502, message: 'Erro ao tentar criar o investidor' },
-      NOT_UPDATED: { code: 3503, message: 'Erro ao tentar atualizar o investidor' },
-      NOT_REMOVED: { code: 3504, message: 'Erro ao tentar remover o investidor' },
-
-      CREATE_INVALID_DATA: { code: 'S1000', message: 'Dados inválidos' }
+      NOT_FOUND: { code: 'E0300', message: 'Erro ao buscar Investidor(es)' },
+      INVESTMENTS_NOT_FOUND: { code: 'E0301', message: 'Erro ao buscar Investimentos' },
+      INVESTMENTS_COUNT: { code: 'E0302', message: 'Erro ao buscar total de Investimentos' },
+      INVESTED_AMOUNT: { code: 'E0303', message: 'Erro ao buscar valor total investido' },
+      RECEIVED_AMOUNT: { code: 'E0304', message: 'Erro ao buscar valor total recebido' },
+      PROJECTED_AMOUNT: { code: 'E0305', message: 'Erro ao buscar valor total projetado' },
+      CREATE: { code: 'E0306', message: 'Erro ao criar o Investidor' },
+      UPDATE: { code: 'E0307', message: 'Erro ao atualizar o Investidor' }
+    },
+    phone: {
+      // S03xx
+      success: {
+        CREATE: { code: 'S0302', message: 'Telefone(s) criado(s) com sucesso' },
+        REMOVE: { code: 'S0303', message: 'Telefone(s) deletado(s) com sucesso' }
+      },
+      // E03xx
+      error: {
+        NOT_FOUND: { code: 'E0308', message: 'Telefone(s) não encontrado' },
+        CREATE: { code: 'E0309', message: 'Erro ao criar o(s) telefone(s)' },
+        REMOVE: { code: 'E0310', message: 'Erro ao deletar o(s) telefone(s)' }
+      }
+    },
+    bank_account: {
+      // S03xx
+      success: {
+        CREATE: { code: 'S0304', message: 'Conta(s) criada(s) com sucesso' },
+        REMOVE: { code: 'S0305', message: 'Conta(s) deletada(s) com sucesso' }
+      },
+      // E03xx
+      error: {
+        NOT_FOUND: { code: 'E0311', message: 'Conta(s) não encontrada(s)' },
+        CREATE: { code: 'E0312', message: 'Erro ao criar a(s) conta(s)' },
+        REMOVE: { code: 'E0313', message: 'Erro ao deletar a(s) conta(s)' }
+      }
+    },
+    document: {
+      // S03xx
+      success: {
+        CREATE: { code: 'S0306', message: 'Comprovantes enviados com sucesso' }
+      },
+      // E03xx
+      error: {
+        NOT_FOUND: { code: 'E0314', message: 'Comprovantes não encontrados' },
+        CREATE: { code: 'E0315', message: 'Erro ao tentar enviar os comprovantes' }
+      }
     }
   },
+
   investment: {
     // 40xx
     success: {
@@ -152,54 +189,7 @@ const constants = {
       NOT_REMOVED: { code: 6504, message: 'Erro ao tentar remover o sócio' }
     }
   },
-  investor_phone: {
-    // 90xx
-    success: {
-      CREATED: { code: 9000, message: 'Telefone criado com sucesso' },
-      UPDATED: { code: 9001, message: 'Telefone atualizado com sucesso' },
-      REMOVED: { code: 9002, message: 'Telefone removido com sucesso' }
-    },
-    // 95xx
-    error: {
-      NOT_FOUNDS: { code: 9500, message: 'Ainda não existem telefones cadastrados' },
-      NOT_FOUND: { code: 9501, message: 'Telefone não encontrado' },
-      NOT_CREATED: { code: 9502, message: 'Erro ao tentar criar o telefone' },
-      NOT_UPDATED: { code: 9503, message: 'Erro ao tentar atualizar o telefone' },
-      NOT_REMOVED: { code: 9504, message: 'Erro ao tentar remover o telefone' }
-    }
-  },
-  investor_bank_account: {
-    // 90xx
-    success: {
-      CREATED: { code: 9000, message: 'Conta criada com sucesso' },
-      UPDATED: { code: 9001, message: 'Conta atualizada com sucesso' },
-      REMOVED: { code: 9002, message: 'Conta removida com sucesso' }
-    },
-    // 95xx
-    error: {
-      NOT_FOUNDS: { code: 3500, message: 'Ainda não existem contas cadastradas' },
-      NOT_FOUND: { code: 3501, message: 'Conta não encontrado' },
-      NOT_CREATED: { code: 3502, message: 'Erro ao tentar criar a conta' },
-      NOT_UPDATED: { code: 3503, message: 'Erro ao tentar atualizar a conta' },
-      NOT_REMOVED: { code: 3504, message: 'Erro ao tentar remover a conta' }
-    }
-  },
-  investor_document: {
-    // 90xx
-    success: {
-      CREATED: { code: 9000, message: 'Comprovante enviado com sucesso' },
-      UPDATED: { code: 9001, message: 'Comprovante atualizado com sucesso' },
-      REMOVED: { code: 9002, message: 'Comprovante removido com sucesso' }
-    },
-    // 95xx
-    error: {
-      NOT_FOUNDS: { code: 3500, message: 'Ainda não existem comprovante cadastrados' },
-      NOT_FOUND: { code: 3501, message: 'Comprovante não encontrado' },
-      NOT_CREATED: { code: 3502, message: 'Erro ao tentar enviar o comprovante' },
-      NOT_UPDATED: { code: 3503, message: 'Erro ao tentar atualizar o comprovante' }
-      // NOT_REMOVED: { code: 3504, message: 'Erro ao tentar remover o comprovante' }
-    }
-  },
+
   building_image: {
     // 90xx
     success: {

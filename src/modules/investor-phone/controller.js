@@ -36,7 +36,7 @@ export const getByInvestorId = async (request, response) => {
   } catch (err) {
     logger().error(err)
 
-    response.status(500).json(err)
+    response.status(500).json(constants.investor.phone.error.NOT_FOUND)
   }
 }
 
@@ -85,11 +85,11 @@ export const create = async (request, response) => {
       request.body.phones
     )
 
-    response.json(Object.assign(constants.investor_phone.success.CREATED, { phones }))
+    response.json(Object.assign(constants.investor.phone.success.CREATE, { phones }))
   } catch (err) {
     logger().error(err)
 
-    response.status(500).json(constants.investor_phone.error.NOT_CREATED)
+    response.status(500).json(constants.investor.phone.error.CREATE)
   }
 }
 
@@ -133,6 +133,6 @@ export const remove = async (request, response) => {
   } catch (err) {
     logger().error(err)
 
-    response.status(500).json(constants.investor_phone.error.NOT_REMOVED)
+    response.status(500).json(constants.investor.phone.error.REMOVE)
   }
 }

@@ -238,7 +238,7 @@ export const getAllInvestmentsById = async (request, response) => {
   } catch (err) {
     logger().error(err)
 
-    response.status(500).json(constants.investor.error.NOT_FOUND)
+    response.status(500).json(constants.investor.error.INVESTMENTS_NOT_FOUND)
   }
 }
 
@@ -272,7 +272,7 @@ export const getInvestmentsCount = async (request, response) => {
   } catch (err) {
     logger().error(err)
 
-    response.status(500).json(constants.investor.error.NOT_FOUND)
+    response.status(500).json(constants.investor.error.INVESTMENTS_COUNT)
   }
 }
 
@@ -306,7 +306,7 @@ export const getInvestedAmount = async (request, response) => {
   } catch (err) {
     logger().error(err)
 
-    response.status(500).json(constants.investor.error.NOT_FOUND)
+    response.status(500).json(constants.investor.error.INVESTED_AMOUNT)
   }
 }
 
@@ -340,7 +340,7 @@ export const getReceivedAmount = async (request, response) => {
   } catch (err) {
     logger().error(err)
 
-    response.status(500).json(constants.investor.error.NOT_FOUND)
+    response.status(500).json(constants.investor.error.RECEIVED_AMOUNT)
   }
 }
 
@@ -374,7 +374,7 @@ export const getProjectedAmount = async (request, response) => {
   } catch (err) {
     logger().error(err)
 
-    response.status(500).json(constants.investor.error.NOT_FOUND)
+    response.status(500).json(constants.investor.error.PROJECTED_AMOUNT)
   }
 }
 
@@ -452,11 +452,11 @@ export const create = async (request, response) => {
 
     const investor = await repository.create(data)
 
-    response.json(Object.assign(constants.investor.success.CREATED, { investor }))
+    response.json(Object.assign(constants.investor.success.CREATE, { investor }))
   } catch (err) {
     logger().error(err)
 
-    response.status(500).json(constants.investor.error.NOT_CREATED)
+    response.status(500).json(constants.investor.error.CREATE)
   }
 }
 
@@ -502,10 +502,10 @@ export const update = async (request, response) => {
 
     await repository.update(request.body)
 
-    response.json(constants.investor.success.UPDATED)
+    response.json(constants.investor.success.UPDATE)
   } catch (err) {
     logger().error(err)
 
-    response.status(500).json(constants.investor.error.NOT_UPDATED)
+    response.status(500).json(constants.investor.error.UPDATE)
   }
 }

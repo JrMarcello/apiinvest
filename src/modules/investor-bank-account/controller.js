@@ -40,7 +40,7 @@ export const getByInvestorId = async (request, response) => {
   } catch (err) {
     logger().error(err)
 
-    response.status(500).json(err)
+    response.status(500).json(constants.investor.bank_account.error.NOT_FOUND)
   }
 }
 
@@ -97,11 +97,11 @@ export const create = async (request, response) => {
       request.body.accounts
     )
 
-    response.json(Object.assign(constants.investor_bank_account.success.CREATED, { accounts }))
+    response.json(Object.assign(constants.investor.bank_account.success.CREATE, { accounts }))
   } catch (err) {
     logger().error(err)
 
-    response.status(500).json(constants.investor_bank_account.error.NOT_CREATED)
+    response.status(500).json(constants.investor.bank_account.error.CREATE)
   }
 }
 
@@ -141,10 +141,10 @@ export const remove = async (request, response) => {
   try {
     await repository.remove(request.user.id_profile === 3 ? request.params.idInvestor : request.user.investor.id, request.body.ids)
 
-    response.json(constants.investor_bank_account.success.REMOVED)
+    response.json(constants.investor.bank_account.success.REMOVE)
   } catch (err) {
     logger().error(err)
 
-    response.status(500).json(constants.investor_bank_account.error.NOT_REMOVED)
+    response.status(500).json(constants.investor.bank_account.error.REMOVE)
   }
 }

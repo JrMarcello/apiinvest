@@ -57,7 +57,7 @@ export const getByInvestorId = async (request, response) => {
   } catch (err) {
     logger().error(err)
 
-    return response.status(500).json(err)
+    return response.status(500).json(constants.investor.document.error.NOT_FOUND)
   }
 }
 
@@ -94,10 +94,10 @@ export const create = async (request, response) => {
       request.files
     )
 
-    response.json(Object.assign(constants.investor_document.success.CREATED, { documents }))
+    response.json(Object.assign(constants.investor.document.success.CREATE, { documents }))
   } catch (err) {
     logger().error(err)
 
-    response.status(500).json(constants.investor_document.error.NOT_CREATED)
+    response.status(500).json(constants.investor.document.error.CREATE)
   }
 }
