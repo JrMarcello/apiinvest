@@ -43,7 +43,7 @@ export const getAll = async (request, response) => {
   } catch (err) {
     logger().error(err)
 
-    return response.status(500).json(Object.assign(constants.investment.error.NOT_FOUNDS, { errors: err.message }))
+    return response.status(500).json(constants.investment.error.NOT_FOUND)
   }
 }
 
@@ -88,7 +88,7 @@ export const getById = async (request, response) => {
   } catch (err) {
     logger().error(err)
 
-    response.status(500).json(Object.assign(constants.investment.error.NOT_FOUND, { errors: err.message }))
+    response.status(500).json(constants.investment.error.NOT_FOUND)
   }
 }
 
@@ -129,7 +129,7 @@ export const getByInvestorId = async (request, response) => {
   } catch (err) {
     logger().error(err)
 
-    response.status(500).json(Object.assign(constants.investment.error.NOT_FOUNDS, { errors: err.message }))
+    response.status(500).json(constants.investment.error.NOT_FOUND)
   }
 }
 
@@ -176,7 +176,7 @@ export const getByFundraisingId = async (request, response) => {
   } catch (err) {
     logger().error(err)
 
-    return response.status(500).json(Object.assign(constants.investment.error.NOT_FOUNDS, { errors: err.message }))
+    return response.status(500).json(constants.investment.error.NOT_FOUND)
   }
 }
 
@@ -221,7 +221,7 @@ export const getPendings = async (request, response) => {
   } catch (err) {
     logger().error(err)
 
-    return response.status(500).json(Object.assign(constants.investment.error.NOT_FOUNDS, { errors: err.message }))
+    return response.status(500).json(constants.investment.error.NOT_FOUND)
   }
 }
 
@@ -277,7 +277,7 @@ export const create = async (request, response) => {
   } catch (err) {
     logger().error(err)
 
-    response.status(500).json(Object.assign(constants.investment.error.CREATE, { errors: err.message }))
+    response.status(500).json(constants.investment.error.CREATE)
   }
 }
 
@@ -318,7 +318,7 @@ export const sendTED = async (request, response) => {
   } catch (err) {
     logger().error(err)
 
-    response.status(500).json(Object.assign(constants.investment.error.TED_CONFIRMATION, { errors: err.message }))
+    response.status(500).json(constants.investment.error.TED_CONFIRMATION)
   }
 }
 
@@ -365,7 +365,7 @@ export const confirm = async (request, response) => {
   } catch (err) {
     logger().error(err)
 
-    return response.status(500).json(Object.assign(constants.investment.error.CONFIRMATION, { errors: err.message }))
+    return response.status(500).json(constants.investment.error.CONFIRMATION)
   }
 }
 
@@ -400,6 +400,6 @@ export const cancel = async (request, response) => {
   } catch (err) {
     logger().error(err)
 
-    response.status(500).json(Object.assign(constants.investment.error.CANCEL, { errors: err.message }))
+    response.status(500).json(constants.investment.error.CANCEL)
   }
 }

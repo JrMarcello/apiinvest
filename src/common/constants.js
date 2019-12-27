@@ -85,25 +85,24 @@ const constants = {
       }
     }
   },
-
   investment: {
-    // 40xx
+    // S04xx
     success: {
-      CREATE: { code: 4000, message: 'Investimento criado com sucesso' },
-      CANCEL: { code: 4002, message: 'Investimento cancelado com sucesso' },
-      TED_CONFIRMATION: { code: 4003, message: 'Comprovante de TED enviado' },
-      CONFIRMATION: { code: 4004, message: 'Investimento(s) comnfirmado' }
+      CREATE: { code: 'S0401', message: 'Investimento criado com sucesso' },
+      CANCEL: { code: 'S0402', message: 'Investimento cancelado com sucesso' },
+      TED_CONFIRMATION: { code: 'S0404', message: 'Comprovante de TED enviado' },
+      CONFIRMATION: { code: 'S0405', message: 'Investimento(s) comnfirmado(s)' }
     },
-    // 45xx
+    // E04xx
     error: {
-      NOT_FOUNDS: { code: 4500, message: 'Não foi possivel carregar investimentos' },
-      NOT_FOUND: { code: 4501, message: 'Não foi possivel carregar o investimento' },
-      CREATE: { code: 4502, message: 'Erro ao tentar criar a investimento' },
-      CANCEL: { code: 4504, message: 'Erro ao tentar cancelar o investimento' },
-      TED_CONFIRMATION: { code: 4505, message: 'Erro ao tentar enviar comprovante de TED' },
-      CONFIRMATION: { code: 4506, message: 'Erro ao tentar confirmar o investimento' }
+      NOT_FOUND: { code: '4501', message: 'Erro ao buscar Investimento(s)' },
+      CREATE: { code: '4502', message: 'Erro ao criar o investimento' },
+      CANCEL: { code: '4504', message: 'Erro ao cancelar o investimento' },
+      TED_CONFIRMATION: { code: '4505', message: 'Erro ao enviar comprovante de TED' },
+      CONFIRMATION: { code: '4506', message: 'Erro ao confirmar o(s) investimento(s)' }
     }
   },
+
   builder: {
     // 50xx
     success: {
