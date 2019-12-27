@@ -4,12 +4,7 @@ import chalk from 'chalk'
 import moment from 'moment'
 
 const logger = winston.createLogger({
-  format: winston.format.combine(
-    winston.format.timestamp(),
-    winston.format.ms(),
-    winston.format.metadata(),
-    winston.format.prettyPrint()
-  ),
+  format: winston.format.combine(winston.format.timestamp(), winston.format.ms(), winston.format.metadata(), winston.format.prettyPrint()),
   transports: [
     new winston.transports.DailyRotateFile({
       filename: './logs/%DATE%.log',
@@ -51,6 +46,6 @@ export const error = err => {
 
   process.stderr.write(chalk.bold.red(formattedMsg))
   logger.error(err)
-  // TODO REMOVER
-  if (process.env.NODE_ENV === 'development') console.error(err)
+  // TODO: REMOVER
+  console.error(err)
 }

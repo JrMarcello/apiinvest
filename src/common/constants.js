@@ -2,44 +2,43 @@
  * Constants file
  */
 const constants = {
-  // Code: 1xxx
-  auth: {
-    // S00xx
-    // success: {
-
-    // },
+  validations: {
     // E00xx
+    INVALID_REQUEST_DATA: { code: 'E0000', message: 'Dados de requisição inválidos' },
+    INVALID_DATA_FIELD: { code: 'E0001', message: 'Dado inválido' }
+  },
+  auth: {
+    // E01xx
     error: {
-      UNAUTHORIZED: { code: 1500, message: 'Acesso negado! Token inválido ou inexistente' }
+      UNAUTHORIZED: { code: 'E0100', message: 'Acesso negado! Token inválido ou inexistente' }
     }
   },
   user: {
-    // S01xx
+    // S02xx
     success: {
-      CREATED: { code: 'S0000', message: 'Usuário criado com sucesso' },
-      UPDATED: { code: 'S0001', message: 'Usuário atualizado com sucesso' },
-      REMOVED: { code: 'S0002', message: 'Usuário removido com sucesso' },
-      LOGGED: { code: 'S0003', message: 'Usuario logado' },
-      NOT_FOUNDS: { code: 2500, message: 'Ainda não existem usuários cadastrados' },
-      NOT_FOUND: { code: 2501, message: 'Usuario não encontrado' }
+      CREATE: { code: 'S0200', message: 'Usuário criado com sucesso' },
+      UPDATE: { code: 'S0201', message: 'Usuário atualizado com sucesso' },
+      REMOVE: { code: 'S0202', message: 'Usuário removido com sucesso' },
+      LOGGED: { code: 'S0203', message: 'Usuario logado' }
     },
-    // E01xx
+    // E02xx
     error: {
-      NOT_FOUNDS: { code: 2500, message: 'Erro ao tetar buscar usuário' },
-      NOT_CREATED: { code: 2502, message: 'Erro ao tentar criar o usuário' },
-      NOT_UPDATED: { code: 2503, message: 'Erro ao tentar atualizar o usuário' },
-      NOT_REMOVED: { code: 2504, message: 'Erro ao tentar remover o usuário' },
-      INVALID_USER_LOGIN: { code: 2505, message: 'Email ou senha inválido' }
+      CREATE: { code: 'E0200', message: 'Erro ao criar o Usuário' },
+      UPDATE: { code: 'E0201', message: 'Erro ao atualizar Usuário' },
+      REMOVE: { code: 'E0202', message: 'Erro ao remover Usuário' },
+      LOGGED: { code: 'E0203', message: 'Erro ao realizar login' },
+      NOT_FOUND: { code: 'E0204', message: 'Erro ao buscar Usuário(s)' }
     }
   },
+
   investor: {
-    // S1xxx
+    // S03xx
     success: {
       CREATED: { code: 3000, message: 'Investidor criado com sucesso' },
       UPDATED: { code: 3001, message: 'Investidor atualizado com sucesso' },
       REMOVED: { code: 3002, message: 'Investidor removido com sucesso' }
     },
-    // E01xx
+    // E03xx
     error: {
       NOT_FOUNDS: { code: 3500, message: 'Ainda não existem investidores cadastrados' },
       NOT_FOUND: { code: 3501, message: 'Erro ao buscar Investidor(es)' },
@@ -239,10 +238,6 @@ const constants = {
       NOT_CREATED: { code: 3502, message: 'Erro ao tentar criar o sócio' },
       NOT_REMOVED: { code: 3504, message: 'Erro ao tentar remover o sócio' }
     }
-  },
-  validations: {
-    INVALID_REQUEST_DATA: { code: 9999, message: 'Dados da requisição inválidos' },
-    INVALID_DATA_FIELD: 'Dado inválido'
   }
 }
 
