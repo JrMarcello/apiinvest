@@ -7,6 +7,7 @@
   "license": "ISC",
   "main": "./src/core/server.js",
   "scripts": {
+    "build": "rm -rf build && sucrase ./src -d ./build --transforms imports",
     "docker-build": "docker build -t builinvest/web-api . && docker run --name web-api -p 3000:3000 builinvest/web-api",
     "docker-rebuild": "docker rm web-api && docker rmi builinvest/web-api && npm run docker-build",
     "docker-exec": "docker exec -it web-api /bin/sh",

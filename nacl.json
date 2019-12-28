@@ -53,6 +53,11 @@
         "action": "allow"
       },
       {
+        "resource": "/builder/:id",
+        "methods": ["GET"],
+        "action": "allow"
+      },
+      {
         "resource": "/building/:id",
         "methods": ["GET"],
         "action": "allow"

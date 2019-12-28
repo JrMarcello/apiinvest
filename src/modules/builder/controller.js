@@ -147,7 +147,7 @@ export const getAll = async (request, response) => {
  */
 export const getById = async (request, response) => {
   try {
-    response.json(await repository.getById(request.user.id_profile === 3 ? request.params.id : request.user.builder.id))
+    response.json(await repository.getById(request.params.id))
   } catch (err) {
     logger().error(err)
 
