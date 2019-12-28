@@ -28,7 +28,7 @@ export default {
   },
   GOOGLE_CLOUD: {
     PROJECT_ID: process.env.PROJECT_ID,
-    KEYFILE: process.env.KEYFILE_PATH,
+    KEYFILE_PATH: process.env.KEYFILE_PATH,
     BUCKET: process.env.BUCKET
   },
   BLACK_LIST: process.env.BLACK_LIST
