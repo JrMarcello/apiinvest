@@ -165,64 +165,45 @@ const constants = {
       }
     }
   },
-
   builder: {
-    // 50xx
+    // S08xx
     success: {
-      CREATED: { code: 5000, message: 'Construtora criada com sucesso' },
-      UPDATED: { code: 5001, message: 'Construtora atualizada com sucesso' },
-      REMOVED: { code: 5002, message: 'Construtora removida com sucesso' },
-      NOT_FOUNDS: { code: 5500, message: 'Ainda não existem construtoras cadastradas' },
-      NOT_FOUND: { code: 5501, message: 'Construtora não encontrada' }
+      CREATE: { code: 'S0800', message: 'Construtora criada com sucesso' },
+      UPDATE: { code: 'S0801', message: 'Construtora atualizada com sucesso' },
+      REMOVE: { code: 'S0802', message: 'Construtora deletada com sucesso' }
     },
-    // 55xx
+    // E08xx
     error: {
-      NOT_FOUND: { code: 5501, message: 'Erro ao buscar construtora(s)' },
-      NOT_CREATED: { code: 5502, message: 'Erro ao tentar criar a construtora' },
-      NOT_UPDATED: { code: 5503, message: 'Erro ao tentar atualizar a construtora' },
-      NOT_REMOVED: { code: 5504, message: 'Erro ao tentar remover a construtora' }
-    }
-  },
-  // partner: {
-  //   // 80xx
-  //   success: {
-  //     CREATED: { code: 6000, message: 'Sócio criado com sucesso' },
-  //     UPDATED: { code: 6001, message: 'Sócio atualizado com sucesso' },
-  //     REMOVED: { code: 6002, message: 'Sócio removido com sucesso' }
-  //   },
-  //   // 85xx
-  //   error: {
-  //     NOT_FOUNDS: { code: 6500, message: 'Ainda não existem sócios cadastrados' },
-  //     NOT_FOUND: { code: 6501, message: 'Sócio não encontrado' },
-  //     NOT_CREATED: { code: 6502, message: 'Erro ao tentar criar o sócio' },
-  //     NOT_UPDATED: { code: 6503, message: 'Erro ao tentar atualizar o sócio' },
-  //     NOT_REMOVED: { code: 6504, message: 'Erro ao tentar remover o sócio' }
-  //   }
-  // },
-  builder_phone: {
-    // 90xx
-    success: {
-      CREATED: { code: 9000, message: 'Telefone criado com sucesso' },
-      REMOVED: { code: 9002, message: 'Telefone removido com sucesso' }
+      NOT_FOUND: { code: 'E0800', message: 'Erro ao buscar construtora(s)' },
+      CREATE: { code: 'E0801', message: 'Erro ao criar a construtora' },
+      UPDATE: { code: 'E0802', message: 'Erro ao atualizar a construtora' },
+      REMOVE: { code: 'E0803', message: 'Erro ao deletar a construtora' }
     },
-    // 95xx
-    error: {
-      NOT_FOUNDS: { code: 3500, message: 'Erro ao tentar buscar telefones' },
-      NOT_CREATED: { code: 3502, message: 'Erro ao tentar criar telefone(s)' },
-      NOT_REMOVED: { code: 3504, message: 'Erro ao tentar remover o telefone' }
-    }
-  },
-  builder_partner: {
-    // 90xx
-    success: {
-      CREATED: { code: 9000, message: 'Sócio criado com sucesso' },
-      REMOVED: { code: 9002, message: 'Sócio removido com sucesso' }
+    phones: {
+      // S08xx
+      success: {
+        CREATE: { code: 'S0803', message: 'Telefone(s) criado(s) com sucesso' },
+        REMOVE: { code: 'S0804', message: 'Telefone(s) deletado(s) com sucesso' }
+      },
+      // E08xx
+      error: {
+        NOT_FOUND: { code: 'E0804', message: 'Erro ao buscar telefones' },
+        CREATE: { code: 'E0805', message: 'Erro ao criar telefone(s)' },
+        REMOVE: { code: 'E0806', message: 'Erro ao deletar telefone(s)' }
+      }
     },
-    // 95xx
-    error: {
-      NOT_FOUNDS: { code: 3500, message: 'Erro ao tentar buscar sócios' },
-      NOT_CREATED: { code: 3502, message: 'Erro ao tentar criar o sócio' },
-      NOT_REMOVED: { code: 3504, message: 'Erro ao tentar remover o sócio' }
+    partners: {
+      // S08xx
+      success: {
+        CREATE: { code: 'S0805', message: 'Sócio(s) criado(s) com sucesso' },
+        REMOVE: { code: 'S0806', message: 'Sócio(s) deletado(s) com sucesso' }
+      },
+      // E08xx
+      error: {
+        NOT_FOUND: { code: 'E0807', message: 'Erro ao buscar sócios' },
+        CREATE: { code: 'E0808', message: 'Erro ao criar sócio(s)' },
+        REMOVE: { code: 'E0809', message: 'Erro ao deletar sócio(s)' }
+      }
     }
   }
 }

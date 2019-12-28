@@ -48,7 +48,7 @@ export const getByBuilderId = async (request, response) => {
   } catch (err) {
     logger().error(err)
 
-    response.status(500).json(constants.builder_partner.error.NOT_FOUNDS)
+    response.status(500).json(constants.builder.partners.error.NOT_FOUND)
   }
 }
 
@@ -123,11 +123,11 @@ export const create = async (request, response) => {
       request.body.partners
     )
 
-    response.json(Object.assign(constants.builder_partner.success.CREATED, { partners }))
+    response.json(Object.assign(constants.builder.partners.success.CREATE, { partners }))
   } catch (err) {
     logger().error(err)
 
-    response.status(500).json(constants.builder_partner.error.NOT_CREATED)
+    response.status(500).json(constants.builder.partners.error.CREATE)
   }
 }
 
@@ -165,10 +165,10 @@ export const remove = async (request, response) => {
   try {
     await repository.remove(request.user.id_profile === 3 ? request.params.idBuilder : request.user.builder.id, request.body.id)
 
-    response.json(constants.builder_partner.success.REMOVED)
+    response.json(constants.builder.partners.success.REMOVE)
   } catch (err) {
     logger().error(err)
 
-    response.status(500).json(constants.builder_partner.error.NOT_REMOVED)
+    response.status(500).json(constants.builder.partners.error.REMOVE)
   }
 }
