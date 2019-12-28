@@ -88,18 +88,18 @@ const constants = {
   investment: {
     // S04xx
     success: {
-      CREATE: { code: 'S0401', message: 'Investimento criado com sucesso' },
-      CANCEL: { code: 'S0402', message: 'Investimento cancelado com sucesso' },
-      TED_CONFIRMATION: { code: 'S0404', message: 'Comprovante de TED enviado' },
-      CONFIRMATION: { code: 'S0405', message: 'Investimento(s) comnfirmado(s)' }
+      CREATE: { code: 'S0400', message: 'Investimento criado com sucesso' },
+      CANCEL: { code: 'S0401', message: 'Investimento cancelado com sucesso' },
+      TED_CONFIRMATION: { code: 'S0402', message: 'Comprovante de TED enviado' },
+      CONFIRMATION: { code: 'S0403', message: 'Investimento(s) comnfirmado(s)' }
     },
     // E04xx
     error: {
-      NOT_FOUND: { code: '4501', message: 'Erro ao buscar Investimento(s)' },
-      CREATE: { code: '4502', message: 'Erro ao criar o investimento' },
-      CANCEL: { code: '4504', message: 'Erro ao cancelar o investimento' },
-      TED_CONFIRMATION: { code: '4505', message: 'Erro ao enviar comprovante de TED' },
-      CONFIRMATION: { code: '4506', message: 'Erro ao confirmar o(s) investimento(s)' }
+      NOT_FOUND: { code: 'E0400', message: 'Erro ao buscar Investimento(s)' },
+      CREATE: { code: 'E0401', message: 'Erro ao criar o investimento' },
+      CANCEL: { code: 'E0402', message: 'Erro ao cancelar o investimento' },
+      TED_CONFIRMATION: { code: 'E0403', message: 'Erro ao enviar comprovante de TED' },
+      CONFIRMATION: { code: 'E0404', message: 'Erro ao confirmar o(s) investimento(s)' }
     }
   },
   fundraising: {
@@ -118,7 +118,7 @@ const constants = {
       CREATE: { code: 'E0504', message: 'Erro ao criar a captação' },
       UPDATE: { code: 'E0505', message: 'Erro ao atualizar a captação' },
       REMOVE: { code: 'E0506', message: 'Erro ao deletar a captação' },
-      FINISH: { code: 'S0504', message: 'Erro ao encerrar a captação' },
+      FINISH: { code: 'E0504', message: 'Erro ao encerrar a captação' },
       NOT_REMOVED_INVESTMENT: { code: 'E0507', message: 'Já existem investimentos realizados na captação' }
     }
   },
@@ -137,36 +137,35 @@ const constants = {
       REMOVE: { code: 'E0604', message: 'Erro ao deletar o custodiador' }
     }
   },
-
   building: {
-    // 60xx
+    // S07xx
     success: {
-      CREATED: { code: 6000, message: 'Obra criada com sucesso' },
-      UPDATED: { code: 6001, message: 'Obra atualizada com sucesso' },
-      REMOVED: { code: 6002, message: 'Obra removida com sucesso' }
+      CREATE: { code: 'S0700', message: 'Obra criada com sucesso' },
+      UPDATE: { code: 'S0701', message: 'Obra atualizada com sucesso' },
+      REMOVE: { code: 'S0702', message: 'Obra deletada com sucesso' }
     },
-    // 65xx
+    // E07xx
     error: {
-      NOT_FOUNDS: { code: 6500, message: 'Ainda não existem obras cadastradas' },
-      NOT_FOUND: { code: 6501, message: 'Obra não encontrada' },
-      NOT_CREATED: { code: 6502, message: 'Erro ao tentar criar a obra' },
-      NOT_UPDATED: { code: 6503, message: 'Erro ao tentar atualizar a obra' },
-      NOT_REMOVED: { code: 6504, message: 'Erro ao tentar remover a obra' }
+      NOT_FOUND: { code: 'E0700', message: 'Erro ao buscar Obra(s)' },
+      CREATE: { code: 'E0701', message: 'Erro ao criar Obra' },
+      UPDATE: { code: 'E0702', message: 'Erro ao atualizar Obra' },
+      REMOVE: { code: 'E0703', message: 'Erro ao deletar Obra' }
+    },
+    images: {
+      // S07xx
+      success: {
+        CREATE: { code: 'S0703', message: 'Imagens enviadas com sucesso' },
+        REMOVE: { code: 'S0704', message: 'Imagens deletadas com sucesso' }
+      },
+      // E07xx
+      error: {
+        NOT_FOUND: { code: 'E0704', message: 'Erro ao buscar imagens' },
+        CREATE: { code: 'E0705', message: 'Erro ao enviar as imagens' },
+        REMOVE: { code: 'E0706', message: 'Erro ao deletar as imagens' }
+      }
     }
   },
-  building_image: {
-    // 90xx
-    success: {
-      CREATED: { code: 9000, message: 'Comprovante enviado com sucesso' },
-      REMOVED: { code: 9002, message: 'Imagens removidas com sucesso' }
-    },
-    // 95xx
-    error: {
-      NOT_FOUNDS: { code: 3500, message: 'Ainda não existem imagens cadastradas' },
-      NOT_CREATED: { code: 3502, message: 'Erro ao tentar enviar a imagem' },
-      REMOVED: { code: 3504, message: 'Erro ao tentar remover a imagem' }
-    }
-  },
+
   builder: {
     // 50xx
     success: {

@@ -51,7 +51,7 @@ export const getAll = async (request, response) => {
   } catch (err) {
     logger().error(err)
 
-    return response.status(500).json(err.message)
+    return response.status(500).json(constants.building.error.NOT_FOUND)
   }
 }
 
@@ -98,7 +98,7 @@ export const getAllAvaliables = async (request, response) => {
   } catch (err) {
     logger().error(err)
 
-    response.status(500).json(err.message)
+    response.status(500).json(constants.building.error.NOT_FOUND)
   }
 }
 
@@ -153,7 +153,7 @@ export const getById = async (request, response) => {
   } catch (err) {
     logger().error(err)
 
-    response.status(500).json(err)
+    response.status(500).json(constants.building.error.NOT_FOUND)
   }
 }
 
@@ -206,7 +206,7 @@ export const getByBuilderId = async (request, response) => {
   } catch (err) {
     logger().error(err)
 
-    response.status(500).json(err)
+    response.status(500).json(constants.building.error.NOT_FOUND)
   }
 }
 
@@ -284,11 +284,11 @@ export const create = async (request, response) => {
   try {
     const building = await repository.create(request.body)
 
-    response.json(Object.assign(constants.building.success.CREATED, { building }))
+    response.json(Object.assign(constants.building.success.CREATE, { building }))
   } catch (err) {
     logger().error(err)
 
-    response.status(500).json(constants.building.error.NOT_CREATED)
+    response.status(500).json(constants.building.error.CREATE)
   }
 }
 
@@ -345,11 +345,11 @@ export const update = async (request, response) => {
   try {
     await repository.update(request.body)
 
-    response.json(constants.building.success.UPDATED)
+    response.json(constants.building.success.UPDATE)
   } catch (err) {
     logger().error(err)
 
-    response.status(500).json(constants.building.error.NOT_UPDATED)
+    response.status(500).json(constants.building.error.UPDATE)
   }
 }
 
@@ -388,10 +388,10 @@ export const remove = async (request, response) => {
   try {
     await repository.remove(request.params.id)
 
-    response.json(constants.building.success.REMOVED)
+    response.json(constants.building.success.REMOVE)
   } catch (err) {
     logger().error(err)
 
-    response.status(500).json(constants.building.error.NOT_REMOVED)
+    response.status(500).json(constants.building.error.REMOVE)
   }
 }
