@@ -17,6 +17,20 @@ export const getByBuildingId = id => {
 }
 
 /**
+ * Find Images by IDs
+ *
+ * @param {string} ids - Image IDs
+ * @returns - Returns a object
+ */
+export const getByIDs = ids => {
+  return db
+    .select()
+    .from(table)
+    .where('id', 'IN', ids)
+    .run()
+}
+
+/**
  * Create Images
  *
  * @param {object} data - Image data
