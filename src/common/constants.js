@@ -122,6 +122,21 @@ const constants = {
       NOT_REMOVED_INVESTMENT: { code: 'E0507', message: 'Já existem investimentos realizados na captação' }
     }
   },
+  custodian: {
+    // S06xx
+    success: {
+      CREATE: { code: 'S0600', message: 'Custodiador criado com sucesso' },
+      UPDATE: { code: 'S0601', message: 'Custodiador atualizado com sucesso' },
+      REMOVE: { code: 'S0602', message: 'Custodiador deletado com sucesso' }
+    },
+    // E06xx
+    error: {
+      NOT_FOUND: { code: 'E0600', message: 'Erro ao buscar o Custodiador' },
+      CREATE: { code: 'E0602', message: 'Erro ao criar o custodiador' },
+      UPDATE: { code: 'E0603', message: 'Erro ao atualizar o custodiador' },
+      REMOVE: { code: 'E0604', message: 'Erro ao deletar o custodiador' }
+    }
+  },
 
   building: {
     // 60xx
@@ -150,22 +165,6 @@ const constants = {
       NOT_FOUNDS: { code: 3500, message: 'Ainda não existem imagens cadastradas' },
       NOT_CREATED: { code: 3502, message: 'Erro ao tentar enviar a imagem' },
       REMOVED: { code: 3504, message: 'Erro ao tentar remover a imagem' }
-    }
-  },
-  custodian: {
-    // 80xx
-    success: {
-      CREATED: { code: 6000, message: 'Custodiador criado com sucesso' },
-      UPDATED: { code: 6001, message: 'Custodiador atualizado com sucesso' },
-      REMOVED: { code: 6002, message: 'Custodiador removido com sucesso' }
-    },
-    // 85xx
-    error: {
-      NOT_FOUNDS: { code: 6500, message: 'Ainda não existem custodiadores cadastrados' },
-      NOT_FOUND: { code: 6501, message: 'Custodiador não encontrado' },
-      NOT_CREATED: { code: 6502, message: 'Erro ao tentar criar o custodiador' },
-      NOT_UPDATED: { code: 6503, message: 'Erro ao tentar atualizar o custodiador' },
-      NOT_REMOVED: { code: 6504, message: 'Erro ao tentar remover o custodiador' }
     }
   },
   builder: {

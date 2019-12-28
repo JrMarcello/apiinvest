@@ -37,7 +37,7 @@ export const getAll = async (request, response) => {
   } catch (err) {
     logger().error(err)
 
-    response.status(500).json(err.message)
+    response.status(500).json(constants.custodian.error.NOT_FOUND)
   }
 }
 
@@ -82,7 +82,7 @@ export const getById = async (request, response) => {
   } catch (err) {
     logger().error(err)
 
-    response.status(500).json(err)
+    response.status(500).json(constants.custodian.error.NOT_FOUND)
   }
 }
 
@@ -137,11 +137,11 @@ export const create = async (request, response) => {
   try {
     const custodian = await repository.create(request.body)
 
-    response.json(Object.assign(constants.custodian.success.CREATED, { custodian }))
+    response.json(Object.assign(constants.custodian.success.CREATE, { custodian }))
   } catch (err) {
     logger().error(err)
 
-    response.status(500).json(constants.custodian.error.NOT_CREATED)
+    response.status(500).json(constants.custodian.error.CREATE)
   }
 }
 
@@ -189,11 +189,11 @@ export const update = async (request, response) => {
   try {
     await repository.update(request.body)
 
-    response.json(constants.custodian.success.UPDATED)
+    response.json(constants.custodian.success.UPDATE)
   } catch (err) {
     logger().error(err)
 
-    response.status(500).json(constants.custodian.error.NOT_UPDATED)
+    response.status(500).json(constants.custodian.error.UPDATE)
   }
 }
 
@@ -228,10 +228,10 @@ export const remove = async (request, response) => {
   try {
     await repository.remove(request.params.id)
 
-    response.json(constants.custodian.success.REMOVED)
+    response.json(constants.custodian.success.REMOVE)
   } catch (err) {
     logger().error(err)
 
-    response.status(500).json(constants.custodian.error.NOT_REMOVED)
+    response.status(500).json(constants.custodian.error.REMOVE)
   }
 }
