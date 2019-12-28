@@ -2,247 +2,209 @@
  * Constants file
  */
 const constants = {
-  // Code: 1xxx
-  auth: {
-    // S00xx
-    // success: {
-
-    // },
+  validations: {
     // E00xx
+    INVALID_REQUEST_DATA: { code: 'E0000', message: 'Dados de requisição inválidos' },
+    INVALID_DATA_FIELD: { code: 'E0001', message: 'Dado inválido' }
+  },
+  auth: {
+    // E01xx
     error: {
-      UNAUTHORIZED: { code: 1500, message: 'Acesso negado! Token inválido ou inexistente' }
+      UNAUTHORIZED: { code: 'E0100', message: 'Acesso negado! Token inválido ou inexistente' }
     }
   },
   user: {
-    // S01xx
+    // S02xx
     success: {
-      CREATED: { code: 'S0000', message: 'Usuário criado com sucesso' },
-      UPDATED: { code: 'S0001', message: 'Usuário atualizado com sucesso' },
-      REMOVED: { code: 'S0002', message: 'Usuário removido com sucesso' },
-      LOGGED: { code: 'S0003', message: 'Usuario logado' },
-      NOT_FOUNDS: { code: 2500, message: 'Ainda não existem usuários cadastrados' },
-      NOT_FOUND: { code: 2501, message: 'Usuario não encontrado' }
+      CREATE: { code: 'S0200', message: 'Usuário criado com sucesso' },
+      UPDATE: { code: 'S0201', message: 'Usuário atualizado com sucesso' },
+      REMOVE: { code: 'S0202', message: 'Usuário deletado com sucesso' },
+      LOGGED: { code: 'S0203', message: 'Usuario logado' }
     },
-    // E01xx
+    // E02xx
     error: {
-      NOT_FOUNDS: { code: 2500, message: 'Erro ao tetar buscar usuário' },
-      NOT_CREATED: { code: 2502, message: 'Erro ao tentar criar o usuário' },
-      NOT_UPDATED: { code: 2503, message: 'Erro ao tentar atualizar o usuário' },
-      NOT_REMOVED: { code: 2504, message: 'Erro ao tentar remover o usuário' },
-      INVALID_USER_LOGIN: { code: 2505, message: 'Email ou senha inválido' }
+      CREATE: { code: 'E0200', message: 'Erro ao criar o Usuário' },
+      UPDATE: { code: 'E0201', message: 'Erro ao atualizar Usuário' },
+      REMOVE: { code: 'E0202', message: 'Erro ao deletar Usuário' },
+      LOGGED: { code: 'E0203', message: 'Erro ao realizar login' },
+      NOT_FOUND: { code: 'E0204', message: 'Erro ao buscar Usuário(s)' }
     }
   },
   investor: {
-    // S1xxx
+    // S03xx
     success: {
-      CREATED: { code: 3000, message: 'Investidor criado com sucesso' },
-      UPDATED: { code: 3001, message: 'Investidor atualizado com sucesso' },
-      REMOVED: { code: 3002, message: 'Investidor removido com sucesso' }
+      CREATE: { code: 'S0300', message: 'Investidor criado com sucesso' },
+      UPDATE: { code: 'S0301', message: 'Investidor atualizado com sucesso' }
     },
-    // E01xx
+    // E03xx
     error: {
-      NOT_FOUNDS: { code: 3500, message: 'Ainda não existem investidores cadastrados' },
-      NOT_FOUND: { code: 3501, message: 'Erro ao buscar Investidor(es)' },
-      NOT_CREATED: { code: 3502, message: 'Erro ao tentar criar o investidor' },
-      NOT_UPDATED: { code: 3503, message: 'Erro ao tentar atualizar o investidor' },
-      NOT_REMOVED: { code: 3504, message: 'Erro ao tentar remover o investidor' },
-
-      CREATE_INVALID_DATA: { code: 'S1000', message: 'Dados inválidos' }
+      NOT_FOUND: { code: 'E0300', message: 'Erro ao buscar Investidor(es)' },
+      INVESTMENTS_NOT_FOUND: { code: 'E0301', message: 'Erro ao buscar Investimentos' },
+      INVESTMENTS_COUNT: { code: 'E0302', message: 'Erro ao buscar total de Investimentos' },
+      INVESTED_AMOUNT: { code: 'E0303', message: 'Erro ao buscar valor total investido' },
+      RECEIVED_AMOUNT: { code: 'E0304', message: 'Erro ao buscar valor total recebido' },
+      PROJECTED_AMOUNT: { code: 'E0305', message: 'Erro ao buscar valor total projetado' },
+      CREATE: { code: 'E0306', message: 'Erro ao criar o Investidor' },
+      UPDATE: { code: 'E0307', message: 'Erro ao atualizar o Investidor' }
+    },
+    phone: {
+      // S03xx
+      success: {
+        CREATE: { code: 'S0302', message: 'Telefone(s) criado(s) com sucesso' },
+        REMOVE: { code: 'S0303', message: 'Telefone(s) deletado(s) com sucesso' }
+      },
+      // E03xx
+      error: {
+        NOT_FOUND: { code: 'E0308', message: 'Telefone(s) não encontrado' },
+        CREATE: { code: 'E0309', message: 'Erro ao criar o(s) telefone(s)' },
+        REMOVE: { code: 'E0310', message: 'Erro ao deletar o(s) telefone(s)' }
+      }
+    },
+    bank_account: {
+      // S03xx
+      success: {
+        CREATE: { code: 'S0304', message: 'Conta(s) criada(s) com sucesso' },
+        REMOVE: { code: 'S0305', message: 'Conta(s) deletada(s) com sucesso' }
+      },
+      // E03xx
+      error: {
+        NOT_FOUND: { code: 'E0311', message: 'Conta(s) não encontrada(s)' },
+        CREATE: { code: 'E0312', message: 'Erro ao criar a(s) conta(s)' },
+        REMOVE: { code: 'E0313', message: 'Erro ao deletar a(s) conta(s)' }
+      }
+    },
+    document: {
+      // S03xx
+      success: {
+        CREATE: { code: 'S0306', message: 'Comprovantes enviados com sucesso' }
+      },
+      // E03xx
+      error: {
+        NOT_FOUND: { code: 'E0314', message: 'Comprovantes não encontrados' },
+        CREATE: { code: 'E0315', message: 'Erro ao tentar enviar os comprovantes' }
+      }
     }
   },
   investment: {
-    // 40xx
+    // S04xx
     success: {
-      CREATE: { code: 4000, message: 'Investimento criado com sucesso' },
-      CANCEL: { code: 4002, message: 'Investimento cancelado com sucesso' },
-      TED_CONFIRMATION: { code: 4003, message: 'Comprovante de TED enviado' },
-      CONFIRMATION: { code: 4004, message: 'Investimento(s) comnfirmado' }
+      CREATE: { code: 'S0400', message: 'Investimento criado com sucesso' },
+      CANCEL: { code: 'S0401', message: 'Investimento cancelado com sucesso' },
+      TED_CONFIRMATION: { code: 'S0402', message: 'Comprovante de TED enviado' },
+      CONFIRMATION: { code: 'S0403', message: 'Investimento(s) comnfirmado(s)' }
     },
-    // 45xx
+    // E04xx
     error: {
-      NOT_FOUNDS: { code: 4500, message: 'Não foi possivel carregar investimentos' },
-      NOT_FOUND: { code: 4501, message: 'Não foi possivel carregar o investimento' },
-      CREATE: { code: 4502, message: 'Erro ao tentar criar a investimento' },
-      CANCEL: { code: 4504, message: 'Erro ao tentar cancelar o investimento' },
-      TED_CONFIRMATION: { code: 4505, message: 'Erro ao tentar enviar comprovante de TED' },
-      CONFIRMATION: { code: 4506, message: 'Erro ao tentar confirmar o investimento' }
-    }
-  },
-  builder: {
-    // 50xx
-    success: {
-      CREATED: { code: 5000, message: 'Construtora criada com sucesso' },
-      UPDATED: { code: 5001, message: 'Construtora atualizada com sucesso' },
-      REMOVED: { code: 5002, message: 'Construtora removida com sucesso' },
-      NOT_FOUNDS: { code: 5500, message: 'Ainda não existem construtoras cadastradas' },
-      NOT_FOUND: { code: 5501, message: 'Construtora não encontrada' }
-    },
-    // 55xx
-    error: {
-      NOT_FOUND: { code: 5501, message: 'Erro ao buscar construtora(s)' },
-      NOT_CREATED: { code: 5502, message: 'Erro ao tentar criar a construtora' },
-      NOT_UPDATED: { code: 5503, message: 'Erro ao tentar atualizar a construtora' },
-      NOT_REMOVED: { code: 5504, message: 'Erro ao tentar remover a construtora' }
-    }
-  },
-  building: {
-    // 60xx
-    success: {
-      CREATED: { code: 6000, message: 'Obra criada com sucesso' },
-      UPDATED: { code: 6001, message: 'Obra atualizada com sucesso' },
-      REMOVED: { code: 6002, message: 'Obra removida com sucesso' }
-    },
-    // 65xx
-    error: {
-      NOT_FOUNDS: { code: 6500, message: 'Ainda não existem obras cadastradas' },
-      NOT_FOUND: { code: 6501, message: 'Obra não encontrada' },
-      NOT_CREATED: { code: 6502, message: 'Erro ao tentar criar a obra' },
-      NOT_UPDATED: { code: 6503, message: 'Erro ao tentar atualizar a obra' },
-      NOT_REMOVED: { code: 6504, message: 'Erro ao tentar remover a obra' }
+      NOT_FOUND: { code: 'E0400', message: 'Erro ao buscar Investimento(s)' },
+      CREATE: { code: 'E0401', message: 'Erro ao criar o investimento' },
+      CANCEL: { code: 'E0402', message: 'Erro ao cancelar o investimento' },
+      TED_CONFIRMATION: { code: 'E0403', message: 'Erro ao enviar comprovante de TED' },
+      CONFIRMATION: { code: 'E0404', message: 'Erro ao confirmar o(s) investimento(s)' }
     }
   },
   fundraising: {
-    // 70xx
+    // S05xx
     success: {
-      CREATED: { code: 6000, message: 'Captação criada com sucesso' },
-      UPDATED: { code: 6001, message: 'Captação atualizada com sucesso' },
-      REMOVED: { code: 6002, message: 'Captação removida com sucesso' },
-      FINISHED: { code: 6000, message: 'Captação encerrada com sucesso' }
+      CREATE: { code: 'S0501', message: 'Captação criada com sucesso' },
+      UPDATE: { code: 'S0502', message: 'Captação atualizada com sucesso' },
+      REMOVE: { code: 'S0503', message: 'Captação deletada com sucesso' },
+      FINISH: { code: 'S0504', message: 'Captação encerrada com sucesso' }
     },
-    // 75xx
+    // E05xx
     error: {
-      NOT_FOUNDS: { code: 6500, message: 'Ainda não existem captações cadastradas' },
-      NOT_FOUND: { code: 6501, message: 'Captação não encontrada' },
-      NOT_CREATED: { code: 6502, message: 'Erro ao tentar criar a captação' },
-      NOT_UPDATED: { code: 6503, message: 'Erro ao tentar atualizar a captação' },
-      NOT_REMOVED: { code: 6504, message: 'Erro ao tentar remover a captação' },
-      NOT_REMOVED_INVESTMENT: { code: 6504, message: 'Já existem investimentos realizados na captação' },
-      AMOUNT_RAISED: { code: 6501, message: 'Erro ao buscar total captado' },
-      INVESTORS: { code: 6501, message: 'Erro ao buscar os Investidores da Captação' }
+      NOT_FOUND: { code: 'E0501', message: 'Erro ao buscar a(s) Captação(ões)' },
+      AMOUNT_RAISED: { code: 'E0502', message: 'Erro ao buscar total captado' },
+      INVESTORS: { code: 'E0503', message: 'Erro ao buscar os Investidores da Captação' },
+      CREATE: { code: 'E0504', message: 'Erro ao criar a captação' },
+      UPDATE: { code: 'E0505', message: 'Erro ao atualizar a captação' },
+      REMOVE: { code: 'E0506', message: 'Erro ao deletar a captação' },
+      FINISH: { code: 'E0504', message: 'Erro ao encerrar a captação' },
+      NOT_REMOVED_INVESTMENT: { code: 'E0507', message: 'Já existem investimentos realizados na captação' }
     }
   },
   custodian: {
-    // 80xx
+    // S06xx
     success: {
-      CREATED: { code: 6000, message: 'Custodiador criado com sucesso' },
-      UPDATED: { code: 6001, message: 'Custodiador atualizado com sucesso' },
-      REMOVED: { code: 6002, message: 'Custodiador removido com sucesso' }
+      CREATE: { code: 'S0600', message: 'Custodiador criado com sucesso' },
+      UPDATE: { code: 'S0601', message: 'Custodiador atualizado com sucesso' },
+      REMOVE: { code: 'S0602', message: 'Custodiador deletado com sucesso' }
     },
-    // 85xx
+    // E06xx
     error: {
-      NOT_FOUNDS: { code: 6500, message: 'Ainda não existem custodiadores cadastrados' },
-      NOT_FOUND: { code: 6501, message: 'Custodiador não encontrado' },
-      NOT_CREATED: { code: 6502, message: 'Erro ao tentar criar o custodiador' },
-      NOT_UPDATED: { code: 6503, message: 'Erro ao tentar atualizar o custodiador' },
-      NOT_REMOVED: { code: 6504, message: 'Erro ao tentar remover o custodiador' }
+      NOT_FOUND: { code: 'E0600', message: 'Erro ao buscar o Custodiador' },
+      CREATE: { code: 'E0602', message: 'Erro ao criar o custodiador' },
+      UPDATE: { code: 'E0603', message: 'Erro ao atualizar o custodiador' },
+      REMOVE: { code: 'E0604', message: 'Erro ao deletar o custodiador' }
     }
   },
-  partner: {
-    // 80xx
+  building: {
+    // S07xx
     success: {
-      CREATED: { code: 6000, message: 'Sócio criado com sucesso' },
-      UPDATED: { code: 6001, message: 'Sócio atualizado com sucesso' },
-      REMOVED: { code: 6002, message: 'Sócio removido com sucesso' }
+      CREATE: { code: 'S0700', message: 'Obra criada com sucesso' },
+      UPDATE: { code: 'S0701', message: 'Obra atualizada com sucesso' },
+      REMOVE: { code: 'S0702', message: 'Obra deletada com sucesso' }
     },
-    // 85xx
+    // E07xx
     error: {
-      NOT_FOUNDS: { code: 6500, message: 'Ainda não existem sócios cadastrados' },
-      NOT_FOUND: { code: 6501, message: 'Sócio não encontrado' },
-      NOT_CREATED: { code: 6502, message: 'Erro ao tentar criar o sócio' },
-      NOT_UPDATED: { code: 6503, message: 'Erro ao tentar atualizar o sócio' },
-      NOT_REMOVED: { code: 6504, message: 'Erro ao tentar remover o sócio' }
+      NOT_FOUND: { code: 'E0700', message: 'Erro ao buscar Obra(s)' },
+      CREATE: { code: 'E0701', message: 'Erro ao criar Obra' },
+      UPDATE: { code: 'E0702', message: 'Erro ao atualizar Obra' },
+      REMOVE: { code: 'E0703', message: 'Erro ao deletar Obra' }
+    },
+    images: {
+      // S07xx
+      success: {
+        CREATE: { code: 'S0703', message: 'Imagens enviadas com sucesso' },
+        REMOVE: { code: 'S0704', message: 'Imagens deletadas com sucesso' }
+      },
+      // E07xx
+      error: {
+        NOT_FOUND: { code: 'E0704', message: 'Erro ao buscar imagens' },
+        CREATE: { code: 'E0705', message: 'Erro ao enviar as imagens' },
+        REMOVE: { code: 'E0706', message: 'Erro ao deletar as imagens' }
+      }
     }
   },
-  investor_phone: {
-    // 90xx
+  builder: {
+    // S08xx
     success: {
-      CREATED: { code: 9000, message: 'Telefone criado com sucesso' },
-      UPDATED: { code: 9001, message: 'Telefone atualizado com sucesso' },
-      REMOVED: { code: 9002, message: 'Telefone removido com sucesso' }
+      CREATE: { code: 'S0800', message: 'Construtora criada com sucesso' },
+      UPDATE: { code: 'S0801', message: 'Construtora atualizada com sucesso' },
+      REMOVE: { code: 'S0802', message: 'Construtora deletada com sucesso' }
     },
-    // 95xx
+    // E08xx
     error: {
-      NOT_FOUNDS: { code: 9500, message: 'Ainda não existem telefones cadastrados' },
-      NOT_FOUND: { code: 9501, message: 'Telefone não encontrado' },
-      NOT_CREATED: { code: 9502, message: 'Erro ao tentar criar o telefone' },
-      NOT_UPDATED: { code: 9503, message: 'Erro ao tentar atualizar o telefone' },
-      NOT_REMOVED: { code: 9504, message: 'Erro ao tentar remover o telefone' }
-    }
-  },
-  investor_bank_account: {
-    // 90xx
-    success: {
-      CREATED: { code: 9000, message: 'Conta criada com sucesso' },
-      UPDATED: { code: 9001, message: 'Conta atualizada com sucesso' },
-      REMOVED: { code: 9002, message: 'Conta removida com sucesso' }
+      NOT_FOUND: { code: 'E0800', message: 'Erro ao buscar construtora(s)' },
+      CREATE: { code: 'E0801', message: 'Erro ao criar a construtora' },
+      UPDATE: { code: 'E0802', message: 'Erro ao atualizar a construtora' },
+      REMOVE: { code: 'E0803', message: 'Erro ao deletar a construtora' }
     },
-    // 95xx
-    error: {
-      NOT_FOUNDS: { code: 3500, message: 'Ainda não existem contas cadastradas' },
-      NOT_FOUND: { code: 3501, message: 'Conta não encontrado' },
-      NOT_CREATED: { code: 3502, message: 'Erro ao tentar criar a conta' },
-      NOT_UPDATED: { code: 3503, message: 'Erro ao tentar atualizar a conta' },
-      NOT_REMOVED: { code: 3504, message: 'Erro ao tentar remover a conta' }
-    }
-  },
-  investor_document: {
-    // 90xx
-    success: {
-      CREATED: { code: 9000, message: 'Comprovante enviado com sucesso' },
-      UPDATED: { code: 9001, message: 'Comprovante atualizado com sucesso' },
-      REMOVED: { code: 9002, message: 'Comprovante removido com sucesso' }
+    phones: {
+      // S08xx
+      success: {
+        CREATE: { code: 'S0803', message: 'Telefone(s) criado(s) com sucesso' },
+        REMOVE: { code: 'S0804', message: 'Telefone(s) deletado(s) com sucesso' }
+      },
+      // E08xx
+      error: {
+        NOT_FOUND: { code: 'E0804', message: 'Erro ao buscar telefones' },
+        CREATE: { code: 'E0805', message: 'Erro ao criar telefone(s)' },
+        REMOVE: { code: 'E0806', message: 'Erro ao deletar telefone(s)' }
+      }
     },
-    // 95xx
-    error: {
-      NOT_FOUNDS: { code: 3500, message: 'Ainda não existem comprovante cadastrados' },
-      NOT_FOUND: { code: 3501, message: 'Comprovante não encontrado' },
-      NOT_CREATED: { code: 3502, message: 'Erro ao tentar enviar o comprovante' },
-      NOT_UPDATED: { code: 3503, message: 'Erro ao tentar atualizar o comprovante' }
-      // NOT_REMOVED: { code: 3504, message: 'Erro ao tentar remover o comprovante' }
+    partners: {
+      // S08xx
+      success: {
+        CREATE: { code: 'S0805', message: 'Sócio(s) criado(s) com sucesso' },
+        REMOVE: { code: 'S0806', message: 'Sócio(s) deletado(s) com sucesso' }
+      },
+      // E08xx
+      error: {
+        NOT_FOUND: { code: 'E0807', message: 'Erro ao buscar sócios' },
+        CREATE: { code: 'E0808', message: 'Erro ao criar sócio(s)' },
+        REMOVE: { code: 'E0809', message: 'Erro ao deletar sócio(s)' }
+      }
     }
-  },
-  building_image: {
-    // 90xx
-    success: {
-      CREATED: { code: 9000, message: 'Comprovante enviado com sucesso' },
-      REMOVED: { code: 9002, message: 'Imagens removidas com sucesso' }
-    },
-    // 95xx
-    error: {
-      NOT_FOUNDS: { code: 3500, message: 'Ainda não existem imagens cadastradas' },
-      NOT_CREATED: { code: 3502, message: 'Erro ao tentar enviar a imagem' },
-      REMOVED: { code: 3504, message: 'Erro ao tentar remover a imagem' }
-    }
-  },
-  builder_phone: {
-    // 90xx
-    success: {
-      CREATED: { code: 9000, message: 'Telefone criado com sucesso' },
-      REMOVED: { code: 9002, message: 'Telefone removido com sucesso' }
-    },
-    // 95xx
-    error: {
-      NOT_FOUNDS: { code: 3500, message: 'Erro ao tentar buscar telefones' },
-      NOT_CREATED: { code: 3502, message: 'Erro ao tentar criar telefone(s)' },
-      NOT_REMOVED: { code: 3504, message: 'Erro ao tentar remover o telefone' }
-    }
-  },
-  builder_partner: {
-    // 90xx
-    success: {
-      CREATED: { code: 9000, message: 'Sócio criado com sucesso' },
-      REMOVED: { code: 9002, message: 'Sócio removido com sucesso' }
-    },
-    // 95xx
-    error: {
-      NOT_FOUNDS: { code: 3500, message: 'Erro ao tentar buscar sócios' },
-      NOT_CREATED: { code: 3502, message: 'Erro ao tentar criar o sócio' },
-      NOT_REMOVED: { code: 3504, message: 'Erro ao tentar remover o sócio' }
-    }
-  },
-  validations: {
-    INVALID_REQUEST_DATA: { code: 9999, message: 'Dados da requisição inválidos' },
-    INVALID_DATA_FIELD: 'Dado inválido'
   }
 }
 

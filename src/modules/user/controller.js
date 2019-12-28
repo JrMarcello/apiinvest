@@ -55,7 +55,7 @@ export const getAll = async (request, response) => {
   } catch (err) {
     logger().error(err)
 
-    return response.status(500).json(err.message)
+    return response.status(500).json(constants.user.error.NOT_FOUND)
   }
 }
 
@@ -102,7 +102,7 @@ export const getById = async (request, response) => {
   } catch (err) {
     logger().error(err)
 
-    response.status(500).json(err)
+    response.status(500).json(constants.user.error.NOT_FOUND)
   }
 }
 
@@ -156,11 +156,11 @@ export const create = async (request, response) => {
   try {
     const user = await repository.create(request.body)
 
-    response.json(Object.assign(constants.user.success.CREATED, { user }))
+    response.json(Object.assign(constants.user.success.CREATE, { user }))
   } catch (err) {
     logger().error(err)
 
-    response.status(500).json(constants.user.error.NOT_CREATED)
+    response.status(500).json(constants.user.error.CREATE)
   }
 }
 
@@ -206,11 +206,11 @@ export const update = async (request, response) => {
 
     await repository.update(request.body)
 
-    response.json(constants.user.success.UPDATED)
+    response.json(constants.user.success.UPDATE)
   } catch (err) {
     logger().error(err)
 
-    response.status(500).json(constants.user.error.NOT_UPDATED)
+    response.status(500).json(constants.user.error.UPDATE)
   }
 }
 
@@ -249,11 +249,11 @@ export const remove = async (request, response) => {
   try {
     await repository.remove(request.user.id_profile === 3 ? request.params.id : request.user.id)
 
-    response.json(constants.user.success.REMOVED)
+    response.json(constants.user.success.REMOVE)
   } catch (err) {
     logger().error(err)
 
-    response.status(500).json(constants.user.error.NOT_REMOVED)
+    response.status(500).json(constants.user.error.REMOVE)
   }
 }
 
@@ -295,6 +295,6 @@ export const login = async (request, response) => {
   } catch (err) {
     logger().error(err)
 
-    response.status(500).json(constants.user.error.INVALID_USER_LOGIN)
+    response.status(500).json(constants.user.error.LOGGED)
   }
 }

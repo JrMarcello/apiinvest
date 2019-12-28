@@ -36,7 +36,7 @@ export const getByBuildingId = async (request, response) => {
   } catch (err) {
     logger().error(err)
 
-    response.status(500).json(err)
+    response.status(500).json(constants.building.images.error.NOT_FOUND)
   }
 }
 
@@ -72,11 +72,11 @@ export const create = async (request, response) => {
   try {
     const images = await repository.create(request.params.idBuilding, request.files)
 
-    response.json(Object.assign(constants.building_image.success.CREATED, { images }))
+    response.json(Object.assign(constants.building.images.success.CREATE, { images }))
   } catch (err) {
     logger().error(err)
 
-    response.status(500).json(constants.building_image.error.NOT_CREATED)
+    response.status(500).json(constants.building.images.error.CREATE)
   }
 }
 
@@ -116,10 +116,10 @@ export const remove = async (request, response) => {
   try {
     await repository.remove(request.params.idBuilding, request.body.ids)
 
-    response.json(constants.building_image.success.REMOVED)
+    response.json(constants.building.images.success.REMOVE)
   } catch (err) {
     logger().error(err)
 
-    response.status(500).json(constants.building_image.error.REMOVED)
+    response.status(500).json(constants.building.images.error.REMOVE)
   }
 }
