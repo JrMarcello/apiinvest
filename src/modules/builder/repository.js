@@ -50,11 +50,11 @@ export const getAllBuildingsById = async id => {
 export const getByUserId = async id => {
   const builder = await dao.getByUserId(id)
 
-  if (builder) {
-    builder.phones = await phone.getByBuilderId(builder.id)
-    builder.partners = await partner.getByBuilderId(builder.id)
-    builder.buildings = await building.getByBuilderId(builder.id)
-  }
+  // if (builder) {
+  //   builder.phones = await phone.getByBuilderId(builder.id)
+  //   builder.partners = await partner.getByBuilderId(builder.id)
+  //   builder.buildings = await building.getByBuilderId(builder.id)
+  // }
 
   return builder
 }
