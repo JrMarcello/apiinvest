@@ -81,24 +81,12 @@ export const remove = id => {
  * @returns - Returns a object
  */
 export const login = async params => {
-  const user = await dao.getByEmail(params.email)
+  let user = await dao.getByEmail(params.email)
 
   if (!user || !bcrypt.compareSync(params.password, user.password)) throw Error(constants.user.error.INVALID_USER_LOGIN.message)
 
+  user = await getById(user.id)
   user.profile = await dao.getProfile(user.id_profile)
-
-  if (user.id_profile === 1) {
-    user.investor = await investor.getByUserId(user.id)
-  }
-
-  if (user.id_profile === 2) {
-    user.builder = await builder.getByUserId(user.id)
-  }
-
-  if (user && user.id_profile === 3) {
-    user.investor = await investor.getByUserId(user.id)
-    user.builder = await builder.getByUserId(user.id)
-  }
 
   return getToken(user)
 }

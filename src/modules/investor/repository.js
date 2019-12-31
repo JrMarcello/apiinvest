@@ -39,10 +39,10 @@ export const getById = async id => {
 export const getByUserId = async id => {
   const investor = await dao.getByUserId(id)
 
-  if (investor) {
-    investor.phones = await phone.getByInvestorId(investor.id)
-    investor.accounts = await bankAccount.getByInvestorId(investor.id)
-  }
+  // if (investor) {
+  //   investor.phones = await phone.getByInvestorId(investor.id)
+  //   investor.accounts = await bankAccount.getByInvestorId(investor.id)
+  // }
 
   return investor
 }
