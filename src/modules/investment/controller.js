@@ -103,16 +103,24 @@ export const getById = async (request, response) => {
  * @apiSuccessExample Success-Response:
  *   HTTP/1.1 200 OK
  *   [{
- *       "id": "5e891a4e-9195-412a-9f02-135f632c15d0",
+ *       "id": "44cec654-9c2f-4586-90ab-bf1490de5146",
  *       "id_investor": "a897eacd-2681-4e08-8062-c8f7e174bace",
  *       "id_fundraising": "54b07d12-e847-4158-9569-71fd1bf1da29",
- *       "amount": "1500.00",
+ *       "amount": "1000.00",
  *       "amount_returned": null,
- *       "date": "2019-09-25T03:00:00.000Z",
+ *       "date": "2019-11-16T03:00:00.000Z",
  *       "ted_proof_url": null,
  *       "confirmed": false,
- *       "created_date": "2019-12-17T01:20:56.397Z",
- *       "active": true
+ *       "created_date": "2019-12-17T01:34:42.000Z",
+ *       "active": true,
+ *       "amount_fundraising": "100000.00",
+ *       "investment_percentage": "0.05",
+ *       "return_date": "2022-12-15T03:00:00.000Z",
+ *       "id_building": "a8bf6952-f81d-425b-9c84-478a55829027",
+ *       "cnpj_building": "34096667000188",
+ *       "name_building": "Nome da obra",
+ *       "vgv_building": "1000000.00",
+ *       "final_date_building": "2022-12-15T03:00:00.000Z"
  *   }]
  *
  * @apiErrorExample Error-Response:
@@ -195,10 +203,18 @@ export const getByFundraisingId = async (request, response) => {
  *       "amount": "1500.00",
  *       "amount_returned": null,
  *       "date": "2019-09-25T03:00:00.000Z",
- *        "ted_proof_url": null,
+ *       "ted_proof_url": "https://storage.googleapis.com/storebuild-01/teds/5e891a4e-9195-412a-9f02-135f632c15d0/1577555579630.png",
  *       "confirmed": false,
  *       "created_date": "2019-12-17T01:20:56.397Z",
- *       "active": true
+ *       "active": true,
+ *       "amount_fundraising": "100000.00",
+ *       "investment_percentage": "0.05",
+ *       "return_date": "2022-12-15T03:00:00.000Z",
+ *       "id_building": "a8bf6952-f81d-425b-9c84-478a55829027",
+ *       "cnpj_building": "34096667000188",
+ *       "name_building": "Nome da obra",
+ *       "vgv_building": "1000000.00",
+ *       "final_date_building": "2022-12-15T03:00:00.000Z"
  *   }]
  *
  * @apiErrorExample Error-Response:

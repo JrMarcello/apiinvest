@@ -1805,7 +1805,7 @@
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "HTTP/1.1 200 OK\n[{\n    \"id\": \"5e891a4e-9195-412a-9f02-135f632c15d0\",\n    \"id_investor\": \"a897eacd-2681-4e08-8062-c8f7e174bace\",\n    \"id_fundraising\": \"54b07d12-e847-4158-9569-71fd1bf1da29\",\n    \"amount\": \"1500.00\",\n    \"amount_returned\": null,\n    \"date\": \"2019-09-25T03:00:00.000Z\",\n    \"ted_proof_url\": null,\n    \"confirmed\": false,\n    \"created_date\": \"2019-12-17T01:20:56.397Z\",\n    \"active\": true\n}]",
+          "content": "HTTP/1.1 200 OK\n[{\n    \"id\": \"44cec654-9c2f-4586-90ab-bf1490de5146\",\n    \"id_investor\": \"a897eacd-2681-4e08-8062-c8f7e174bace\",\n    \"id_fundraising\": \"54b07d12-e847-4158-9569-71fd1bf1da29\",\n    \"amount\": \"1000.00\",\n    \"amount_returned\": null,\n    \"date\": \"2019-11-16T03:00:00.000Z\",\n    \"ted_proof_url\": null,\n    \"confirmed\": false,\n    \"created_date\": \"2019-12-17T01:34:42.000Z\",\n    \"active\": true,\n    \"amount_fundraising\": \"100000.00\",\n    \"investment_percentage\": \"0.05\",\n    \"return_date\": \"2022-12-15T03:00:00.000Z\",\n    \"id_building\": \"a8bf6952-f81d-425b-9c84-478a55829027\",\n    \"cnpj_building\": \"34096667000188\",\n    \"name_building\": \"Nome da obra\",\n    \"vgv_building\": \"1000000.00\",\n    \"final_date_building\": \"2022-12-15T03:00:00.000Z\"\n}]",
           "type": "json"
         }
       ]
@@ -1833,7 +1833,7 @@
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "HTTP/1.1 200 OK\n[{\n    \"id\": \"5e891a4e-9195-412a-9f02-135f632c15d0\",\n    \"id_investor\": \"a897eacd-2681-4e08-8062-c8f7e174bace\",\n    \"id_fundraising\": \"54b07d12-e847-4158-9569-71fd1bf1da29\",\n    \"amount\": \"1500.00\",\n    \"amount_returned\": null,\n    \"date\": \"2019-09-25T03:00:00.000Z\",\n     \"ted_proof_url\": null,\n    \"confirmed\": false,\n    \"created_date\": \"2019-12-17T01:20:56.397Z\",\n    \"active\": true\n}]",
+          "content": "HTTP/1.1 200 OK\n[{\n    \"id\": \"5e891a4e-9195-412a-9f02-135f632c15d0\",\n    \"id_investor\": \"a897eacd-2681-4e08-8062-c8f7e174bace\",\n    \"id_fundraising\": \"54b07d12-e847-4158-9569-71fd1bf1da29\",\n    \"amount\": \"1500.00\",\n    \"amount_returned\": null,\n    \"date\": \"2019-09-25T03:00:00.000Z\",\n    \"ted_proof_url\": \"https://storage.googleapis.com/storebuild-01/teds/5e891a4e-9195-412a-9f02-135f632c15d0/1577555579630.png\",\n    \"confirmed\": false,\n    \"created_date\": \"2019-12-17T01:20:56.397Z\",\n    \"active\": true,\n    \"amount_fundraising\": \"100000.00\",\n    \"investment_percentage\": \"0.05\",\n    \"return_date\": \"2022-12-15T03:00:00.000Z\",\n    \"id_building\": \"a8bf6952-f81d-425b-9c84-478a55829027\",\n    \"cnpj_building\": \"34096667000188\",\n    \"name_building\": \"Nome da obra\",\n    \"vgv_building\": \"1000000.00\",\n    \"final_date_building\": \"2022-12-15T03:00:00.000Z\"\n}]",
           "type": "json"
         }
       ]
