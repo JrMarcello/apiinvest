@@ -70,13 +70,35 @@ export const getByIdMe = async (idInvestor, id) => {
  * @param {string} id - Investor ID
  * @returns - Returns a object
  */
-export const getByInvestorId = id => {
-  return db
-    .select()
-    .from(table)
-    .where('id_investor', id)
-    .and('active', true)
-    .run()
+export const getByInvestorId = async id => {
+  // return db
+  //   .select()
+  //   .from(table)
+  //   .where('id_investor', id)
+  //   .and('active', true)
+  //   .run()
+
+  const query = {
+    text: `SELECT 
+               i.*, 
+               f.amount AS amount_fundraising,
+               f.investment_percentage,
+               f.return_date,
+               b.id AS id_building,
+               b.cnpj AS cnpj_building,
+               b.name AS name_building,
+               b.vgv AS vgv_building,
+               b.final_date AS final_date_building
+           FROM ${table} i 
+               JOIN fundraising f ON (i.id_fundraising = f.id) 
+               JOIN building b ON (f.id_building = b.id)    
+           WHERE 
+               i.id_investor = $1
+               AND i.active`,
+    values: [id]
+  }
+
+  return (await db.query(query)).rows
 }
 
 /**
@@ -101,13 +123,28 @@ export const getByFundraisingId = id => {
  * @returns - Returns a object
  */
 export const getPendings = async () => {
-  return db
-    .select()
-    .from(table)
-    .where('ted_proof_url', 'IS NOT', null)
-    .and('confirmed', false)
-    .and('active', true)
-    .run()
+  const query = {
+    text: `SELECT 
+               i.*, 
+               f.amount AS amount_fundraising,
+               f.investment_percentage,
+               f.return_date,
+               b.id AS id_building,
+               b.cnpj AS cnpj_building,
+               b.name AS name_building,
+               b.vgv AS vgv_building,
+               b.final_date AS final_date_building
+           FROM ${table} i 
+               JOIN fundraising f ON (i.id_fundraising = f.id) 
+               JOIN building b ON (f.id_building = b.id)    
+           WHERE 
+               i.ted_proof_url IS NOT NULL
+               AND i.confirmed = false
+               AND i.active`
+    // values: [data]
+  }
+
+  return (await db.query(query)).rows
 }
 
 /**
