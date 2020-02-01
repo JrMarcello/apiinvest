@@ -244,6 +244,7 @@ CREATE TABLE investment(
 	amount numeric NOT NULL,
 	amount_returned numeric,
 	date date NOT NULL DEFAULT now(),
+	is_qualified boolean NOT NULL DEFAULT false,
 	ted_proof_url varchar,
 	confirmed boolean NOT NULL DEFAULT false,
 	created_date timestamp NOT NULL DEFAULT now(),

@@ -1,3 +1,4 @@
+import moment from 'moment'
 import db from '../../core/database'
 import { generateUUID } from '../../common/utils'
 
@@ -71,13 +72,6 @@ export const getByIdMe = async (idInvestor, id) => {
  * @returns - Returns a object
  */
 export const getByInvestorId = async id => {
-  // return db
-  //   .select()
-  //   .from(table)
-  //   .where('id_investor', id)
-  //   .and('active', true)
-  //   .run()
-
   const query = {
     text: `SELECT 
                i.*, 
@@ -239,6 +233,34 @@ export const getInvestorsByFundraisingId = async id => {
   }
 
   return (await db.query(query)).rows
+}
+
+/**
+ *  Calculate the accumulated total amount invested in the year from a Investor
+ *
+ * @param {string} id - Investor ID
+ * @returns - Returns a object
+ */
+export const getInvestedAmountOnYear = async id => {
+  const query = {
+    name: 'getInvestedAmountOnYear',
+    text: `SELECT
+               COALESCE(sum(amount), 0) AS amount
+           FROM
+               ${table} i
+           WHERE
+               i.id_investor = $1
+               AND date >= $2
+               AND i.active`,
+    values: [
+      id,
+      moment()
+        .startOf('year')
+        .format('YYYY-MM-DD')
+    ]
+  }
+
+  return parseFloat((await db.query(query)).rows[0].amount)
 }
 
 /**

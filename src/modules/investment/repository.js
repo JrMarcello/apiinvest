@@ -74,6 +74,16 @@ export const create = async data => {
 
   if (!fundraising || data.amount < fundraising.investment_min_value) throw Error('Valor abaixo do mínimo nescessário')
 
+  const yearAmout = await dao.getInvestedAmountOnYear(data.id_investor)
+  const MAX_AMOUNT_NOT_QUALIFIED = parseFloat(env().INVESTMENT_MAX_AMOUNT_NOT_QUALIFIED)
+  const MAX_AMOUNT_QUALIFIED = parseFloat(env().INVESTMENT_MAX_AMOUNT_QUALIFIED)
+
+  if (!data.is_qualified && (yearAmout > MAX_AMOUNT_NOT_QUALIFIED || yearAmout + data.amount > MAX_AMOUNT_NOT_QUALIFIED))
+    throw Error('Limite de investimentos excedido para investidor não qualificado')
+
+  if (data.is_qualified && (yearAmout > MAX_AMOUNT_QUALIFIED || yearAmout + data.amount > MAX_AMOUNT_QUALIFIED))
+    throw Error('Limite de investimentos excedido')
+
   const investment = await dao.create(data)
 
   mailer.sendEmail(getEmailParams(investor))
