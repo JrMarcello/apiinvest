@@ -6,6 +6,7 @@ import helmet from 'helmet'
 import morgan from 'morgan'
 import path from 'path'
 import compression from 'compression'
+import passport from 'passport'
 
 import { env } from '../common/utils'
 
@@ -27,6 +28,7 @@ function setParsers() {
   server.use(bodyParser.json())
   server.use(morgan('dev'))
   server.use(compression())
+  server.use(passport.initialize())
 
   server.use(express.static('public'))
 }

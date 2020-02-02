@@ -1,4 +1,4 @@
-import { checkAuth } from '../../core/middlewares/auth'
+import { authenticate } from '../../core/middlewares/auth'
 import acl from '../../core/middlewares/acl'
 import validate from '../../core/middlewares/validator'
 
@@ -14,6 +14,6 @@ const schemas = {
 }
 
 export default {
-  getByInvestorId: [checkAuth, acl.authorize, validate(schemas.validateID)],
-  create: [checkAuth, acl.authorize, validate(schemas.create)]
+  getByInvestorId: [authenticate, acl.authorize, validate(schemas.validateID)],
+  create: [authenticate, acl.authorize, validate(schemas.create)]
 }

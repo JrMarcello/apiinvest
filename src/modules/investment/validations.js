@@ -1,4 +1,4 @@
-import { checkAuth } from '../../core/middlewares/auth'
+import { authenticate } from '../../core/middlewares/auth'
 import acl from '../../core/middlewares/acl'
 import validate from '../../core/middlewares/validator'
 
@@ -17,13 +17,13 @@ const schemas = {
 }
 
 export default {
-  getAll: [checkAuth, acl.authorize, validate(schemas.getAll)],
-  getPendings: [checkAuth, acl.authorize, validate(schemas.getPendings)],
-  getByInvestorId: [checkAuth, acl.authorize, validate(schemas.validateID)],
-  getByFundraisingId: [checkAuth, acl.authorize, validate(schemas.validateID)],
-  getById: [checkAuth, acl.authorize, validate(schemas.validateID)],
-  create: [checkAuth, acl.authorize, validate(schemas.create)],
-  sendTED: [checkAuth, acl.authorize, validate(schemas.validateID)],
-  confirm: [checkAuth, acl.authorize, validate(schemas.confirm)],
-  cancel: [checkAuth, acl.authorize, validate(schemas.validateID)]
+  getAll: [authenticate, acl.authorize, validate(schemas.getAll)],
+  getPendings: [authenticate, acl.authorize, validate(schemas.getPendings)],
+  getByInvestorId: [authenticate, acl.authorize, validate(schemas.validateID)],
+  getByFundraisingId: [authenticate, acl.authorize, validate(schemas.validateID)],
+  getById: [authenticate, acl.authorize, validate(schemas.validateID)],
+  create: [authenticate, acl.authorize, validate(schemas.create)],
+  sendTED: [authenticate, acl.authorize, validate(schemas.validateID)],
+  confirm: [authenticate, acl.authorize, validate(schemas.confirm)],
+  cancel: [authenticate, acl.authorize, validate(schemas.validateID)]
 }

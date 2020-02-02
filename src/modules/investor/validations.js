@@ -1,4 +1,4 @@
-import { checkAuth } from '../../core/middlewares/auth'
+import { authenticate } from '../../core/middlewares/auth'
 import acl from '../../core/middlewares/acl'
 import validate from '../../core/middlewares/validator'
 
@@ -15,14 +15,14 @@ const schemas = {
 }
 
 export default {
-  getAll: [checkAuth, acl.authorize, validate(schemas.getAll)],
-  getById: [checkAuth, acl.authorize, validate(schemas.validateID)],
-  getByUserId: [checkAuth, acl.authorize, validate(schemas.validateID)],
-  getAllInvestmentsById: [checkAuth, acl.authorize, validate(schemas.validateID)],
-  getInvestmentsCount: [checkAuth, acl.authorize, validate(schemas.validateID)],
-  getInvestedAmount: [checkAuth, acl.authorize, validate(schemas.validateID)],
-  getReceivedAmount: [checkAuth, acl.authorize, validate(schemas.validateID)],
-  getProjectedAmount: [checkAuth, acl.authorize, validate(schemas.validateID)],
-  create: [checkAuth, acl.authorize, validate(schemas.create)],
-  update: [checkAuth, acl.authorize, validate(schemas.update)]
+  getAll: [authenticate, acl.authorize, validate(schemas.getAll)],
+  getById: [authenticate, acl.authorize, validate(schemas.validateID)],
+  getByUserId: [authenticate, acl.authorize, validate(schemas.validateID)],
+  getAllInvestmentsById: [authenticate, acl.authorize, validate(schemas.validateID)],
+  getInvestmentsCount: [authenticate, acl.authorize, validate(schemas.validateID)],
+  getInvestedAmount: [authenticate, acl.authorize, validate(schemas.validateID)],
+  getReceivedAmount: [authenticate, acl.authorize, validate(schemas.validateID)],
+  getProjectedAmount: [authenticate, acl.authorize, validate(schemas.validateID)],
+  create: [authenticate, acl.authorize, validate(schemas.create)],
+  update: [authenticate, acl.authorize, validate(schemas.update)]
 }
