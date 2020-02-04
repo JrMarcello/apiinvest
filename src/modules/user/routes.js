@@ -13,6 +13,8 @@ export default () => {
 
   router.post(`${USER_BASE_PAH}`, validations.create, controller.create)
   router.post(`${USER_BASE_PAH}/login`, validations.login, controller.login)
+  router.post(`${USER_BASE_PAH}/login/facebook`, validations.facebookbSign, controller.login)
+  router.post(`${USER_BASE_PAH}/login/google`, validations.googleSign, controller.login)
 
   return router
 }

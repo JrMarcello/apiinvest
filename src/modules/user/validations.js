@@ -47,7 +47,9 @@ const schemas = {
       isAlphanumeric: true,
       errorMessage: 'Senha inválida'
     }
-  }
+  },
+  facebookbSign: {},
+  googleSign: {}
 }
 
 export default {
@@ -56,5 +58,7 @@ export default {
   create: [validate(schemas.create)],
   update: [authenticate, acl.authorize, validate(schemas.update)],
   remove: [authenticate, acl.authorize, validate(schemas.validateID)],
-  login: [validate(schemas.login)]
+  login: [validate(schemas.login)],
+  facebookbSign: [validate(schemas.facebookbSign)],
+  googleSign: [validate(schemas.googleSign)]
 }

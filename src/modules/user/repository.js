@@ -81,12 +81,51 @@ export const remove = id => {
  * @returns - Returns a object
  */
 export const login = async params => {
-  let user = await dao.getByEmail(params.email)
+  let user
 
-  if (!user || !bcrypt.compareSync(params.password, user.password)) throw Error(constants.user.error.INVALID_USER_LOGIN.message)
+  if (params.id) {
+    user = await loginFacebook(params)
+  } else if (params.profileObj) {
+    user = await loginGoogle(params)
+  } else {
+    user = await dao.getByEmail(params.email)
+
+    if (!user || !bcrypt.compareSync(params.password, user.password)) throw Error(constants.user.error.INVALID_USER_LOGIN.message)
+  }
 
   user = await getById(user.id)
   user.profile = await dao.getProfile(user.id_profile)
 
   return getToken(user)
+}
+
+/**
+ * @param {object} params Facebook user profile data
+ */
+const loginFacebook = async params => {
+  let user = await dao.getByFacebookId(params.id)
+
+  if (!user)
+    user = await dao.create({
+      id_facebook: params.id,
+      email: params.email,
+      username: params.name,
+      avatar_url: params.picture.data.url
+    })
+
+  return user
+}
+
+const loginGoogle = async params => {
+  let user = await dao.getByGoogleId(params.profileObj.googleId)
+
+  if (!user)
+    user = await dao.create({
+      id_google: params.profileObj.googleId,
+      email: params.profileObj.email,
+      username: params.profileObj.name,
+      avatar_url: params.profileObj.imageUrl
+    })
+
+  return user
 }

@@ -13,6 +13,8 @@ CREATE TABLE profile(
 CREATE TABLE "user"(
 	id uuid NOT NULL,
 	id_profile smallint NOT NULL DEFAULT 1,
+	id_facebook varchar,
+	id_google varchar,
 	email varchar NOT NULL,
 	username varchar NOT NULL,
 	password varchar NOT NULL,

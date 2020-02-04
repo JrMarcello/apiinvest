@@ -53,6 +53,40 @@ export const getByEmail = async email => {
 }
 
 /**
+ * Find a User by Facebook ID
+ *
+ * @param {string} facebookId - User Facebook ID
+ * @returns - Returns a object
+ */
+export const getByFacebookId = async facebookId => {
+  return (
+    await db
+      .select()
+      .from(table)
+      .where('id_facebook', facebookId)
+      .and('active', true)
+      .run()
+  )[0]
+}
+
+/**
+ * Find a User by Facebook ID
+ *
+ * @param {string} googleId - User Facebook ID
+ * @returns - Returns a object
+ */
+export const getByGoogleId = async googleId => {
+  return (
+    await db
+      .select()
+      .from(table)
+      .where('id_google', googleId)
+      .and('active', true)
+      .run()
+  )[0]
+}
+
+/**
  * Find User Profile by ID
  *
  * @param {number} id - Profile ID
