@@ -40,7 +40,7 @@ export const sendEmail = async message => {
 
   const infos = await transport.sendMail(message)
 
-  // TODO
+  // TODO: Remover
   if (env().NODE_ENV !== 'production') console.log(nodemailer.getTestMessageUrl(infos))
 
   return infos
