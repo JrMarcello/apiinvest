@@ -1,0 +1,26 @@
+image: node:lts-alpine
+
+stages:
+  - test
+  # - build
+  # - deploy
+
+testing:
+  stage: test
+  script:
+    - npm install
+    - npm run lint
+    - npm test
+# cache:
+#   paths:
+#     - node_modules/
+
+# building:
+#   stage: build
+#   script:
+#     - rm -rf build
+#     - sucrase ./src -d ./build --transforms imports
+#   artifacts:
+#     paths:
+#       - node_modules/
+#       - build/
