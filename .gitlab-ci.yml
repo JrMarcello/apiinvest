@@ -1,5 +1,8 @@
 image: node:lts-alpine
 
+before_script:
+  - apk --no-cache --update --virtual build-dependencies add python make g++
+
 stages:
   - test
   # - build
@@ -10,7 +13,7 @@ testing:
   script:
     - npm install
     - npm run lint
-    - npm test
+#    - npm test
 # cache:
 #   paths:
 #     - node_modules/
