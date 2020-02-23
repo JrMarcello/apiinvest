@@ -97,11 +97,17 @@ export const create = async data => {
  */
 const getEmailParams = investor => {
   return {
-    from: env().emails.contact,
+    from: `Buildinvest <${env().buildinvest.emails.contact}>`,
     to: investor.email,
-    subject: env().emails.subjects.NEW_INVESTMENT,
-    // TODO: Criar template
-    html: `<h2>Parabens! Você realizou um novo investimento</h2><p>Olá <b>${investor.username}</b></p>`
+    subject: 'Buildinvest - Novo investimento',
+    template: 'newInvestment',
+    context: {
+      buildinvest: {
+        bankAccount: env().buildinvest.bankAccount,
+        agence: env().buildinvest.agence
+      },
+      investor
+    }
   }
 }
 
@@ -130,7 +136,13 @@ export const sendTED = async (file, id, idInvestor) => {
 export const confirm = async investments => {
   if (!Array.isArray(investments)) throw Error('Formato de dados inválido')
 
-  return dao.confirm(investments)
+  await dao.confirm(investments)
+
+  // TODO
+  // Manda email para custodiadora
+  // mailer.sendEmail()
+
+  return true
 }
 
 /**

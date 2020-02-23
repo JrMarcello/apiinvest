@@ -20,16 +20,17 @@ export default {
     USER: process.env.SMTP_USER,
     PASSWORD: process.env.SMTP_PASSWORD
   },
-  emails: {
-    contact: process.env.CONTACT_EMAIL,
-    subjects: {
-      NEW_INVESTMENT: process.env.SUBJECT_NEW_INVESTMENT
-    }
-  },
   GOOGLE_CLOUD: {
     PROJECT_ID: process.env.PROJECT_ID,
     KEYFILE_PATH: process.env.KEYFILE_PATH,
     BUCKET: process.env.BUCKET
+  },
+  buildinvest: {
+    emails: {
+      contact: process.env.CONTACT_EMAIL
+    },
+    bankAccount: process.env.BANKACCOUNT,
+    agence: process.env.AGENCE
   },
   BLACK_LIST: process.env.BLACK_LIST,
   INVESTMENT_MAX_AMOUNT_NOT_QUALIFIED: process.env.INVESTMENT_MAX_AMOUNT_NOT_QUALIFIED,
