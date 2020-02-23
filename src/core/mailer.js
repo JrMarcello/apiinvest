@@ -3,7 +3,7 @@ import nodemailer from 'nodemailer'
 import hbs from 'nodemailer-express-handlebars'
 import { env } from '../common/utils'
 
-const getTransporter = async () => {
+const getTransporter = () => {
   return nodemailer
     .createTransport({
       service: env().smtp.SERVICE,

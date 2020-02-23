@@ -100,8 +100,9 @@ export const getByFundraisingId = id => {
  */
 export const getPendings = async () => {
   const query = {
-    text: `SELECT 
-               i.*, 
+    text: `SELECT
+               i.*,
+               iv.name AS name_investor,
                f.amount AS amount_fundraising,
                f.investment_percentage,
                f.return_date,
@@ -110,10 +111,11 @@ export const getPendings = async () => {
                b.name AS name_building,
                b.vgv AS vgv_building,
                b.final_date AS final_date_building
-           FROM ${table} i 
-               JOIN fundraising f ON (i.id_fundraising = f.id) 
-               JOIN building b ON (f.id_building = b.id)    
-           WHERE 
+           FROM ${table} i
+               JOIN investor iv ON (i.id_investor = iv.id)
+               JOIN fundraising f ON (i.id_fundraising = f.id)
+               JOIN building b ON (f.id_building = b.id)
+           WHERE
                i.ted_proof_url IS NOT NULL
                AND i.confirmed = false
                AND i.active`
