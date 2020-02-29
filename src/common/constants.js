@@ -27,7 +27,8 @@ const constants = {
       UPDATE: { code: 'E0201', message: 'Erro ao atualizar Usuário' },
       REMOVE: { code: 'E0202', message: 'Erro ao deletar Usuário' },
       LOGGED: { code: 'E0203', message: 'Erro ao realizar login' },
-      NOT_FOUND: { code: 'E0204', message: 'Erro ao buscar Usuário(s)' }
+      NOT_FOUND: { code: 'E0204', message: 'Erro ao buscar Usuário(s)' },
+      INVALID_USER_LOGIN: { code: 'E0205', message: 'Email ou senha invalidos' }
     }
   },
   investor: {
