@@ -4,7 +4,7 @@ import chalk from 'chalk'
 import moment from 'moment'
 
 const logger = winston.createLogger({
-  format: winston.format.combine(winston.format.timestamp(), winston.format.ms(), winston.format.metadata(), winston.format.prettyPrint()),
+  format: winston.format.combine(winston.format.timestamp(), winston.format.ms(), winston.format.prettyPrint()),
   transports: [
     new winston.transports.DailyRotateFile({
       filename: './logs/%DATE%.log',

@@ -2717,6 +2717,54 @@
     "groupTitle": "User"
   },
   {
+    "type": "post",
+    "url": "/user/forgotpassword",
+    "title": "Forgot Password",
+    "name": "ForgotPassword",
+    "group": "User",
+    "version": "1.0.0",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "email",
+            "description": "<p>User email</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Request-Example:",
+          "content": "{\n   \"email\": \"marcello@mail.com\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n{\n   \"code\": \"S0204\",\n   \"message\": \"Email enviado\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "HTTP/1.1 500 Internal Server Error\n{\n   \"code\": E0206,\n   \"message\": \"Erro ao enviar email\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "src/modules/user/controller.js",
+    "groupTitle": "User"
+  },
+  {
     "type": "get",
     "url": "/user/:id",
     "title": "Get (By ID)",
@@ -2833,6 +2881,61 @@
         {
           "title": "Error-Response:",
           "content": "HTTP/1.1 500 Internal Server Error\n{\n   \"code\": 2505,\n   \"message\": \"Email ou senha inválido\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "src/modules/user/controller.js",
+    "groupTitle": "User"
+  },
+  {
+    "type": "post",
+    "url": "/user/resetpassword",
+    "title": "Reset Password",
+    "name": "ResetPassword",
+    "group": "User",
+    "version": "1.0.0",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "token",
+            "description": "<p>Token</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "password",
+            "description": "<p>User new password</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Request-Example:",
+          "content": "{\n   \"token\": \"81ab4ce330cf6be658ffb218b5a5aebf58d21cf5\",\n   \"password\": \"123456\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n{\n   \"code\": \"S0205\",\n   \"message\": \"Senha redefinida com sucesso\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "HTTP/1.1 500 Internal Server Error\n{\n   \"code\": E0208,\n   \"message\": \"Erro ao redefinir senha\"\n}",
           "type": "json"
         }
       ]

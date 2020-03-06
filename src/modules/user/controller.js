@@ -160,7 +160,7 @@ export const create = async (request, response) => {
   } catch (err) {
     logger().error(err)
 
-    response.status(500).json(constants.user.error.CREATE)
+    response.status(500).json(err)
   }
 }
 
@@ -291,10 +291,90 @@ export const login = async (request, response) => {
   try {
     const token = await repository.login(request.body)
 
-    response.json(Object.assign(constants.user.success.LOGGED, { token }))
+    response.json(Object.assign(constants.user.success.LOGIN, { token }))
   } catch (err) {
     logger().error(err)
 
-    response.status(500).json(constants.user.error.LOGGED)
+    response.status(500).json(err)
+  }
+}
+
+/**
+ * @api {post} /user/forgotpassword Forgot Password
+ * @apiName ForgotPassword
+ * @apiGroup User
+ * @apiVersion 1.0.0
+ *
+ * @apiParam {string} email User email
+ *
+ * @apiParamExample {json} Request-Example:
+ *   {
+ *      "email": "marcello@mail.com"
+ *   }
+ *
+ * @apiSuccessExample Success-Response:
+ *   HTTP/1.1 200 OK
+ *   {
+ *      "code": "S0204",
+ *      "message": "Email enviado"
+ *   }
+ *
+ * @apiErrorExample Error-Response:
+ *   HTTP/1.1 500 Internal Server Error
+ *   {
+ *      "code": E0206,
+ *      "message": "Erro ao enviar email"
+ *   }
+ */
+export const forgotPassword = async (request, response) => {
+  try {
+    await repository.forgotPassword(request.body.email)
+
+    response.json(Object.assign(constants.user.success.FORGOT_PASSWORD))
+  } catch (err) {
+    logger().error(err)
+
+    response.status(500).json(err)
+  }
+}
+
+/**
+ * @api {post} /user/resetpassword Reset Password
+ * @apiName ResetPassword
+ * @apiGroup User
+ * @apiVersion 1.0.0
+ *
+ * @apiParam {string} token Token
+ * @apiParam {string} password User new password
+ *
+ * @apiParamExample {json} Request-Example:
+ *   {
+ *      "token": "81ab4ce330cf6be658ffb218b5a5aebf58d21cf5",
+ *      "password": "123456"
+ *   }
+ *
+ * @apiSuccessExample Success-Response:
+ *   HTTP/1.1 200 OK
+ *   {
+ *      "code": "S0205",
+ *      "message": "Senha redefinida com sucesso"
+ *   }
+ *
+ * @apiErrorExample Error-Response:
+ *   HTTP/1.1 500 Internal Server Error
+ *   {
+ *      "code": E0208,
+ *      "message": "Erro ao redefinir senha"
+ *   }
+ */
+export const resetPassword = async (request, response) => {
+  try {
+    await repository.resetPassword(request.body)
+
+    response.json(Object.assign(constants.user.success.RESET_PASSWORD))
+  } catch (err) {
+    logger().error(err)
+
+    response.status(500).json(err)
   }
 }

@@ -10,7 +10,7 @@ CREATE TABLE profile(
 	CONSTRAINT profile_id_pk PRIMARY KEY (id)
 );
 
-CREATE TABLE "user"(
+CREATE TABLE buildinvest."user"(
 	id uuid NOT NULL,
 	id_profile smallint NOT NULL DEFAULT 1,
 	id_facebook varchar,
@@ -19,6 +19,8 @@ CREATE TABLE "user"(
 	username varchar NOT NULL,
 	password varchar NOT NULL,
 	avatar_url varchar,
+	reset_token varchar,
+	reset_expires timestamp,
 	create_date timestamp NOT NULL DEFAULT now(),
 	active boolean NOT NULL DEFAULT true,
 	CONSTRAINT user_id_pk PRIMARY KEY (id)
@@ -27,26 +29,26 @@ CREATE TABLE "user"(
 ALTER TABLE "user" ADD CONSTRAINT user_id_profile_fk FOREIGN KEY (id_profile) REFERENCES profile (id) MATCH FULL
 ON DELETE NO ACTION ON UPDATE NO ACTION;
 
-CREATE FUNCTION user_check_email ()
-	RETURNS trigger
-	LANGUAGE plpgsql
-	VOLATILE 
-	CALLED ON NULL INPUT
-	SECURITY INVOKER
-	COST 1
-	AS $$
-BEGIN
-	IF EXISTS(SELECT 1 FROM "user" WHERE email = NEW.email AND active) THEN
-		RAISE EXCEPTION 'User email realy exists';
-  	END IF;
+-- CREATE FUNCTION user_check_email ()
+-- 	RETURNS trigger
+-- 	LANGUAGE plpgsql
+-- 	VOLATILE 
+-- 	CALLED ON NULL INPUT
+-- 	SECURITY INVOKER
+-- 	COST 1
+-- 	AS $$
+-- BEGIN
+-- 	IF EXISTS(SELECT 1 FROM "user" WHERE email = NEW.email AND active) THEN
+-- 		RAISE EXCEPTION 'User email realy exists';
+--   	END IF;
 
-  	RETURN NEW;
-END
-$$;
+--   	RETURN NEW;
+-- END
+-- $$;
 
-CREATE TRIGGER user_check_email_trg 
-BEFORE INSERT OR UPDATE ON "user" FOR EACH ROW
-EXECUTE PROCEDURE user_check_email();
+-- CREATE TRIGGER user_check_email_trg 
+-- BEFORE INSERT OR UPDATE ON "user" FOR EACH ROW
+-- EXECUTE PROCEDURE user_check_email();
 
 CREATE TABLE investor(
 	id uuid NOT NULL,

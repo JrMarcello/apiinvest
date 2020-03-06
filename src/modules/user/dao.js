@@ -53,6 +53,23 @@ export const getByEmail = async email => {
 }
 
 /**
+ * Find a User by Reset token
+ *
+ * @param {string} token - User reset token
+ * @returns - Returns a object
+ */
+export const getByToken = async token => {
+  return (
+    await db
+      .select()
+      .from(table)
+      .where('reset_token', token)
+      .and('active', true)
+      .run()
+  )[0]
+}
+
+/**
  * Find a User by Facebook ID
  *
  * @param {string} facebookId - User Facebook ID
@@ -127,7 +144,7 @@ export const create = async data => {
  * @returns - Returns a object
  */
 export const update = data => {
-  if (data.password) data.password = bcrypt.hashSync(data.password, 10)
+  if (data.password) data.password = `'${bcrypt.hashSync(data.password, 10)}'`
 
   return db
     .update(table)
