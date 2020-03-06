@@ -20,7 +20,7 @@ const schemas = {
       errorMessage: 'Email inválido'
     },
     password: {
-      isAlphanumeric: true,
+      isString: true,
       errorMessage: 'Senha inválida'
     }
   },
@@ -34,7 +34,7 @@ const schemas = {
       errorMessage: 'Email inválido'
     },
     password: {
-      isAlphanumeric: true,
+      isString: true,
       errorMessage: 'Senha inválida'
     }
   },
@@ -44,12 +44,28 @@ const schemas = {
       errorMessage: 'Email inválido'
     },
     password: {
-      isAlphanumeric: true,
+      isString: true,
       errorMessage: 'Senha inválida'
     }
   },
   facebookbSign: {},
-  googleSign: {}
+  googleSign: {},
+  forgotPassword: {
+    email: {
+      isEmail: true,
+      errorMessage: 'Email inválido'
+    }
+  },
+  resetPassword: {
+    token: {
+      isAlphanumeric: true,
+      errorMessage: 'Token inválido'
+    },
+    password: {
+      isString: true,
+      errorMessage: 'Senha inválida'
+    }
+  }
 }
 
 export default {
@@ -60,5 +76,7 @@ export default {
   remove: [authenticate, acl.authorize, validate(schemas.validateID)],
   login: [validate(schemas.login)],
   facebookbSign: [validate(schemas.facebookbSign)],
-  googleSign: [validate(schemas.googleSign)]
+  googleSign: [validate(schemas.googleSign)],
+  forgotPassword: [validate(schemas.forgotPassword)],
+  resetPassword: [validate(schemas.resetPassword)]
 }

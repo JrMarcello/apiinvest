@@ -5,7 +5,7 @@
 INSERT INTO building (
 	id,
 	id_builder,
-	spe,
+	cnpj,
 	registration,
 	name,
 	description,
@@ -15,7 +15,7 @@ INSERT INTO building (
 	address_city,
 	address_state,
 	address_cep,
-	amount,
+	vgv,
 	initial_date,
 	final_date
 ) VALUES (
@@ -41,12 +41,16 @@ INSERT INTO fundraising (
 	id_building,
 	id_custodian,
 	amount,
+	investment_min_value,
+	investment_percentage,
 	initial_date,
 	final_date 
 ) VALUES (
 	'647ac188-62c8-4618-8a0a-be14174aac49',
 	'647ac188-62c8-4618-8a0a-be14174aac49',
 	'647ac188-62c8-4618-8a0a-be14174aac49',
+	1000,
+	0.05,
 	50000,
 	NOW(),
 	NOW() + INTERVAL'6 months'

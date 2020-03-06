@@ -20,7 +20,7 @@ VALUES (
 	'647ac188-62c8-4618-8a0a-be14174aac49',
 	3,
 	'admin@buildinvest.com.br',
-	'Admin Buildinvest',
+	'Admin',
 	'$2b$10$o8Av/20hYJX3IKRRUKK5UO/bfjWIbYTIpLc6dtlvnk8NrTxTdf9r2' --123456
 );
 

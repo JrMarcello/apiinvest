@@ -19,16 +19,24 @@ const constants = {
       CREATE: { code: 'S0200', message: 'Usuário criado com sucesso' },
       UPDATE: { code: 'S0201', message: 'Usuário atualizado com sucesso' },
       REMOVE: { code: 'S0202', message: 'Usuário deletado com sucesso' },
-      LOGGED: { code: 'S0203', message: 'Usuario logado' }
+      LOGIN: { code: 'S0203', message: 'Usuario logado' },
+      FORGOT_PASSWORD: { code: 'S0204', message: 'Email enviado' },
+      RESET_PASSWORD: { code: 'S0205', message: 'Senha redefinida com sucesso' }
     },
     // E02xx
     error: {
       CREATE: { code: 'E0200', message: 'Erro ao criar o Usuário' },
       UPDATE: { code: 'E0201', message: 'Erro ao atualizar Usuário' },
       REMOVE: { code: 'E0202', message: 'Erro ao deletar Usuário' },
-      LOGGED: { code: 'E0203', message: 'Erro ao realizar login' },
+      LOGIN: { code: 'E0203', message: 'Erro ao realizar login' },
       NOT_FOUND: { code: 'E0204', message: 'Erro ao buscar Usuário(s)' },
-      INVALID_USER_LOGIN: { code: 'E0205', message: 'Email ou senha invalidos' }
+      INVALID_USER_LOGIN: { code: 'E0205', message: 'Email ou senha invalidos' },
+      FORGOT_PASSWORD: { code: 'E0206', message: 'Erro ao enviar email' },
+      FORGOT_PASSWORD_MAIL: { code: 'E0207', message: 'Email inválido' },
+      RESET_PASSWORD: { code: 'E0208', message: 'Erro ao redefinir senha' },
+      RESET_PASSWORD_TOKEN: { code: 'E0209', message: 'Token inválido' },
+      RESET_PASSWORD_EXPIRES: { code: 'E0210', message: 'Token expirou' },
+      MAIL_EXISTS: { code: 'E0211', message: 'Email já existe' }
     }
   },
   investor: {
