@@ -128,7 +128,7 @@ export const getProfile = async id => {
  */
 export const create = async data => {
   data.id = await generateUUID()
-  data.password = `'${bcrypt.hashSync(data.password, 10)}'`
+  if (data.password) data.password = `'${bcrypt.hashSync(data.password, 10)}'`
 
   return db
     .insert(data)
