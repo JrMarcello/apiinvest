@@ -8,7 +8,7 @@ stages:
   # - build
   # - deploy
 
-run-lint-tests:
+run-tests:
   stage: test
   script:
     - npm install
