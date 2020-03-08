@@ -42,14 +42,16 @@ import * as repository from './repository'
  *     }
  */
 export const getAll = async (request, response) => {
-  try {
-    if (request.user.id_profile === 3) return response.json(await repository.getAll(request.params))
-
+  if (request.user.id_profile !== 3) {
     return response.status(403).json({
       status: 'Acesso negado!',
       success: false,
       message: 'Você não está autorizado a acessar esse recurso'
     })
+  }
+
+  try {
+    return response.json(await repository.getAll(request.params))
   } catch (err) {
     logger().error(err)
 
@@ -147,11 +149,11 @@ export const getAll = async (request, response) => {
  */
 export const getById = async (request, response) => {
   try {
-    response.json(await repository.getById(request.params.id))
+    return response.json(await repository.getById(request.params.id))
   } catch (err) {
     logger().error(err)
 
-    response.status(500).json(constants.builder.error.NOT_FOUND)
+    return response.status(500).json(constants.builder.error.NOT_FOUND)
   }
 }
 
@@ -200,11 +202,11 @@ export const getById = async (request, response) => {
  */
 export const getAllBuildingsById = async (request, response) => {
   try {
-    response.json(await repository.getAllBuildingsById(request.user.id_profile === 3 ? request.params.id : request.user.builder.id))
+    return response.json(await repository.getAllBuildingsById(request.user.id_profile === 3 ? request.params.id : request.user.builder.id))
   } catch (err) {
     logger().error(err)
 
-    response.status(500).json(constants.building.error.NOT_FOUND)
+    return response.status(500).json(constants.building.error.NOT_FOUND)
   }
 }
 
@@ -256,11 +258,11 @@ export const getAllBuildingsById = async (request, response) => {
  */
 export const getByUserId = async (request, response) => {
   try {
-    response.json(await repository.getByUserId(request.user.id_profile === 3 ? request.params.id : request.user.id))
+    return response.json(await repository.getByUserId(request.user.id_profile === 3 ? request.params.id : request.user.id))
   } catch (err) {
     logger().error(err)
 
-    response.status(500).json(constants.builder.error.NOT_FOUND)
+    return response.status(500).json(constants.builder.error.NOT_FOUND)
   }
 }
 
@@ -356,11 +358,11 @@ export const create = async (request, response) => {
 
     const builder = await repository.create(request.body)
 
-    response.json(Object.assign(constants.builder.success.CREATE, { builder }))
+    return response.json(Object.assign(constants.builder.success.CREATE, { builder }))
   } catch (err) {
     logger().error(err)
 
-    response.status(500).json(constants.builder.error.CREATE)
+    return response.status(500).json(constants.builder.error.CREATE)
   }
 }
 
@@ -412,11 +414,11 @@ export const update = async (request, response) => {
 
     await repository.update(request.body)
 
-    response.json(constants.builder.success.UPDATE)
+    return response.json(constants.builder.success.UPDATE)
   } catch (err) {
     logger().error(err)
 
-    response.status(500).json(constants.builder.error.UPDATE)
+    return response.status(500).json(constants.builder.error.UPDATE)
   }
 }
 
@@ -460,5 +462,100 @@ export const remove = async (request, response) => {
     logger().error(err)
 
     response.status(500).json(constants.builder.error.REMOVE)
+  }
+}
+
+/**
+ * @api {put} /builder/:id/logo Set logo
+ * @apiName setLogo
+ * @apiGroup Builder
+ * @apiVersion 1.0.0
+ *
+ * @apiParam {uuid} id Builder ID
+ * @apiParam {file} file Image
+ *
+ * @apiParamExample {json} Request-Example:
+ *   {
+ *      "file": [buffer]
+ *   }
+ *
+ * @apiSuccessExample Success-Response:
+ *   HTTP/1.1 200 OK
+ *   {
+ *      "code": "S0803",
+ *      "message": "Imagem enviada com sucesso",
+ *   }
+ *
+ * @apiErrorExample Error-Response:
+ *   HTTP/1.1 500 Internal Server Error
+ *   {
+ *      "code": "E0804",
+ *      "message": "Erro ao tentar enviar imagem"
+ *   }
+ */
+export const setLogo = async (request, response) => {
+  if (request.user.id_profile !== 3) {
+    return response.status(403).json({
+      status: 'Acesso negado!',
+      success: false,
+      message: 'Você não está autorizado a acessar esse recurso'
+    })
+  }
+
+  try {
+    const image = await repository.setLogo(request.params.id, request.file)
+
+    return response.json(Object.assign(constants.builder.success.SET_LOGO, { image }))
+  } catch (err) {
+    logger().error(err)
+
+    return response.status(500).json(constants.builder.error.SET_LOGO)
+  }
+}
+
+/**
+ * @api {delete} /builder/:id/logo Remove logo
+ * @apiName removeLogo
+ * @apiGroup Builder
+ * @apiVersion 1.0.0
+ *
+ * @apiParam {uuid} ID Builder ID
+ *
+ * @apiSuccessExample Success-Response:
+ *   HTTP/1.1 200 OK
+ *   {
+ *      "code": "S0804",
+ *      "message": "Imagem removida com sucesso"
+ *   }
+ *
+ * @apiErrorExample Error-Response:
+ *   HTTP/1.1 500 Internal Server Error
+ *   {
+ *      "code": "E0805",
+ *      "message": "Erro ao tentar remover imagem",
+ *      "errors": [{
+ *        "msg": "Invalid value",
+ *        "param": "id",
+ *        "location": "body"
+ *      }]
+ *   }
+ */
+export const removeLogo = async (request, response) => {
+  if (request.user.id_profile !== 3) {
+    return response.status(403).json({
+      status: 'Acesso negado!',
+      success: false,
+      message: 'Você não está autorizado a acessar esse recurso'
+    })
+  }
+
+  try {
+    await repository.removeLogo(request.params.id)
+
+    return response.json(Object.assign(constants.builder.success.REMOVE_LOGO))
+  } catch (err) {
+    logger().error(err)
+
+    return response.status(500).json(constants.builder.error.REMOVE_LOGO)
   }
 }

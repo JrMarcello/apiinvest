@@ -1,3 +1,4 @@
+import * as storage from '../../core/storage'
 import * as phone from '../builder-phone/repository'
 import * as partner from '../builder-partner/repository'
 import * as building from '../building/repository'
@@ -126,4 +127,45 @@ export const update = async data => {
  */
 export const remove = id => {
   return dao.remove(id)
+}
+
+/**
+ * Send TED proof for an Investment
+ *
+ * @param {object} file - TED proof
+ * @param {string} id - Investment ID
+ * @param {string} idInvestor - Investor ID
+ * @returns - Returns a object
+ */
+export const setLogo = async (id, file) => {
+  if (!file) throw Error('')
+
+  await removeLogo(id)
+  const url = await storage.uploadFile(file, `logos/${id}`)
+
+  return dao.update({
+    id,
+    logo_url: url
+  })
+}
+
+/**
+ * Send TED proof for an Investment
+ *
+ * @param {object} file - TED proof
+ * @param {string} id - Investment ID
+ * @param {string} idInvestor - Investor ID
+ * @returns - Returns a object
+ */
+export const removeLogo = async id => {
+  const builder = await getById(id)
+
+  if (!builder || !builder.logo_url) return false
+
+  await storage.removeFile(builder.logo_url)
+
+  return dao.update({
+    id,
+    logo_url: null
+  })
 }

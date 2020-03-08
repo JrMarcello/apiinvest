@@ -583,6 +583,102 @@
     "groupTitle": "Builder"
   },
   {
+    "type": "delete",
+    "url": "/builder/:id/logo",
+    "title": "Remove logo",
+    "name": "removeLogo",
+    "group": "Builder",
+    "version": "1.0.0",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "uuid",
+            "optional": false,
+            "field": "ID",
+            "description": "<p>Builder ID</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n{\n   \"code\": \"S0804\",\n   \"message\": \"Imagem removida com sucesso\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "HTTP/1.1 500 Internal Server Error\n{\n   \"code\": \"E0805\",\n   \"message\": \"Erro ao tentar remover imagem\",\n   \"errors\": [{\n     \"msg\": \"Invalid value\",\n     \"param\": \"id\",\n     \"location\": \"body\"\n   }]\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "src/modules/builder/controller.js",
+    "groupTitle": "Builder"
+  },
+  {
+    "type": "put",
+    "url": "/builder/:id/logo",
+    "title": "Set logo",
+    "name": "setLogo",
+    "group": "Builder",
+    "version": "1.0.0",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "uuid",
+            "optional": false,
+            "field": "id",
+            "description": "<p>Builder ID</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "file",
+            "optional": false,
+            "field": "file",
+            "description": "<p>Image</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Request-Example:",
+          "content": "{\n   \"file\": [buffer]\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n{\n   \"code\": \"S0803\",\n   \"message\": \"Imagem enviada com sucesso\",\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "HTTP/1.1 500 Internal Server Error\n{\n   \"code\": \"E0804\",\n   \"message\": \"Erro ao tentar enviar imagem\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "src/modules/builder/controller.js",
+    "groupTitle": "Builder"
+  },
+  {
     "type": "post",
     "url": "/building/:idBuilding/images",
     "title": "Add Images",

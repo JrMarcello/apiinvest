@@ -179,39 +179,43 @@ const constants = {
     success: {
       CREATE: { code: 'S0800', message: 'Construtora criada com sucesso' },
       UPDATE: { code: 'S0801', message: 'Construtora atualizada com sucesso' },
-      REMOVE: { code: 'S0802', message: 'Construtora deletada com sucesso' }
+      REMOVE: { code: 'S0802', message: 'Construtora deletada com sucesso' },
+      SET_LOGO: { code: 'S0803', message: 'Imagem enviada com sucesso' },
+      REMOVE_LOGO: { code: 'S0804', message: 'Imagem removida com sucesso' }
     },
     // E08xx
     error: {
       NOT_FOUND: { code: 'E0800', message: 'Erro ao buscar construtora(s)' },
       CREATE: { code: 'E0801', message: 'Erro ao criar a construtora' },
       UPDATE: { code: 'E0802', message: 'Erro ao atualizar a construtora' },
-      REMOVE: { code: 'E0803', message: 'Erro ao deletar a construtora' }
+      REMOVE: { code: 'E0803', message: 'Erro ao deletar a construtora' },
+      SET_LOGO: { code: 'E0804', message: 'Erro ao tentar enviar imagem' },
+      REMOVE_LOGO: { code: 'E0805', message: 'Erro ao tentar remover imagem' }
     },
     phones: {
       // S08xx
       success: {
-        CREATE: { code: 'S0803', message: 'Telefone(s) criado(s) com sucesso' },
-        REMOVE: { code: 'S0804', message: 'Telefone(s) deletado(s) com sucesso' }
+        CREATE: { code: 'S0805', message: 'Telefone(s) criado(s) com sucesso' },
+        REMOVE: { code: 'S0806', message: 'Telefone(s) deletado(s) com sucesso' }
       },
       // E08xx
       error: {
-        NOT_FOUND: { code: 'E0804', message: 'Erro ao buscar telefones' },
-        CREATE: { code: 'E0805', message: 'Erro ao criar telefone(s)' },
-        REMOVE: { code: 'E0806', message: 'Erro ao deletar telefone(s)' }
+        NOT_FOUND: { code: 'E0806', message: 'Erro ao buscar telefones' },
+        CREATE: { code: 'E0807', message: 'Erro ao criar telefone(s)' },
+        REMOVE: { code: 'E0808', message: 'Erro ao deletar telefone(s)' }
       }
     },
     partners: {
       // S08xx
       success: {
-        CREATE: { code: 'S0805', message: 'Sócio(s) criado(s) com sucesso' },
-        REMOVE: { code: 'S0806', message: 'Sócio(s) deletado(s) com sucesso' }
+        CREATE: { code: 'S0807', message: 'Sócio(s) criado(s) com sucesso' },
+        REMOVE: { code: 'S0808', message: 'Sócio(s) deletado(s) com sucesso' }
       },
       // E08xx
       error: {
-        NOT_FOUND: { code: 'E0807', message: 'Erro ao buscar sócios' },
-        CREATE: { code: 'E0808', message: 'Erro ao criar sócio(s)' },
-        REMOVE: { code: 'E0809', message: 'Erro ao deletar sócio(s)' }
+        NOT_FOUND: { code: 'E0809', message: 'Erro ao buscar sócios' },
+        CREATE: { code: 'E0810', message: 'Erro ao criar sócio(s)' },
+        REMOVE: { code: 'E0811', message: 'Erro ao deletar sócio(s)' }
       }
     }
   }

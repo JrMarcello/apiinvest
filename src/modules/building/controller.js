@@ -41,13 +41,15 @@ import * as repository from './repository'
  */
 export const getAll = async (request, response) => {
   try {
-    if (request.user.id_profile === 3) return response.json(await repository.getAll(request.params))
+    if (request.user.id_profile !== 3) {
+      return response.status(403).json({
+        status: 'Acesso negado!',
+        success: false,
+        message: 'Você não está autorizado a acessar esse recurso'
+      })
+    }
 
-    return response.status(403).json({
-      status: 'Acesso negado!',
-      success: false,
-      message: 'Você não está autorizado a acessar esse recurso'
-    })
+    return response.json(await repository.getAll(request.params))
   } catch (err) {
     logger().error(err)
 

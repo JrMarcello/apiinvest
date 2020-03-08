@@ -12,6 +12,20 @@ const schemas = {
       isUUID: true,
       errorMessage: 'ID inválido'
     }
+  },
+  setLogo: {
+    id: {
+      in: ['params'],
+      isUUID: true,
+      errorMessage: 'ID inválido'
+    }
+  },
+  removeLogo: {
+    id: {
+      in: ['params'],
+      isUUID: true,
+      errorMessage: 'ID inválido'
+    }
   }
 }
 
@@ -22,5 +36,7 @@ export default {
   getAllBuildingsById: [authenticate, acl.authorize, validate(schemas.validateID)],
   create: [authenticate, acl.authorize, validate(schemas.create)],
   update: [authenticate, acl.authorize, validate(schemas.update)],
-  remove: [authenticate, acl.authorize, validate(schemas.validateID)]
+  remove: [authenticate, acl.authorize, validate(schemas.validateID)],
+  setLogo: [authenticate, acl.authorize, validate(schemas.setLogo)],
+  removeLogo: [authenticate, acl.authorize, validate(schemas.removeLogo)]
 }

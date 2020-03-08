@@ -17,15 +17,15 @@ export const uploadFile = async (file, dirname) => {
     .bucket(bucketName)
     .file(`${dirname}/${fileName}`)
     .save(file.buffer)
+    .makePublic()
 
   return `https://storage.googleapis.com/${bucketName}/${dirname}/${fileName}`
 }
 
 /**
- * Remove file to GCS
+ * Remove files to GCS
  *
- * @param {*} url
- * @param {*} dirname
+ * @param {Array} files
  */
 export const removeFiles = async files => {
   const bucketName = env().GOOGLE_CLOUD.BUCKET
@@ -36,4 +36,18 @@ export const removeFiles = async files => {
       .file(img.url.split(bucketName)[1])
       .delete()
   })
+}
+
+/**
+ * Remove file to GCS
+ *
+ * @param {String} url
+ */
+export const removeFile = async url => {
+  const bucketName = env().GOOGLE_CLOUD.BUCKET
+
+  return storage
+    .bucket(bucketName)
+    .file(url.split(bucketName)[1])
+    .delete()
 }
