@@ -8,11 +8,14 @@ stages:
   # - build
   # - deploy
 
-testing:
+run-lint-tests:
   stage: test
   script:
     - npm install
     - npm run lint
+run-unity-tests:
+  stage: test
+  script:
     - npm test
 # cache:
 #   paths:
