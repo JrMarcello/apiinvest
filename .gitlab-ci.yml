@@ -11,11 +11,8 @@ stages:
 run-lint-tests:
   stage: test
   script:
-    - npm run lint
-run-unity-tests:
-  stage: test
-  script:
     - npm install
+    - npm run lint
     - npm test
 # cache:
 #   paths:
