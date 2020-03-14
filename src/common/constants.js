@@ -54,7 +54,8 @@ const constants = {
       RECEIVED_AMOUNT: { apicode: 'E0304', message: 'Erro ao buscar valor total recebido' },
       PROJECTED_AMOUNT: { apicode: 'E0305', message: 'Erro ao buscar valor total projetado' },
       CREATE: { apicode: 'E0306', message: 'Erro ao criar o Investidor' },
-      UPDATE: { apicode: 'E0307', message: 'Erro ao atualizar o Investidor' }
+      UPDATE: { apicode: 'E0307', message: 'Erro ao atualizar o Investidor' },
+      INVALID_DATA: { apicode: 'E0308', message: 'Dados inválidos' }
     },
     phone: {
       // S03xx
@@ -64,9 +65,10 @@ const constants = {
       },
       // E03xx
       error: {
-        NOT_FOUND: { apicode: 'E0308', message: 'Telefone(s) não encontrado' },
-        CREATE: { apicode: 'E0309', message: 'Erro ao criar o(s) telefone(s)' },
-        REMOVE: { apicode: 'E0310', message: 'Erro ao deletar o(s) telefone(s)' }
+        NOT_FOUND: { apicode: 'E0309', message: 'Telefone(s) não encontrado' },
+        CREATE: { apicode: 'E0310', message: 'Erro ao criar o(s) telefone(s)' },
+        REMOVE: { apicode: 'E0311', message: 'Erro ao deletar o(s) telefone(s)' },
+        REQUIRED: { apicode: 'E0312', message: 'Telefone é um dado obrigatório' }
       }
     },
     bank_account: {
@@ -77,9 +79,10 @@ const constants = {
       },
       // E03xx
       error: {
-        NOT_FOUND: { apicode: 'E0311', message: 'Conta(s) não encontrada(s)' },
-        CREATE: { apicode: 'E0312', message: 'Erro ao criar a(s) conta(s)' },
-        REMOVE: { apicode: 'E0313', message: 'Erro ao deletar a(s) conta(s)' }
+        NOT_FOUND: { apicode: 'E0313', message: 'Conta(s) não encontrada(s)' },
+        CREATE: { apicode: 'E0314', message: 'Erro ao criar a(s) conta(s)' },
+        REMOVE: { apicode: 'E0315', message: 'Erro ao deletar a(s) conta(s)' },
+        REQUIRED: { apicode: 'E0316', message: 'Conta bancária é um dado obrigatório' }
       }
     },
     document: {
@@ -89,8 +92,9 @@ const constants = {
       },
       // E03xx
       error: {
-        NOT_FOUND: { apicode: 'E0314', message: 'Comprovantes não encontrados' },
-        CREATE: { apicode: 'E0315', message: 'Erro ao tentar enviar os comprovantes' }
+        NOT_FOUND: { apicode: 'E0317', message: 'Comprovantes não encontrados' },
+        CREATE: { apicode: 'E0318', message: 'Erro ao tentar enviar os comprovantes' },
+        REQUIRED: { apicode: 'E0319', message: 'Envie fotos do seu documento (frente e verso) e comprovante de residência' }
       }
     }
   },

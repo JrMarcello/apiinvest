@@ -57,7 +57,7 @@ export const getByInvestorId = async (request, response) => {
   } catch (err) {
     logger().error(err)
 
-    return response.status(500).json(constants.investor.document.error.NOT_FOUND)
+    return response.status(500).json(err.apicode ? err : constants.investor.document.error.NOT_FOUND)
   }
 }
 
@@ -98,6 +98,6 @@ export const create = async (request, response) => {
   } catch (err) {
     logger().error(err)
 
-    response.status(500).json(constants.investor.document.error.CREATE)
+    response.status(500).json(err.apicode ? err : constants.investor.document.error.CREATE)
   }
 }

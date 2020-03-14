@@ -40,7 +40,7 @@ export const getByInvestorId = async (request, response) => {
   } catch (err) {
     logger().error(err)
 
-    response.status(500).json(constants.investor.bank_account.error.NOT_FOUND)
+    response.status(500).json(err.apicode ? err : constants.investor.bank_account.error.NOT_FOUND)
   }
 }
 
@@ -101,7 +101,7 @@ export const create = async (request, response) => {
   } catch (err) {
     logger().error(err)
 
-    response.status(500).json(constants.investor.bank_account.error.CREATE)
+    response.status(500).json(err.apicode ? err : constants.investor.bank_account.error.CREATE)
   }
 }
 
@@ -145,6 +145,6 @@ export const remove = async (request, response) => {
   } catch (err) {
     logger().error(err)
 
-    response.status(500).json(constants.investor.bank_account.error.REMOVE)
+    response.status(500).json(err.apicode ? err : constants.investor.bank_account.error.REMOVE)
   }
 }

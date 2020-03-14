@@ -49,7 +49,7 @@ export const getAll = async (request, response) => {
   } catch (err) {
     logger().error(err)
 
-    return response.status(500).json(constants.investor.error.NOT_FOUND)
+    return response.status(500).json(err.apicode ? err : constants.investor.error.NOT_FOUND)
   }
 }
 
@@ -123,7 +123,7 @@ export const getById = async (request, response) => {
   } catch (err) {
     logger().error(err)
 
-    response.status(500).json(constants.investor.error.NOT_FOUND)
+    response.status(500).json(err.apicode ? err : constants.investor.error.NOT_FOUND)
   }
 }
 
@@ -197,7 +197,7 @@ export const getByUserId = async (request, response) => {
   } catch (err) {
     logger().error(err)
 
-    response.status(500).json(constants.investor.error.NOT_FOUND)
+    response.status(500).json(err.apicode ? err : constants.investor.error.NOT_FOUND)
   }
 }
 
@@ -240,7 +240,7 @@ export const getAllInvestmentsById = async (request, response) => {
   } catch (err) {
     logger().error(err)
 
-    response.status(500).json(constants.investor.error.INVESTMENTS_NOT_FOUND)
+    response.status(500).json(err.apicode ? err : constants.investor.error.INVESTMENTS_NOT_FOUND)
   }
 }
 
@@ -274,7 +274,7 @@ export const getInvestmentsCount = async (request, response) => {
   } catch (err) {
     logger().error(err)
 
-    response.status(500).json(constants.investor.error.INVESTMENTS_COUNT)
+    response.status(500).json(err.apicode ? err : constants.investor.error.INVESTMENTS_COUNT)
   }
 }
 
@@ -308,7 +308,7 @@ export const getInvestedAmount = async (request, response) => {
   } catch (err) {
     logger().error(err)
 
-    response.status(500).json(constants.investor.error.INVESTED_AMOUNT)
+    response.status(500).json(err.apicode ? err : constants.investor.error.INVESTED_AMOUNT)
   }
 }
 
@@ -342,7 +342,7 @@ export const getReceivedAmount = async (request, response) => {
   } catch (err) {
     logger().error(err)
 
-    response.status(500).json(constants.investor.error.RECEIVED_AMOUNT)
+    response.status(500).json(err.apicode ? err : constants.investor.error.RECEIVED_AMOUNT)
   }
 }
 
@@ -376,7 +376,7 @@ export const getProjectedAmount = async (request, response) => {
   } catch (err) {
     logger().error(err)
 
-    response.status(500).json(constants.investor.error.PROJECTED_AMOUNT)
+    response.status(500).json(err.apicode ? err : constants.investor.error.PROJECTED_AMOUNT)
   }
 }
 
@@ -458,7 +458,7 @@ export const create = async (request, response) => {
   } catch (err) {
     logger().error(err)
 
-    response.status(500).json(constants.investor.error.CREATE)
+    response.status(500).json(err.apicode ? err : constants.investor.error.CREATE)
   }
 }
 
@@ -508,6 +508,6 @@ export const update = async (request, response) => {
   } catch (err) {
     logger().error(err)
 
-    response.status(500).json(constants.investor.error.UPDATE)
+    response.status(500).json(err.apicode ? err : constants.investor.error.UPDATE)
   }
 }

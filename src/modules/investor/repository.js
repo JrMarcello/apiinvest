@@ -1,3 +1,4 @@
+import constants from '../../common/constants'
 import * as phone from '../investor-phone/repository'
 import * as bankAccount from '../investor-bank-account/repository'
 import * as document from '../investor-document/repository'
@@ -97,10 +98,10 @@ export const getProjectedAmount = id => {
  * @returns - Returns a object
  */
 export const create = async data => {
-  if (!data || data.length === 0 || !data.investor || data.investor.length === 0) throw Error('Dados inválidos')
-  if (!data.phones || data.phones.length === 0) throw Error('Telefone é um dado obrigatório')
-  if (!data.accounts || data.accounts.length === 0) throw Error('Conta bancária é um dado obrigatório')
-  if (!data.files || data.files.length !== 3) throw Error('Envie fotos do seu documento (frente e verso) e comprovante de residência')
+  if (!data || data.length === 0 || !data.investor || data.investor.length === 0) throw constants.investor.error.INVALID_DATA
+  if (!data.phones || data.phones.length === 0) throw constants.investor.phone.error.REQUIRED
+  if (!data.accounts || data.accounts.length === 0) throw constants.investor.bank_account.error.REQUIRED
+  if (!data.files || data.files.length !== 3) throw constants.investor.document.error.REQUIRED
 
   const investor = await dao.create(data.investor)
 
@@ -118,7 +119,7 @@ export const create = async data => {
  * @returns - Returns a object
  */
 export const update = data => {
-  if (!data || data.length === 0) throw Error('Dados inválidos')
+  if (!data || data.length === 0) throw constants.investor.error.INVALID_DATA
 
   return dao.update({
     id: data.id,
