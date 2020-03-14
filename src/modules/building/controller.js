@@ -53,7 +53,7 @@ export const getAll = async (request, response) => {
   } catch (err) {
     logger().error(err)
 
-    return response.status(500).json(constants.building.error.NOT_FOUND)
+    return response.status(500).json(err.apicode ? err : constants.building.error.NOT_FOUND)
   }
 }
 
@@ -100,7 +100,7 @@ export const getAllAvaliables = async (request, response) => {
   } catch (err) {
     logger().error(err)
 
-    response.status(500).json(constants.building.error.NOT_FOUND)
+    response.status(500).json(err.apicode ? err : constants.building.error.NOT_FOUND)
   }
 }
 
@@ -155,7 +155,7 @@ export const getById = async (request, response) => {
   } catch (err) {
     logger().error(err)
 
-    response.status(500).json(constants.building.error.NOT_FOUND)
+    response.status(500).json(err.apicode ? err : constants.building.error.NOT_FOUND)
   }
 }
 
@@ -208,7 +208,7 @@ export const getByBuilderId = async (request, response) => {
   } catch (err) {
     logger().error(err)
 
-    response.status(500).json(constants.building.error.NOT_FOUND)
+    response.status(500).json(err.apicode ? err : constants.building.error.NOT_FOUND)
   }
 }
 
@@ -290,7 +290,7 @@ export const create = async (request, response) => {
   } catch (err) {
     logger().error(err)
 
-    response.status(500).json(constants.building.error.CREATE)
+    response.status(500).json(err.apicode ? err : constants.building.error.CREATE)
   }
 }
 
@@ -351,7 +351,7 @@ export const update = async (request, response) => {
   } catch (err) {
     logger().error(err)
 
-    response.status(500).json(constants.building.error.UPDATE)
+    response.status(500).json(err.apicode ? err : constants.building.error.UPDATE)
   }
 }
 
@@ -394,6 +394,6 @@ export const remove = async (request, response) => {
   } catch (err) {
     logger().error(err)
 
-    response.status(500).json(constants.building.error.REMOVE)
+    response.status(500).json(err.apicode ? err : constants.building.error.REMOVE)
   }
 }

@@ -36,7 +36,7 @@ export const getByBuilderId = async (request, response) => {
   } catch (err) {
     logger().error(err)
 
-    response.status(500).json(constants.builder.phones.error.NOT_FOUND)
+    response.status(500).json(err.apicode ? err : constants.builder.phones.error.NOT_FOUND)
   }
 }
 
@@ -87,7 +87,7 @@ export const create = async (request, response) => {
   } catch (err) {
     logger().error(err)
 
-    response.status(500).json(constants.builder.phones.error.CREATE)
+    response.status(500).json(err.apicode ? err : constants.builder.phones.error.CREATE)
   }
 }
 
@@ -129,6 +129,6 @@ export const remove = async (request, response) => {
   } catch (err) {
     logger().error(err)
 
-    response.status(500).json(constants.builder.phones.error.REMOVE)
+    response.status(500).json(err.apicode ? err : constants.builder.phones.error.REMOVE)
   }
 }

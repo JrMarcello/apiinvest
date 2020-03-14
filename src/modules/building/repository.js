@@ -1,3 +1,4 @@
+import constants from '../../common/constants'
 import * as image from '../building-image/repository'
 import * as fundraising from '../fundraising/repository'
 import * as dao from './dao'
@@ -83,7 +84,7 @@ export const create = data => {
  * @returns - Returns a object
  */
 export const update = data => {
-  if (!data || data.length === 0) throw Error('Dados inválidos')
+  if (!data || data.length === 0) throw constants.building.error.INVALID_DATA
 
   return dao.update({
     id: data.id,

@@ -36,7 +36,7 @@ export const getByBuildingId = async (request, response) => {
   } catch (err) {
     logger().error(err)
 
-    response.status(500).json(constants.building.images.error.NOT_FOUND)
+    response.status(500).json(err.apicode ? err : constants.building.images.error.NOT_FOUND)
   }
 }
 
@@ -76,7 +76,7 @@ export const create = async (request, response) => {
   } catch (err) {
     logger().error(err)
 
-    response.status(500).json(constants.building.images.error.CREATE)
+    response.status(500).json(err.apicode ? err : constants.building.images.error.CREATE)
   }
 }
 
@@ -120,6 +120,6 @@ export const remove = async (request, response) => {
   } catch (err) {
     logger().error(err)
 
-    response.status(500).json(constants.building.images.error.REMOVE)
+    response.status(500).json(err.apicode ? err : constants.building.images.error.REMOVE)
   }
 }

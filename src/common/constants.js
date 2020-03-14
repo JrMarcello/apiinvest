@@ -162,7 +162,8 @@ const constants = {
       NOT_FOUND: { apicode: 'E0700', message: 'Erro ao buscar Obra(s)' },
       CREATE: { apicode: 'E0701', message: 'Erro ao criar Obra' },
       UPDATE: { apicode: 'E0702', message: 'Erro ao atualizar Obra' },
-      REMOVE: { apicode: 'E0703', message: 'Erro ao deletar Obra' }
+      REMOVE: { apicode: 'E0703', message: 'Erro ao deletar Obra' },
+      INVALID_DATA: { apicode: 'E0704', message: 'Dados inválidos' }
     },
     images: {
       // S07xx
@@ -172,9 +173,9 @@ const constants = {
       },
       // E07xx
       error: {
-        NOT_FOUND: { apicode: 'E0704', message: 'Erro ao buscar imagens' },
-        CREATE: { apicode: 'E0705', message: 'Erro ao enviar as imagens' },
-        REMOVE: { apicode: 'E0706', message: 'Erro ao deletar as imagens' }
+        NOT_FOUND: { apicode: 'E0705', message: 'Erro ao buscar imagens' },
+        CREATE: { apicode: 'E0706', message: 'Erro ao enviar as imagens' },
+        REMOVE: { apicode: 'E0707', message: 'Erro ao deletar as imagens' }
       }
     }
   },
