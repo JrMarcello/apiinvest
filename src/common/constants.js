@@ -194,7 +194,9 @@ const constants = {
       UPDATE: { apicode: 'E0802', message: 'Erro ao atualizar a construtora' },
       REMOVE: { apicode: 'E0803', message: 'Erro ao deletar a construtora' },
       SET_LOGO: { apicode: 'E0804', message: 'Erro ao tentar enviar imagem' },
-      REMOVE_LOGO: { apicode: 'E0805', message: 'Erro ao tentar remover imagem' }
+      REMOVE_LOGO: { apicode: 'E0805', message: 'Erro ao tentar remover imagem' },
+      REQUIRED: { apicode: 'E0806', message: 'Informe seus dados' },
+      INVALID_DATA: { apicode: 'E0807', message: 'Dados inválidos' }
     },
     phones: {
       // S08xx
@@ -204,9 +206,10 @@ const constants = {
       },
       // E08xx
       error: {
-        NOT_FOUND: { apicode: 'E0806', message: 'Erro ao buscar telefones' },
-        CREATE: { apicode: 'E0807', message: 'Erro ao criar telefone(s)' },
-        REMOVE: { apicode: 'E0808', message: 'Erro ao deletar telefone(s)' }
+        NOT_FOUND: { apicode: 'E0808', message: 'Erro ao buscar telefones' },
+        CREATE: { apicode: 'E0809', message: 'Erro ao criar telefone(s)' },
+        REMOVE: { apicode: 'E0810', message: 'Erro ao deletar telefone(s)' },
+        REQUIRED: { apicode: 'E0811', message: 'Informe pelo menos 1 telefone' }
       }
     },
     partners: {
@@ -217,9 +220,9 @@ const constants = {
       },
       // E08xx
       error: {
-        NOT_FOUND: { apicode: 'E0809', message: 'Erro ao buscar sócios' },
-        CREATE: { apicode: 'E0810', message: 'Erro ao criar sócio(s)' },
-        REMOVE: { apicode: 'E0811', message: 'Erro ao deletar sócio(s)' }
+        NOT_FOUND: { apicode: 'E0812', message: 'Erro ao buscar sócios' },
+        CREATE: { apicode: 'E0813', message: 'Erro ao criar sócio(s)' },
+        REMOVE: { apicode: 'E0814', message: 'Erro ao deletar sócio(s)' }
       }
     }
   }
