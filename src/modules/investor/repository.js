@@ -36,15 +36,8 @@ export const getById = async id => {
  * @param {string} id - User ID
  * @returns - Returns a object
  */
-export const getByUserId = async id => {
-  const investor = await dao.getByUserId(id)
-
-  // if (investor) {
-  //   investor.phones = await phone.getByInvestorId(investor.id)
-  //   investor.accounts = await bankAccount.getByInvestorId(investor.id)
-  // }
-
-  return investor
+export const getByUserId = id => {
+  return dao.getByUserId(id)
 }
 
 /**

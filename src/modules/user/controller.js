@@ -57,7 +57,7 @@ export const getAll = async (request, response) => {
   } catch (err) {
     logger().error(err)
 
-    return response.status(500).json(constants.user.error.NOT_FOUND)
+    return response.status(500).json(err.apicode ? err : constants.user.error.NOT_FOUND)
   }
 }
 
@@ -104,7 +104,7 @@ export const getById = async (request, response) => {
   } catch (err) {
     logger().error(err)
 
-    response.status(500).json(constants.user.error.NOT_FOUND)
+    response.status(500).json(err.apicode ? err : constants.user.error.NOT_FOUND)
   }
 }
 
@@ -162,7 +162,7 @@ export const create = async (request, response) => {
   } catch (err) {
     logger().error(err)
 
-    response.status(500).json(err)
+    response.status(500).json(err.apicode ? err : constants.user.error.CREATE)
   }
 }
 
@@ -212,7 +212,7 @@ export const update = async (request, response) => {
   } catch (err) {
     logger().error(err)
 
-    response.status(500).json(constants.user.error.UPDATE)
+    response.status(500).json(err.apicode ? err : constants.user.error.UPDATE)
   }
 }
 
@@ -255,7 +255,7 @@ export const remove = async (request, response) => {
   } catch (err) {
     logger().error(err)
 
-    response.status(500).json(constants.user.error.REMOVE)
+    response.status(500).json(err.apicode ? err : constants.user.error.REMOVE)
   }
 }
 
@@ -297,7 +297,7 @@ export const login = async (request, response) => {
   } catch (err) {
     logger().error(err)
 
-    response.status(500).json(err)
+    response.status(500).json(err.apicode ? err : constants.user.error.LOGIN)
   }
 }
 
@@ -336,7 +336,7 @@ export const forgotPassword = async (request, response) => {
   } catch (err) {
     logger().error(err)
 
-    response.status(500).json(err)
+    response.status(500).json(err.apicode ? err : constants.user.error.FORGOT_PASSWORD)
   }
 }
 
@@ -377,6 +377,6 @@ export const resetPassword = async (request, response) => {
   } catch (err) {
     logger().error(err)
 
-    response.status(500).json(err)
+    response.status(500).json(err.apicode ? err : constants.user.error.RESET_PASSWORD)
   }
 }
