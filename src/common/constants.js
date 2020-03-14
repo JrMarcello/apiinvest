@@ -112,7 +112,15 @@ const constants = {
       CREATE: { apicode: 'E0401', message: 'Erro ao criar o investimento' },
       CANCEL: { apicode: 'E0402', message: 'Erro ao cancelar o investimento' },
       TED_CONFIRMATION: { apicode: 'E0403', message: 'Erro ao enviar comprovante de TED' },
-      CONFIRMATION: { apicode: 'E0404', message: 'Erro ao confirmar o(s) investimento(s)' }
+      CONFIRMATION: { apicode: 'E0404', message: 'Erro ao confirmar o(s) investimento(s)' },
+      INVESTOR_NOT_FOUND: { apicode: 'E0405', message: 'Complete seu cadastro para começar a investir' },
+      BLACK_LIST: { apicode: 'E0406', message: 'Socios não podem realizar investimentos' },
+      MIN_VALUE: { apicode: 'E0407', message: 'Valor abaixo do mínimo nescessário' },
+      MAX_AMOUNT_NOT_QUALIFIED: { apicode: 'E0408', message: 'Limite de investimentos excedido para investidor não qualificado' },
+      MAX_AMOUNT_QUALIFIED: { apicode: 'E0409', message: 'Limite de investimentos excedido' },
+      NO_TED_FILE: { apicode: 'E0410', message: 'Comprovante de TED não anexado' },
+      INVALID_DATA: { apicode: 'E0411', message: 'Formato de dados inválido' },
+      INVALID_CANCEL: { apicode: 'E0412', message: 'Não é possivel cancelar investimentos com TED e/ou confirmados!' }
     }
   },
   fundraising: {

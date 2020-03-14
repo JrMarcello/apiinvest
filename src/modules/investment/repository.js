@@ -1,6 +1,7 @@
 import * as mailer from '../../core/mailer'
 import * as storage from '../../core/storage'
 import { env } from '../../common/utils'
+import constants from '../../common/constants'
 import * as dao from './dao'
 import * as repositoryInvestor from '../investor/repository'
 import * as repositoryFundraising from '../fundraising/repository'
@@ -65,38 +66,27 @@ export const getPendings = async params => {
 export const create = async data => {
   const investor = await repositoryInvestor.getById(data.id_investor)
 
-  if (!investor) throw Error('Complete seu cadastro para começar a investir')
+  if (!investor) throw constants.investment.error.INVESTOR_NOT_FOUND
 
-  if (env().BLACK_LIST.includes(investor.cpf) || env().BLACK_LIST.includes(investor.cnpj))
-    throw Error('Socios não podem realizar investimentos')
+  if (env().BLACK_LIST.includes(investor.cpf) || env().BLACK_LIST.includes(investor.cnpj)) throw constants.investment.error.BLACK_LIST
 
   const fundraising = await repositoryFundraising.getById(data.id_fundraising)
 
-  if (!fundraising || data.amount < fundraising.investment_min_value) throw Error('Valor abaixo do mínimo nescessário')
+  if (!fundraising || data.amount < fundraising.investment_min_value) throw constants.investment.error.MIN_VALUE
 
   const yearAmout = await dao.getInvestedAmountOnYear(data.id_investor)
   const MAX_AMOUNT_NOT_QUALIFIED = parseFloat(env().INVESTMENT_MAX_AMOUNT_NOT_QUALIFIED)
   const MAX_AMOUNT_QUALIFIED = parseFloat(env().INVESTMENT_MAX_AMOUNT_QUALIFIED)
 
   if (!data.is_qualified && (yearAmout > MAX_AMOUNT_NOT_QUALIFIED || yearAmout + data.amount > MAX_AMOUNT_NOT_QUALIFIED))
-    throw Error('Limite de investimentos excedido para investidor não qualificado')
+    throw constants.investment.error.MAX_AMOUNT_NOT_QUALIFIED
 
   if (data.is_qualified && (yearAmout > MAX_AMOUNT_QUALIFIED || yearAmout + data.amount > MAX_AMOUNT_QUALIFIED))
-    throw Error('Limite de investimentos excedido')
+    throw constants.investment.error.MAX_AMOUNT_QUALIFIED
 
   const investment = await dao.create(data)
 
-  mailer.sendEmail(getEmailParams(investor))
-
-  return investment
-}
-
-/**
- * @param {object} investor - Investor data
- * @return - Returns a object
- */
-const getEmailParams = investor => {
-  return {
+  mailer.sendEmail({
     from: `Buildinvest <${env().buildinvest.emails.contact}>`,
     to: investor.email,
     subject: 'Buildinvest - Novo investimento',
@@ -108,7 +98,9 @@ const getEmailParams = investor => {
       },
       investor
     }
-  }
+  })
+
+  return investment
 }
 
 /**
@@ -120,7 +112,7 @@ const getEmailParams = investor => {
  * @returns - Returns a object
  */
 export const sendTED = async (file, id, idInvestor) => {
-  if (!file) throw Error('Comprovante de TED não anexado')
+  if (!file) throw constants.investment.error.NO_TED_FILE
 
   const url = await storage.uploadFile(file, `teds/${id}`)
 
@@ -134,7 +126,7 @@ export const sendTED = async (file, id, idInvestor) => {
  * @returns - Returns a object
  */
 export const confirm = async investments => {
-  if (!Array.isArray(investments)) throw Error('Formato de dados inválido')
+  if (!Array.isArray(investments)) throw constants.investment.error.INVALID_DATA
 
   await dao.confirm(investments)
 
@@ -155,7 +147,7 @@ export const confirm = async investments => {
 export const cancel = (id, idInvestor) => {
   const investment = getById(id)
 
-  if (!investment || investment.ted_proof_url !== null) throw new Error('Não é possivel cancelar investimentos com TED e/ou confirmados!')
+  if (!investment || investment.ted_proof_url !== null) throw constants.investment.error.INVALID_CANCEL
 
   return dao.cancel(id, idInvestor)
 }

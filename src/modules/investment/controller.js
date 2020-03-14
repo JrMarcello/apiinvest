@@ -45,7 +45,7 @@ export const getAll = async (request, response) => {
   } catch (err) {
     logger().error(err)
 
-    return response.status(500).json(constants.investment.error.NOT_FOUND)
+    return response.status(500).json(err.apicode ? err : constants.investment.error.NOT_FOUND)
   }
 }
 
@@ -90,7 +90,7 @@ export const getById = async (request, response) => {
   } catch (err) {
     logger().error(err)
 
-    response.status(500).json(constants.investment.error.NOT_FOUND)
+    response.status(500).json(err.apicode ? err : constants.investment.error.NOT_FOUND)
   }
 }
 
@@ -139,7 +139,7 @@ export const getByInvestorId = async (request, response) => {
   } catch (err) {
     logger().error(err)
 
-    response.status(500).json(constants.investment.error.NOT_FOUND)
+    response.status(500).json(err.apicode ? err : constants.investment.error.NOT_FOUND)
   }
 }
 
@@ -176,17 +176,19 @@ export const getByInvestorId = async (request, response) => {
  */
 export const getByFundraisingId = async (request, response) => {
   try {
-    if (request.user.id_profile === 3) return response.json(await repository.getByFundraisingId(request.params.id))
+    if (request.user.id_profile !== 3) {
+      return response.status(403).json({
+        status: 'Acesso negado!',
+        success: false,
+        message: 'Você não está autorizado a acessar esse recurso'
+      })
+    }
 
-    return response.status(403).json({
-      status: 'Acesso negado!',
-      success: false,
-      message: 'Você não está autorizado a acessar esse recurso'
-    })
+    return response.json(await repository.getByFundraisingId(request.params.id))
   } catch (err) {
     logger().error(err)
 
-    return response.status(500).json(constants.investment.error.NOT_FOUND)
+    return response.status(500).json(err.apicode ? err : constants.investment.error.NOT_FOUND)
   }
 }
 
@@ -229,17 +231,19 @@ export const getByFundraisingId = async (request, response) => {
  */
 export const getPendings = async (request, response) => {
   try {
-    if (request.user.id_profile === 3) return response.json(await repository.getPendings(request.params))
+    if (request.user.id_profile !== 3) {
+      return response.status(403).json({
+        status: 'Acesso negado!',
+        success: false,
+        message: 'Você não está autorizado a acessar esse recurso'
+      })
+    }
 
-    return response.status(403).json({
-      status: 'Acesso negado!',
-      success: false,
-      message: 'Você não está autorizado a acessar esse recurso'
-    })
+    return response.json(await repository.getPendings(request.params))
   } catch (err) {
     logger().error(err)
 
-    return response.status(500).json(constants.investment.error.NOT_FOUND)
+    return response.status(500).json(err.apicode ? err : constants.investment.error.NOT_FOUND)
   }
 }
 
@@ -295,7 +299,7 @@ export const create = async (request, response) => {
   } catch (err) {
     logger().error(err)
 
-    response.status(500).json(constants.investment.error.CREATE)
+    response.status(500).json(err.apicode ? err : constants.investment.error.CREATE)
   }
 }
 
@@ -336,7 +340,7 @@ export const sendTED = async (request, response) => {
   } catch (err) {
     logger().error(err)
 
-    response.status(500).json(constants.investment.error.TED_CONFIRMATION)
+    response.status(500).json(err.apicode ? err : constants.investment.error.TED_CONFIRMATION)
   }
 }
 
@@ -383,7 +387,7 @@ export const confirm = async (request, response) => {
   } catch (err) {
     logger().error(err)
 
-    return response.status(500).json(constants.investment.error.CONFIRMATION)
+    return response.status(500).json(err.apicode ? err : constants.investment.error.CONFIRMATION)
   }
 }
 
@@ -418,6 +422,6 @@ export const cancel = async (request, response) => {
   } catch (err) {
     logger().error(err)
 
-    response.status(500).json(constants.investment.error.CANCEL)
+    response.status(500).json(err.apicode ? err : constants.investment.error.CANCEL)
   }
 }
