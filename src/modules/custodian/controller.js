@@ -37,7 +37,7 @@ export const getAll = async (request, response) => {
   } catch (err) {
     logger().error(err)
 
-    response.status(500).json(constants.custodian.error.NOT_FOUND)
+    response.status(500).json(err.apicode ? err : constants.custodian.error.NOT_FOUND)
   }
 }
 
@@ -82,7 +82,7 @@ export const getById = async (request, response) => {
   } catch (err) {
     logger().error(err)
 
-    response.status(500).json(constants.custodian.error.NOT_FOUND)
+    response.status(500).json(err.apicode ? err : constants.custodian.error.NOT_FOUND)
   }
 }
 
@@ -141,7 +141,7 @@ export const create = async (request, response) => {
   } catch (err) {
     logger().error(err)
 
-    response.status(500).json(constants.custodian.error.CREATE)
+    response.status(500).json(err.apicode ? err : constants.custodian.error.CREATE)
   }
 }
 
@@ -193,7 +193,7 @@ export const update = async (request, response) => {
   } catch (err) {
     logger().error(err)
 
-    response.status(500).json(constants.custodian.error.UPDATE)
+    response.status(500).json(err.apicode ? err : constants.custodian.error.UPDATE)
   }
 }
 
@@ -232,6 +232,6 @@ export const remove = async (request, response) => {
   } catch (err) {
     logger().error(err)
 
-    response.status(500).json(constants.custodian.error.REMOVE)
+    response.status(500).json(err.apicode ? err : constants.custodian.error.REMOVE)
   }
 }
