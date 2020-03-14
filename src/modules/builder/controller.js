@@ -55,7 +55,7 @@ export const getAll = async (request, response) => {
   } catch (err) {
     logger().error(err)
 
-    return response.status(500).json(constants.builder.error.NOT_FOUND)
+    return response.status(500).json(err.apicode ? err : constants.builder.error.NOT_FOUND)
   }
 }
 
@@ -153,7 +153,7 @@ export const getById = async (request, response) => {
   } catch (err) {
     logger().error(err)
 
-    return response.status(500).json(constants.builder.error.NOT_FOUND)
+    return response.status(500).json(err.apicode ? err : constants.builder.error.NOT_FOUND)
   }
 }
 
@@ -206,7 +206,7 @@ export const getAllBuildingsById = async (request, response) => {
   } catch (err) {
     logger().error(err)
 
-    return response.status(500).json(constants.building.error.NOT_FOUND)
+    return response.status(500).json(err.apicode ? err : constants.building.error.NOT_FOUND)
   }
 }
 
@@ -262,7 +262,7 @@ export const getByUserId = async (request, response) => {
   } catch (err) {
     logger().error(err)
 
-    return response.status(500).json(constants.builder.error.NOT_FOUND)
+    return response.status(500).json(err.apicode ? err : constants.builder.error.NOT_FOUND)
   }
 }
 
@@ -362,7 +362,7 @@ export const create = async (request, response) => {
   } catch (err) {
     logger().error(err)
 
-    return response.status(500).json(constants.builder.error.CREATE)
+    return response.status(500).json(err.apicode ? err : constants.builder.error.CREATE)
   }
 }
 
@@ -418,7 +418,7 @@ export const update = async (request, response) => {
   } catch (err) {
     logger().error(err)
 
-    return response.status(500).json(constants.builder.error.UPDATE)
+    return response.status(500).json(err.apicode ? err : constants.builder.error.UPDATE)
   }
 }
 
@@ -461,7 +461,7 @@ export const remove = async (request, response) => {
   } catch (err) {
     logger().error(err)
 
-    response.status(500).json(constants.builder.error.REMOVE)
+    response.status(500).json(err.apicode ? err : constants.builder.error.REMOVE)
   }
 }
 
@@ -509,7 +509,7 @@ export const setLogo = async (request, response) => {
   } catch (err) {
     logger().error(err)
 
-    return response.status(500).json(constants.builder.error.SET_LOGO)
+    return response.status(500).json(err.apicode ? err : constants.builder.error.SET_LOGO)
   }
 }
 
@@ -556,6 +556,6 @@ export const removeLogo = async (request, response) => {
   } catch (err) {
     logger().error(err)
 
-    return response.status(500).json(constants.builder.error.REMOVE_LOGO)
+    return response.status(500).json(err.apicode ? err : constants.builder.error.REMOVE_LOGO)
   }
 }

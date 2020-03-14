@@ -1,3 +1,4 @@
+import constants from '../../common/constants'
 import * as storage from '../../core/storage'
 import * as phone from '../builder-phone/repository'
 import * as partner from '../builder-partner/repository'
@@ -59,8 +60,8 @@ export const getByUserId = id => {
  * @returns - Returns a object
  */
 export const create = async data => {
-  if (!data.builder || data.builder.length === 0) throw Error('Informe seus dados')
-  if (!data.phones || data.phones.length === 0) throw Error('Informe pelo menos 1 telefone')
+  if (!data.builder || data.builder.length === 0) throw constants.builder.error.REQUIRED
+  if (!data.phones || data.phones.length === 0) throw constants.builder.phones.error.REQUIRED
 
   const builder = await dao.create({
     id: data.builder.id,
@@ -94,7 +95,7 @@ export const create = async data => {
  * @returns - Returns a object
  */
 export const update = async data => {
-  if (!data || data.length === 0) throw Error('Invalid data')
+  if (!data || data.length === 0) throw constants.builder.error.INVALID_DATA
 
   return dao.update({
     id: data.id,
