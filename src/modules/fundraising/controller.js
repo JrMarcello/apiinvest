@@ -39,7 +39,7 @@ export const getAll = async (request, response) => {
   } catch (err) {
     logger().error(err)
 
-    response.status(500).json(constants.fundraising.error.NOT_FOUND)
+    response.status(500).json(err.apicode ? err : constants.fundraising.error.NOT_FOUND)
   }
 }
 
@@ -86,7 +86,7 @@ export const getById = async (request, response) => {
   } catch (err) {
     logger().error(err)
 
-    response.status(500).json(constants.fundraising.error.NOT_FOUND)
+    response.status(500).json(err.apicode ? err : constants.fundraising.error.NOT_FOUND)
   }
 }
 
@@ -133,7 +133,7 @@ export const getByBuildingId = async (request, response) => {
   } catch (err) {
     logger().error(err)
 
-    response.status(500).json(constants.fundraising.error.NOT_FOUND)
+    response.status(500).json(err.apicode ? err : constants.fundraising.error.NOT_FOUND)
   }
 }
 
@@ -164,7 +164,7 @@ export const getAmountRaised = async (request, response) => {
   } catch (err) {
     logger().error(err)
 
-    response.status(500).json(constants.fundraising.error.AMOUNT_RAISED)
+    response.status(500).json(err.apicode ? err : constants.fundraising.error.AMOUNT_RAISED)
   }
 }
 
@@ -204,7 +204,7 @@ export const getInvestorsByFundraisingId = async (request, response) => {
   } catch (err) {
     logger().error(err)
 
-    response.status(500).json(constants.fundraising.error.INVESTORS)
+    response.status(500).json(err.apicode ? err : constants.fundraising.error.INVESTORS)
   }
 }
 
@@ -269,7 +269,7 @@ export const create = async (request, response) => {
   } catch (err) {
     logger().error(err)
 
-    response.status(500).json(constants.fundraising.error.CREATE)
+    response.status(500).json(err.apicode ? err : constants.fundraising.error.CREATE)
   }
 }
 
@@ -317,7 +317,7 @@ export const update = async (request, response) => {
   } catch (err) {
     logger().error(err)
 
-    response.status(500).json(constants.fundraising.error.UPDATE)
+    response.status(500).json(err.apicode ? err : constants.fundraising.error.UPDATE)
   }
 }
 
@@ -356,7 +356,7 @@ export const finish = async (request, response) => {
   } catch (err) {
     logger().error(err)
 
-    response.status(500).json(constants.fundraising.error.FINISH)
+    response.status(500).json(err.apicode ? err : constants.fundraising.error.FINISH)
   }
 }
 
@@ -395,6 +395,6 @@ export const remove = async (request, response) => {
   } catch (err) {
     logger().error(err)
 
-    response.status(500).json(constants.fundraising.error.REMOVE)
+    response.status(500).json(err.apicode ? err : constants.fundraising.error.REMOVE)
   }
 }

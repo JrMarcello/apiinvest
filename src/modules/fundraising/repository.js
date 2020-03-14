@@ -109,7 +109,7 @@ export const finish = id => {
  * @returns - Returns a object
  */
 export const remove = async id => {
-  if ((await fundraisingDao.getByFundraisingId(id)).length !== 0) throw Error(constants.fundraising.error.NOT_REMOVED_INVESTMENT)
+  if ((await fundraisingDao.getByFundraisingId(id)).length !== 0) throw constants.fundraising.error.NOT_REMOVED_INVESTMENT
 
   return dao.remove(id)
 }
