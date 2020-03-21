@@ -1,7 +1,9 @@
 import { Storage } from '@google-cloud/storage'
 import { env } from '../../common/utils'
 
-const storage = new Storage({ keyFilename: env().GOOGLE_CLOUD.KEYFILE_PATH })
+const bucket = new Storage({ keyFilename: env().GOOGLE_CLOUD.KEYFILE_PATH }).bucket(env().GOOGLE_CLOUD.BUCKET)
+
+bucket.makePublic({ includeFiles: true })
 
 /**
  * Pushes file to GCS
@@ -10,16 +12,10 @@ const storage = new Storage({ keyFilename: env().GOOGLE_CLOUD.KEYFILE_PATH })
  * @param {*} dirname
  */
 export const uploadFile = async (file, dirname) => {
-  const bucketName = env().GOOGLE_CLOUD.BUCKET
   const fileName = `${Date.now()}.${file.mimetype.split('/')[1]}`
+  await bucket.file(`${dirname}/${fileName}`).save(file.buffer)
 
-  await storage
-    .bucket(bucketName)
-    .file(`${dirname}/${fileName}`)
-    .save(file.buffer)
-    .makePublic()
-
-  return `https://storage.googleapis.com/${bucketName}/${dirname}/${fileName}`
+  return `https://storage.googleapis.com/${env().GOOGLE_CLOUD.BUCKET}/${dirname}/${fileName}`
 }
 
 /**
@@ -28,13 +24,8 @@ export const uploadFile = async (file, dirname) => {
  * @param {Array} files
  */
 export const removeFiles = async files => {
-  const bucketName = env().GOOGLE_CLOUD.BUCKET
-
   return files.forEach(async img => {
-    storage
-      .bucket(bucketName)
-      .file(img.url.split(bucketName)[1])
-      .delete()
+    removeFile(img.url)
   })
 }
 
@@ -44,10 +35,5 @@ export const removeFiles = async files => {
  * @param {String} url
  */
 export const removeFile = async url => {
-  const bucketName = env().GOOGLE_CLOUD.BUCKET
-
-  return storage
-    .bucket(bucketName)
-    .file(url.split(bucketName)[1])
-    .delete()
+  return bucket.file(url.split(env().GOOGLE_CLOUD.BUCKET)[1]).delete()
 }

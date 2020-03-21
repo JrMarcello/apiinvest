@@ -136,10 +136,12 @@ export const setLogo = async (id, file) => {
   await removeLogo(id)
   const url = await storage.uploadFile(file, `logos/${id}`)
 
-  return dao.update({
+  await dao.update({
     id,
     logo_url: url
   })
+
+  return url
 }
 
 /**
