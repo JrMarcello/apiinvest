@@ -3,6 +3,6 @@ build
 logs
 # Dependency directories
 node_modules
-
+.env
 #public/images/*
 #!public/images/.gitkeep
