@@ -1,7 +1,6 @@
-# Compiled binary addons (http://nodejs.org/api/addons.html)
 build
 logs
-# Dependency directories
+db/data
 node_modules
 .env
 #public/images/*

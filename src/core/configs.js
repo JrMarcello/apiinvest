@@ -10,7 +10,6 @@ export default {
     PORT: process.env.PORT
   },
   db: {
-    // PGURI: process.env.NODE_ENV === 'development' ? process.env.PGURI_DEV : process.env.PGURI_PROD
     DB_URI: process.env.DB_URI
   },
   SECRET_KEY: process.env.SECRET_KEY,
