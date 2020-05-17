@@ -129,6 +129,7 @@ export const update = data => {
     company_name: data.company_name,
     address_street: data.address_street,
     address_number: data.address_number,
+    address_complement: data.address_complement,
     address_neighborhood: data.address_neighborhood,
     address_city: data.address_city,
     address_state: data.address_state,
