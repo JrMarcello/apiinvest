@@ -23,8 +23,12 @@ export const getAll = async params => {
  * @param {string} idInvestor - Investor ID
  * @returns - Returns a object
  */
-export const getById = (id, idInvestor) => {
-  return dao.getById(id, idInvestor)
+export const getById = async (id, idInvestor) => {
+  const investment = await dao.getById(id, idInvestor)
+
+  investment.ted_proof_url = await storage.getSignedUrl(investment.ted_proof_url)
+
+  return investment
 }
 
 /**
@@ -66,14 +70,30 @@ export const getPendings = async params => {
 export const create = async data => {
   const investor = await repositoryInvestor.getById(data.id_investor)
 
+  await validateInvestor(investor)
+  await validateFundraising(data)
+  await validateInvestimet(data)
+
+  const investment = await dao.create(data)
+
+  sendCreatedEmail(investor, investment)
+
+  return investment
+}
+
+const validateInvestor = async investor => {
   if (!investor) throw constants.investment.error.INVESTOR_NOT_FOUND
 
   if (env().BLACK_LIST.includes(investor.cpf) || env().BLACK_LIST.includes(investor.cnpj)) throw constants.investment.error.BLACK_LIST
+}
 
+const validateFundraising = async data => {
   const fundraising = await repositoryFundraising.getById(data.id_fundraising)
 
   if (!fundraising || data.amount < fundraising.investment_min_value) throw constants.investment.error.MIN_VALUE
+}
 
+const validateInvestimet = async data => {
   const yearAmout = await dao.getInvestedAmountOnYear(data.id_investor)
   const MAX_AMOUNT_NOT_QUALIFIED = parseFloat(env().INVESTMENT_MAX_AMOUNT_NOT_QUALIFIED)
   const MAX_AMOUNT_QUALIFIED = parseFloat(env().INVESTMENT_MAX_AMOUNT_QUALIFIED)
@@ -83,9 +103,9 @@ export const create = async data => {
 
   if (data.is_qualified && (yearAmout > MAX_AMOUNT_QUALIFIED || yearAmout + data.amount > MAX_AMOUNT_QUALIFIED))
     throw constants.investment.error.MAX_AMOUNT_QUALIFIED
+}
 
-  const investment = await dao.create(data)
-
+const sendCreatedEmail = (investor, investment) => {
   mailer.sendEmail({
     from: `Buildinvest <${env().buildinvest.emails.contact}>`,
     to: investor.email,
@@ -96,11 +116,10 @@ export const create = async data => {
         bankAccount: env().buildinvest.bankAccount,
         agence: env().buildinvest.agence
       },
-      investor
+      investor,
+      investment
     }
   })
-
-  return investment
 }
 
 /**
@@ -112,11 +131,7 @@ export const create = async data => {
  * @returns - Returns a object
  */
 export const sendTED = async (file, id, idInvestor) => {
-  if (!file) throw constants.investment.error.NO_TED_FILE
-
-  const url = await storage.uploadFile(file, `teds/${id}`)
-
-  return dao.sendTED(url, id, idInvestor)
+  return dao.sendTED(await storage.uploadFile(file, `teds/${id}`), id, idInvestor)
 }
 
 /**

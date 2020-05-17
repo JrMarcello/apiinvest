@@ -5,6 +5,8 @@ import * as partner from '../builder-partner/repository'
 import * as building from '../building/repository'
 import * as dao from './dao'
 
+import { env } from '../../common/utils'
+
 /**
  *  Get all Builders
  *
@@ -134,7 +136,7 @@ export const setLogo = async (id, file) => {
   if (!file) throw Error('')
 
   await removeLogo(id)
-  const url = await storage.uploadFile(file, `logos/${id}`)
+  const url = await storage.uploadFile(file, `logos/${id}`, true)
 
   await dao.update({
     id,
@@ -155,9 +157,10 @@ export const setLogo = async (id, file) => {
 export const removeLogo = async id => {
   const builder = await getById(id)
 
-  if (!builder || !builder.logo_url) return false
+  if (!builder || !builder.logo_url) return true
 
-  await storage.removeFile(builder.logo_url)
+  const filePath = builder.logo_url.split(env().GOOGLE_CLOUD.BUCKET).pop()
+  storage.removeFile(filePath)
 
   return dao.update({
     id,

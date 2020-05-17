@@ -7,8 +7,16 @@ import * as dao from './dao'
  * @param {string} id - Investor ID
  * @returns - Returns a object
  */
-export const getByInvestorId = id => {
-  return dao.getByInvestorId(id)
+export const getByInvestorId = async id => {
+  const docs = await Promise.all(
+    (await dao.getByInvestorId(id)).map(async doc => {
+      doc.url = await storage.getSignedUrl(doc.url)
+
+      return doc
+    })
+  )
+
+  return docs
 }
 
 /**
@@ -31,7 +39,9 @@ export const create = async (idInvestor, imagesBuffer) => {
     })
   )
 
-  return dao.create(files)
+  await dao.create(files)
+
+  return getByInvestorId(idInvestor)
 }
 
 /**

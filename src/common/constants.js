@@ -5,7 +5,8 @@ const constants = {
   validations: {
     // E00xx
     INVALID_REQUEST_DATA: { apicode: 'E0000', message: 'Dados de requisição inválidos' },
-    INVALID_DATA_FIELD: { apicode: 'E0001', message: 'Dado inválido' }
+    INVALID_DATA_FIELD: { apicode: 'E0001', message: 'Dado inválido' },
+    INVALID_FILE_EXTESION: { apicode: 'E0002', message: 'Extenssão inválida' }
   },
   auth: {
     // E01xx

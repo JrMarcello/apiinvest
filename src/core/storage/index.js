@@ -1,4 +1,6 @@
 import { Storage } from '@google-cloud/storage'
+import constants from '../../common/constants'
+
 import { env } from '../../common/utils'
 
 const bucket = new Storage({ keyFilename: env().GOOGLE_CLOUD.KEYFILE_PATH }).bucket(env().GOOGLE_CLOUD.BUCKET)
@@ -8,12 +10,22 @@ const bucket = new Storage({ keyFilename: env().GOOGLE_CLOUD.KEYFILE_PATH }).buc
  *
  * @param {*} file
  * @param {*} dirname
+ * @param {*} isPublic
  */
-export const uploadFile = async (file, dirname) => {
-  const fileName = `${Date.now()}.${file.mimetype.split('/')[1]}`
-  await bucket.file(`${dirname}/${fileName}`).save(file.buffer, { resumable: false })
+export const uploadFile = async (file, filepath, isPublic) => {
+  if (!['image/jpg', 'image/jpeg', 'image/png', 'application/pdf'].includes(file.mimetype)) {
+    throw constants.validations.INVALID_FILE_EXTESION
+  }
 
-  return `https://storage.googleapis.com/${env().GOOGLE_CLOUD.BUCKET}/${dirname}/${fileName}`
+  const fileFullPath = `${filepath}/${Date.now()}.${file.mimetype.split('/').pop()}`
+  await bucket.file(fileFullPath).save(file.buffer, { resumable: false })
+
+  if (isPublic) {
+    bucket.file(fileFullPath).makePublic()
+    return `https://storage.googleapis.com/${env().GOOGLE_CLOUD.BUCKET}/${fileFullPath}`
+  }
+
+  return fileFullPath
 }
 
 /**
@@ -32,8 +44,7 @@ export const removeFiles = async files => {
  *
  * @param {String} url
  */
-export const removeFile = async url => {
-  const filePath = url.split(env().GOOGLE_CLOUD.BUCKET)[1]
+export const removeFile = async filePath => {
   if ((await bucket.file(filePath).exists())[0]) return bucket.file(filePath).delete()
 
   return false
@@ -45,11 +56,11 @@ export const removeFile = async url => {
  * @param {String} filePath
  */
 export const getSignedUrl = async filePath => {
-  const [url] = await bucket.file(filePath.split(env().GOOGLE_CLOUD.BUCKET)[1]).getSignedUrl({
-    version: 'v4',
+  const options = {
+    // version: 'v4',
     action: 'read',
     expires: Date.now() + 1000 * 60 * 60 // 1h
-  })
+  }
 
-  return url
+  return (await bucket.file(filePath).getSignedUrl(options))[0]
 }

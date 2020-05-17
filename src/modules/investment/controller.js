@@ -334,6 +334,8 @@ export const create = async (request, response) => {
  */
 export const sendTED = async (request, response) => {
   try {
+    if (!request.file) throw constants.investment.error.NO_TED_FILE
+
     await repository.sendTED(request.file, request.params.id, request.user.id_profile === 3 ? null : request.user.investor.id)
 
     response.json(constants.investment.success.TED_CONFIRMATION)

@@ -7,8 +7,16 @@ import * as dao from './dao'
  * @param {string} id - Building ID
  * @returns - Returns a object
  */
-export const getByBuildingId = id => {
-  return dao.getByBuildingId(id)
+export const getByBuildingId = async id => {
+  const images = await Promise.all(
+    (await dao.getByBuildingId(id)).map(async image => {
+      image.url = await storage.getSignedUrl(image.url)
+
+      return image
+    })
+  )
+
+  return images
 }
 
 /**
@@ -23,7 +31,7 @@ export const create = async (idBuilding, imagesBuffer) => {
     imagesBuffer.map(async image => {
       return {
         id_building: idBuilding,
-        url: await storage.uploadFile(image, `building/${idBuilding}`)
+        url: await storage.uploadFile(image, `buildings/${idBuilding}`)
       }
     })
   )

@@ -83,13 +83,28 @@ export const getByInvestorId = async id => {
  * @param {strning} id - Fundraising ID
  * @returns - Returns a object
  */
-export const getByFundraisingId = id => {
-  return db
-    .select()
-    .from(table)
-    .where('id_fundraising', id)
-    .and('active', true)
-    .run()
+export const getByFundraisingId = async id => {
+  const query = {
+    text: `SELECT 
+               i.*, 
+               f.amount AS amount_fundraising,
+               f.investment_percentage,
+               f.return_date,
+               b.id AS id_building,
+               b.cnpj AS cnpj_building,
+               b.name AS name_building,
+               b.vgv AS vgv_building,
+               b.final_date AS final_date_building
+           FROM ${table} i 
+               JOIN fundraising f ON (i.id_fundraising = f.id) 
+               JOIN building b ON (f.id_building = b.id)    
+           WHERE 
+               i.id_fundraising = $1
+               AND i.active`,
+    values: [id]
+  }
+
+  return (await db.query(query)).rows
 }
 
 /**
