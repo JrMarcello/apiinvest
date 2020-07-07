@@ -1,6 +1,6 @@
 export default (sequelize, DataTypes) => {
     
-    const BuilderPartner = sequelize.define('builder_partner', {
+    const BuilderPartner = sequelize.define('BuilderPartner', {
 
         id: {
             type: DataTypes.INTEGER,
@@ -59,9 +59,8 @@ export default (sequelize, DataTypes) => {
         },
 
         address_cep: DataTypes.STRING(8)
-
-        // Created At
-        // Updated At
+    }, {
+        tableName: 'builder_partner'
     });
 
     // Associations

@@ -1,6 +1,6 @@
 export default (sequelize, DataTypes) => {
     
-    const BuildingImage = sequelize.define('building_image', {
+    const BuildingImage = sequelize.define('BuildingImage', {
 
         id: {
             type: DataTypes.INTEGER,
@@ -16,10 +16,9 @@ export default (sequelize, DataTypes) => {
         url: {
             type: DataTypes.STRING,
             allowNull: false
-        },
-
-        // Created At
-        // Updated At
+        }
+    }, {
+        tableName: 'building_image'
     });
 
     // Associations

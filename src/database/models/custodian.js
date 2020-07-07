@@ -1,6 +1,6 @@
 export default (sequelize, DataTypes) => {
     
-    const Custodian = sequelize.define('custodian', {
+    const Custodian = sequelize.define('Custodian', {
 
         id: {
             type: DataTypes.UUID,
@@ -38,9 +38,8 @@ export default (sequelize, DataTypes) => {
             defaultValue: true,
             allowNull: false
         }
-
-        // Created At
-        // Updated At
+    }, {
+        tableName: 'custodian'
     });
 
     return Custodian;

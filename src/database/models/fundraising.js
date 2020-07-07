@@ -1,6 +1,6 @@
 export default (sequelize, DataTypes) => {
     
-    const Foundraising = sequelize.define('foundraising', {
+    const Foundraising = sequelize.define('Foundraising', {
 
         id: {
             type: DataTypes.UUID,
@@ -61,9 +61,8 @@ export default (sequelize, DataTypes) => {
             defaultValue: true,
             allowNull: false
         }
-
-        // Created At
-        // Updated At
+    }, {
+        tableName: 'foundraising'
     });
 
     // Associations

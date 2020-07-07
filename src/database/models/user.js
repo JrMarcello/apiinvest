@@ -1,6 +1,6 @@
 export default (sequelize, DataTypes) => {
     
-    const User = sequelize.define('user', {
+    const User = sequelize.define('User', {
 
         id: {
             type: DataTypes.UUID,
@@ -10,7 +10,6 @@ export default (sequelize, DataTypes) => {
 
         id_profile: {
             type: DataTypes.UUID,
-            defaultValue: DataTypes.UUIDV1,
             allowNull: false
         },
 
@@ -34,16 +33,15 @@ export default (sequelize, DataTypes) => {
 
         avatar_url: DataTypes.STRING,
         reset_token: DataTypes.STRING,
+        reset_expires: DataTypes.DATE,
 
         active: {
             type: DataTypes.BOOLEAN, 
             defaultValue: true,
             allowNull: false
         }
-
-        // Created At
-        // Updated At
-        // Reset Expires
+    }, {
+        tableName: 'user'
     });
 
     // Associations

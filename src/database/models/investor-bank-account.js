@@ -1,6 +1,6 @@
 export default (sequelize, DataTypes) => {
     
-    const InvestorBankAccount = sequelize.define('investor_bank_account', {
+    const InvestorBankAccount = sequelize.define('InvestorBankAccount', {
 
         id: {
             type: DataTypes.INTEGER,
@@ -33,9 +33,8 @@ export default (sequelize, DataTypes) => {
             defaultValue: true,
             allowNull: false
         }
-
-        // Created At
-        // Updated At
+    }, {
+        tableName: 'investor_bank_account'
     });
 
     // Associations

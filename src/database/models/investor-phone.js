@@ -1,6 +1,6 @@
 export default (sequelize, DataTypes) => {
     
-    const InvestorPhone = sequelize.define('investor_phone', {
+    const InvestorPhone = sequelize.define('InvestorPhone', {
 
         id: {
             type: DataTypes.INTEGER,
@@ -18,9 +18,8 @@ export default (sequelize, DataTypes) => {
             unique: true,
             allowNull: false
         }
-
-        // Created At
-        // Updated At
+    }, {
+        tableName: 'investor_phone'
     });
 
     // Associations

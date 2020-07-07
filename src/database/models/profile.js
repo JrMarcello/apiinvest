@@ -1,6 +1,6 @@
 export default (sequelize, DataTypes) => {
     
-    const Profile = sequelize.define('profile', {
+    const Profile = sequelize.define('Profile', {
 
         id: {
             type: DataTypes.INTEGER,
@@ -18,9 +18,8 @@ export default (sequelize, DataTypes) => {
             defaultValue: true,
             allowNull: false
         }
-
-        // Created At
-        // Updated At
+    }, {
+        tableName: 'profile'
     });
 
     return Profile;

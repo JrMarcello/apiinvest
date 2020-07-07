@@ -1,6 +1,6 @@
 export default (sequelize, DataTypes) => {
     
-    const Investment = sequelize.define('investment', {
+    const Investment = sequelize.define('Investment', {
 
         id: {
             type: DataTypes.UUID,
@@ -50,15 +50,14 @@ export default (sequelize, DataTypes) => {
             defaultValue: true,
             allowNull: false
         }
-
-        // Created At
-        // Updated At
+    }, {
+        tableName: 'investment'
     });
 
     // Associations
     Investment.associate = function (models) {
         Investment.belongsTo(models.Investor, { foreignKey: "id_investor", as: "investor" });
-        Investment.belongsTo(models.Foundrising, { foreignKey: "id_foundraising", as: "foundraising" });
+        Investment.belongsTo(models.Foundraising, { foreignKey: "id_foundraising", as: "foundraising" });
     };
 
     return Investment;

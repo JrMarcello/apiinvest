@@ -1,6 +1,6 @@
 export default (sequelize, DataTypes) => {
     
-    const Builder = sequelize.define('builder', {
+    const Builder = sequelize.define('Builder', {
 
         id: {
             type: DataTypes.UUID,
@@ -75,9 +75,8 @@ export default (sequelize, DataTypes) => {
             defaultValue: true,
             allowNull: false
         }
-
-        // Created At
-        // Updated At
+    }, {
+        tableName: 'builder'
     });
 
     // Associations

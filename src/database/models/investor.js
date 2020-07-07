@@ -1,6 +1,6 @@
 export default (sequelize, DataTypes) => {
     
-    const Investor = sequelize.define('investor', {
+    const Investor = sequelize.define('Investor', {
 
         id: {
             type: DataTypes.UUID,
@@ -13,7 +13,7 @@ export default (sequelize, DataTypes) => {
             allowNull: false
         },
 
-        cpj: {
+        cpf: {
             type: DataTypes.STRING(11),
             unique: true,
             allowNull: false
@@ -81,9 +81,8 @@ export default (sequelize, DataTypes) => {
             defaultValue: true,
             allowNull: false
         }
-
-        // Created At
-        // Updated At
+    }, {
+        tableName: 'investor'
     });
 
     // Associations

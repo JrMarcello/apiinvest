@@ -1,4 +1,5 @@
-import { logger } from '../../common/utils';
+// Models
+const { Builder } = require('../../database/models');
 
 /**
  * @api {get} /ping Ping 
@@ -26,8 +27,10 @@ export const ping = async (request, response) => {
             message: "Pong"
         };
 
-        logger()
-            .info(body);
+        const result = await Builder
+            .findAll();
+
+        console.log(result);
 
         return response
             .status(200)
@@ -35,8 +38,7 @@ export const ping = async (request, response) => {
         
     } catch (error) {
 
-        logger()
-            .error(error);
+        console.log(error.message);
 
         return response
             .status(500)
