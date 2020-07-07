@@ -1,7 +1,8 @@
-build
-logs
-db/data
-node_modules
+# Folders
+/node_modules
+/logs
+/build
+/db/data
+
+#Files
 .env
-#public/images/*
-#!public/images/.gitkeep
