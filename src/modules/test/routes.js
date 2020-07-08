@@ -1,15 +1,14 @@
-import express from 'express';
+import express from 'express'
 
 // Controllers
-import { ping } from './controller';
+import { ping } from './controller'
 
 // Router
-let router = express.Router();
+const router = express.Router()
 
 export default () => {
+  // Routes
+  router.get('/test/ping', ping)
 
-    // Routes
-    router.get('/test/ping', ping);
-    
-    return router;
+  return router
 }

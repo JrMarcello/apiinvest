@@ -46,6 +46,4 @@ export const error = err => {
 
   process.stderr.write(chalk.bold.red(formattedMsg))
   logger.error(err)
-  // TODO: REMOVER
-  console.error(err)
 }
