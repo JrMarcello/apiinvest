@@ -221,8 +221,7 @@ export const getById = async (request, response) => {
  */
 export const getAllBuildingsById = async (request, response) => {
   try {
-    const { user } = request
-    const { params } = request
+    const { user, params } = request
 
     // TODO: Refatorar
     const id = user.id_profile === 3 ? params.id : user.builder.id
@@ -297,26 +296,19 @@ export const getAllBuildingsById = async (request, response) => {
  */
 export const getByUserId = async (request, response) => {
   try {
-    const { user } = request
-    const { params } = request
+    const { user, params } = request
 
     // TODO: Refatorar
     const id = user.id_profile === 3 ? params.id : user.id
 
-    const builder = await Builder.findOne({
+    const builder = await Builder.findAll({
       where: {
         id_user: id,
         active: true
-      },
-      include: [
-        {
-          model: Building,
-          as: 'buildings'
-        }
-      ]
+      }
     })
 
-    return response.json(builder || {})
+    return response.json(builder || [])
   } catch (error) {
     logger().error(error)
 
@@ -412,8 +404,7 @@ export const getByUserId = async (request, response) => {
  */
 export const create = async (request, response) => {
   try {
-    const { user } = request
-    const { body } = request
+    const { user, body } = request
 
     // TODO: Refatorar
     if (user.id_profile !== 3) {
