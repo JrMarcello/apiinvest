@@ -2,6 +2,9 @@ import { logger } from '../../common/utils'
 import constants from '../../common/constants'
 import * as repository from './repository'
 
+// Models
+const { BuilderPhone, Sequelize } = require('../../database/models')
+
 /**
  * @api {get} /builder/:idBuilder/phones Get Phone (By Builder ID)
  * @apiName GetBuilderPhone
@@ -31,13 +34,26 @@ import * as repository from './repository'
  *   }
  */
 export const getByBuilderId = async (request, response) => {
-  try {
-    response.json(await repository.getByBuilderId(request.user.id_profile === 3 ? request.params.idBuilder : request.user.builder.id))
-  } catch (err) {
-    logger().error(err)
+    try {
 
-    response.status(500).json(err.apicode ? err : constants.builder.phones.error.NOT_FOUND)
-  }
+        const { user, params } = request
+
+        // TODO: Refatorar
+        const id = user.id_profile === 3 ? params.idBuilder : user.builder.id
+
+        const phones = await BuilderPhone.findAll({
+            where: {
+                id_builder: id
+            }
+        })
+
+
+        return response.json(phones)
+    } catch (error) {
+        logger().error(error)
+
+        response.status(500).json(error.apicode ? error : constants.builder.phones.error.NOT_FOUND)
+    }
 }
 
 /**
@@ -77,18 +93,33 @@ export const getByBuilderId = async (request, response) => {
  *   }
  */
 export const create = async (request, response) => {
-  try {
-    const phones = await repository.create(
-      request.user.id_profile === 3 ? request.params.idBuilder : request.user.builder.id,
-      request.body.phones
-    )
+    try {
+        const { params, user, body } = request
 
-    response.json(Object.assign(constants.builder.phones.success.CREATE, { phones }))
-  } catch (err) {
-    logger().error(err)
+        // TODO: Refatorar
+        const id = user.id_profile === 3 ? params.idBuilder : user.builder.id
 
-    response.status(500).json(err.apicode ? err : constants.builder.phones.error.CREATE)
-  }
+        const promises = []
+
+        for (let index = 0; index < body.phones.length; index += 1) {
+            const number = body.phones[index]
+
+            const phone = {
+                id_builder: id,
+                number: number
+            }
+
+            promises.push(BuilderPhone.create(phone))
+        }
+
+        const phones = await Promise.all(promises)
+
+        response.json(Object.assign(constants.builder.phones.success.CREATE, { phones }))
+    } catch (error) {
+        logger().error(error)
+
+        response.status(500).json(error.apicode ? error : constants.builder.phones.error.CREATE)
+    }
 }
 
 /**
@@ -122,13 +153,27 @@ export const create = async (request, response) => {
  *   }
  */
 export const remove = async (request, response) => {
-  try {
-    await repository.remove(request.user.id_profile === 3 ? request.params.idBuilder : request.user.builder.id, request.body.ids)
+    try {
+        const { params, user, body } = request
 
-    response.json(constants.builder.phones.success.REMOVE)
-  } catch (err) {
-    logger().error(err)
+        // TODO: Refatorar
+        const id = user.id_profile === 3 ? params.idBuilder : user.builder.id
 
-    response.status(500).json(err.apicode ? err : constants.builder.phones.error.REMOVE)
-  }
+        await BuilderPhone.destroy({
+            where: {
+              [Sequelize.Op.and]: {
+                id_builder: id,
+                id: {
+                  [Sequelize.Op.or]: body.ids
+                }
+              }
+            }
+          })
+
+        response.json(constants.builder.phones.success.REMOVE)
+    } catch (error) {
+        logger().error(error)
+
+        response.status(500).json(error.apicode ? error : constants.builder.phones.error.REMOVE)
+    }
 }
