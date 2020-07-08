@@ -133,7 +133,7 @@ module.exports = {
 
             address_number: {
                 type: DataTypes.STRING,
-                defaultValue: "SN",
+                defaultValue: 'SN',
                 allowNull: false
             },
 
@@ -156,7 +156,7 @@ module.exports = {
 
             address_country: {
                 type: DataTypes.STRING,
-                defaultValue: "Brasil",
+                defaultValue: 'Brasil',
                 allowNull: false,
             },
 
@@ -205,14 +205,12 @@ module.exports = {
 
             cpf: {
                 type: DataTypes.STRING(11),
-                unique: true,
-                allowNull: false
+                unique: true
             },
 
             cnpj: {
                 type: DataTypes.STRING(14),
-                unique: true,
-                allowNull: false
+                unique: true
             },
 
             name: {
@@ -234,7 +232,7 @@ module.exports = {
 
             address_number: {
                 type: DataTypes.STRING,
-                defaultValue: "SN",
+                defaultValue: 'SN',
                 allowNull: false
             },
 
@@ -245,7 +243,7 @@ module.exports = {
 
             address_country: {
                 type: DataTypes.STRING,
-                defaultValue: "Brasil",
+                defaultValue: 'Brasil',
             },
 
             address_cep: DataTypes.STRING(8),
@@ -342,7 +340,7 @@ module.exports = {
 
             address_number: {
                 type: DataTypes.STRING,
-                defaultValue: "SN",
+                defaultValue: 'SN',
                 allowNull: false
             },
 
@@ -365,7 +363,7 @@ module.exports = {
 
             address_country: {
                 type: DataTypes.STRING,
-                defaultValue: "Brasil",
+                defaultValue: 'Brasil',
             },
 
             address_cep:  {
@@ -609,7 +607,7 @@ module.exports = {
 
             address_number: {
                 type: DataTypes.STRING,
-                defaultValue: "SN",
+                defaultValue: 'SN',
                 allowNull: false
             },
 
@@ -632,7 +630,7 @@ module.exports = {
 
             address_country: {
                 type: DataTypes.STRING,
-                defaultValue: "Brasil",
+                defaultValue: 'Brasil',
                 allowNull: false,
             },
 

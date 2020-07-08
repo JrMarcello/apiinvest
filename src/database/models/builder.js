@@ -36,7 +36,7 @@ export default (sequelize, DataTypes) => {
 
         address_number: {
             type: DataTypes.STRING,
-            defaultValue: "SN",
+            defaultValue: 'SN',
             allowNull: false
         },
 
@@ -59,7 +59,7 @@ export default (sequelize, DataTypes) => {
 
         address_country: {
             type: DataTypes.STRING,
-            defaultValue: "Brasil",
+            defaultValue: 'Brasil',
             allowNull: false,
         },
 
@@ -81,7 +81,8 @@ export default (sequelize, DataTypes) => {
 
     // Associations
     Builder.associate = function (models) {
-        Builder.belongsTo(models.User, { foreignKey: "id_user", as: "user" });
+        Builder.belongsTo(models.User, { foreignKey: 'id_user', as: 'user' });
+        Builder.hasMany(models.Building, { foreignKey: 'id_builder', as: 'buildings' });
     };
 
     return Builder;

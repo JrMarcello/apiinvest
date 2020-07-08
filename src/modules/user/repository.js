@@ -16,7 +16,7 @@ import * as dao from './dao'
  * @returns - Returns a object
  */
 export const getAll = async params => {
-  return dao.getAll(params)
+    return dao.getAll(params)
 }
 
 /**
@@ -26,22 +26,22 @@ export const getAll = async params => {
  * @returns - Returns a object
  */
 export const getById = async id => {
-  const user = await dao.getById(id)
+    const user = await dao.getById(id)
 
-  if (user && user.id_profile === 1) {
-    user.investor = await investor.getByUserId(user.id)
-  }
+    if (user && user.id_profile === 1) {
+        user.investor = await investor.getByUserId(user.id)
+    }
 
-  if (user && user.id_profile === 2) {
-    user.builder = await builder.getByUserId(user.id)
-  }
+    if (user && user.id_profile === 2) {
+        user.builder = await builder.getByUserId(user.id)
+    }
 
-  if (user && user.id_profile === 3) {
-    user.investor = await investor.getByUserId(user.id)
-    user.builder = await builder.getByUserId(user.id)
-  }
+    if (user && user.id_profile === 3) {
+        user.investor = await investor.getByUserId(user.id)
+        user.builder = await builder.getByUserId(user.id)
+    }
 
-  return user
+    return user
 }
 
 /**
@@ -51,9 +51,9 @@ export const getById = async id => {
  * @returns - Returns a object
  */
 export const create = async data => {
-  if (await dao.getByEmail(data.email)) throw constants.user.error.MAIL_EXISTS
+    if (await dao.getByEmail(data.email)) throw constants.user.error.MAIL_EXISTS
 
-  return dao.create(data)
+    return dao.create(data)
 }
 
 /**
@@ -63,11 +63,11 @@ export const create = async data => {
  * @returns - Returns a object
  */
 export const update = data => {
-  return dao.update({
-    id: data.id,
-    username: data.username,
-    password: data.password
-  })
+    return dao.update({
+        id: data.id,
+        username: data.username,
+        password: data.password
+    })
 }
 
 /**
@@ -77,7 +77,7 @@ export const update = data => {
  * @returns - Returns a object
  */
 export const remove = id => {
-  return dao.remove(id)
+    return dao.remove(id)
 }
 
 /**
@@ -86,23 +86,27 @@ export const remove = id => {
  * @param {object} params - Login data
  * @returns - Returns a object
  */
-export const login = async params => {
-  let user
+export const login = async (params) => {
 
-  if (params.id) {
-    user = await loginFacebook(params)
-  } else if (params.profileObj) {
-    user = await loginGoogle(params)
-  } else {
-    user = await dao.getByEmail(params.email)
+    let user
 
-    if (!user || !bcrypt.compareSync(params.password, user.password)) throw constants.user.error.INVALID_USER_LOGIN
-  }
+    if (params.id) {
+        user = await loginFacebook(params);
+    } else if (params.profileObj) {
+        user = await loginGoogle(params);
+    } else {
 
-  user = await getById(user.id)
-  user.profile = await dao.getProfile(user.id_profile)
+        user = await dao.getByEmail(params.email);
 
-  return getToken(user)
+        if (!user || !bcrypt.compareSync(params.password, user.password)) {
+            throw constants.user.error.INVALID_USER_LOGIN;
+        }
+    }
+
+    user = await getById(user.id);
+    user.profile = await dao.getProfile(user.id_profile);
+
+    return getToken(user);
 }
 
 /**
@@ -112,17 +116,17 @@ export const login = async params => {
  * @returns - Returns a object
  */
 const loginFacebook = async params => {
-  let user = await dao.getByFacebookId(params.id)
+    let user = await dao.getByFacebookId(params.id)
 
-  if (!user)
-    user = await dao.create({
-      id_facebook: params.id,
-      email: params.email,
-      username: params.name,
-      avatar_url: params.picture.data.url
-    })
+    if (!user)
+        user = await dao.create({
+            id_facebook: params.id,
+            email: params.email,
+            username: params.name,
+            avatar_url: params.picture.data.url
+        })
 
-  return user
+    return user
 }
 
 /**
@@ -132,17 +136,17 @@ const loginFacebook = async params => {
  * @returns - Returns a object
  */
 const loginGoogle = async params => {
-  let user = await dao.getByGoogleId(params.profileObj.googleId)
+    let user = await dao.getByGoogleId(params.profileObj.googleId)
 
-  if (!user)
-    user = await dao.create({
-      id_google: params.profileObj.googleId,
-      email: params.profileObj.email,
-      username: params.profileObj.name,
-      avatar_url: params.profileObj.imageUrl
-    })
+    if (!user)
+        user = await dao.create({
+            id_google: params.profileObj.googleId,
+            email: params.profileObj.email,
+            username: params.profileObj.name,
+            avatar_url: params.profileObj.imageUrl
+        })
 
-  return user
+    return user
 }
 
 /**
@@ -152,25 +156,25 @@ const loginGoogle = async params => {
  * @returns - Returns a object
  */
 export const forgotPassword = async email => {
-  const user = await dao.getByEmail(email)
+    const user = await dao.getByEmail(email)
 
-  if (!user) throw constants.user.error.FORGOT_PASSWORD_MAIL
+    if (!user) throw constants.user.error.FORGOT_PASSWORD_MAIL
 
-  const token = crypto.randomBytes(20).toString('hex')
+    const token = crypto.randomBytes(20).toString('hex')
 
-  await dao.update({
-    id: user.id,
-    reset_token: token,
-    reset_expires: moment().add(1, 'h')
-  })
+    await dao.update({
+        id: user.id,
+        reset_token: token,
+        reset_expires: moment().add(1, 'h')
+    })
 
-  return mailer.sendEmail({
-    from: `Buildinvest <${env().buildinvest.emails.contact}>`,
-    to: user.email,
-    subject: 'Buildinvest - Nova senha',
-    template: 'forgotPassword',
-    context: { user, url: `http://${env().CLIENT_BASE_PATH}/resetpassword?t=${token}` }
-  })
+    return mailer.sendEmail({
+        from: `Buildinvest <${env().buildinvest.emails.contact}>`,
+        to: user.email,
+        subject: 'Buildinvest - Nova senha',
+        template: 'forgotPassword',
+        context: { user, url: `http://${env().CLIENT_BASE_PATH}/resetpassword?t=${token}` }
+    })
 }
 
 /**
@@ -180,24 +184,24 @@ export const forgotPassword = async email => {
  * @returns - Returns a object
  */
 export const resetPassword = async params => {
-  const user = await dao.getByToken(params.token)
+    const user = await dao.getByToken(params.token)
 
-  if (!user) throw constants.user.error.RESET_PASSWORD_TOKEN
+    if (!user) throw constants.user.error.RESET_PASSWORD_TOKEN
 
-  if (moment().isAfter(user.reset_expires)) throw constants.user.error.RESET_PASSWORD_EXPIRES
+    if (moment().isAfter(user.reset_expires)) throw constants.user.error.RESET_PASSWORD_EXPIRES
 
-  await dao.update({
-    id: user.id,
-    password: params.password,
-    reset_token: null,
-    reset_expires: null
-  })
+    await dao.update({
+        id: user.id,
+        password: params.password,
+        reset_token: null,
+        reset_expires: null
+    })
 
-  return mailer.sendEmail({
-    from: `Buildinvest <${env().buildinvest.emails.contact}>`,
-    to: user.email,
-    subject: 'Buildinvest - Nova senha',
-    template: 'resetPassword',
-    context: { user }
-  })
+    return mailer.sendEmail({
+        from: `Buildinvest <${env().buildinvest.emails.contact}>`,
+        to: user.email,
+        subject: 'Buildinvest - Nova senha',
+        template: 'resetPassword',
+        context: { user }
+    })
 }

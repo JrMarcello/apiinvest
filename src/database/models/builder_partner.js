@@ -15,14 +15,12 @@ export default (sequelize, DataTypes) => {
 
         cpf: {
             type: DataTypes.STRING(11),
-            unique: true,
-            allowNull: false
+            unique: true
         },
 
         cnpj: {
             type: DataTypes.STRING(14),
-            unique: true,
-            allowNull: false
+            unique: true
         },
 
         name: {
@@ -44,7 +42,7 @@ export default (sequelize, DataTypes) => {
 
         address_number: {
             type: DataTypes.STRING,
-            defaultValue: "SN",
+            defaultValue: 'SN',
             allowNull: false
         },
 
@@ -55,7 +53,7 @@ export default (sequelize, DataTypes) => {
 
         address_country: {
             type: DataTypes.STRING,
-            defaultValue: "Brasil",
+            defaultValue: 'Brasil',
         },
 
         address_cep: DataTypes.STRING(8)
@@ -65,7 +63,7 @@ export default (sequelize, DataTypes) => {
 
     // Associations
     BuilderPartner.associate = function (models) {
-        BuilderPartner.belongsTo(models.Builder, { foreignKey: "id_builder", as: "builder" });
+        BuilderPartner.belongsTo(models.Builder, { foreignKey: 'id_builder', as: 'builder' });
     };
 
     return BuilderPartner;

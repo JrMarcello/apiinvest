@@ -21,7 +21,7 @@ module.exports = {
             id_profile: 3,
             email: 'admin@buildinvest.com.br',
             username: 'Admin',
-            password: '$2b$10$o8Av/20hYJX3IKRRUKK5UO/bfjWIbYTIpLc6dtlvnk8NrTxTdf9r2',
+            password: '$2b$10$fnSSlO99c4HpOHGJS4WcmOdjyjV7GR4YgFg2SUR1qxUuOZomBPyv2',
             created_at: new Date(),
             updated_at: new Date()
         }]);
