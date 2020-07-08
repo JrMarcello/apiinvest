@@ -1,6 +1,8 @@
 import { logger } from '../../common/utils'
 import constants from '../../common/constants'
-import * as repository from './repository'
+
+// Models
+const { BuilderPartner, Sequelize } = require('../../database/models')
 
 /**
  * @api {get} /builder/:idBuilder/partners Get Partners (By Builder ID)
@@ -44,11 +46,22 @@ import * as repository from './repository'
  */
 export const getByBuilderId = async (request, response) => {
   try {
-    response.json(await repository.getByBuilderId(request.user.id_profile === 3 ? request.params.idBuilder : request.user.builder.id))
-  } catch (err) {
-    logger().error(err)
+    const { user, params } = request
 
-    response.status(500).json(err.apicode ? err : constants.builder.partners.error.NOT_FOUND)
+    // TODO: Refatorar
+    const id = user.id_profile === 3 ? params.idBuilder : user.builder.id
+
+    const partners = await BuilderPartner.findAll({
+      where: {
+        id_builder: id
+      }
+    })
+
+    return response.json(partners)
+  } catch (error) {
+    logger().error(error)
+
+    return response.status(500).json(error.apicode ? error : constants.builder.partners.error.NOT_FOUND)
   }
 }
 
@@ -118,16 +131,28 @@ export const getByBuilderId = async (request, response) => {
  */
 export const create = async (request, response) => {
   try {
-    const partners = await repository.create(
-      request.user.id_profile === 3 ? request.params.idBuilder : request.user.builder.id,
-      request.body.partners
-    )
+    const { params, user, body } = request
 
-    response.json(Object.assign(constants.builder.partners.success.CREATE, { partners }))
-  } catch (err) {
-    logger().error(err)
+    // TODO: Refatorar
+    const id = user.id_profile === 3 ? params.idBuilder : user.builder.id
 
-    response.status(500).json(err.apicode ? err : constants.builder.partners.error.CREATE)
+    const promises = []
+
+    for (let index = 0; index < body.partners.length; index += 1) {
+      const partner = body.partners[index]
+
+      partner.id_builder = id
+
+      promises.push(BuilderPartner.create(partner))
+    }
+
+    const partners = await Promise.all(promises)
+
+    return response.json(Object.assign(constants.builder.partners.success.CREATE, { partners }))
+  } catch (error) {
+    logger().error(error)
+
+    return response.status(500).json(error.apicode ? error : constants.builder.partners.error.CREATE)
   }
 }
 
@@ -163,12 +188,26 @@ export const create = async (request, response) => {
  */
 export const remove = async (request, response) => {
   try {
-    await repository.remove(request.user.id_profile === 3 ? request.params.idBuilder : request.user.builder.id, request.body.id)
+    const { params, user, body } = request
 
-    response.json(constants.builder.partners.success.REMOVE)
+    // TODO: Refatorar
+    const id = user.id_profile === 3 ? params.idBuilder : user.builder.id
+
+    await BuilderPartner.destroy({
+      where: {
+        [Sequelize.Op.and]: {
+          id_builder: id,
+          id: {
+            [Sequelize.Op.or]: body.ids
+          }
+        }
+      }
+    })
+
+    return response.json(constants.builder.partners.success.REMOVE)
   } catch (err) {
     logger().error(err)
 
-    response.status(500).json(err.apicode ? err : constants.builder.partners.error.REMOVE)
+    return response.status(500).json(err.apicode ? err : constants.builder.partners.error.REMOVE)
   }
 }
