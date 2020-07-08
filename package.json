@@ -41,7 +41,7 @@
     "nodemailer-express-handlebars": "^3.3.0",
     "passport": "^0.4.1",
     "passport-http-bearer": "^1.0.1",
-    "pg": "^7.18.2",
+    "sequelize": "^5.21.1",
     "ship-hold": "^2.0.2",
     "uuid": "^3.4.0",
     "winston": "^3.2.1",

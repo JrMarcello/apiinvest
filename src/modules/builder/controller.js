@@ -1,6 +1,10 @@
-import { logger } from '../../common/utils'
-import constants from '../../common/constants'
-import * as repository from './repository'
+import { env, logger } from '../../common/utils';
+import { removeFile, uploadFile } from '../../core/storage';
+import constants from '../../common/constants';
+import * as repository from './repository';
+
+// Models
+const { Builder, BuilderPhone, BuilderPartner, Building } = require('../../database/models');
 
 /**
  * @api {get} /builder Get all
@@ -42,21 +46,41 @@ import * as repository from './repository'
  *     }
  */
 export const getAll = async (request, response) => {
-  if (request.user.id_profile !== 3) {
-    return response.status(403).json({
-      status: 'Acesso negado!',
-      success: false,
-      message: 'Você não está autorizado a acessar esse recurso'
-    })
-  }
 
-  try {
-    return response.json(await repository.getAll(request.params))
-  } catch (err) {
-    logger().error(err)
+    if (request.user.id_profile !== 3) {
 
-    return response.status(500).json(err.apicode ? err : constants.builder.error.NOT_FOUND)
-  }
+        const body = {
+            status: 'Acesso negado',
+            success: false,
+            message: 'Você não está autorizado a acessar este recurso.'
+        };
+
+        return response
+            .status(403)
+            .json(body);
+    }
+
+    try {
+
+        const builder = await Builder
+            .findAll({
+                where: {
+                    active: true
+                }
+            });
+
+        return response
+            .json(builder);
+
+    } catch (error) {
+
+        logger()
+            .error(error)
+
+        return response
+            .status(500)
+            .json(error.apicode ? error : constants.builder.error.NOT_FOUND);
+    }
 }
 
 /**
@@ -148,13 +172,30 @@ export const getAll = async (request, response) => {
  *   }
  */
 export const getById = async (request, response) => {
-  try {
-    return response.json(await repository.getById(request.params.id))
-  } catch (err) {
-    logger().error(err)
 
-    return response.status(500).json(err.apicode ? err : constants.builder.error.NOT_FOUND)
-  }
+    try {
+
+        const params = request.params;
+
+        let builder = await Builder
+            .findByPk(params.id, {
+                where: {
+                    active: true
+                }
+            });
+
+        return response
+            .json(builder || {});
+
+    } catch (error) {
+
+        logger()
+            .error(error);
+
+        return response
+            .status(500)
+            .json(error.apicode ? error : constants.builder.error.NOT_FOUND);
+    }
 }
 
 /**
@@ -201,13 +242,42 @@ export const getById = async (request, response) => {
  *     }
  */
 export const getAllBuildingsById = async (request, response) => {
-  try {
-    return response.json(await repository.getAllBuildingsById(request.user.id_profile === 3 ? request.params.id : request.user.builder.id))
-  } catch (err) {
-    logger().error(err)
 
-    return response.status(500).json(err.apicode ? err : constants.building.error.NOT_FOUND)
-  }
+    try {
+
+        const user = request.user;
+        const params = request.params;
+
+        // TODO: Refatorar
+        const id = user.id_profile === 3 ?
+            params.id :
+            user.builder.id;
+
+        const builder = await Builder
+            .findByPk(id, {
+                where: {
+                    active: true
+                },
+                include: [{
+                    model: Building,
+                    as: 'buildings'
+                }]
+            });
+
+        const buildings = builder.buildings;
+
+        return response
+            .json(buildings);
+
+    } catch (error) {
+
+        logger()
+            .error(error);
+
+        return response
+            .status(500)
+            .json(error.apicode ? error : constants.building.error.NOT_FOUND);
+    }
 }
 
 /**
@@ -257,13 +327,41 @@ export const getAllBuildingsById = async (request, response) => {
  *   }
  */
 export const getByUserId = async (request, response) => {
-  try {
-    return response.json(await repository.getByUserId(request.user.id_profile === 3 ? request.params.id : request.user.id))
-  } catch (err) {
-    logger().error(err)
 
-    return response.status(500).json(err.apicode ? err : constants.builder.error.NOT_FOUND)
-  }
+    try {
+
+        const user = request.user;
+        const params = request.params;
+
+        // TODO: Refatorar
+        const id = user.id_profile === 3 ?
+            params.id :
+            user.id;
+
+        let builder = await Builder
+            .findOne({
+                where: {
+                    id_user: id,
+                    active: true
+                },
+                include: [{
+                    model: Building,
+                    as: 'buildings'
+                }]
+            });
+
+        return response
+            .json(builder || {});
+
+    } catch (error) {
+
+        logger()
+            .error(error);
+
+        return response
+            .status(500)
+            .json(err.apicode ? err : constants.builder.error.NOT_FOUND);
+    }
 }
 
 /**
@@ -353,17 +451,71 @@ export const getByUserId = async (request, response) => {
  *   }
  */
 export const create = async (request, response) => {
-  try {
-    if (request.user.id_profile !== 3) request.body.id_user = request.user.id
 
-    const builder = await repository.create(request.body)
+    try {
 
-    return response.json(Object.assign(constants.builder.success.CREATE, { builder }))
-  } catch (err) {
-    logger().error(err)
+        const user = request.user;
+        const body = request.body;
 
-    return response.status(500).json(err.apicode ? err : constants.builder.error.CREATE)
-  }
+        // TODO: Refatorar
+        if (user.id_profile !== 3) {
+            body.id_user = user.id;
+        }
+
+        if (!body.builder || body.builder.length === 0) {
+            throw constants.builder.error.REQUIRED;
+        }
+
+        if (!body.phones || body.phones.length === 0) {
+            throw constants.builder.phones.error.REQUIRED;
+        }
+
+        // 1. Criar a construtora
+        let builder = await Builder
+            .create(body.builder);
+
+        // 2. Criar telefones
+        let phone;
+
+        for (let index = 0; index < body.phones.length; index++) {
+
+            const number = body.phones[index].number;
+
+            phone = {
+                id_builder: builder.id,
+                number: number
+            };
+
+            await BuilderPhone
+                .create(phone);
+        }
+
+        // 3. Criar sócios
+        if (body.partners && body.partners.length !== 0) {
+
+            for (let index = 0; index < body.partners.length; index++) {
+
+                let partner = body.partners[index];
+
+                partner.id_builder = builder.id;
+
+                await BuilderPartner
+                    .create(partner);
+            }
+        }
+
+        return response
+            .json(Object.assign(constants.builder.success.CREATE, { builder }));
+
+    } catch (error) {
+
+        logger()
+            .error(error);
+
+        return response
+            .status(500)
+            .json(error.apicode ? error : constants.builder.error.CREATE);
+    }
 }
 
 /**
@@ -409,17 +561,55 @@ export const create = async (request, response) => {
  *   }
  */
 export const update = async (request, response) => {
-  try {
-    if (request.user.id_profile !== 3) request.body.id = request.user.builder.id
 
-    await repository.update(request.body)
+    try {
 
-    return response.json(constants.builder.success.UPDATE)
-  } catch (err) {
-    logger().error(err)
+        const user = request.user;
+        const body = request.body;
 
-    return response.status(500).json(err.apicode ? err : constants.builder.error.UPDATE)
-  }
+        // TODO: Refatorar
+        if (user.id_profile !== 3) {
+            body.id = user.builder.id;
+        }
+
+        if (!body || body.length === 0) {
+            throw constants.builder.error.INVALID_DATA;
+        }
+
+        // TODO: Aidiconar verificação de id da construtora
+        // if (!body.id) { }
+
+        let builder = await Builder
+            .findByPk(body.id);
+
+        if (builder) {
+
+            // Atualizando apenas as propriedades definidas para atualizar
+            Object
+                .keys(body)
+                .forEach(key => {
+
+                    if (body[key] !== undefined) {
+                        builder[key] = body[key];
+                    }
+                });
+
+            await builder
+                .save();
+        }
+
+        return response
+            .json(constants.builder.success.UPDATE);
+
+    } catch (error) {
+
+        logger()
+            .error(error);
+
+        return response
+            .status(500)
+            .json(error.apicode ? error : constants.builder.error.UPDATE);
+    }
 }
 
 /**
@@ -454,15 +644,41 @@ export const update = async (request, response) => {
  *   }
  */
 export const remove = async (request, response) => {
-  try {
-    await repository.remove(request.user.id_profile === 3 ? request.params.id : request.user.builder.id)
 
-    response.json(constants.builder.success.REMOVE)
-  } catch (err) {
-    logger().error(err)
+    try {
 
-    response.status(500).json(err.apicode ? err : constants.builder.error.REMOVE)
-  }
+        const user = request.user;
+        const params = request.params;
+
+        // TODO: Refatorar
+        const id = user.id_profile === 3 ?
+            params.id :
+            user.builder.id;
+
+
+        let builder = await Builder
+            .findByPk(id);
+
+        if (builder) {
+
+            builder.active = false;
+
+            await builder
+                .save();
+        }
+
+        return response
+            .json(constants.builder.success.REMOVE);
+
+    } catch (error) {
+
+        logger()
+            .error(error);
+
+        return response
+            .status(500)
+            .json(error.apicode ? error : constants.builder.error.REMOVE);
+    }
 }
 
 /**
@@ -494,23 +710,63 @@ export const remove = async (request, response) => {
  *   }
  */
 export const setLogo = async (request, response) => {
-  if (request.user.id_profile !== 3) {
-    return response.status(403).json({
-      status: 'Acesso negado!',
-      success: false,
-      message: 'Você não está autorizado a acessar esse recurso'
-    })
-  }
 
-  try {
-    const image = await repository.setLogo(request.params.id, request.file)
+    if (request.user.id_profile !== 3) {
 
-    return response.json(Object.assign(constants.builder.success.SET_LOGO, { image }))
-  } catch (err) {
-    logger().error(err)
+        const body = {
+            status: 'Acesso negado',
+            success: false,
+            message: 'Você não está autorizado a acessar este recurso.'
+        };
 
-    return response.status(500).json(err.apicode ? err : constants.builder.error.SET_LOGO)
-  }
+        return response
+            .status(403)
+            .json(body);
+    }
+
+    try {
+
+        const params = request.params;
+        const file = request.file;
+
+        // TODO: Aidiconar verificação arquivo enviado
+        // if (!file) { }
+
+        const builder = await Builder.findByPk(params.id);
+
+        if (builder && builder.logo_url) {
+
+            const path = builder.logo_url
+                .split(env().GOOGLE_CLOUD.BUCKET)
+                .pop();
+
+            await removeFile(path);
+
+            builder.logo_url = null;
+
+            await builder
+                .save();
+        }
+
+        const url = await uploadFile(file, `logos/${params.id}`, true);
+
+        builder.logo_url = url;
+
+        await builder
+            .save();
+
+        return response
+            .json(Object.assign(constants.builder.success.SET_LOGO, { image: url }))
+
+    } catch (error) {
+
+        logger()
+            .error(error);
+
+        return response
+            .status(500)
+            .json(error.apicode ? error : constants.builder.error.SET_LOGO);
+    }
 }
 
 /**
@@ -541,21 +797,49 @@ export const setLogo = async (request, response) => {
  *   }
  */
 export const removeLogo = async (request, response) => {
-  if (request.user.id_profile !== 3) {
-    return response.status(403).json({
-      status: 'Acesso negado!',
-      success: false,
-      message: 'Você não está autorizado a acessar esse recurso'
-    })
-  }
 
-  try {
-    await repository.removeLogo(request.params.id)
+    if (request.user.id_profile !== 3) {
 
-    return response.json(Object.assign(constants.builder.success.REMOVE_LOGO))
-  } catch (err) {
-    logger().error(err)
+        const body = {
+            status: 'Acesso negado',
+            success: false,
+            message: 'Você não está autorizado a acessar este recurso.'
+        };
 
-    return response.status(500).json(err.apicode ? err : constants.builder.error.REMOVE_LOGO)
-  }
+        return response
+            .status(403)
+            .json(body);
+    }
+
+    try {
+        const params = request.params;
+
+        const builder = await Builder.findByPk(params.id);
+
+        if (builder && builder.logo_url) {
+
+            const path = builder.logo_url
+                .split(env().GOOGLE_CLOUD.BUCKET)
+                .pop();
+
+            await removeFile(path);
+
+            builder.logo_url = null;
+
+            await builder
+                .save();
+        }
+
+        return response
+            .json(Object.assign(constants.builder.success.REMOVE_LOGO));
+
+    } catch (error) {
+
+        logger()
+            .error(error);
+
+        return response
+            .status(500)
+            .json(error.apicode ? error : constants.builder.error.REMOVE_LOGO);
+    }
 }
