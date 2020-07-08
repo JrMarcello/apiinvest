@@ -42,21 +42,31 @@ import * as repository from './repository'
  *     }
  */
 export const getAll = async (request, response) => {
-  if (request.user.id_profile !== 3) {
-    return response.status(403).json({
-      status: 'Acesso negado!',
-      success: false,
-      message: 'Você não está autorizado a acessar esse recurso'
-    })
-  }
 
-  try {
-    return response.json(await repository.getAll(request.params))
-  } catch (err) {
-    logger().error(err)
+    if (request.user.id_profile !== 3) {
 
-    return response.status(500).json(err.apicode ? err : constants.builder.error.NOT_FOUND)
-  }
+        return response
+            .status(403)
+            .json({
+                status: 'Acesso negado!',
+                success: false,
+                message: 'Você não está autorizado a acessar esse recurso'
+            })
+    }
+
+    try {
+        
+        return response.json(await repository.getAll(request.params))
+
+    } catch (err) {
+
+        logger()
+            .error(err)
+
+        return response
+            .status(500)
+            .json(err.apicode ? err : constants.builder.error.NOT_FOUND)
+    }
 }
 
 /**
@@ -148,13 +158,13 @@ export const getAll = async (request, response) => {
  *   }
  */
 export const getById = async (request, response) => {
-  try {
-    return response.json(await repository.getById(request.params.id))
-  } catch (err) {
-    logger().error(err)
+    try {
+        return response.json(await repository.getById(request.params.id))
+    } catch (err) {
+        logger().error(err)
 
-    return response.status(500).json(err.apicode ? err : constants.builder.error.NOT_FOUND)
-  }
+        return response.status(500).json(err.apicode ? err : constants.builder.error.NOT_FOUND)
+    }
 }
 
 /**
@@ -201,13 +211,13 @@ export const getById = async (request, response) => {
  *     }
  */
 export const getAllBuildingsById = async (request, response) => {
-  try {
-    return response.json(await repository.getAllBuildingsById(request.user.id_profile === 3 ? request.params.id : request.user.builder.id))
-  } catch (err) {
-    logger().error(err)
+    try {
+        return response.json(await repository.getAllBuildingsById(request.user.id_profile === 3 ? request.params.id : request.user.builder.id))
+    } catch (err) {
+        logger().error(err)
 
-    return response.status(500).json(err.apicode ? err : constants.building.error.NOT_FOUND)
-  }
+        return response.status(500).json(err.apicode ? err : constants.building.error.NOT_FOUND)
+    }
 }
 
 /**
@@ -257,13 +267,13 @@ export const getAllBuildingsById = async (request, response) => {
  *   }
  */
 export const getByUserId = async (request, response) => {
-  try {
-    return response.json(await repository.getByUserId(request.user.id_profile === 3 ? request.params.id : request.user.id))
-  } catch (err) {
-    logger().error(err)
+    try {
+        return response.json(await repository.getByUserId(request.user.id_profile === 3 ? request.params.id : request.user.id))
+    } catch (err) {
+        logger().error(err)
 
-    return response.status(500).json(err.apicode ? err : constants.builder.error.NOT_FOUND)
-  }
+        return response.status(500).json(err.apicode ? err : constants.builder.error.NOT_FOUND)
+    }
 }
 
 /**
@@ -353,17 +363,17 @@ export const getByUserId = async (request, response) => {
  *   }
  */
 export const create = async (request, response) => {
-  try {
-    if (request.user.id_profile !== 3) request.body.id_user = request.user.id
+    try {
+        if (request.user.id_profile !== 3) request.body.id_user = request.user.id
 
-    const builder = await repository.create(request.body)
+        const builder = await repository.create(request.body)
 
-    return response.json(Object.assign(constants.builder.success.CREATE, { builder }))
-  } catch (err) {
-    logger().error(err)
+        return response.json(Object.assign(constants.builder.success.CREATE, { builder }))
+    } catch (err) {
+        logger().error(err)
 
-    return response.status(500).json(err.apicode ? err : constants.builder.error.CREATE)
-  }
+        return response.status(500).json(err.apicode ? err : constants.builder.error.CREATE)
+    }
 }
 
 /**
@@ -409,17 +419,17 @@ export const create = async (request, response) => {
  *   }
  */
 export const update = async (request, response) => {
-  try {
-    if (request.user.id_profile !== 3) request.body.id = request.user.builder.id
+    try {
+        if (request.user.id_profile !== 3) request.body.id = request.user.builder.id
 
-    await repository.update(request.body)
+        await repository.update(request.body)
 
-    return response.json(constants.builder.success.UPDATE)
-  } catch (err) {
-    logger().error(err)
+        return response.json(constants.builder.success.UPDATE)
+    } catch (err) {
+        logger().error(err)
 
-    return response.status(500).json(err.apicode ? err : constants.builder.error.UPDATE)
-  }
+        return response.status(500).json(err.apicode ? err : constants.builder.error.UPDATE)
+    }
 }
 
 /**
@@ -454,15 +464,15 @@ export const update = async (request, response) => {
  *   }
  */
 export const remove = async (request, response) => {
-  try {
-    await repository.remove(request.user.id_profile === 3 ? request.params.id : request.user.builder.id)
+    try {
+        await repository.remove(request.user.id_profile === 3 ? request.params.id : request.user.builder.id)
 
-    response.json(constants.builder.success.REMOVE)
-  } catch (err) {
-    logger().error(err)
+        response.json(constants.builder.success.REMOVE)
+    } catch (err) {
+        logger().error(err)
 
-    response.status(500).json(err.apicode ? err : constants.builder.error.REMOVE)
-  }
+        response.status(500).json(err.apicode ? err : constants.builder.error.REMOVE)
+    }
 }
 
 /**
@@ -494,23 +504,23 @@ export const remove = async (request, response) => {
  *   }
  */
 export const setLogo = async (request, response) => {
-  if (request.user.id_profile !== 3) {
-    return response.status(403).json({
-      status: 'Acesso negado!',
-      success: false,
-      message: 'Você não está autorizado a acessar esse recurso'
-    })
-  }
+    if (request.user.id_profile !== 3) {
+        return response.status(403).json({
+            status: 'Acesso negado!',
+            success: false,
+            message: 'Você não está autorizado a acessar esse recurso'
+        })
+    }
 
-  try {
-    const image = await repository.setLogo(request.params.id, request.file)
+    try {
+        const image = await repository.setLogo(request.params.id, request.file)
 
-    return response.json(Object.assign(constants.builder.success.SET_LOGO, { image }))
-  } catch (err) {
-    logger().error(err)
+        return response.json(Object.assign(constants.builder.success.SET_LOGO, { image }))
+    } catch (err) {
+        logger().error(err)
 
-    return response.status(500).json(err.apicode ? err : constants.builder.error.SET_LOGO)
-  }
+        return response.status(500).json(err.apicode ? err : constants.builder.error.SET_LOGO)
+    }
 }
 
 /**
@@ -541,21 +551,21 @@ export const setLogo = async (request, response) => {
  *   }
  */
 export const removeLogo = async (request, response) => {
-  if (request.user.id_profile !== 3) {
-    return response.status(403).json({
-      status: 'Acesso negado!',
-      success: false,
-      message: 'Você não está autorizado a acessar esse recurso'
-    })
-  }
+    if (request.user.id_profile !== 3) {
+        return response.status(403).json({
+            status: 'Acesso negado!',
+            success: false,
+            message: 'Você não está autorizado a acessar esse recurso'
+        })
+    }
 
-  try {
-    await repository.removeLogo(request.params.id)
+    try {
+        await repository.removeLogo(request.params.id)
 
-    return response.json(Object.assign(constants.builder.success.REMOVE_LOGO))
-  } catch (err) {
-    logger().error(err)
+        return response.json(Object.assign(constants.builder.success.REMOVE_LOGO))
+    } catch (err) {
+        logger().error(err)
 
-    return response.status(500).json(err.apicode ? err : constants.builder.error.REMOVE_LOGO)
-  }
+        return response.status(500).json(err.apicode ? err : constants.builder.error.REMOVE_LOGO)
+    }
 }

@@ -8,6 +8,7 @@ const database = {
         username: "postgres",
         password: "root",
         database: "buildinvest",
+        dialect: "postgres",
         options: {
             dialect: "postgres",
             pool: {
@@ -27,6 +28,7 @@ const database = {
         username: process.env.POSTGRES_USER,
         password: process.env.POSTGRES_PASSWORD,
         database: process.env.POSTGRES_DB,
+        dialect: "postgres",
         options: {
             dialect: "postgres",
             pool: {

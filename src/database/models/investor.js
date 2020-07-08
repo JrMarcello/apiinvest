@@ -13,23 +13,15 @@ export default (sequelize, DataTypes) => {
             allowNull: false
         },
 
-        cpf: {
-            type: DataTypes.STRING(11),
-            unique: true,
-            allowNull: false
-        },
+        cpf: DataTypes.STRING(11),
+        cnpj: DataTypes.STRING(14),
 
-        cnpj: {
-            type: DataTypes.STRING(14),
-            unique: true,
-            allowNull: false
-        },
-
-        company_name: {
+        name: {
             type: DataTypes.STRING,
-            unique: true,
             allowNull: false
         },
+
+        company_name: DataTypes.STRING,
 
         address_street: {
             type: DataTypes.STRING,

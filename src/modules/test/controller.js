@@ -30,8 +30,6 @@ export const ping = async (request, response) => {
         const result = await Builder
             .findAll();
 
-        console.log(result);
-
         return response
             .status(200)
             .json(body);
