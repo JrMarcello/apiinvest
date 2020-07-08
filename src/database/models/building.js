@@ -1,101 +1,103 @@
 export default (sequelize, DataTypes) => {
+  const Building = sequelize.define(
+    'Building',
+    {
+      id: {
+        type: DataTypes.UUID,
+        defaultValue: DataTypes.UUIDV1,
+        primaryKey: true
+      },
 
-    const Building = sequelize.define('Building', {
+      id_builder: {
+        type: DataTypes.UUID,
+        allowNull: false
+      },
 
-        id: {
-            type: DataTypes.UUID,
-            defaultValue: DataTypes.UUIDV1,
-            primaryKey: true
-        },
+      cnpj: {
+        type: DataTypes.STRING(14),
+        unique: true,
+        allowNull: false
+      },
 
-        id_builder: {
-            type: DataTypes.UUID,
-            allowNull: false
-        },
+      registration: {
+        type: DataTypes.STRING(10),
+        unique: true,
+        allowNull: false
+      },
 
-        cnpj: {
-            type: DataTypes.STRING(14),
-            unique: true,
-            allowNull: false
-        },
+      name: {
+        type: DataTypes.STRING(50),
+        allowNull: false
+      },
 
-        registration: {
-            type: DataTypes.STRING(10),
-            unique: true,
-            allowNull: false
-        },
+      description: DataTypes.TEXT,
 
-        name: {
-            type: DataTypes.STRING(50),
-            allowNull: false
-        },
+      address_street: {
+        type: DataTypes.STRING,
+        allowNull: false
+      },
 
-        description: DataTypes.TEXT,
+      address_number: {
+        type: DataTypes.STRING,
+        defaultValue: 'SN',
+        allowNull: false
+      },
 
-        address_street: {
-            type: DataTypes.STRING,
-            allowNull: false
-        },
+      address_complement: DataTypes.STRING,
 
-        address_number: {
-            type: DataTypes.STRING,
-            defaultValue: "SN",
-            allowNull: false
-        },
+      address_neighborhood: {
+        type: DataTypes.STRING,
+        allowNull: false
+      },
 
-        address_complement: DataTypes.STRING,
+      address_city: {
+        type: DataTypes.STRING,
+        allowNull: false
+      },
 
-        address_neighborhood: {
-            type: DataTypes.STRING,
-            allowNull: false
-        },
+      address_state: {
+        type: DataTypes.STRING,
+        allowNull: false
+      },
 
-        address_city: {
-            type: DataTypes.STRING,
-            allowNull: false
-        },
+      address_country: {
+        type: DataTypes.STRING,
+        defaultValue: 'Brasil'
+      },
 
-        address_state: {
-            type: DataTypes.STRING,
-            allowNull: false
-        },
+      address_cep: {
+        type: DataTypes.STRING(8),
+        allowNull: false
+      },
 
-        address_country: {
-            type: DataTypes.STRING,
-            defaultValue: "Brasil",
-        },
+      vgv: {
+        type: DataTypes.DECIMAL,
+        allowNull: false
+      },
 
-        address_cep:  {
-            type: DataTypes.STRING(8),
-            allowNull: false
-        },
+      initial_date: {
+        type: DataTypes.DATE,
+        defaultValue: DataTypes.NOW,
+        allowNull: false
+      },
 
-        vgv: {
-            type: DataTypes.DECIMAL,
-            allowNull: false
-        },
+      final_date: DataTypes.DATE,
 
-        initial_date: {
-            type: DataTypes.DATE,
-            defaultValue: DataTypes.NOW,
-            allowNull: false
-        },
+      active: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: true,
+        allowNull: false
+      }
+    },
+    {
+      tableName: 'building'
+    }
+  )
 
-        final_date: DataTypes.DATE,
+  // Associations
+  Building.associate = models => {
+    Building.belongsTo(models.Builder, { foreignKey: 'id_builder', as: 'builder' })
+  }
 
-        active: {
-            type: DataTypes.BOOLEAN, 
-            defaultValue: true,
-            allowNull: false
-        }
-    }, {
-        tableName: 'building'
-    });
-
-    // Associations
-    Building.associate = function (models) {
-        Building.belongsTo(models.Builder, { foreignKey: "id_builder", as: "builder" });
-    };
-
-    return Building;
-};
+  return Building
+}

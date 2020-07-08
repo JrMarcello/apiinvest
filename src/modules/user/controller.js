@@ -1,9 +1,9 @@
-import { logger } from '../../common/utils';
-import constants from '../../common/constants';
-import * as repository from './repository';
+import { logger } from '../../common/utils'
+import constants from '../../common/constants'
+import * as repository from './repository'
 
 // Models
-const { User } = require('../../database/models');
+// const { User } = require('../../database/models')
 
 /**
  * @api {get} /user Get all
@@ -47,37 +47,25 @@ const { User } = require('../../database/models');
  *     }
  */
 export const getAll = async (request, response) => {
+  try {
+    if (request.user.id_profile !== 3) {
+      const body = {
+        status: 'Acesso negado',
+        success: false,
+        message: 'Você não está autorizado a acessar este recurso.'
+      }
 
-    try {
-
-        if (request.user.id_profile !== 3) {
-
-            const body = {
-                status: 'Acesso negado',
-                success: false,
-                message: 'Você não está autorizado a acessar este recurso.'
-            };
-
-            return response
-                .status(403)
-                .json(body);
-        }
-
-        const result = await repository
-            .getAll(request.params);
-
-        return response
-            .json(result);
-
-    } catch (error) {
-
-        logger()
-            .error(error);
-
-        return response
-            .status(500)
-            .json(err.apicode ? err : constants.user.error.NOT_FOUND);
+      return response.status(403).json(body)
     }
+
+    const result = await repository.getAll(request.params)
+
+    return response.json(result)
+  } catch (error) {
+    logger().error(error)
+
+    return response.status(500).json(error.apicode ? error : constants.user.error.NOT_FOUND)
+  }
 }
 
 /**
@@ -118,13 +106,13 @@ export const getAll = async (request, response) => {
  *   }
  */
 export const getById = async (request, response) => {
-    try {
-        response.json(await repository.getById(request.user.id_profile === 3 ? request.params.id : request.user.id))
-    } catch (err) {
-        logger().error(err)
+  try {
+    response.json(await repository.getById(request.user.id_profile === 3 ? request.params.id : request.user.id))
+  } catch (err) {
+    logger().error(err)
 
-        response.status(500).json(err.apicode ? err : constants.user.error.NOT_FOUND)
-    }
+    response.status(500).json(err.apicode ? err : constants.user.error.NOT_FOUND)
+  }
 }
 
 /**
@@ -174,15 +162,15 @@ export const getById = async (request, response) => {
  *   }
  */
 export const create = async (request, response) => {
-    try {
-        const user = await repository.create(request.body)
+  try {
+    const user = await repository.create(request.body)
 
-        response.json(Object.assign(constants.user.success.CREATE, { user }))
-    } catch (err) {
-        logger().error(err)
+    response.json(Object.assign(constants.user.success.CREATE, { user }))
+  } catch (err) {
+    logger().error(err)
 
-        response.status(500).json(err.apicode ? err : constants.user.error.CREATE)
-    }
+    response.status(500).json(err.apicode ? err : constants.user.error.CREATE)
+  }
 }
 
 /**
@@ -222,17 +210,17 @@ export const create = async (request, response) => {
  *   }
  */
 export const update = async (request, response) => {
-    try {
-        if (request.user.id_profile !== 3) request.body.id = request.user.id
+  try {
+    if (request.user.id_profile !== 3) request.body.id = request.user.id
 
-        await repository.update(request.body)
+    await repository.update(request.body)
 
-        response.json(constants.user.success.UPDATE)
-    } catch (err) {
-        logger().error(err)
+    response.json(constants.user.success.UPDATE)
+  } catch (err) {
+    logger().error(err)
 
-        response.status(500).json(err.apicode ? err : constants.user.error.UPDATE)
-    }
+    response.status(500).json(err.apicode ? err : constants.user.error.UPDATE)
+  }
 }
 
 /**
@@ -267,15 +255,15 @@ export const update = async (request, response) => {
  *   }
  */
 export const remove = async (request, response) => {
-    try {
-        await repository.remove(request.user.id_profile === 3 ? request.params.id : request.user.id)
+  try {
+    await repository.remove(request.user.id_profile === 3 ? request.params.id : request.user.id)
 
-        response.json(constants.user.success.REMOVE)
-    } catch (err) {
-        logger().error(err)
+    response.json(constants.user.success.REMOVE)
+  } catch (err) {
+    logger().error(err)
 
-        response.status(500).json(err.apicode ? err : constants.user.error.REMOVE)
-    }
+    response.status(500).json(err.apicode ? err : constants.user.error.REMOVE)
+  }
 }
 
 /**
@@ -309,15 +297,15 @@ export const remove = async (request, response) => {
  *   }
  */
 export const login = async (request, response) => {
-    try {
-        const token = await repository.login(request.body)
+  try {
+    const token = await repository.login(request.body)
 
-        response.json(Object.assign(constants.user.success.LOGIN, { token }))
-    } catch (err) {
-        logger().error(err)
+    response.json(Object.assign(constants.user.success.LOGIN, { token }))
+  } catch (err) {
+    logger().error(err)
 
-        response.status(500).json(err.apicode ? err : constants.user.error.LOGIN)
-    }
+    response.status(500).json(err.apicode ? err : constants.user.error.LOGIN)
+  }
 }
 
 /**
@@ -348,15 +336,15 @@ export const login = async (request, response) => {
  *   }
  */
 export const forgotPassword = async (request, response) => {
-    try {
-        await repository.forgotPassword(request.body.email)
+  try {
+    await repository.forgotPassword(request.body.email)
 
-        response.json(Object.assign(constants.user.success.FORGOT_PASSWORD))
-    } catch (err) {
-        logger().error(err)
+    response.json(Object.assign(constants.user.success.FORGOT_PASSWORD))
+  } catch (err) {
+    logger().error(err)
 
-        response.status(500).json(err.apicode ? err : constants.user.error.FORGOT_PASSWORD)
-    }
+    response.status(500).json(err.apicode ? err : constants.user.error.FORGOT_PASSWORD)
+  }
 }
 
 /**
@@ -389,13 +377,13 @@ export const forgotPassword = async (request, response) => {
  *   }
  */
 export const resetPassword = async (request, response) => {
-    try {
-        await repository.resetPassword(request.body)
+  try {
+    await repository.resetPassword(request.body)
 
-        response.json(Object.assign(constants.user.success.RESET_PASSWORD))
-    } catch (err) {
-        logger().error(err)
+    response.json(Object.assign(constants.user.success.RESET_PASSWORD))
+  } catch (err) {
+    logger().error(err)
 
-        response.status(500).json(err.apicode ? err : constants.user.error.RESET_PASSWORD)
-    }
+    response.status(500).json(err.apicode ? err : constants.user.error.RESET_PASSWORD)
+  }
 }

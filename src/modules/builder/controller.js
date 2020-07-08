@@ -1,10 +1,9 @@
-import { env, logger } from '../../common/utils';
-import { removeFile, uploadFile } from '../../core/storage';
-import constants from '../../common/constants';
-import * as repository from './repository';
+import { env, logger } from '../../common/utils'
+import { removeFile, uploadFile } from '../../core/storage'
+import constants from '../../common/constants'
 
 // Models
-const { Builder, BuilderPhone, BuilderPartner, Building } = require('../../database/models');
+const { Builder, BuilderPhone, BuilderPartner, Building } = require('../../database/models')
 
 /**
  * @api {get} /builder Get all
@@ -46,41 +45,29 @@ const { Builder, BuilderPhone, BuilderPartner, Building } = require('../../datab
  *     }
  */
 export const getAll = async (request, response) => {
-
-    if (request.user.id_profile !== 3) {
-
-        const body = {
-            status: 'Acesso negado',
-            success: false,
-            message: 'Você não está autorizado a acessar este recurso.'
-        };
-
-        return response
-            .status(403)
-            .json(body);
+  if (request.user.id_profile !== 3) {
+    const body = {
+      status: 'Acesso negado',
+      success: false,
+      message: 'Você não está autorizado a acessar este recurso.'
     }
 
-    try {
+    return response.status(403).json(body)
+  }
 
-        const builder = await Builder
-            .findAll({
-                where: {
-                    active: true
-                }
-            });
+  try {
+    const builder = await Builder.findAll({
+      where: {
+        active: true
+      }
+    })
 
-        return response
-            .json(builder);
+    return response.json(builder)
+  } catch (error) {
+    logger().error(error)
 
-    } catch (error) {
-
-        logger()
-            .error(error)
-
-        return response
-            .status(500)
-            .json(error.apicode ? error : constants.builder.error.NOT_FOUND);
-    }
+    return response.status(500).json(error.apicode ? error : constants.builder.error.NOT_FOUND)
+  }
 }
 
 /**
@@ -172,30 +159,21 @@ export const getAll = async (request, response) => {
  *   }
  */
 export const getById = async (request, response) => {
+  try {
+    const { params } = request
 
-    try {
+    const builder = await Builder.findByPk(params.id, {
+      where: {
+        active: true
+      }
+    })
 
-        const params = request.params;
+    return response.json(builder || {})
+  } catch (error) {
+    logger().error(error)
 
-        let builder = await Builder
-            .findByPk(params.id, {
-                where: {
-                    active: true
-                }
-            });
-
-        return response
-            .json(builder || {});
-
-    } catch (error) {
-
-        logger()
-            .error(error);
-
-        return response
-            .status(500)
-            .json(error.apicode ? error : constants.builder.error.NOT_FOUND);
-    }
+    return response.status(500).json(error.apicode ? error : constants.builder.error.NOT_FOUND)
+  }
 }
 
 /**
@@ -242,42 +220,33 @@ export const getById = async (request, response) => {
  *     }
  */
 export const getAllBuildingsById = async (request, response) => {
+  try {
+    const { user } = request
+    const { params } = request
 
-    try {
+    // TODO: Refatorar
+    const id = user.id_profile === 3 ? params.id : user.builder.id
 
-        const user = request.user;
-        const params = request.params;
+    const builder = await Builder.findByPk(id, {
+      where: {
+        active: true
+      },
+      include: [
+        {
+          model: Building,
+          as: 'buildings'
+        }
+      ]
+    })
 
-        // TODO: Refatorar
-        const id = user.id_profile === 3 ?
-            params.id :
-            user.builder.id;
+    const { buildings } = builder
 
-        const builder = await Builder
-            .findByPk(id, {
-                where: {
-                    active: true
-                },
-                include: [{
-                    model: Building,
-                    as: 'buildings'
-                }]
-            });
+    return response.json(buildings)
+  } catch (error) {
+    logger().error(error)
 
-        const buildings = builder.buildings;
-
-        return response
-            .json(buildings);
-
-    } catch (error) {
-
-        logger()
-            .error(error);
-
-        return response
-            .status(500)
-            .json(error.apicode ? error : constants.building.error.NOT_FOUND);
-    }
+    return response.status(500).json(error.apicode ? error : constants.building.error.NOT_FOUND)
+  }
 }
 
 /**
@@ -327,41 +296,32 @@ export const getAllBuildingsById = async (request, response) => {
  *   }
  */
 export const getByUserId = async (request, response) => {
+  try {
+    const { user } = request
+    const { params } = request
 
-    try {
+    // TODO: Refatorar
+    const id = user.id_profile === 3 ? params.id : user.id
 
-        const user = request.user;
-        const params = request.params;
+    const builder = await Builder.findOne({
+      where: {
+        id_user: id,
+        active: true
+      },
+      include: [
+        {
+          model: Building,
+          as: 'buildings'
+        }
+      ]
+    })
 
-        // TODO: Refatorar
-        const id = user.id_profile === 3 ?
-            params.id :
-            user.id;
+    return response.json(builder || {})
+  } catch (error) {
+    logger().error(error)
 
-        let builder = await Builder
-            .findOne({
-                where: {
-                    id_user: id,
-                    active: true
-                },
-                include: [{
-                    model: Building,
-                    as: 'buildings'
-                }]
-            });
-
-        return response
-            .json(builder || {});
-
-    } catch (error) {
-
-        logger()
-            .error(error);
-
-        return response
-            .status(500)
-            .json(err.apicode ? err : constants.builder.error.NOT_FOUND);
-    }
+    return response.status(500).json(error.apicode ? error : constants.builder.error.NOT_FOUND)
+  }
 }
 
 /**
@@ -451,71 +411,64 @@ export const getByUserId = async (request, response) => {
  *   }
  */
 export const create = async (request, response) => {
+  try {
+    const { user } = request
+    const { body } = request
 
-    try {
-
-        const user = request.user;
-        const body = request.body;
-
-        // TODO: Refatorar
-        if (user.id_profile !== 3) {
-            body.id_user = user.id;
-        }
-
-        if (!body.builder || body.builder.length === 0) {
-            throw constants.builder.error.REQUIRED;
-        }
-
-        if (!body.phones || body.phones.length === 0) {
-            throw constants.builder.phones.error.REQUIRED;
-        }
-
-        // 1. Criar a construtora
-        let builder = await Builder
-            .create(body.builder);
-
-        // 2. Criar telefones
-        let phone;
-
-        for (let index = 0; index < body.phones.length; index++) {
-
-            const number = body.phones[index].number;
-
-            phone = {
-                id_builder: builder.id,
-                number: number
-            };
-
-            await BuilderPhone
-                .create(phone);
-        }
-
-        // 3. Criar sócios
-        if (body.partners && body.partners.length !== 0) {
-
-            for (let index = 0; index < body.partners.length; index++) {
-
-                let partner = body.partners[index];
-
-                partner.id_builder = builder.id;
-
-                await BuilderPartner
-                    .create(partner);
-            }
-        }
-
-        return response
-            .json(Object.assign(constants.builder.success.CREATE, { builder }));
-
-    } catch (error) {
-
-        logger()
-            .error(error);
-
-        return response
-            .status(500)
-            .json(error.apicode ? error : constants.builder.error.CREATE);
+    // TODO: Refatorar
+    if (user.id_profile !== 3) {
+      body.id_user = user.id
     }
+
+    if (!body.builder || body.builder.length === 0) {
+      throw constants.builder.error.REQUIRED
+    }
+
+    if (!body.phones || body.phones.length === 0) {
+      throw constants.builder.phones.error.REQUIRED
+    }
+
+    // 1. Criar a construtora
+    const builder = await Builder.create(body.builder)
+
+    // 2. Criar telefones
+    let phone
+    let promises = []
+
+    for (let index = 0; index < body.phones.length; index += 1) {
+      const { number } = body.phones[index]
+
+      phone = {
+        id_builder: builder.id,
+        number
+      }
+
+      promises.push(BuilderPhone.create(phone))
+    }
+
+    await Promise.all(promises)
+
+    // 3. Criar sócios
+    if (body.partners && body.partners.length !== 0) {
+      promises = []
+
+      for (let index = 0; index < body.partners.length; index += 1) {
+        const partner = body.partners[index]
+
+        partner.id_builder = builder.id
+
+        promises.push(BuilderPartner.create(partner))
+      }
+
+      await Promise.all(promises)
+    }
+
+    return response.json(Object.assign(constants.builder.success.CREATE, { builder }))
+  } catch (error) {
+    logger().error(error)
+
+    return response.status(500).json(error.apicode ? error : constants.builder.error.CREATE)
+  }
 }
 
 /**
@@ -561,55 +514,41 @@ export const create = async (request, response) => {
  *   }
  */
 export const update = async (request, response) => {
+  try {
+    const { user } = request
+    const { body } = request
 
-    try {
-
-        const user = request.user;
-        const body = request.body;
-
-        // TODO: Refatorar
-        if (user.id_profile !== 3) {
-            body.id = user.builder.id;
-        }
-
-        if (!body || body.length === 0) {
-            throw constants.builder.error.INVALID_DATA;
-        }
-
-        // TODO: Aidiconar verificação de id da construtora
-        // if (!body.id) { }
-
-        let builder = await Builder
-            .findByPk(body.id);
-
-        if (builder) {
-
-            // Atualizando apenas as propriedades definidas para atualizar
-            Object
-                .keys(body)
-                .forEach(key => {
-
-                    if (body[key] !== undefined) {
-                        builder[key] = body[key];
-                    }
-                });
-
-            await builder
-                .save();
-        }
-
-        return response
-            .json(constants.builder.success.UPDATE);
-
-    } catch (error) {
-
-        logger()
-            .error(error);
-
-        return response
-            .status(500)
-            .json(error.apicode ? error : constants.builder.error.UPDATE);
+    // TODO: Refatorar
+    if (user.id_profile !== 3) {
+      body.id = user.builder.id
     }
+
+    if (!body || body.length === 0) {
+      throw constants.builder.error.INVALID_DATA
+    }
+
+    // TODO: Aidiconar verificação de id da construtora
+    // if (!body.id) { }
+
+    const builder = await Builder.findByPk(body.id)
+
+    if (builder) {
+      // Atualizando apenas as propriedades definidas para atualizar
+      Object.keys(body).forEach(key => {
+        if (body[key] !== undefined) {
+          builder[key] = body[key]
+        }
+      })
+
+      await builder.save()
+    }
+
+    return response.json(constants.builder.success.UPDATE)
+  } catch (error) {
+    logger().error(error)
+
+    return response.status(500).json(error.apicode ? error : constants.builder.error.UPDATE)
+  }
 }
 
 /**
@@ -644,41 +583,27 @@ export const update = async (request, response) => {
  *   }
  */
 export const remove = async (request, response) => {
+  try {
+    const { user } = request
+    const { params } = request
 
-    try {
+    // TODO: Refatorar
+    const id = user.id_profile === 3 ? params.id : user.builder.id
 
-        const user = request.user;
-        const params = request.params;
+    const builder = await Builder.findByPk(id)
 
-        // TODO: Refatorar
-        const id = user.id_profile === 3 ?
-            params.id :
-            user.builder.id;
+    if (builder) {
+      builder.active = false
 
-
-        let builder = await Builder
-            .findByPk(id);
-
-        if (builder) {
-
-            builder.active = false;
-
-            await builder
-                .save();
-        }
-
-        return response
-            .json(constants.builder.success.REMOVE);
-
-    } catch (error) {
-
-        logger()
-            .error(error);
-
-        return response
-            .status(500)
-            .json(error.apicode ? error : constants.builder.error.REMOVE);
+      await builder.save()
     }
+
+    return response.json(constants.builder.success.REMOVE)
+  } catch (error) {
+    logger().error(error)
+
+    return response.status(500).json(error.apicode ? error : constants.builder.error.REMOVE)
+  }
 }
 
 /**
@@ -710,63 +635,47 @@ export const remove = async (request, response) => {
  *   }
  */
 export const setLogo = async (request, response) => {
-
-    if (request.user.id_profile !== 3) {
-
-        const body = {
-            status: 'Acesso negado',
-            success: false,
-            message: 'Você não está autorizado a acessar este recurso.'
-        };
-
-        return response
-            .status(403)
-            .json(body);
+  if (request.user.id_profile !== 3) {
+    const body = {
+      status: 'Acesso negado',
+      success: false,
+      message: 'Você não está autorizado a acessar este recurso.'
     }
 
-    try {
+    return response.status(403).json(body)
+  }
 
-        const params = request.params;
-        const file = request.file;
+  try {
+    const { params } = request
+    const { file } = request
 
-        // TODO: Aidiconar verificação arquivo enviado
-        // if (!file) { }
+    // TODO: Aidiconar verificação arquivo enviado
+    // if (!file) { }
 
-        const builder = await Builder.findByPk(params.id);
+    const builder = await Builder.findByPk(params.id)
 
-        if (builder && builder.logo_url) {
+    if (builder && builder.logo_url) {
+      const path = builder.logo_url.split(env().GOOGLE_CLOUD.BUCKET).pop()
 
-            const path = builder.logo_url
-                .split(env().GOOGLE_CLOUD.BUCKET)
-                .pop();
+      await removeFile(path)
 
-            await removeFile(path);
+      builder.logo_url = null
 
-            builder.logo_url = null;
-
-            await builder
-                .save();
-        }
-
-        const url = await uploadFile(file, `logos/${params.id}`, true);
-
-        builder.logo_url = url;
-
-        await builder
-            .save();
-
-        return response
-            .json(Object.assign(constants.builder.success.SET_LOGO, { image: url }))
-
-    } catch (error) {
-
-        logger()
-            .error(error);
-
-        return response
-            .status(500)
-            .json(error.apicode ? error : constants.builder.error.SET_LOGO);
+      await builder.save()
     }
+
+    const url = await uploadFile(file, `logos/${params.id}`, true)
+
+    builder.logo_url = url
+
+    await builder.save()
+
+    return response.json(Object.assign(constants.builder.success.SET_LOGO, { image: url }))
+  } catch (error) {
+    logger().error(error)
+
+    return response.status(500).json(error.apicode ? error : constants.builder.error.SET_LOGO)
+  }
 }
 
 /**
@@ -797,49 +706,35 @@ export const setLogo = async (request, response) => {
  *   }
  */
 export const removeLogo = async (request, response) => {
-
-    if (request.user.id_profile !== 3) {
-
-        const body = {
-            status: 'Acesso negado',
-            success: false,
-            message: 'Você não está autorizado a acessar este recurso.'
-        };
-
-        return response
-            .status(403)
-            .json(body);
+  if (request.user.id_profile !== 3) {
+    const body = {
+      status: 'Acesso negado',
+      success: false,
+      message: 'Você não está autorizado a acessar este recurso.'
     }
 
-    try {
-        const params = request.params;
+    return response.status(403).json(body)
+  }
 
-        const builder = await Builder.findByPk(params.id);
+  try {
+    const { params } = request
 
-        if (builder && builder.logo_url) {
+    const builder = await Builder.findByPk(params.id)
 
-            const path = builder.logo_url
-                .split(env().GOOGLE_CLOUD.BUCKET)
-                .pop();
+    if (builder && builder.logo_url) {
+      const path = builder.logo_url.split(env().GOOGLE_CLOUD.BUCKET).pop()
 
-            await removeFile(path);
+      await removeFile(path)
 
-            builder.logo_url = null;
+      builder.logo_url = null
 
-            await builder
-                .save();
-        }
-
-        return response
-            .json(Object.assign(constants.builder.success.REMOVE_LOGO));
-
-    } catch (error) {
-
-        logger()
-            .error(error);
-
-        return response
-            .status(500)
-            .json(error.apicode ? error : constants.builder.error.REMOVE_LOGO);
+      await builder.save()
     }
+
+    return response.json(Object.assign(constants.builder.success.REMOVE_LOGO))
+  } catch (error) {
+    logger().error(error)
+
+    return response.status(500).json(error.apicode ? error : constants.builder.error.REMOVE_LOGO)
+  }
 }
