@@ -13,7 +13,7 @@ export default (sequelize, DataTypes) => {
         allowNull: false
       },
 
-      id_foundrising: {
+      id_fundrising: {
         type: DataTypes.UUID,
         allowNull: false
       },

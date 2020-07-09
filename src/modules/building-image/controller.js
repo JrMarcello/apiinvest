@@ -1,6 +1,9 @@
 import { logger } from '../../common/utils'
+import { removeFiles, getSignedUrl, uploadFile } from '../../core/storage'
 import constants from '../../common/constants'
-import * as repository from './repository'
+
+// Models
+const { BuildingImage, Sequelize } = require('../../database/models')
 
 /**
  * @api {get} /building/:idBuilding/images Get Image (By Building ID)
@@ -32,7 +35,34 @@ import * as repository from './repository'
  */
 export const getByBuildingId = async (request, response) => {
   try {
-    response.json(await repository.getByBuildingId(request.params.idBuilding))
+    const { params } = request
+
+    const images = await BuildingImage.findAll({
+      where: {
+        id_building: params.idBuilding
+      }
+    })
+
+    if (images && images.length > 0) {
+      const promises = []
+
+      for (let index = 0; index < images.length; index += 1) {
+        const { url } = images[index]
+
+        // TODO: Investigar o motivo de não salvar a url pronta da imagem
+        // uploadFile(file, path, true)
+        promises.push(getSignedUrl(url))
+      }
+
+      // A ordem do resultado das promises é preservada de acordo com a entrada
+      const urls = await Promise.all(promises)
+
+      for (let index = 0; index < images.length; index += 1) {
+        images[index].url = urls[index]
+      }
+    }
+
+    response.json(images)
   } catch (err) {
     logger().error(err)
 
@@ -70,13 +100,41 @@ export const getByBuildingId = async (request, response) => {
  */
 export const create = async (request, response) => {
   try {
-    const images = await repository.create(request.params.idBuilding, request.files)
+    const { params, files } = request
 
-    response.json(Object.assign(constants.building.images.success.CREATE, { images }))
-  } catch (err) {
-    logger().error(err)
+    // TODO: Aidiconar verificação arquivo enviado
+    // if (!images) { }
 
-    response.status(500).json(err.apicode ? err : constants.building.images.error.CREATE)
+    const promises = []
+
+    for (let index = 0; index < files.length; index += 1) {
+      const file = files[index]
+
+      // TODO: Investigar o motivo de não salvar a url pronta da imagem
+      // uploadFile(file, path, true)
+      promises.push(uploadFile(file, `buildings/${params.idBuilding}`))
+    }
+
+    const urls = await Promise.all(promises)
+
+    let images = []
+
+    for (let index = 0; index < urls.length; index += 1) {
+      const url = urls[index]
+
+      images.push({
+        id_building: params.idBuilding,
+        url
+      })
+    }
+
+    images = await BuildingImage.bulkCreate(images)
+
+    return response.json(Object.assign(constants.building.images.success.CREATE, { images }))
+  } catch (error) {
+    logger().error(error)
+
+    return response.status(500).json(error.apicode ? error : constants.building.images.error.CREATE)
   }
 }
 
@@ -114,12 +172,37 @@ export const create = async (request, response) => {
  */
 export const remove = async (request, response) => {
   try {
-    await repository.remove(request.params.idBuilding, request.body.ids)
+    const { params, body } = request
 
-    response.json(constants.building.images.success.REMOVE)
-  } catch (err) {
-    logger().error(err)
+    const images = await BuildingImage.findAll({
+      where: {
+        [Sequelize.Op.and]: {
+          id_building: params.idBuilding,
+          id: {
+            [Sequelize.Op.or]: body.ids
+          }
+        }
+      }
+    })
 
-    response.status(500).json(err.apicode ? err : constants.building.images.error.REMOVE)
+    if (images && images.length > 0) {
+      await removeFiles(images)
+      await BuildingImage.destroy({
+        where: {
+          [Sequelize.Op.and]: {
+            id_building: params.idBuilding,
+            id: {
+              [Sequelize.Op.or]: body.ids
+            }
+          }
+        }
+      })
+    }
+
+    return response.json(constants.building.images.success.REMOVE)
+  } catch (error) {
+    logger().error(error)
+
+    return response.status(500).json(error.apicode ? error : constants.building.images.error.REMOVE)
   }
 }

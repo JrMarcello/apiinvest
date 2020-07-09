@@ -1,6 +1,8 @@
 import { logger } from '../../common/utils'
 import constants from '../../common/constants'
-import * as repository from './repository'
+
+// Models
+const { Building, BuildingImage, Fundraising } = require('../../database/models')
 
 /**
  * @api {get} /building Get all
@@ -40,20 +42,28 @@ import * as repository from './repository'
  *     }
  */
 export const getAll = async (request, response) => {
-  try {
-    if (request.user.id_profile !== 3) {
-      return response.status(403).json({
-        status: 'Acesso negado!',
-        success: false,
-        message: 'Você não está autorizado a acessar esse recurso'
-      })
+  if (request.user.id_profile !== 3) {
+    const body = {
+      status: 'Acesso negado',
+      success: false,
+      message: 'Você não está autorizado a acessar este recurso.'
     }
 
-    return response.json(await repository.getAll(request.params))
-  } catch (err) {
-    logger().error(err)
+    return response.status(403).json(body)
+  }
 
-    return response.status(500).json(err.apicode ? err : constants.building.error.NOT_FOUND)
+  try {
+    const buildings = await Building.findAll({
+      where: {
+        active: true
+      }
+    })
+
+    return response.json(buildings)
+  } catch (error) {
+    logger().error(error)
+
+    return response.status(500).json(error.apicode ? error : constants.building.error.NOT_FOUND)
   }
 }
 
@@ -96,11 +106,30 @@ export const getAll = async (request, response) => {
  */
 export const getAllAvaliables = async (request, response) => {
   try {
-    response.json(await repository.getAllAvaliables(request.params))
+    // Query original
+    // SELECT b.* FROM ${table} b JOIN fundraising f ON (b.id = f.id_building AND f.active AND f.finished = false) WHERE b.active
+
+    const buildings = await Building.findAll({
+      where: {
+        active: true
+      },
+      include: [
+        {
+          model: Fundraising,
+          as: 'fundraisings',
+          where: {
+            active: true,
+            finished: false
+          }
+        }
+      ]
+    })
+
+    return response.json(buildings)
   } catch (err) {
     logger().error(err)
 
-    response.status(500).json(err.apicode ? err : constants.building.error.NOT_FOUND)
+    return response.status(500).json(err.apicode ? err : constants.building.error.NOT_FOUND)
   }
 }
 
@@ -151,11 +180,35 @@ export const getAllAvaliables = async (request, response) => {
  */
 export const getById = async (request, response) => {
   try {
-    response.json(await repository.getById(request.params.id))
-  } catch (err) {
-    logger().error(err)
+    const { params } = request
 
-    response.status(500).json(err.apicode ? err : constants.building.error.NOT_FOUND)
+    const building = await Building.findByPk(params.id, {
+      where: {
+        active: true
+      },
+      include: [
+        {
+          model: BuildingImage,
+          as: 'images'
+        },
+        {
+          model: Fundraising,
+          as: 'fundraisings'
+        }
+      ]
+    })
+
+    // TODO: Investigar aplicação de imagens e fundraising
+    // if (building) {
+    //     building.images = await image.getByBuildingId(building.id)
+    //     building.fundraisings = await fundraising.getByBuildingId(building.id)
+    // }
+
+    return response.json(building || {})
+  } catch (error) {
+    logger().error(error)
+
+    return response.status(500).json(error.apicode ? error : constants.building.error.NOT_FOUND)
   }
 }
 
@@ -204,11 +257,20 @@ export const getById = async (request, response) => {
  */
 export const getByBuilderId = async (request, response) => {
   try {
-    response.json(await repository.getByBuilderId(request.params.id))
-  } catch (err) {
-    logger().error(err)
+    const { params } = request
 
-    response.status(500).json(err.apicode ? err : constants.building.error.NOT_FOUND)
+    const buildings = await Building.findAll({
+      where: {
+        id_builder: params.id,
+        active: true
+      }
+    })
+
+    return response.json(buildings)
+  } catch (error) {
+    logger().error(error)
+
+    return response.status(500).json(error.apicode ? error : constants.building.error.NOT_FOUND)
   }
 }
 
@@ -284,13 +346,15 @@ export const getByBuilderId = async (request, response) => {
  */
 export const create = async (request, response) => {
   try {
-    const building = await repository.create(request.body)
+    const { body } = request
 
-    response.json(Object.assign(constants.building.success.CREATE, { building }))
-  } catch (err) {
-    logger().error(err)
+    const building = await Building.create(body)
 
-    response.status(500).json(err.apicode ? err : constants.building.error.CREATE)
+    return response.json(Object.assign(constants.building.success.CREATE, { building }))
+  } catch (error) {
+    logger().error(error)
+
+    return response.status(500).json(error.apicode ? error : constants.building.error.CREATE)
   }
 }
 
@@ -345,13 +409,30 @@ export const create = async (request, response) => {
  */
 export const update = async (request, response) => {
   try {
-    await repository.update(request.body)
+    const { body } = request
 
-    response.json(constants.building.success.UPDATE)
-  } catch (err) {
-    logger().error(err)
+    if (!body || body.length === 0) {
+      throw constants.building.error.INVALID_DATA
+    }
 
-    response.status(500).json(err.apicode ? err : constants.building.error.UPDATE)
+    const building = await Building.findByPk(body.id)
+
+    if (building) {
+      // Atualizando apenas as propriedades definidas para atualizar
+      Object.keys(body).forEach(key => {
+        if (body[key] !== undefined) {
+          building[key] = body[key]
+        }
+      })
+
+      await building.save()
+    }
+
+    return response.json(constants.building.success.UPDATE)
+  } catch (error) {
+    logger().error(error)
+
+    return response.status(500).json(error.apicode ? error : constants.building.error.UPDATE)
   }
 }
 
@@ -388,12 +469,20 @@ export const update = async (request, response) => {
  */
 export const remove = async (request, response) => {
   try {
-    await repository.remove(request.params.id)
+    const { params } = request
 
-    response.json(constants.building.success.REMOVE)
-  } catch (err) {
-    logger().error(err)
+    const building = await Building.findByPk(params.id)
 
-    response.status(500).json(err.apicode ? err : constants.building.error.REMOVE)
+    if (building) {
+      building.active = false
+
+      await building.save()
+    }
+
+    return response.json(constants.building.success.REMOVE)
+  } catch (error) {
+    logger().error(error)
+
+    return response.status(500).json(error.apicode ? error : constants.building.error.REMOVE)
   }
 }

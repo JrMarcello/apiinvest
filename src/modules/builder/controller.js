@@ -56,13 +56,13 @@ export const getAll = async (request, response) => {
   }
 
   try {
-    const builder = await Builder.findAll({
+    const builders = await Builder.findAll({
       where: {
         active: true
       }
     })
 
-    return response.json(builder)
+    return response.json(builders)
   } catch (error) {
     logger().error(error)
 
@@ -506,8 +506,7 @@ export const create = async (request, response) => {
  */
 export const update = async (request, response) => {
   try {
-    const { user } = request
-    const { body } = request
+    const { user, body } = request
 
     // TODO: Refatorar
     if (user.id_profile !== 3) {
@@ -575,8 +574,7 @@ export const update = async (request, response) => {
  */
 export const remove = async (request, response) => {
   try {
-    const { user } = request
-    const { params } = request
+    const { user, params } = request
 
     // TODO: Refatorar
     const id = user.id_profile === 3 ? params.id : user.builder.id
@@ -637,8 +635,7 @@ export const setLogo = async (request, response) => {
   }
 
   try {
-    const { params } = request
-    const { file } = request
+    const { params, file } = request
 
     // TODO: Aidiconar verificação arquivo enviado
     // if (!file) { }
