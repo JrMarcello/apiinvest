@@ -15,8 +15,7 @@ export default (sequelize, DataTypes) => {
 
       cnpj: {
         type: DataTypes.STRING(14),
-        unique: true,
-        allowNull: false
+        unique: true
       },
 
       registration: {
@@ -97,6 +96,8 @@ export default (sequelize, DataTypes) => {
   // Associations
   Building.associate = models => {
     Building.belongsTo(models.Builder, { foreignKey: 'id_builder', as: 'builder' })
+    Building.hasMany(models.Fundraising, { foreignKey: 'id_building', as: 'fundraisings' })
+    Building.hasMany(models.BuildingImage, { foreignKey: 'id_building', as: 'images' })
   }
 
   return Building

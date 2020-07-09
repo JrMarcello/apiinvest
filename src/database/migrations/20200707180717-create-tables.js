@@ -307,8 +307,7 @@ module.exports = {
 
       cnpj: {
         type: DataTypes.STRING(14),
-        unique: true,
-        allowNull: false
+        unique: true
       },
 
       registration: {
