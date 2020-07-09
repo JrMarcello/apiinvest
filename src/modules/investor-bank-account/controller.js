@@ -1,6 +1,8 @@
 import { logger } from '../../common/utils'
 import constants from '../../common/constants'
-import * as repository from './repository'
+
+// Models
+const { InvestorBankAccount, Sequelize } = require('../../database/models')
 
 /**
  * @api {get} /investor/:idInvestor/bank-accounts Get Bank Account (By Investor ID)
@@ -36,11 +38,23 @@ import * as repository from './repository'
  */
 export const getByInvestorId = async (request, response) => {
   try {
-    response.json(await repository.getByInvestorId(request.user.id_profile === 3 ? request.params.idInvestor : request.user.investor.id))
-  } catch (err) {
-    logger().error(err)
+    const { user, params } = request
 
-    response.status(500).json(err.apicode ? err : constants.investor.bank_account.error.NOT_FOUND)
+    // TODO: Refatorar
+    const id = user.id_profile === 3 ? params.idInvestor : user.investor.id
+
+    const accounts = await InvestorBankAccount.findAll({
+      where: {
+        id_investor: id,
+        active: true
+      }
+    })
+
+    return response.json(accounts)
+  } catch (error) {
+    logger().error(error)
+
+    return response.status(500).json(error.apicode ? error : constants.investor.bank_account.error.NOT_FOUND)
   }
 }
 
@@ -92,16 +106,28 @@ export const getByInvestorId = async (request, response) => {
  */
 export const create = async (request, response) => {
   try {
-    const accounts = await repository.create(
-      request.user.id_profile === 3 ? request.params.idInvestor : request.user.investor.id,
-      request.body.accounts
-    )
+    const { params, user, body } = request
 
-    response.json(Object.assign(constants.investor.bank_account.success.CREATE, { accounts }))
-  } catch (err) {
-    logger().error(err)
+    // TODO: Refatorar
+    const id = user.id_profile === 3 ? params.idInvestor : user.investor.id
 
-    response.status(500).json(err.apicode ? err : constants.investor.bank_account.error.CREATE)
+    const promises = []
+
+    for (let index = 0; index < body.accounts.length; index += 1) {
+      const account = body.accounts[index]
+
+      account.id_investor = id
+
+      promises.push(InvestorBankAccount.create(account))
+    }
+
+    const accounts = await Promise.all(promises)
+
+    return response.json(Object.assign(constants.investor.bank_account.success.CREATE, { accounts }))
+  } catch (error) {
+    logger().error(error)
+
+    return response.status(500).json(error.apicode ? error : constants.investor.bank_account.error.CREATE)
   }
 }
 
@@ -139,12 +165,26 @@ export const create = async (request, response) => {
  */
 export const remove = async (request, response) => {
   try {
-    await repository.remove(request.user.id_profile === 3 ? request.params.idInvestor : request.user.investor.id, request.body.ids)
+    const { params, user, body } = request
 
-    response.json(constants.investor.bank_account.success.REMOVE)
-  } catch (err) {
-    logger().error(err)
+    // TODO: Refatorar
+    const id = user.id_profile === 3 ? params.idInvestor : user.investor.id
 
-    response.status(500).json(err.apicode ? err : constants.investor.bank_account.error.REMOVE)
+    await InvestorBankAccount.destroy({
+      where: {
+        [Sequelize.Op.and]: {
+          id_investor: id,
+          id: {
+            [Sequelize.Op.or]: body.ids
+          }
+        }
+      }
+    })
+
+    return response.json(constants.investor.bank_account.success.REMOVE)
+  } catch (error) {
+    logger().error(error)
+
+    return response.status(500).json(error.apicode ? error : constants.investor.bank_account.error.REMOVE)
   }
 }
