@@ -1,6 +1,17 @@
 import { logger } from '../../common/utils'
+import { uploadFile } from '../../core/storage'
 import constants from '../../common/constants'
-import * as repository from './repository'
+
+// Models
+const {
+  Building,
+  Fundraising,
+  Investment,
+  Investor,
+  InvestorBankAccount,
+  InvestorDocument,
+  InvestorPhone
+} = require('../../database/models')
 
 /**
  * @api {get} /investor Get all
@@ -36,20 +47,28 @@ import * as repository from './repository'
  *     }
  */
 export const getAll = async (request, response) => {
-  try {
-    if (request.user.id_profile !== 3) {
-      return response.status(403).json({
-        status: 'Acesso negado!',
-        success: false,
-        message: 'Você não está autorizado a acessar esse recurso'
-      })
+  if (request.user.id_profile !== 3) {
+    const body = {
+      status: 'Acesso negado',
+      success: false,
+      message: 'Você não está autorizado a acessar este recurso.'
     }
 
-    return response.json(await repository.getAll(request.params))
-  } catch (err) {
-    logger().error(err)
+    return response.status(403).json(body)
+  }
 
-    return response.status(500).json(err.apicode ? err : constants.investor.error.NOT_FOUND)
+  try {
+    const investors = await Investor.findAll({
+      where: {
+        active: true
+      }
+    })
+
+    return response.json(investors)
+  } catch (error) {
+    logger().error(error)
+
+    return response.status(500).json(error.apicode ? error : constants.investor.error.NOT_FOUND)
   }
 }
 
@@ -119,11 +138,19 @@ export const getAll = async (request, response) => {
  */
 export const getById = async (request, response) => {
   try {
-    response.json(await repository.getById(request.user.id_profile === 3 ? request.params.id : request.user.investor.id))
-  } catch (err) {
-    logger().error(err)
+    const { params } = request
 
-    response.status(500).json(err.apicode ? err : constants.investor.error.NOT_FOUND)
+    const investor = await Investor.findByPk(params.id, {
+      where: {
+        active: true
+      }
+    })
+
+    return response.json(investor || {})
+  } catch (error) {
+    logger().error(error)
+
+    return response.status(500).json(error.apicode ? error : constants.investor.error.NOT_FOUND)
   }
 }
 
@@ -193,11 +220,22 @@ export const getById = async (request, response) => {
  */
 export const getByUserId = async (request, response) => {
   try {
-    response.json(await repository.getByUserId(request.user.id_profile === 3 ? request.params.id : request.user.id))
-  } catch (err) {
-    logger().error(err)
+    const { user, params } = request
 
-    response.status(500).json(err.apicode ? err : constants.investor.error.NOT_FOUND)
+    // TODO: Refatorar
+    const id = user.id_profile === 3 ? params.id : user.id
+
+    const investor = await Investor.findByPk(id, {
+      where: {
+        active: true
+      }
+    })
+
+    return response.json(investor || {})
+  } catch (error) {
+    logger().error(error)
+
+    return response.status(500).json(error.apicode ? error : constants.investor.error.NOT_FOUND)
   }
 }
 
@@ -236,11 +274,35 @@ export const getByUserId = async (request, response) => {
  */
 export const getAllInvestmentsById = async (request, response) => {
   try {
-    response.json(await repository.getAllInvestmentsById(request.user.id_profile === 3 ? request.params.id : request.user.investor.id))
-  } catch (err) {
-    logger().error(err)
+    const { user, params } = request
 
-    response.status(500).json(err.apicode ? err : constants.investor.error.INVESTMENTS_NOT_FOUND)
+    // TODO: Refatorar
+    const id = user.id_profile === 3 ? params.id : user.investor.id
+
+    const investments = await Investment.findAll({
+      where: {
+        id_investor: id,
+        active: true
+      },
+      include: [
+        {
+          model: Fundraising,
+          as: 'fundraising',
+          include: [
+            {
+              model: Building,
+              as: 'building'
+            }
+          ]
+        }
+      ]
+    })
+
+    return response.json(investments)
+  } catch (error) {
+    logger().error(error)
+
+    return response.status(500).json(error.apicode ? error : constants.investor.error.INVESTMENTS_NOT_FOUND)
   }
 }
 
@@ -270,11 +332,24 @@ export const getAllInvestmentsById = async (request, response) => {
  */
 export const getInvestmentsCount = async (request, response) => {
   try {
-    response.json(await repository.getInvestmentsCount(request.user.id_profile === 3 ? request.params.id : request.user.investor.id))
-  } catch (err) {
-    logger().error(err)
+    const { user, params } = request
 
-    response.status(500).json(err.apicode ? err : constants.investor.error.INVESTMENTS_COUNT)
+    // TODO: Refatorar
+    const id = user.id_profile === 3 ? params.id : user.investor.id
+
+    const quantity = await Investment.count({
+      where: {
+        id_investor: id,
+        confirmed: true,
+        active: true
+      }
+    })
+
+    return response.json({ count: quantity })
+  } catch (error) {
+    logger().error(error)
+
+    return response.status(500).json(error.apicode ? error : constants.investor.error.INVESTMENTS_COUNT)
   }
 }
 
@@ -304,11 +379,24 @@ export const getInvestmentsCount = async (request, response) => {
  */
 export const getInvestedAmount = async (request, response) => {
   try {
-    response.json(await repository.getInvestedAmount(request.user.id_profile === 3 ? request.params.id : request.user.investor.id))
-  } catch (err) {
-    logger().error(err)
+    const { user, params } = request
 
-    response.status(500).json(err.apicode ? err : constants.investor.error.INVESTED_AMOUNT)
+    // TODO: Refatorar
+    const id = user.id_profile === 3 ? params.id : user.investor.id
+
+    const amount = await Investment.sum('amount', {
+      where: {
+        id_investor: id,
+        confirmed: true,
+        active: true
+      }
+    })
+
+    return response.json({ amount })
+  } catch (error) {
+    logger().error(error)
+
+    return response.status(500).json(error.apicode ? error : constants.investor.error.INVESTED_AMOUNT)
   }
 }
 
@@ -338,11 +426,24 @@ export const getInvestedAmount = async (request, response) => {
  */
 export const getReceivedAmount = async (request, response) => {
   try {
-    response.json(await repository.getReceivedAmount(request.user.id_profile === 3 ? request.params.id : request.user.investor.id))
+    const { user, params } = request
+
+    // TODO: Refatorar
+    const id = user.id_profile === 3 ? params.id : user.investor.id
+
+    const amount = await Investment.sum('amount_returned', {
+      where: {
+        id_investor: id,
+        confirmed: true,
+        active: true
+      }
+    })
+
+    return response.json({ amount })
   } catch (err) {
     logger().error(err)
 
-    response.status(500).json(err.apicode ? err : constants.investor.error.RECEIVED_AMOUNT)
+    return response.status(500).json(err.apicode ? err : constants.investor.error.RECEIVED_AMOUNT)
   }
 }
 
@@ -372,11 +473,31 @@ export const getReceivedAmount = async (request, response) => {
  */
 export const getProjectedAmount = async (request, response) => {
   try {
-    response.json(await repository.getProjectedAmount(request.user.id_profile === 3 ? request.params.id : request.user.investor.id))
-  } catch (err) {
-    logger().error(err)
+    // TODO: Apagar após rever regra
+    // response.json(await repository.getProjectedAmount(request.user.id_profile === 3 ? request.params.id : request.user.investor.id))
 
-    response.status(500).json(err.apicode ? err : constants.investor.error.PROJECTED_AMOUNT)
+    const { user, params } = request
+
+    // TODO: Refatorar
+    const id = user.id_profile === 3 ? params.id : user.investor.id
+
+    const investor = await Investor.findByPk(id, {
+      include: [
+        {
+          model: Investment,
+          as: 'investments'
+        }
+      ]
+    })
+
+    // TODO: Rever regra
+    const amount = investor.investments.reduce((sum, investment) => sum + parseFloat(investment.amount), 0)
+
+    return response.json({ amount })
+  } catch (error) {
+    logger().error(error)
+
+    return response.status(500).json(error.apicode ? error : constants.investor.error.PROJECTED_AMOUNT)
   }
 }
 
@@ -443,22 +564,90 @@ export const getProjectedAmount = async (request, response) => {
  */
 export const create = async (request, response) => {
   try {
-    const data = {}
+    const { user, body, files } = request
 
-    data.investor = JSON.parse(request.body.investor)
-    data.phones = JSON.parse(request.body.phones)
-    data.accounts = JSON.parse(request.body.accounts)
-    data.files = request.files
+    if (!body || body.length === 0 || !body.investor || body.investor.length === 0) {
+      throw constants.investor.error.INVALID_DATA
+    } else if (!body.phones || body.phones.length === 0) {
+      throw constants.investor.phone.error.REQUIRED
+    } else if (!body.accounts || body.accounts.length === 0) {
+      throw constants.investor.bank_account.error.REQUIRED
+    } else if (!files || files.length !== 3) {
+      throw constants.investor.document.error.REQUIRED
+    }
 
-    if (request.user.id_profile !== 3) data.investor.id_user = request.user.id
+    // TODO: Refatorar
+    if (user.id_profile !== 3) {
+      body.investor.id_user = user.id
+    }
 
-    const investor = await repository.create(data)
+    let promises = []
 
-    response.json(Object.assign(constants.investor.success.CREATE, { investor }))
-  } catch (err) {
-    logger().error(err)
+    // 1. Criar o investidor
+    const investor = await Investor.create(body.investor)
 
-    response.status(500).json(err.apicode ? err : constants.investor.error.CREATE)
+    // 2. Criar os telefones
+    let phone
+
+    for (let index = 0; index < body.phones.length; index += 1) {
+      const { number } = body.phones[index]
+
+      phone = {
+        id_investor: investor.id,
+        number
+      }
+
+      promises.push(InvestorPhone.create(phone))
+    }
+
+    await Promise.all(promises)
+
+    // 3. Criar as contas bancárias
+    let account
+    promises = []
+
+    for (let index = 0; index < body.accounts.length; index += 1) {
+      account = body.accounts[index]
+
+      account.id_investor = investor.id
+
+      promises.push(InvestorBankAccount.create(account))
+    }
+
+    await Promise.all(promises)
+
+    // 4. Enviar os documentos
+    promises = []
+
+    for (let index = 0; index < files.length; index += 1) {
+      const file = files[index]
+
+      // TODO: Investigar o motivo de não salvar a url pronta da imagem
+      // uploadFile(file, path, true)
+      promises.push(uploadFile(file, `documents/${investor.id}`))
+    }
+
+    const urls = await Promise.all(promises)
+
+    const documents = []
+
+    for (let index = 0; index < urls.length; index += 1) {
+      const url = urls[index]
+
+      documents.push({
+        id_investor: investor.id,
+        url,
+        order: index
+      })
+    }
+
+    await InvestorDocument.bulkCreate(documents)
+
+    return response.json(Object.assign(constants.investor.success.CREATE, { investor }))
+  } catch (error) {
+    logger().error(error)
+
+    return response.status(500).json(error.apicode ? error : constants.investor.error.CREATE)
   }
 }
 
@@ -500,14 +689,37 @@ export const create = async (request, response) => {
  */
 export const update = async (request, response) => {
   try {
-    if (request.user.id_profile !== 3) request.body.id = request.user.investor.id
+    const { user, body } = request
 
-    await repository.update(request.body)
+    // TODO: Refatorar
+    if (user.id_profile !== 3) {
+      body.id = user.investor.id
+    }
 
-    response.json(constants.investor.success.UPDATE)
-  } catch (err) {
-    logger().error(err)
+    if (!body || body.length === 0) {
+      throw constants.investor.error.INVALID_DATA
+    }
 
-    response.status(500).json(err.apicode ? err : constants.investor.error.UPDATE)
+    // TODO: Aidiconar verificação de id do investidor
+    // if (!body.id) { }
+
+    const investor = await Investor.findByPk(body.id)
+
+    if (investor) {
+      // Atualizando apenas as propriedades definidas para atualizar
+      Object.keys(body).forEach(key => {
+        if (body[key] !== undefined) {
+          investor[key] = body[key]
+        }
+      })
+
+      await investor.save()
+    }
+
+    return response.json(constants.investor.success.UPDATE)
+  } catch (error) {
+    logger().error(error)
+
+    return response.status(500).json(error.apicode ? error : constants.investor.error.UPDATE)
   }
 }
