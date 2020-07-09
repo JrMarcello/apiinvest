@@ -635,8 +635,7 @@ export const setLogo = async (request, response) => {
   }
 
   try {
-    const { params } = request
-    const { file } = request
+    const { params, file } = request
 
     // TODO: Aidiconar verificação arquivo enviado
     // if (!file) { }
