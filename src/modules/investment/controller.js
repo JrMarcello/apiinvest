@@ -3,7 +3,6 @@ import { env, logger } from '../../common/utils'
 import { sendEmail } from '../../core/mailer'
 import { uploadFile } from '../../core/storage'
 import constants from '../../common/constants'
-import * as repository from './repository'
 
 // Models
 const { Investment, Investor, Fundraising, Sequelize, Building } = require('../../database/models')
@@ -38,29 +37,29 @@ const { Investment, Investor, Fundraising, Sequelize, Building } = require('../.
  *     }
  */
 export const getAll = async (request, response) => {
-    if (request.user.id_profile !== 3) {
-        const body = {
-            status: 'Acesso negado',
-            success: false,
-            message: 'Você não está autorizado a acessar este recurso.'
-        }
-
-        return response.status(403).json(body)
+  if (request.user.id_profile !== 3) {
+    const body = {
+      status: 'Acesso negado',
+      success: false,
+      message: 'Você não está autorizado a acessar este recurso.'
     }
 
-    try {
-        const investments = await Investment.findAll({
-            where: {
-                active: true
-            }
-        })
+    return response.status(403).json(body)
+  }
 
-        return response.json(investments)
-    } catch (error) {
-        logger().error(error)
+  try {
+    const investments = await Investment.findAll({
+      where: {
+        active: true
+      }
+    })
 
-        return response.status(500).json(error.apicode ? error : constants.investment.error.NOT_FOUND)
-    }
+    return response.json(investments)
+  } catch (error) {
+    logger().error(error)
+
+    return response.status(500).json(error.apicode ? error : constants.investment.error.NOT_FOUND)
+  }
 }
 
 /**
@@ -99,28 +98,27 @@ export const getAll = async (request, response) => {
  *   }
  */
 export const getById = async (request, response) => {
-    try {
+  try {
+    const { params, user } = request
 
-        const { params, user } = request
-
-        let where = {
-            active: true
-        }
-
-        if (user.id_profile !== 3) {
-            where.id_investor = user.investor.id
-        }
-
-        const investment = await Investment.findByPk(params.id, {
-            where
-        })
-
-        return response.json(investment || {})
-    } catch (error) {
-        logger().error(error)
-
-        return response.status(500).json(error.apicode ? error : constants.investment.error.NOT_FOUND)
+    const where = {
+      active: true
     }
+
+    if (user.id_profile !== 3) {
+      where.id_investor = user.investor.id
+    }
+
+    const investment = await Investment.findByPk(params.id, {
+      where
+    })
+
+    return response.json(investment || {})
+  } catch (error) {
+    logger().error(error)
+
+    return response.status(500).json(error.apicode ? error : constants.investment.error.NOT_FOUND)
+  }
 }
 
 /**
@@ -163,34 +161,37 @@ export const getById = async (request, response) => {
  *     }
  */
 export const getByInvestorId = async (request, response) => {
-    try {
+  try {
+    const { user, params } = request
 
-        const { user, params } = request
+    // TODO: Refatorar
+    const id = user.id_profile === 3 ? params.id : user.investor.id
 
-        // TODO: Refatorar
-        const id = user.id_profile === 3 ? params.id : user.investor.id
+    const investments = await Investment.findAll({
+      where: {
+        id_investor: id,
+        active: true
+      },
+      include: [
+        {
+          model: Fundraising,
+          as: 'fundraising',
+          include: [
+            {
+              model: Building,
+              as: 'building'
+            }
+          ]
+        }
+      ]
+    })
 
-        const investments = await Investment.findAll({
-            where: {
-                id_investor: id,
-                active: true
-            },
-            include: [{
-                model: Fundraising,
-                as: 'fundraising',
-                include: [{
-                    model: Building,
-                    as: 'building'
-                }]
-            }]
-        })
+    return response.json(investments)
+  } catch (error) {
+    logger().error(error)
 
-        return response.json(investments)
-    } catch (error) {
-        logger().error(error)
-
-        return response.status(500).json(error.apicode ? error : constants.investment.error.NOT_FOUND)
-    }
+    return response.status(500).json(error.apicode ? error : constants.investment.error.NOT_FOUND)
+  }
 }
 
 /**
@@ -225,41 +226,44 @@ export const getByInvestorId = async (request, response) => {
  *     }
  */
 export const getByFundraisingId = async (request, response) => {
-    if (request.user.id_profile !== 3) {
-        const body = {
-            status: 'Acesso negado',
-            success: false,
-            message: 'Você não está autorizado a acessar este recurso.'
+  if (request.user.id_profile !== 3) {
+    const body = {
+      status: 'Acesso negado',
+      success: false,
+      message: 'Você não está autorizado a acessar este recurso.'
+    }
+
+    return response.status(403).json(body)
+  }
+
+  try {
+    const { params } = request
+
+    const investments = await Investment.findAll({
+      where: {
+        id_fundraising: params.id,
+        active: true
+      },
+      include: [
+        {
+          model: Fundraising,
+          as: 'fundraising',
+          include: [
+            {
+              model: Building,
+              as: 'building'
+            }
+          ]
         }
+      ]
+    })
 
-        return response.status(403).json(body)
-    }
+    return response.json(investments)
+  } catch (error) {
+    logger().error(error)
 
-    try {
-
-        const { params } = request
-
-        const investments = await Investment.findAll({
-            where: {
-                id_fundraising: params.id,
-                active: true
-            },
-            include: [{
-                model: Fundraising,
-                as: 'fundraising',
-                include: [{
-                    model: Building,
-                    as: 'building'
-                }]
-            }]
-        })
-
-        return response.json(investments)
-    } catch (error) {
-        logger().error(error)
-
-        return response.status(500).json(error.apicode ? error : constants.investment.error.NOT_FOUND)
-    }
+    return response.status(500).json(error.apicode ? error : constants.investment.error.NOT_FOUND)
+  }
 }
 
 /**
@@ -300,44 +304,49 @@ export const getByFundraisingId = async (request, response) => {
  *     }
  */
 export const getPendings = async (request, response) => {
-    if (request.user.id_profile !== 3) {
-        const body = {
-            status: 'Acesso negado',
-            success: false,
-            message: 'Você não está autorizado a acessar este recurso.'
+  if (request.user.id_profile !== 3) {
+    const body = {
+      status: 'Acesso negado',
+      success: false,
+      message: 'Você não está autorizado a acessar este recurso.'
+    }
+
+    return response.status(403).json(body)
+  }
+
+  try {
+    const investments = await Investment.findAll({
+      where: {
+        active: true,
+        confirmed: false,
+        ted_proof_url: {
+          [Sequelize.Op.ne]: null
         }
+      },
+      include: [
+        {
+          model: Investor,
+          as: 'investor'
+        },
+        {
+          model: Fundraising,
+          as: 'fundraising',
+          include: [
+            {
+              model: Building,
+              as: 'building'
+            }
+          ]
+        }
+      ]
+    })
 
-        return response.status(403).json(body)
-    }
+    return response.json(investments)
+  } catch (error) {
+    logger().error(error)
 
-    try {
-        const investments = await Investment.findAll({
-            where: {
-                active: true,
-                confirmed: false,
-                ted_proof_url: {
-                    [Sequelize.Op.ne]: null
-                }
-            },
-            include: [{
-                model: Investor,
-                as: 'investor'
-            }, {
-                model: Fundraising,
-                as: 'fundraising',
-                include: [{
-                    model: Building,
-                    as: 'building'
-                }]
-            }]
-        })
-
-        return response.json(investments)
-    } catch (error) {
-        logger().error(error)
-
-        return response.status(500).json(error.apicode ? error : constants.investment.error.NOT_FOUND)
-    }
+    return response.status(500).json(error.apicode ? error : constants.investment.error.NOT_FOUND)
+  }
 }
 
 /**
@@ -385,73 +394,75 @@ export const getPendings = async (request, response) => {
  *   }
  */
 export const create = async (request, response) => {
-    try {
-        const { body } = request
+  try {
+    const { body } = request
 
-        const investor = await Investor.findByPk(body.id_investor)
+    const investor = await Investor.findByPk(body.id_investor)
 
-        // 1. Validar o investidor
-        if (!investor) {
-            throw constants.investment.error.INVESTOR_NOT_FOUND
-        }
-
-        if (env().BLACK_LIST.includes(investor.cpf) || env().BLACK_LIST.includes(investor.cnpj)) {
-            throw constants.investment.error.BLACK_LIST
-        }
-
-        // 2. Validar o levantamento de recursos
-        const fundraising = await Fundraising.findByPk(body.id_fundraising)
-
-        if (!fundraising || body.amount < fundraising.investment_min_value) {
-            throw constants.investment.error.MIN_VALUE
-        }
-
-        // 3. Validar o investimento
-        const amount = await Investment.sum('amount', {
-            where: {
-                id_investor: body.id_investor,
-                date: {
-                    [Sequelize.Op.gte]: moment().startOf('year').format('YYYY-MM-DD')
-                },
-                active: true
-            }
-        })
-
-        const notQualified = parseFloat(env().INVESTMENT_MAX_AMOUNT_NOT_QUALIFIED)
-        const qualified = parseFloat(env().INVESTMENT_MAX_AMOUNT_QUALIFIED)
-
-        if (!body.is_qualified && (amount > notQualified || amount + body.amount > notQualified)) {
-            throw constants.investment.error.MAX_AMOUNT_NOT_QUALIFIED
-        }
-
-        if (body.is_qualified && (amount > qualified || amount + data.amount > qualified)) {
-            throw constants.investment.error.MAX_AMOUNT_QUALIFIED
-        }
-
-        const investment = await Investment.create(body)
-
-        // 4. Enviar e-mail de criação de investimento 
-        await sendEmail({
-            from: `Buildinvest <${env().buildinvest.emails.contact}>`,
-            to: investor.email,
-            subject: 'Buildinvest - Novo investimento',
-            template: 'newInvestment',
-            context: {
-                buildinvest: {
-                    bankAccount: env().buildinvest.bankAccount,
-                    agence: env().buildinvest.agence
-                },
-                investor,
-                investment
-            }
-        })
-
-        response.json(Object.assign(constants.investment.success.CREATE, { investment }))
-    } catch (err) {
-        logger().error(err)
-
-        response.status(500).json(err.apicode ? err : constants.investment.error.CREATE)
+    // 1. Validar o investidor
+    if (!investor) {
+      throw constants.investment.error.INVESTOR_NOT_FOUND
     }
+
+    if (env().BLACK_LIST.includes(investor.cpf) || env().BLACK_LIST.includes(investor.cnpj)) {
+      throw constants.investment.error.BLACK_LIST
+    }
+
+    // 2. Validar o levantamento de recursos
+    const fundraising = await Fundraising.findByPk(body.id_fundraising)
+
+    if (!fundraising || body.amount < fundraising.investment_min_value) {
+      throw constants.investment.error.MIN_VALUE
+    }
+
+    // 3. Validar o investimento
+    const amount = await Investment.sum('amount', {
+      where: {
+        id_investor: body.id_investor,
+        date: {
+          [Sequelize.Op.gte]: moment()
+            .startOf('year')
+            .format('YYYY-MM-DD')
+        },
+        active: true
+      }
+    })
+
+    const notQualified = parseFloat(env().INVESTMENT_MAX_AMOUNT_NOT_QUALIFIED)
+    const qualified = parseFloat(env().INVESTMENT_MAX_AMOUNT_QUALIFIED)
+
+    if (!body.is_qualified && (amount > notQualified || amount + body.amount > notQualified)) {
+      throw constants.investment.error.MAX_AMOUNT_NOT_QUALIFIED
+    }
+
+    if (body.is_qualified && (amount > qualified || amount + body.amount > qualified)) {
+      throw constants.investment.error.MAX_AMOUNT_QUALIFIED
+    }
+
+    const investment = await Investment.create(body)
+
+    // 4. Enviar e-mail de criação de investimento
+    await sendEmail({
+      from: `Buildinvest <${env().buildinvest.emails.contact}>`,
+      to: investor.email,
+      subject: 'Buildinvest - Novo investimento',
+      template: 'newInvestment',
+      context: {
+        buildinvest: {
+          bankAccount: env().buildinvest.bankAccount,
+          agence: env().buildinvest.agence
+        },
+        investor,
+        investment
+      }
+    })
+
+    response.json(Object.assign(constants.investment.success.CREATE, { investment }))
+  } catch (err) {
+    logger().error(err)
+
+    response.status(500).json(err.apicode ? err : constants.investment.error.CREATE)
+  }
 }
 
 /**
@@ -484,38 +495,37 @@ export const create = async (request, response) => {
  *   }
  */
 export const sendTED = async (request, response) => {
-    try {
+  try {
+    const { params, file, user } = request
 
-        const { params, file, user } = request
-
-        if (!file) {
-            throw constants.investment.error.NO_TED_FILE
-        }
-
-        const url = await uploadFile(file, `teds/${params.id}`)
-
-        let where = {
-            active: true
-        }
-
-        if (user.id_profile !== 3) {
-            where.id_investor = user.investor.id
-        }
-
-        const investment = await Investment.findByPk(params.id, {
-            where
-        })
-
-        investment.ted_proof_url = url
-
-        await investment.save();
-
-        return response.json(constants.investment.success.TED_CONFIRMATION)
-    } catch (error) {
-        logger().error(error)
-
-        return response.status(500).json(error.apicode ? error : constants.investment.error.TED_CONFIRMATION)
+    if (!file) {
+      throw constants.investment.error.NO_TED_FILE
     }
+
+    const url = await uploadFile(file, `teds/${params.id}`)
+
+    const where = {
+      active: true
+    }
+
+    if (user.id_profile !== 3) {
+      where.id_investor = user.investor.id
+    }
+
+    const investment = await Investment.findByPk(params.id, {
+      where
+    })
+
+    investment.ted_proof_url = url
+
+    await investment.save()
+
+    return response.json(constants.investment.success.TED_CONFIRMATION)
+  } catch (error) {
+    logger().error(error)
+
+    return response.status(500).json(error.apicode ? error : constants.investment.error.TED_CONFIRMATION)
+  }
 }
 
 /**
@@ -547,41 +557,43 @@ export const sendTED = async (request, response) => {
  *   }
  */
 export const confirm = async (request, response) => {
-    if (request.user.id_profile !== 3) {
-        const body = {
-            status: 'Acesso negado',
-            success: false,
-            message: 'Você não está autorizado a acessar este recurso.'
-        }
-
-        return response.status(403).json(body)
+  if (request.user.id_profile !== 3) {
+    const body = {
+      status: 'Acesso negado',
+      success: false,
+      message: 'Você não está autorizado a acessar este recurso.'
     }
 
-    try {
+    return response.status(403).json(body)
+  }
 
-        const { body } = request
+  try {
+    const { body } = request
 
-        await Investment.update({
-            confirmed: true
-        }, {
-            where: {
-                [Sequelize.Op.and]: {
-                    id: {
-                        [Sequelize.Op.or]: body.investments
-                    },
-                    ted_proof_url: {
-                        [Sequelize.Op.ne]: null
-                    }
-                }
+    await Investment.update(
+      {
+        confirmed: true
+      },
+      {
+        where: {
+          [Sequelize.Op.and]: {
+            id: {
+              [Sequelize.Op.or]: body.investments
+            },
+            ted_proof_url: {
+              [Sequelize.Op.ne]: null
             }
-        })
+          }
+        }
+      }
+    )
 
-        return response.json(constants.investment.success.CONFIRMATION)
-    } catch (error) {
-        logger().error(error)
+    return response.json(constants.investment.success.CONFIRMATION)
+  } catch (error) {
+    logger().error(error)
 
-        return response.status(500).json(error.apicode ? error : constants.investment.error.CONFIRMATION)
-    }
+    return response.status(500).json(error.apicode ? error : constants.investment.error.CONFIRMATION)
+  }
 }
 
 /**
@@ -608,36 +620,35 @@ export const confirm = async (request, response) => {
  *   }
  */
 export const cancel = async (request, response) => {
-    try {
+  try {
+    const { params, user } = request
 
-        const { params, user } = request
-
-        let where = {
-            id: params.id
-        }
-
-        if (user.id_profile !== 3) {
-            where.id_investor = user.investor.id
-        }
-
-        const investment = await Investment.findByPk(params.id, {
-            where
-        })
-
-        if (!investment || investment.ted_proof_url !== null) {
-            throw constants.investment.error.INVALID_CANCEL
-        }
-
-        investment.active = false
-
-        await investment.save();
-
-        // await repository.cancel(request.params.id, request.user.id_profile === 3 ? null : request.user.investor.id)
-
-        response.json(constants.investment.success.CANCEL)
-    } catch (err) {
-        logger().error(err)
-
-        response.status(500).json(err.apicode ? err : constants.investment.error.CANCEL)
+    const where = {
+      id: params.id
     }
+
+    if (user.id_profile !== 3) {
+      where.id_investor = user.investor.id
+    }
+
+    const investment = await Investment.findByPk(params.id, {
+      where
+    })
+
+    if (!investment || investment.ted_proof_url !== null) {
+      throw constants.investment.error.INVALID_CANCEL
+    }
+
+    investment.active = false
+
+    await investment.save()
+
+    // await repository.cancel(request.params.id, request.user.id_profile === 3 ? null : request.user.investor.id)
+
+    response.json(constants.investment.success.CANCEL)
+  } catch (err) {
+    logger().error(err)
+
+    response.status(500).json(err.apicode ? err : constants.investment.error.CANCEL)
+  }
 }
