@@ -1,6 +1,5 @@
 import { logger } from '../../common/utils'
 import constants from '../../common/constants'
-import * as repository from './repository'
 
 // Models
 const { Custodian } = require('../../database/models')
@@ -35,19 +34,19 @@ const { Custodian } = require('../../database/models')
  *     }
  */
 export const getAll = async (request, response) => {
-    try {
-        const custodian = await Custodian.findAll({
-            where: {
-                active: true
-            }
-        })
+  try {
+    const custodian = await Custodian.findAll({
+      where: {
+        active: true
+      }
+    })
 
-        return response.json(custodian)
-    } catch (error) {
-        logger().error(error)
+    return response.json(custodian)
+  } catch (error) {
+    logger().error(error)
 
-        response.status(500).json(error.apicode ? error : constants.custodian.error.NOT_FOUND)
-    }
+    return response.status(500).json(error.apicode ? error : constants.custodian.error.NOT_FOUND)
+  }
 }
 
 /**
@@ -86,21 +85,21 @@ export const getAll = async (request, response) => {
  *   }
  */
 export const getById = async (request, response) => {
-    try {
-        const { params } = request
+  try {
+    const { params } = request
 
-        const custodian = await Custodian.findByPk(params.id, {
-            where: {
-                active: true
-            }
-        })
+    const custodian = await Custodian.findByPk(params.id, {
+      where: {
+        active: true
+      }
+    })
 
-        return response.json(custodian || {})
-    } catch (error) {
-        logger().error(error)
+    return response.json(custodian || {})
+  } catch (error) {
+    logger().error(error)
 
-        response.status(500).json(error.apicode ? error : constants.custodian.error.NOT_FOUND)
-    }
+    return response.status(500).json(error.apicode ? error : constants.custodian.error.NOT_FOUND)
+  }
 }
 
 /**
@@ -151,17 +150,17 @@ export const getById = async (request, response) => {
  *   }
  */
 export const create = async (request, response) => {
-    try {
-        const { body } = request
+  try {
+    const { body } = request
 
-        const custodian = await Custodian.create(body)
+    const custodian = await Custodian.create(body)
 
-        return response.json(Object.assign(constants.custodian.success.CREATE, { custodian }))
-    } catch (error) {
-        logger().error(error)
+    return response.json(Object.assign(constants.custodian.success.CREATE, { custodian }))
+  } catch (error) {
+    logger().error(error)
 
-        return response.status(500).json(error.apicode ? error : constants.custodian.error.CREATE)
-    }
+    return response.status(500).json(error.apicode ? error : constants.custodian.error.CREATE)
+  }
 }
 
 /**
@@ -205,28 +204,28 @@ export const create = async (request, response) => {
  *   }
  */
 export const update = async (request, response) => {
-    try {
-        const { body } = request
+  try {
+    const { body } = request
 
-        const custodian = await Custodian.findByPk(body.id)
+    const custodian = await Custodian.findByPk(body.id)
 
-        if (custodian) {
-            // Atualizando apenas as propriedades definidas para atualizar
-            Object.keys(body).forEach(key => {
-                if (body[key] !== undefined) {
-                    custodian[key] = body[key]
-                }
-            })
-
-            await custodian.save()
+    if (custodian) {
+      // Atualizando apenas as propriedades definidas para atualizar
+      Object.keys(body).forEach(key => {
+        if (body[key] !== undefined) {
+          custodian[key] = body[key]
         }
+      })
 
-        return response.json(constants.custodian.success.UPDATE)
-    } catch (error) {
-        logger().error(error)
-
-        return response.status(500).json(error.apicode ? error : constants.custodian.error.UPDATE)
+      await custodian.save()
     }
+
+    return response.json(constants.custodian.success.UPDATE)
+  } catch (error) {
+    logger().error(error)
+
+    return response.status(500).json(error.apicode ? error : constants.custodian.error.UPDATE)
+  }
 }
 
 /**
@@ -257,21 +256,21 @@ export const update = async (request, response) => {
  *   }
  */
 export const remove = async (request, response) => {
-    try {
-        const { params } = request
+  try {
+    const { params } = request
 
-        const custodian = await Custodian.findByPk(params.id)
+    const custodian = await Custodian.findByPk(params.id)
 
-        if (custodian) {
-            custodian.active = false
+    if (custodian) {
+      custodian.active = false
 
-            await custodian.save()
-        }
-
-        return response.json(constants.custodian.success.REMOVE)
-    } catch (err) {
-        logger().error(err)
-
-        return response.status(500).json(err.apicode ? err : constants.custodian.error.REMOVE)
+      await custodian.save()
     }
+
+    return response.json(constants.custodian.success.REMOVE)
+  } catch (err) {
+    logger().error(err)
+
+    return response.status(500).json(err.apicode ? err : constants.custodian.error.REMOVE)
+  }
 }
