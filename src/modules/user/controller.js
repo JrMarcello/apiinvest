@@ -1,9 +1,13 @@
-import { logger } from '../../common/utils'
+import bcrypt from 'bcrypt'
+import crypto from 'crypto'
+import moment from 'moment'
+import { env, logger } from '../../common/utils'
+import { getToken } from '../../core/middlewares/auth'
+import { sendEmail } from '../../core/mailer'
 import constants from '../../common/constants'
-import * as repository from './repository'
 
 // Models
-// const { User } = require('../../database/models')
+const { User, Investor, Builder, Profile } = require('../../database/models')
 
 /**
  * @api {get} /user Get all
@@ -47,20 +51,24 @@ import * as repository from './repository'
  *     }
  */
 export const getAll = async (request, response) => {
-  try {
-    if (request.user.id_profile !== 3) {
-      const body = {
-        status: 'Acesso negado',
-        success: false,
-        message: 'Você não está autorizado a acessar este recurso.'
-      }
-
-      return response.status(403).json(body)
+  if (request.user.id_profile !== 3) {
+    const body = {
+      status: 'Acesso negado',
+      success: false,
+      message: 'Você não está autorizado a acessar este recurso.'
     }
 
-    const result = await repository.getAll(request.params)
+    return response.status(403).json(body)
+  }
 
-    return response.json(result)
+  try {
+    const users = await User.findAll({
+      where: {
+        active: true
+      }
+    })
+
+    return response.json(users)
   } catch (error) {
     logger().error(error)
 
@@ -107,11 +115,33 @@ export const getAll = async (request, response) => {
  */
 export const getById = async (request, response) => {
   try {
-    response.json(await repository.getById(request.user.id_profile === 3 ? request.params.id : request.user.id))
-  } catch (err) {
-    logger().error(err)
+    const { params, user } = request
 
-    response.status(500).json(err.apicode ? err : constants.user.error.NOT_FOUND)
+    if (user.id_profile !== 3) {
+      params.id = user.id
+    }
+
+    const account = await User.findByPk(params.id, {
+      where: {
+        active: true
+      },
+      include: [
+        {
+          model: Investor,
+          as: 'investor'
+        },
+        {
+          model: Builder,
+          as: 'builder'
+        }
+      ]
+    })
+
+    return response.json(account)
+  } catch (error) {
+    logger().error(error)
+
+    return response.status(500).json(error.apicode ? error : constants.user.error.NOT_FOUND)
   }
 }
 
@@ -163,13 +193,28 @@ export const getById = async (request, response) => {
  */
 export const create = async (request, response) => {
   try {
-    const user = await repository.create(request.body)
+    const { body } = request
 
-    response.json(Object.assign(constants.user.success.CREATE, { user }))
-  } catch (err) {
-    logger().error(err)
+    let user = await User.findOne({
+      where: {
+        email: body.email
+      }
+    })
 
-    response.status(500).json(err.apicode ? err : constants.user.error.CREATE)
+    if (user) {
+      throw constants.user.error.MAIL_EXISTS
+    }
+
+    // TODO: Repassar encriptação para um serviço, encapsular
+    body.password = `'${bcrypt.hashSync(body.password, 10)}'`
+
+    user = await User.create(body)
+
+    return response.json(Object.assign(constants.user.success.CREATE, { user }))
+  } catch (error) {
+    logger().error(error)
+
+    return response.status(500).json(error.apicode ? error : constants.user.error.CREATE)
   }
 }
 
@@ -211,15 +256,36 @@ export const create = async (request, response) => {
  */
 export const update = async (request, response) => {
   try {
-    if (request.user.id_profile !== 3) request.body.id = request.user.id
+    const { user, body } = request
 
-    await repository.update(request.body)
+    // TODO: Refatorar
+    if (user.id_profile !== 3) {
+      body.id = user.id
+    }
 
-    response.json(constants.user.success.UPDATE)
-  } catch (err) {
-    logger().error(err)
+    // TODO: Repassar encriptação para um serviço, encapsular
+    if (body.password) {
+      body.password = bcrypt.hashSync(body.password, 10)
+    }
 
-    response.status(500).json(err.apicode ? err : constants.user.error.UPDATE)
+    const account = await User.findByPk(body.id)
+
+    if (account) {
+      // Atualizando apenas as propriedades definidas para atualizar
+      Object.keys(body).forEach(key => {
+        if (body[key] !== undefined) {
+          account[key] = body[key]
+        }
+      })
+
+      await account.save()
+    }
+
+    return response.json(constants.user.success.UPDATE)
+  } catch (error) {
+    logger().error(error)
+
+    return response.status(500).json(error.apicode ? error : constants.user.error.UPDATE)
   }
 }
 
@@ -256,13 +322,24 @@ export const update = async (request, response) => {
  */
 export const remove = async (request, response) => {
   try {
-    await repository.remove(request.user.id_profile === 3 ? request.params.id : request.user.id)
+    const { user, params } = request
 
-    response.json(constants.user.success.REMOVE)
-  } catch (err) {
-    logger().error(err)
+    // TODO: Refatorar
+    const id = user.id_profile === 3 ? params.id : user.builder.id
 
-    response.status(500).json(err.apicode ? err : constants.user.error.REMOVE)
+    const account = await User.findByPk(id)
+
+    if (account) {
+      account.active = false
+
+      await account.save()
+    }
+
+    return response.json(constants.user.success.REMOVE)
+  } catch (error) {
+    logger().error(error)
+
+    return response.status(500).json(error.apicode ? error : constants.user.error.REMOVE)
   }
 }
 
@@ -298,13 +375,37 @@ export const remove = async (request, response) => {
  */
 export const login = async (request, response) => {
   try {
-    const token = await repository.login(request.body)
+    const { body } = request
 
-    response.json(Object.assign(constants.user.success.LOGIN, { token }))
-  } catch (err) {
-    logger().error(err)
+    const account = await User.findOne({
+      where: {
+        email: body.email
+      },
+      include: [
+        {
+          model: Profile,
+          as: 'profile'
+        }
+      ]
+    })
 
-    response.status(500).json(err.apicode ? err : constants.user.error.LOGIN)
+    if (!account) {
+      throw constants.user.error.INVALID_USER_LOGIN
+    }
+
+    const result = bcrypt.compareSync(body.password, account.password)
+
+    if (!result) {
+      throw constants.user.error.INVALID_USER_LOGIN
+    }
+
+    const token = getToken(account.toJSON())
+
+    return response.json(Object.assign(constants.user.success.LOGIN, { token }))
+  } catch (error) {
+    logger().error(error)
+
+    return response.status(500).json(error.apicode ? error : constants.user.error.LOGIN)
   }
 }
 
@@ -337,7 +438,32 @@ export const login = async (request, response) => {
  */
 export const forgotPassword = async (request, response) => {
   try {
-    await repository.forgotPassword(request.body.email)
+    const { body } = request
+
+    const account = await User.findOne({
+      where: {
+        email: body.email
+      }
+    })
+
+    if (!account) {
+      throw constants.user.error.FORGOT_PASSWORD_MAIL
+    }
+
+    const token = crypto.randomBytes(20).toString('hex')
+
+    account.reset_token = token
+    account.reset_expires = moment().add(1, 'h')
+
+    await account.save()
+
+    await sendEmail({
+      from: `Buildinvest <${env().buildinvest.emails.contact}>`,
+      to: account.email,
+      subject: 'Buildinvest - Nova senha',
+      template: 'forgotPassword',
+      context: { account, url: `http://${env().CLIENT_BASE_PATH}/resetpassword?t=${token}` }
+    })
 
     response.json(Object.assign(constants.user.success.FORGOT_PASSWORD))
   } catch (err) {
@@ -378,12 +504,42 @@ export const forgotPassword = async (request, response) => {
  */
 export const resetPassword = async (request, response) => {
   try {
-    await repository.resetPassword(request.body)
+    const { body } = request
 
-    response.json(Object.assign(constants.user.success.RESET_PASSWORD))
-  } catch (err) {
-    logger().error(err)
+    const account = await User.findOne({
+      where: {
+        reset_token: body.token
+      }
+    })
 
-    response.status(500).json(err.apicode ? err : constants.user.error.RESET_PASSWORD)
+    if (!account) {
+      throw constants.user.error.RESET_PASSWORD_TOKEN
+    }
+
+    const expired = moment().isAfter(account.reset_expires)
+
+    if (expired) {
+      throw constants.user.error.RESET_PASSWORD_EXPIRES
+    }
+
+    account.passsword = body.password
+    account.reset_token = null
+    account.reset_expires = null
+
+    await account.save()
+
+    await sendEmail({
+      from: `Buildinvest <${env().buildinvest.emails.contact}>`,
+      to: account.email,
+      subject: 'Buildinvest - Nova senha',
+      template: 'resetPassword',
+      context: { account }
+    })
+
+    return response.json(constants.user.success.RESET_PASSWORD)
+  } catch (error) {
+    logger().error(error)
+
+    return response.status(500).json(error.apicode ? error : constants.user.error.RESET_PASSWORD)
   }
 }

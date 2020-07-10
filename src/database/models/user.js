@@ -49,6 +49,8 @@ export default (sequelize, DataTypes) => {
   // Associations
   User.associate = models => {
     User.belongsTo(models.Profile, { foreignKey: 'id_profile', as: 'profile' })
+    User.hasOne(models.Investor, { foreignKey: 'id_user', as: 'investor' })
+    User.hasOne(models.Builder, { foreignKey: 'id_user', as: 'builder' })
   }
 
   return User

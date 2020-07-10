@@ -584,6 +584,11 @@ module.exports = {
         allowNull: false
       },
 
+      email: {
+        type: DataTypes.STRING,
+        allowNull: false
+      },
+
       company_name: DataTypes.STRING,
 
       address_street: {
