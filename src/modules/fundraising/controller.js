@@ -1,6 +1,8 @@
 import { logger } from '../../common/utils'
 import constants from '../../common/constants'
-import * as repository from './repository'
+
+// Models
+const { Fundraising, Investment, Investor, User } = require('../../database/models')
 
 /**
  * @api {get} /fundraising Get all
@@ -35,11 +37,17 @@ import * as repository from './repository'
  */
 export const getAll = async (request, response) => {
   try {
-    response.json(await repository.getAll(request.params))
-  } catch (err) {
-    logger().error(err)
+    const fundraisings = await Fundraising.findAll({
+      where: {
+        active: true
+      }
+    })
 
-    response.status(500).json(err.apicode ? err : constants.fundraising.error.NOT_FOUND)
+    return response.json(fundraisings)
+  } catch (error) {
+    logger().error(error)
+
+    return response.status(500).json(error.apicode ? error : constants.fundraising.error.NOT_FOUND)
   }
 }
 
@@ -82,11 +90,19 @@ export const getAll = async (request, response) => {
  */
 export const getById = async (request, response) => {
   try {
-    response.json(await repository.getById(request.params.id))
-  } catch (err) {
-    logger().error(err)
+    const { params } = request
 
-    response.status(500).json(err.apicode ? err : constants.fundraising.error.NOT_FOUND)
+    const fundraising = await Fundraising.findByPk(params.id, {
+      where: {
+        active: true
+      }
+    })
+
+    return response.json(fundraising || {})
+  } catch (error) {
+    logger().error(error)
+
+    return response.status(500).json(error.apicode ? error : constants.fundraising.error.NOT_FOUND)
   }
 }
 
@@ -129,11 +145,19 @@ export const getById = async (request, response) => {
  */
 export const getByBuildingId = async (request, response) => {
   try {
-    response.json(await repository.getByBuildingId(request.params.idBuilding))
-  } catch (err) {
-    logger().error(err)
+    const { params } = request
 
-    response.status(500).json(err.apicode ? err : constants.fundraising.error.NOT_FOUND)
+    const fundraisings = await Fundraising.findAll({
+      where: {
+        id_building: params.idBuilding
+      }
+    })
+
+    return response.json(fundraisings)
+  } catch (error) {
+    logger().error(error)
+
+    return response.status(500).json(error.apicode ? error : constants.fundraising.error.NOT_FOUND)
   }
 }
 
@@ -160,11 +184,21 @@ export const getByBuildingId = async (request, response) => {
  */
 export const getAmountRaised = async (request, response) => {
   try {
-    response.json(await repository.getAmountRaised(request.params.id))
-  } catch (err) {
-    logger().error(err)
+    const { params } = request
 
-    response.status(500).json(err.apicode ? err : constants.fundraising.error.AMOUNT_RAISED)
+    const amount = await Investment.sum('amount', {
+      where: {
+        id_fundraising: params.id,
+        confirmed: true,
+        active: true
+      }
+    })
+
+    return response.json({ amount })
+  } catch (error) {
+    logger().error(error)
+
+    return response.status(500).json(error.apicode ? error : constants.fundraising.error.AMOUNT_RAISED)
   }
 }
 
@@ -200,11 +234,31 @@ export const getAmountRaised = async (request, response) => {
  */
 export const getInvestorsByFundraisingId = async (request, response) => {
   try {
-    response.json(await repository.getInvestorsByFundraisingId(request.params.id))
-  } catch (err) {
-    logger().error(err)
+    const { params } = request
 
-    response.status(500).json(err.apicode ? err : constants.fundraising.error.INVESTORS)
+    const investors = await Investment.findAll({
+      where: {
+        id_fundraising: params.id
+      },
+      include: [
+        {
+          model: Investor,
+          as: 'investor',
+          include: [
+            {
+              model: User,
+              as: 'user'
+            }
+          ]
+        }
+      ]
+    })
+
+    return response.json(investors)
+  } catch (error) {
+    logger().error(error)
+
+    return response.status(500).json(error.apicode ? error : constants.fundraising.error.INVESTORS)
   }
 }
 
@@ -263,13 +317,15 @@ export const getInvestorsByFundraisingId = async (request, response) => {
  */
 export const create = async (request, response) => {
   try {
-    const fundraising = await repository.create(request.body)
+    const { body } = request
 
-    response.json(Object.assign(constants.fundraising.success.CREATE, { fundraising }))
-  } catch (err) {
-    logger().error(err)
+    const fundraising = await Fundraising.create(body)
 
-    response.status(500).json(err.apicode ? err : constants.fundraising.error.CREATE)
+    return response.json(Object.assign(constants.fundraising.success.CREATE, { fundraising }))
+  } catch (error) {
+    logger().error(error)
+
+    return response.status(500).json(error.apicode ? error : constants.fundraising.error.CREATE)
   }
 }
 
@@ -311,13 +367,29 @@ export const create = async (request, response) => {
  */
 export const update = async (request, response) => {
   try {
-    await repository.update(request.body)
+    const { body } = request
 
-    response.json(constants.fundraising.success.UPDATE)
-  } catch (err) {
-    logger().error(err)
+    // TODO: Aidiconar verificação de id do levantamento de fundos
+    // if (!body.id) { }
 
-    response.status(500).json(err.apicode ? err : constants.fundraising.error.UPDATE)
+    const fundraising = await Fundraising.findByPk(body.id)
+
+    if (fundraising) {
+      // Atualizando apenas as propriedades definidas para atualizar
+      Object.keys(body).forEach(key => {
+        if (body[key] !== undefined) {
+          fundraising[key] = body[key]
+        }
+      })
+
+      await fundraising.save()
+    }
+
+    return response.json(constants.fundraising.success.UPDATE)
+  } catch (error) {
+    logger().error(error)
+
+    return response.status(500).json(error.apicode ? error : constants.fundraising.error.UPDATE)
   }
 }
 
@@ -350,13 +422,21 @@ export const update = async (request, response) => {
  */
 export const finish = async (request, response) => {
   try {
-    await repository.finish(request.params.id)
+    const { params } = request
 
-    response.json(constants.fundraising.success.FINISH)
+    const fundraising = await Fundraising.findByPk(params.id)
+
+    if (fundraising) {
+      fundraising.finished = true
+
+      await fundraising.save()
+    }
+
+    return response.json(constants.fundraising.success.FINISH)
   } catch (err) {
     logger().error(err)
 
-    response.status(500).json(err.apicode ? err : constants.fundraising.error.FINISH)
+    return response.status(500).json(err.apicode ? err : constants.fundraising.error.FINISH)
   }
 }
 
@@ -389,12 +469,20 @@ export const finish = async (request, response) => {
  */
 export const remove = async (request, response) => {
   try {
-    await repository.remove(request.params.id)
+    const { params } = request
 
-    response.json(constants.fundraising.success.REMOVE)
-  } catch (err) {
-    logger().error(err)
+    const fundraising = await Fundraising.findByPk(params.id)
 
-    response.status(500).json(err.apicode ? err : constants.fundraising.error.REMOVE)
+    if (fundraising) {
+      fundraising.active = false
+
+      await fundraising.save()
+    }
+
+    return response.json(constants.fundraising.success.REMOVE)
+  } catch (error) {
+    logger().error(error)
+
+    return response.status(500).json(error.apicode ? error : constants.fundraising.error.REMOVE)
   }
 }
