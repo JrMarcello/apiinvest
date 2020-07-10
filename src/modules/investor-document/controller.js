@@ -1,6 +1,8 @@
 import { logger } from '../../common/utils'
+import { getSignedUrl, uploadFile } from '../../core/storage'
 import constants from '../../common/constants'
-import * as repository from './repository'
+// Models
+const { InvestorDocument } = require('../../database/models')
 
 /**
  * @api {get} /investor/:idInvestor/documents Get Documents (By Investor ID)
@@ -46,18 +48,49 @@ import * as repository from './repository'
  *   }
  */
 export const getByInvestorId = async (request, response) => {
-  try {
-    if (request.user.id_profile === 3) return response.json(await repository.getByInvestorId(request.params.idInvestor))
-
-    return response.status(403).json({
-      status: 'Acesso negado!',
+  if (request.user.id_profile !== 3) {
+    const body = {
+      status: 'Acesso negado',
       success: false,
-      message: 'Você não está autorizado a acessar esse recurso'
-    })
-  } catch (err) {
-    logger().error(err)
+      message: 'Você não está autorizado a acessar este recurso.'
+    }
 
-    return response.status(500).json(err.apicode ? err : constants.investor.document.error.NOT_FOUND)
+    return response.status(403).json(body)
+  }
+
+  try {
+    const { params } = request
+
+    const documents = await InvestorDocument.findAll({
+      where: {
+        id_investor: params.idInvestor
+      }
+    })
+
+    if (documents && documents.length > 0) {
+      const promises = []
+
+      for (let index = 0; index < documents.length; index += 1) {
+        const { url } = documents[index]
+
+        // TODO: Investigar o motivo de não salvar a url pronta da imagem
+        // uploadFile(file, path, true)
+        promises.push(getSignedUrl(url))
+      }
+
+      // A ordem do resultado das promises é preservada de acordo com a entrada
+      const urls = await Promise.all(promises)
+
+      for (let index = 0; index < documents.length; index += 1) {
+        documents[index].url = urls[index]
+      }
+    }
+
+    return response.json(documents)
+  } catch (error) {
+    logger().error(error)
+
+    return response.status(500).json(error.apicode ? error : constants.investor.document.error.NOT_FOUND)
   }
 }
 
@@ -89,15 +122,41 @@ export const getByInvestorId = async (request, response) => {
  */
 export const create = async (request, response) => {
   try {
-    const documents = await repository.create(
-      request.user.id_profile === 3 ? request.params.idInvestor : request.user.investor.id,
-      request.files
-    )
+    const { params, files } = request
 
-    response.json(Object.assign(constants.investor.document.success.CREATE, { documents }))
-  } catch (err) {
-    logger().error(err)
+    // TODO: Aidiconar verificação arquivo enviado
+    // if (!images) { }
 
-    response.status(500).json(err.apicode ? err : constants.investor.document.error.CREATE)
+    const promises = []
+
+    for (let index = 0; index < files.length; index += 1) {
+      const file = files[index]
+
+      // TODO: Investigar o motivo de não salvar a url pronta da imagem
+      // uploadFile(file, path, true)
+      promises.push(uploadFile(file, `documents/${params.idInvestor}`))
+    }
+
+    const urls = await Promise.all(promises)
+
+    let documents = []
+
+    for (let index = 0; index < urls.length; index += 1) {
+      const url = urls[index]
+
+      documents.push({
+        id_investor: params.idInvestor,
+        url,
+        order: index
+      })
+    }
+
+    documents = await InvestorDocument.bulkCreate(documents)
+
+    return response.json(Object.assign(constants.investor.document.success.CREATE, { documents }))
+  } catch (error) {
+    logger().error(error)
+
+    return response.status(500).json(error.apicode ? error : constants.investor.document.error.CREATE)
   }
 }

@@ -62,11 +62,11 @@ export const getByBuildingId = async (request, response) => {
       }
     }
 
-    response.json(images)
+    return response.json(images)
   } catch (err) {
     logger().error(err)
 
-    response.status(500).json(err.apicode ? err : constants.building.images.error.NOT_FOUND)
+    return response.status(500).json(err.apicode ? err : constants.building.images.error.NOT_FOUND)
   }
 }
 
