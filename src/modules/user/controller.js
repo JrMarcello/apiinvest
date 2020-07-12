@@ -206,7 +206,7 @@ export const create = async (request, response) => {
     }
 
     // TODO: Repassar encriptação para um serviço, encapsular
-    body.password = `'${bcrypt.hashSync(body.password, 10)}'`
+    body.password = `${bcrypt.hashSync(body.password, 10)}`
 
     user = await User.create(body)
 
@@ -393,7 +393,7 @@ export const login = async (request, response) => {
       throw constants.user.error.INVALID_USER_LOGIN
     }
 
-    const result = bcrypt.compareSync(body.password, account.password)
+    const result = await bcrypt.compareSync(body.password, account.password)
 
     if (!result) {
       throw constants.user.error.INVALID_USER_LOGIN

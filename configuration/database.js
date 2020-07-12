@@ -10,6 +10,7 @@ const database = {
         database: "buildinvest",
         dialect: "postgres",
         options: {
+            host: 'buildinvest-db',
             dialect: "postgres",
             pool: {
                 max: 5,
