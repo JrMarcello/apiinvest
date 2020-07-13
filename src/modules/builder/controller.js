@@ -155,7 +155,17 @@ export const getById = async (request, response) => {
     const builder = await Builder.findByPk(params.id, {
       where: {
         active: true
-      }
+      },
+      include: [
+        {
+          model: BuilderPhone,
+          as: 'phones'
+        },
+        {
+          model: BuilderPartner,
+          as: 'partners'
+        }
+      ]
     })
 
     return response.json(builder || {})
