@@ -13,8 +13,28 @@
     "group": "Investidor",
     "permissions": [
       {
-        "resource": "/user/*",
-        "methods": ["GET", "POST", "PUT", "DELETE"],
+        "resource": "/user",
+        "methods": ["POST", "PUT", "DELETE"],
+        "action": "allow"
+      },
+      {
+        "resource": "/user/:id",
+        "methods": ["GET"],
+        "action": "allow"
+      },
+      {
+        "resource": "/user/login",
+        "methods": ["POST"],
+        "action": "allow"
+      },
+      {
+        "resource": "/user/forgotPassword",
+        "methods": ["POST"],
+        "action": "allow"
+      },
+      {
+        "resource": "/user/resetpassword",
+        "methods": ["PUT"],
         "action": "allow"
       },
       {

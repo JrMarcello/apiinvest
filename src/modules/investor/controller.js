@@ -47,16 +47,6 @@ const {
  *     }
  */
 export const getAll = async (request, response) => {
-  if (request.user.id_profile !== 3) {
-    const body = {
-      status: 'Acesso negado',
-      success: false,
-      message: 'Você não está autorizado a acessar este recurso.'
-    }
-
-    return response.status(403).json(body)
-  }
-
   try {
     const investors = await Investor.findAll({
       where: {
