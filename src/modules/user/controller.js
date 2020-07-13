@@ -7,7 +7,7 @@ import { sendEmail } from '../../core/mailer'
 import constants from '../../common/constants'
 
 // Models
-const { User, Investor, Builder, Profile } = require('../../database/models')
+const { User, Investor, Builder, Profile, Sequelize } = require('../../database/models')
 
 /**
  * @api {get} /user Get all
@@ -541,5 +541,54 @@ export const resetPassword = async (request, response) => {
     logger().error(error)
 
     return response.status(500).json(error.apicode ? error : constants.user.error.RESET_PASSWORD)
+  }
+}
+
+/**
+ * @api {get} /user/profiles Get all profiles
+ * @apiName GetUsers
+ * @apiGroup User
+ * @apiVersion 1.0.0
+ *
+ * @apiSuccessExample Success-Response:
+ *   HTTP/1.1 200 OK
+ *   {
+ *      [
+ *         {
+ *            "id": "eb76cd10-367b-447d-b238-fa8e9eef2a1f",
+ *            "id_profile": 1,
+ *            "email": "marcello@mail.com",
+ *            "username": "Marcello Jr",
+ *            "password": "$2b$10$qnkfSsxQEjdTW0CHGw1z0eR/vko.vhJrqpq.xeb/T0nR4R55VpNy.",
+ *            "avatar_url": null,
+ *            "create_date": "2019-09-14T19:25:26.560Z",
+ *            "active": true
+ *         }
+ *      ]
+ *   }
+ *
+ * @apiErrorExample Error-Response:
+ *   HTTP/1.1 500 Internal Server Error
+ *     {
+ *        "code": 9999,
+ *        "message": "Requisição inválida",
+ *        "errors": [{}]
+ *     }
+ */
+export const getProfiles = async (request, response) => {
+  try {
+    const profiles = await Profile.findAll({
+      where: {
+        active: true,
+        name: {
+          [Sequelize.Op.not]: 'Admin'
+        }
+      }
+    })
+
+    return response.json(profiles)
+  } catch (error) {
+    logger().error(error)
+    return response.status(500).json(error.apicode ? error : constants.user.error.NOT_FOUND)
   }
 }
