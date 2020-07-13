@@ -576,24 +576,32 @@ export const create = async (request, response) => {
       throw constants.investor.document.error.REQUIRED
     }
 
+    const investor = JSON.parse(body.investor)
+
+    // TODO: Discutir se o e-mail do investidor será obtido do usuário ou através de outro método
+    investor.email = user.email
+
+    const phones = JSON.parse(body.phones)
+    const accounts = JSON.parse(body.accounts)
+
     // TODO: Refatorar
     if (user.id_profile !== 3) {
-      body.investor.id_user = user.id
+      investor.id_user = user.id
     }
 
     let promises = []
 
     // 1. Criar o investidor
-    const investor = await Investor.create(body.investor)
+    const result = await Investor.create(investor)
 
     // 2. Criar os telefones
     let phone
 
-    for (let index = 0; index < body.phones.length; index += 1) {
-      const { number } = body.phones[index]
+    for (let index = 0; index < phones.length; index += 1) {
+      const { number } = phones[index]
 
       phone = {
-        id_investor: investor.id,
+        id_investor: result.id,
         number
       }
 
@@ -606,10 +614,10 @@ export const create = async (request, response) => {
     let account
     promises = []
 
-    for (let index = 0; index < body.accounts.length; index += 1) {
-      account = body.accounts[index]
+    for (let index = 0; index < accounts.length; index += 1) {
+      account = accounts[index]
 
-      account.id_investor = investor.id
+      account.id_investor = result.id
 
       promises.push(InvestorBankAccount.create(account))
     }
@@ -624,7 +632,7 @@ export const create = async (request, response) => {
 
       // TODO: Investigar o motivo de não salvar a url pronta da imagem
       // uploadFile(file, path, true)
-      promises.push(uploadFile(file, `documents/${investor.id}`))
+      promises.push(uploadFile(file, `documents/${result.id}`))
     }
 
     const urls = await Promise.all(promises)
@@ -635,7 +643,7 @@ export const create = async (request, response) => {
       const url = urls[index]
 
       documents.push({
-        id_investor: investor.id,
+        id_investor: result.id,
         url,
         order: index
       })
@@ -643,7 +651,7 @@ export const create = async (request, response) => {
 
     await InvestorDocument.bulkCreate(documents)
 
-    return response.json(Object.assign(constants.investor.success.CREATE, { investor }))
+    return response.json(Object.assign(constants.investor.success.CREATE, { result }))
   } catch (error) {
     logger().error(error)
 

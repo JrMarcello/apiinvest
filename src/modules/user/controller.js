@@ -385,6 +385,10 @@ export const login = async (request, response) => {
         {
           model: Profile,
           as: 'profile'
+        },
+        {
+          model: Investor,
+          as: 'investor'
         }
       ]
     })
