@@ -166,13 +166,16 @@ export const getById = async (request, response) => {
       where: {
         active: true
       },
-      include: [{
+      include: [
+        {
           model: BuilderPhone,
           as: 'phones'
-      }, {
+        },
+        {
           model: BuilderPartner,
           as: 'partners'
-      }]
+        }
+      ]
     })
 
     return response.json(builder || {})
