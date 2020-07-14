@@ -630,9 +630,7 @@ export const create = async (request, response) => {
     for (let index = 0; index < files.length; index += 1) {
       const file = files[index]
 
-      // TODO: Investigar o motivo de não salvar a url pronta da imagem
-      // uploadFile(file, path, true)
-      promises.push(uploadFile(file, `documents/${result.id}`))
+      promises.push(uploadFile(file, `documents/${result.id}`, true))
     }
 
     const urls = await Promise.all(promises)

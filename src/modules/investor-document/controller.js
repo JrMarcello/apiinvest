@@ -1,5 +1,5 @@
 import { logger } from '../../common/utils'
-import { getSignedUrl, uploadFile } from '../../core/storage'
+import { uploadFile } from '../../core/storage'
 import constants from '../../common/constants'
 // Models
 const { InvestorDocument } = require('../../database/models')
@@ -67,25 +67,6 @@ export const getByInvestorId = async (request, response) => {
       }
     })
 
-    if (documents && documents.length > 0) {
-      const promises = []
-
-      for (let index = 0; index < documents.length; index += 1) {
-        const { url } = documents[index]
-
-        // TODO: Investigar o motivo de não salvar a url pronta da imagem
-        // uploadFile(file, path, true)
-        promises.push(getSignedUrl(url))
-      }
-
-      // A ordem do resultado das promises é preservada de acordo com a entrada
-      const urls = await Promise.all(promises)
-
-      for (let index = 0; index < documents.length; index += 1) {
-        documents[index].url = urls[index]
-      }
-    }
-
     return response.json(documents)
   } catch (error) {
     logger().error(error)
@@ -132,9 +113,7 @@ export const create = async (request, response) => {
     for (let index = 0; index < files.length; index += 1) {
       const file = files[index]
 
-      // TODO: Investigar o motivo de não salvar a url pronta da imagem
-      // uploadFile(file, path, true)
-      promises.push(uploadFile(file, `documents/${params.idInvestor}`))
+      promises.push(uploadFile(file, `documents/${params.idInvestor}`, true))
     }
 
     const urls = await Promise.all(promises)
