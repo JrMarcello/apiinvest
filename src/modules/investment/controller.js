@@ -502,7 +502,7 @@ export const sendTED = async (request, response) => {
       throw constants.investment.error.NO_TED_FILE
     }
 
-    const url = await uploadFile(file, `teds/${params.id}`)
+    const url = await uploadFile(file, `teds/${params.id}`, true)
 
     const where = {
       active: true

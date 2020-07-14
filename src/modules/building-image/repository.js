@@ -31,7 +31,7 @@ export const create = async (idBuilding, imagesBuffer) => {
     imagesBuffer.map(async image => {
       return {
         id_building: idBuilding,
-        url: await storage.uploadFile(image, `buildings/${idBuilding}`)
+        url: await storage.uploadFile(image, `buildings/${idBuilding}`, true)
       }
     })
   )
