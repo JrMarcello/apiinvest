@@ -1,5 +1,5 @@
 import { logger } from '../../common/utils'
-import { removeFiles, getSignedUrl, uploadFile } from '../../core/storage'
+import { removeFiles, uploadFile } from '../../core/storage'
 import constants from '../../common/constants'
 
 // Models

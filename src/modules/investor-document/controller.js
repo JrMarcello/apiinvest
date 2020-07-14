@@ -1,5 +1,5 @@
 import { logger } from '../../common/utils'
-import { getSignedUrl, uploadFile } from '../../core/storage'
+import { uploadFile } from '../../core/storage'
 import constants from '../../common/constants'
 // Models
 const { InvestorDocument } = require('../../database/models')
