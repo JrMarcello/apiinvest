@@ -1,3 +1,11 @@
+const bcrypt = require('bcrypt')
+const uuid = require('uuid').v4
+
+const userId = uuid()
+const investorId = uuid()
+const builderId = uuid()
+const custodianId = uuid()
+
 module.exports = {
   up: async queryInterface => {
     await queryInterface.bulkInsert('profile', [
@@ -20,11 +28,11 @@ module.exports = {
 
     await queryInterface.bulkInsert('user', [
       {
-        id: '647ac188-62c8-4618-8a0a-be14174aac49',
+        id: userId,
         id_profile: 3,
         email: 'admin@buildinvest.com.br',
         username: 'Admin',
-        password: '$2b$10$fnSSlO99c4HpOHGJS4WcmOdjyjV7GR4YgFg2SUR1qxUuOZomBPyv2',
+        password: bcrypt.hashSync('123456', 10),
         created_at: new Date(),
         updated_at: new Date()
       }
@@ -32,10 +40,11 @@ module.exports = {
 
     await queryInterface.bulkInsert('investor', [
       {
-        id: '647ac188-62c8-4618-8a0a-be14174aac49',
-        id_user: '647ac188-62c8-4618-8a0a-be14174aac49',
+        id: investorId,
+        id_user: userId,
         cpf: '69629586410',
         name: 'Administrador Buildinvest',
+        email: 'investor@buildinvest.com.br',
         address_street: 'Rua do Administrador',
         address_number: '123',
         address_neighborhood: 'Bairro',
@@ -50,8 +59,8 @@ module.exports = {
 
     await queryInterface.bulkInsert('builder', [
       {
-        id: '647ac188-62c8-4618-8a0a-be14174aac49',
-        id_user: '647ac188-62c8-4618-8a0a-be14174aac49',
+        id: builderId,
+        id_user: userId,
         cnpj: '34096667000151',
         company_name: 'Construtora Padrão SA',
         company_fancy_name: 'Construtora Padrão',
@@ -68,7 +77,7 @@ module.exports = {
 
     await queryInterface.bulkInsert('custodian', [
       {
-        id: '647ac188-62c8-4618-8a0a-be14174aac49',
+        id: custodianId,
         cnpj: '34096667000151',
         company_name: 'Custodiadora Padrão SA',
         company_fancy_name: 'Custodiadora Padrão',
@@ -83,19 +92,19 @@ module.exports = {
     await queryInterface.bulkDelete('profile', null)
 
     await queryInterface.bulkDelete('user', {
-      id: '647ac188-62c8-4618-8a0a-be14174aac49'
+      id: userId
     })
 
     await queryInterface.bulkDelete('investor', {
-      id: '647ac188-62c8-4618-8a0a-be14174aac49'
+      id: investorId
     })
 
     await queryInterface.bulkDelete('builder', {
-      id: '647ac188-62c8-4618-8a0a-be14174aac49'
+      id: builderId
     })
 
     await queryInterface.bulkDelete('custodian', {
-      id: '647ac188-62c8-4618-8a0a-be14174aac49'
+      id: custodianId
     })
   }
 }
