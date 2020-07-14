@@ -397,7 +397,7 @@ export const login = async (request, response) => {
       throw constants.user.error.INVALID_USER_LOGIN
     }
 
-    const result = await bcrypt.compareSync(body.password, account.password)
+    const result = bcrypt.compareSync(body.password, account.password)
 
     if (!result) {
       throw constants.user.error.INVALID_USER_LOGIN
