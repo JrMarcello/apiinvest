@@ -3,14 +3,15 @@ require('dotenv').config();
 const database = {
 
 	development: {
+        host: 'buildinvest-db',
         environment: 'development',
-        username: "postgres",
-        password: "root",
-        database: "buildinvest",
-        dialect: "postgres",
+        username: 'postgres',
+        password: 'root',
+        database: 'buildinvest',
+        dialect: 'postgres',
         options: {
             host: 'buildinvest-db',
-            dialect: "postgres",
+            dialect: 'postgres',
             pool: {
                 max: 5,
                 min: 0,
@@ -26,12 +27,13 @@ const database = {
 
 	production: {
         environment: 'production',
+        host: process.env.POSTGRES_HOST,
         username: process.env.POSTGRES_USER,
         password: process.env.POSTGRES_PASSWORD,
         database: process.env.POSTGRES_DB,
-        dialect: "postgres",
+        dialect: 'postgres',
         options: {
-            dialect: "postgres",
+            dialect: 'postgres',
             host: process.env.POSTGRES_HOST,
             pool: {
                 max: 5,
