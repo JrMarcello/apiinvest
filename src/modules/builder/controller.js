@@ -3,7 +3,7 @@ import { removeFile, uploadFile } from '../../core/storage'
 import constants from '../../common/constants'
 
 // Models
-const { Builder, BuilderPhone, BuilderPartner, Building } = require('../../database/models')
+const { Builder, BuilderPhone, BuilderPartner, Building, Sequelize } = require('../../database/models')
 
 /**
  * @api {get} /builder Get all
@@ -506,32 +506,72 @@ export const create = async (request, response) => {
  */
 export const update = async (request, response) => {
   try {
-    const { user, body } = request
+    const { body } = request
 
     // TODO: Refatorar
-    if (user.id_profile !== 3) {
-      body.id = user.builder.id
-    }
+    // if (user.id_profile !== 3) {
+    //     body.id = user.builder.id
+    // }
 
     if (!body || body.length === 0) {
       throw constants.builder.error.INVALID_DATA
     }
 
     // TODO: Aidiconar verificação de id da construtora
-    // if (!body.id) { }
+    // if (!body.builder.id) { }
 
-    const builder = await Builder.findByPk(body.id)
+    // 1. Atualizando a construtora
+    const builder = await Builder.findByPk(body.builder.id, {
+      include: [
+        {
+          model: BuilderPhone,
+          as: 'phones'
+        }
+      ]
+    })
 
     if (builder) {
       // Atualizando apenas as propriedades definidas para atualizar
-      Object.keys(body).forEach(key => {
-        if (body[key] !== undefined) {
-          builder[key] = body[key]
+      Object.keys(body.builder).forEach(key => {
+        if (body.builder[key] !== undefined) {
+          builder[key] = body.builder[key]
         }
       })
 
       await builder.save()
     }
+
+    // 2. Atualizando telefones
+    const addedPhones = body.phones.filter(({ number: first }) => !builder.phones.some(({ number: second }) => first === second))
+    const removedPhones = builder.phones.filter(({ number: first }) => !body.phones.some(({ number: second }) => first === second))
+
+    // 2.1 Adicionando novos telefones
+    const promises = []
+
+    addedPhones.forEach(phone => {
+      phone = {
+        id_builder: builder.id,
+        number: phone.number
+      }
+
+      promises.push(BuilderPhone.create(phone))
+    })
+
+    await Promise.all(promises)
+
+    // 2.2 Apagando números removidos
+    const ids = removedPhones.map(phone => phone.id)
+
+    await BuilderPhone.destroy({
+      where: {
+        [Sequelize.Op.and]: {
+          id_builder: builder.id,
+          id: {
+            [Sequelize.Op.or]: ids
+          }
+        }
+      }
+    })
 
     return response.json(constants.builder.success.UPDATE)
   } catch (error) {
