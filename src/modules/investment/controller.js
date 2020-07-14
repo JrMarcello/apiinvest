@@ -37,16 +37,6 @@ const { Investment, Investor, Fundraising, Sequelize, Building } = require('../.
  *     }
  */
 export const getAll = async (request, response) => {
-  if (request.user.id_profile !== 3) {
-    const body = {
-      status: 'Acesso negado',
-      success: false,
-      message: 'Você não está autorizado a acessar este recurso.'
-    }
-
-    return response.status(403).json(body)
-  }
-
   try {
     const investments = await Investment.findAll({
       where: {
@@ -226,16 +216,6 @@ export const getByInvestorId = async (request, response) => {
  *     }
  */
 export const getByFundraisingId = async (request, response) => {
-  if (request.user.id_profile !== 3) {
-    const body = {
-      status: 'Acesso negado',
-      success: false,
-      message: 'Você não está autorizado a acessar este recurso.'
-    }
-
-    return response.status(403).json(body)
-  }
-
   try {
     const { params } = request
 
@@ -304,16 +284,6 @@ export const getByFundraisingId = async (request, response) => {
  *     }
  */
 export const getPendings = async (request, response) => {
-  if (request.user.id_profile !== 3) {
-    const body = {
-      status: 'Acesso negado',
-      success: false,
-      message: 'Você não está autorizado a acessar este recurso.'
-    }
-
-    return response.status(403).json(body)
-  }
-
   try {
     const investments = await Investment.findAll({
       where: {
@@ -502,7 +472,7 @@ export const sendTED = async (request, response) => {
       throw constants.investment.error.NO_TED_FILE
     }
 
-    const url = await uploadFile(file, `teds/${params.id}`)
+    const url = await uploadFile(file, `teds/${params.id}`, true)
 
     const where = {
       active: true
@@ -557,16 +527,6 @@ export const sendTED = async (request, response) => {
  *   }
  */
 export const confirm = async (request, response) => {
-  if (request.user.id_profile !== 3) {
-    const body = {
-      status: 'Acesso negado',
-      success: false,
-      message: 'Você não está autorizado a acessar este recurso.'
-    }
-
-    return response.status(403).json(body)
-  }
-
   try {
     const { body } = request
 

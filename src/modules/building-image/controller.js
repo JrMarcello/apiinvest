@@ -1,5 +1,5 @@
 import { logger } from '../../common/utils'
-import { removeFiles, getSignedUrl, uploadFile } from '../../core/storage'
+import { removeFiles, uploadFile } from '../../core/storage'
 import constants from '../../common/constants'
 
 // Models
@@ -42,25 +42,6 @@ export const getByBuildingId = async (request, response) => {
         id_building: params.idBuilding
       }
     })
-
-    if (images && images.length > 0) {
-      const promises = []
-
-      for (let index = 0; index < images.length; index += 1) {
-        const { url } = images[index]
-
-        // TODO: Investigar o motivo de não salvar a url pronta da imagem
-        // uploadFile(file, path, true)
-        promises.push(getSignedUrl(url))
-      }
-
-      // A ordem do resultado das promises é preservada de acordo com a entrada
-      const urls = await Promise.all(promises)
-
-      for (let index = 0; index < images.length; index += 1) {
-        images[index].url = urls[index]
-      }
-    }
 
     return response.json(images)
   } catch (err) {
@@ -110,9 +91,7 @@ export const create = async (request, response) => {
     for (let index = 0; index < files.length; index += 1) {
       const file = files[index]
 
-      // TODO: Investigar o motivo de não salvar a url pronta da imagem
-      // uploadFile(file, path, true)
-      promises.push(uploadFile(file, `buildings/${params.idBuilding}`))
+      promises.push(uploadFile(file, `buildings/${params.idBuilding}`, true))
     }
 
     const urls = await Promise.all(promises)
