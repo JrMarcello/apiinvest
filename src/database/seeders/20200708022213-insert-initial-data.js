@@ -1,10 +1,10 @@
-const bcrypt = require('bcrypt');
-const uuid = require('uuid').v4;
+const bcrypt = require('bcrypt')
+const uuid = require('uuid').v4
 
-const id_user = uuid();
-const id_investor = uuid();
-const id_builder = uuid();
-const id_custodian = uuid();
+const userId = uuid()
+const investorId = uuid()
+const builderId = uuid()
+const custodianId = uuid()
 
 module.exports = {
   up: async queryInterface => {
@@ -28,7 +28,7 @@ module.exports = {
 
     await queryInterface.bulkInsert('user', [
       {
-        id: id_user,
+        id: userId,
         id_profile: 3,
         email: 'admin@buildinvest.com.br',
         username: 'Admin',
@@ -40,8 +40,8 @@ module.exports = {
 
     await queryInterface.bulkInsert('investor', [
       {
-        id: id_investor,
-        id_user: id_user,
+        id: investorId,
+        id_user: userId,
         cpf: '69629586410',
         name: 'Administrador Buildinvest',
         email: 'investor@buildinvest.com.br',
@@ -59,8 +59,8 @@ module.exports = {
 
     await queryInterface.bulkInsert('builder', [
       {
-        id: id_builder,
-        id_user: id_user,
+        id: builderId,
+        id_user: userId,
         cnpj: '34096667000151',
         company_name: 'Construtora Padrão SA',
         company_fancy_name: 'Construtora Padrão',
@@ -77,7 +77,7 @@ module.exports = {
 
     await queryInterface.bulkInsert('custodian', [
       {
-        id: id_custodian,
+        id: custodianId,
         cnpj: '34096667000151',
         company_name: 'Custodiadora Padrão SA',
         company_fancy_name: 'Custodiadora Padrão',
@@ -92,19 +92,19 @@ module.exports = {
     await queryInterface.bulkDelete('profile', null)
 
     await queryInterface.bulkDelete('user', {
-      id: id_user
+      id: userId
     })
 
     await queryInterface.bulkDelete('investor', {
-      id: id_investor
+      id: investorId
     })
 
     await queryInterface.bulkDelete('builder', {
-      id: id_builder
+      id: builderId
     })
 
     await queryInterface.bulkDelete('custodian', {
-      id: id_custodian
+      id: custodianId
     })
   }
 }
