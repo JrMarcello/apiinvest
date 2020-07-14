@@ -4,12 +4,13 @@ const database = {
 
 	development: {
         environment: 'development',
+        host: 'buildinvest-db',
         username: "postgres",
         password: "root",
         database: "buildinvest",
         dialect: "postgres",
         options: {
-            host: 'localhost',
+            host: 'buildinvest-db',
             dialect: "postgres",
             pool: {
                 max: 5,
@@ -26,6 +27,7 @@ const database = {
 
 	production: {
         environment: 'production',
+        host: process.env.POSTGRES_HOST,
         username: process.env.POSTGRES_USER,
         password: process.env.POSTGRES_PASSWORD,
         database: process.env.POSTGRES_DB,
