@@ -404,57 +404,49 @@ export const getByUserId = async (request, response) => {
  */
 export const create = async (request, response) => {
   try {
-    const { user, body } = request
+    const { body, file } = request
 
     // TODO: Refatorar
-    if (user.id_profile !== 3) {
-      body.id_user = user.id
-    }
+    // if (user.id_profile !== 3) {
+    //   body.id_user = user.id
+    // }
 
     if (!body.builder || body.builder.length === 0) {
       throw constants.builder.error.REQUIRED
-    }
-
-    if (!body.phones || body.phones.length === 0) {
+    } else if (!body.phones || body.phones.length === 0) {
       throw constants.builder.phones.error.REQUIRED
     }
 
+    const builder = JSON.parse(body.builder)
+    const phones = JSON.parse(body.phones)
+
     // 1. Criar a construtora
-    const builder = await Builder.create(body.builder)
+    const result = await Builder.create(builder)
 
     // 2. Criar telefones
     let phone
-    let promises = []
+    const promises = []
 
-    for (let index = 0; index < body.phones.length; index += 1) {
-      const { number } = body.phones[index]
-
+    phones.forEach(({ number }) => {
       phone = {
-        id_builder: builder.id,
+        id_builder: result.id,
         number
       }
 
       promises.push(BuilderPhone.create(phone))
-    }
+    })
 
     await Promise.all(promises)
 
-    // 3. Criar sócios
-    if (body.partners && body.partners.length !== 0) {
-      promises = []
+    // 3. Enviar logo
+    if (file) {
+      const url = await uploadFile(file, `logos/${result.id}`, true)
+      result.logo_url = url
 
-      for (let index = 0; index < body.partners.length; index += 1) {
-        const partner = body.partners[index]
-
-        partner.id_builder = builder.id
-
-        promises.push(BuilderPartner.create(partner))
-      }
-
-      await Promise.all(promises)
+      await result.save()
     }
 
-    return response.json(Object.assign(constants.builder.success.CREATE, { builder }))
+    return response.json(Object.assign(constants.builder.success.CREATE, { result }))
   } catch (error) {
     logger().error(error)
 
@@ -506,7 +498,7 @@ export const create = async (request, response) => {
  */
 export const update = async (request, response) => {
   try {
-    const { body } = request
+    const { body, file } = request
 
     // TODO: Refatorar
     // if (user.id_profile !== 3) {
@@ -515,13 +507,18 @@ export const update = async (request, response) => {
 
     if (!body || body.length === 0) {
       throw constants.builder.error.INVALID_DATA
+    } else if (!body.phones || body.phones.length === 0) {
+      throw constants.builder.phones.error.REQUIRED
     }
 
+    const builder = JSON.parse(body.builder)
+    const phones = JSON.parse(body.phones)
+
     // TODO: Aidiconar verificação de id da construtora
-    // if (!body.builder.id) { }
+    // if (!builder.id) { }
 
     // 1. Atualizando a construtora
-    const builder = await Builder.findByPk(body.builder.id, {
+    const result = await Builder.findByPk(builder.id, {
       include: [
         {
           model: BuilderPhone,
@@ -530,27 +527,27 @@ export const update = async (request, response) => {
       ]
     })
 
-    if (builder) {
+    if (result) {
       // Atualizando apenas as propriedades definidas para atualizar
-      Object.keys(body.builder).forEach(key => {
-        if (body.builder[key] !== undefined) {
-          builder[key] = body.builder[key]
+      Object.keys(builder).forEach(key => {
+        if (builder[key] !== undefined) {
+          result[key] = builder[key]
         }
       })
 
-      await builder.save()
+      await result.save()
     }
 
     // 2. Atualizando telefones
-    const addedPhones = body.phones.filter(({ number: first }) => !builder.phones.some(({ number: second }) => first === second))
-    const removedPhones = builder.phones.filter(({ number: first }) => !body.phones.some(({ number: second }) => first === second))
+    const addedPhones = phones.filter(({ number: first }) => !result.phones.some(({ number: second }) => first === second))
+    const removedPhones = result.phones.filter(({ number: first }) => !phones.some(({ number: second }) => first === second))
 
     // 2.1 Adicionando novos telefones
     const promises = []
 
     addedPhones.forEach(phone => {
       phone = {
-        id_builder: builder.id,
+        id_builder: result.id,
         number: phone.number
       }
 
@@ -562,16 +559,39 @@ export const update = async (request, response) => {
     // 2.2 Apagando números removidos
     const ids = removedPhones.map(phone => phone.id)
 
-    await BuilderPhone.destroy({
-      where: {
-        [Sequelize.Op.and]: {
-          id_builder: builder.id,
-          id: {
-            [Sequelize.Op.or]: ids
+    if (ids.length > 0) {
+      await BuilderPhone.destroy({
+        where: {
+          [Sequelize.Op.and]: {
+            id_builder: result.id,
+            id: {
+              [Sequelize.Op.or]: ids
+            }
           }
         }
+      })
+    }
+
+    // 3. Atualizando a logo
+    if (file) {
+      // 3.1 Removendo a logo anterior
+      if (result && result.logo_url) {
+        const path = result.logo_url.split(env().GOOGLE_CLOUD.BUCKET).pop()
+
+        await removeFile(path)
+
+        result.logo_url = null
+
+        await result.save()
       }
-    })
+
+      // 3.2 Enviando a logo atualizada
+      const url = await uploadFile(file, `logos/${result.id}`, true)
+
+      result.logo_url = url
+
+      await result.save()
+    }
 
     return response.json(constants.builder.success.UPDATE)
   } catch (error) {

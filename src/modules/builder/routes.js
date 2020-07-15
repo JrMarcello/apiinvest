@@ -11,8 +11,13 @@ export default () => {
   router.get(`${BUILDER_BASE_PATH}/user/:id`, validations.getByUserId, controller.getByUserId)
   router.get(`${BUILDER_BASE_PATH}/:id`, validations.getById, controller.getById)
   router.get(`${BUILDER_BASE_PATH}/:id/buildings`, validations.getAllBuildingsById, controller.getAllBuildingsById)
-  router.post(BUILDER_BASE_PATH, validations.create, controller.create)
-  router.put(BUILDER_BASE_PATH, validations.update, controller.update)
+
+  // router.post(BUILDER_BASE_PATH, validations.create, controller.create)
+  router.post(BUILDER_BASE_PATH, validations.create, multer.single('logo'), controller.create)
+
+  // router.put(BUILDER_BASE_PATH, validations.update, controller.update)
+  router.put(BUILDER_BASE_PATH, validations.update, multer.single('logo'), controller.update)
+
   router.put(`${BUILDER_BASE_PATH}/:id/logo`, validations.setLogo, multer.single('file'), controller.setLogo)
   router.delete(`${BUILDER_BASE_PATH}/:id`, validations.remove, controller.remove)
   router.delete(`${BUILDER_BASE_PATH}/:id/logo`, validations.removeLogo, controller.removeLogo)
