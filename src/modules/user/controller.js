@@ -197,8 +197,13 @@ export const create = async (request, response) => {
       throw constants.user.error.MAIL_EXISTS
     }
 
+    // Caso não seja informado o perfil, por padrão deve ser criada uma conta com perfil de investidor
+    if (!body.profile) {
+      body.id_profile = 1
+    }
+
     // TODO: Repassar encriptação para um serviço, encapsular
-    body.password = `${bcrypt.hashSync(body.password, 10)}`
+    body.password = bcrypt.hashSync(body.password, 10)
 
     user = await User.create(body)
 
