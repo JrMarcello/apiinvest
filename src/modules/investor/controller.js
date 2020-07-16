@@ -10,7 +10,8 @@ const {
   Investor,
   InvestorBankAccount,
   InvestorDocument,
-  InvestorPhone
+  InvestorPhone,
+  Sequelize
 } = require('../../database/models')
 
 /**
@@ -215,10 +216,27 @@ export const getByUserId = async (request, response) => {
     // TODO: Refatorar
     const id = user.id_profile === 3 ? params.id : user.id
 
-    const investor = await Investor.findByPk(id, {
+    // BDI-14: Necessário obter perfis não concluídos
+    // const investor = await Investor.findByPk(id, {
+    //     where: {
+    //         active: true
+    //     }
+    // })
+
+    const investor = await Investor.findOne({
       where: {
-        active: true
-      }
+        id_user: id
+      },
+      include: [
+        {
+          model: InvestorPhone,
+          as: 'phones'
+        },
+        {
+          model: InvestorBankAccount,
+          as: 'accounts'
+        }
+      ]
     })
 
     return response.json(investor || {})
@@ -558,86 +576,93 @@ export const create = async (request, response) => {
 
     if (!body || body.length === 0 || !body.investor || body.investor.length === 0) {
       throw constants.investor.error.INVALID_DATA
-    } else if (!body.phones || body.phones.length === 0) {
-      throw constants.investor.phone.error.REQUIRED
-    } else if (!body.accounts || body.accounts.length === 0) {
-      throw constants.investor.bank_account.error.REQUIRED
-    } else if (!files || files.length !== 3) {
-      throw constants.investor.document.error.REQUIRED
     }
+
+    // DBI-14: Removendo as travas de dados bancários e documentos
+    // if (!body.phones || body.phones.length === 0) {
+    //     throw constants.investor.phone.error.REQUIRED
+    // } else if (!body.accounts || body.accounts.length === 0) {
+    //   throw constants.investor.bank_account.error.REQUIRED
+    // } else if (!files || files.length !== 3) {
+    //   throw constants.investor.document.error.REQUIRED
+    // }
 
     const investor = JSON.parse(body.investor)
 
     // TODO: Discutir se o e-mail do investidor será obtido do usuário ou através de outro método
     investor.email = user.email
 
+    // BDI-14: O status do investidor só passará a ficar ativo após a conclusão de todas as informações
+    if (!body.phones || body.phones.length === 0 || !body.accounts || body.accounts.length === 0 || !files || files.length !== 3) {
+      investor.active = false
+    }
+
     const phones = JSON.parse(body.phones)
-    const accounts = JSON.parse(body.accounts)
 
     // TODO: Refatorar
     if (user.id_profile !== 3) {
       investor.id_user = user.id
     }
 
-    let promises = []
-
     // 1. Criar o investidor
     const result = await Investor.create(investor)
 
     // 2. Criar os telefones
     let phone
+    let promises = []
 
-    for (let index = 0; index < phones.length; index += 1) {
-      const { number } = phones[index]
-
+    phones.forEach(({ number }) => {
       phone = {
         id_investor: result.id,
         number
       }
 
       promises.push(InvestorPhone.create(phone))
-    }
+    })
 
     await Promise.all(promises)
 
     // 3. Criar as contas bancárias
-    let account
-    promises = []
+    let accounts
 
-    for (let index = 0; index < accounts.length; index += 1) {
-      account = accounts[index]
+    if (body.accounts && body.accounts.length > 0) {
+      promises = []
 
-      account.id_investor = result.id
+      accounts = JSON.parse(body.accounts)
 
-      promises.push(InvestorBankAccount.create(account))
+      accounts.forEach(account => {
+        account.id_investor = result.id
+
+        promises.push(InvestorBankAccount.create(account))
+      })
+
+      await Promise.all(promises)
     }
-
-    await Promise.all(promises)
 
     // 4. Enviar os documentos
-    promises = []
+    if (files && files.length === 3) {
+      promises = []
 
-    for (let index = 0; index < files.length; index += 1) {
-      const file = files[index]
-
-      promises.push(uploadFile(file, `documents/${result.id}`, true))
-    }
-
-    const urls = await Promise.all(promises)
-
-    const documents = []
-
-    for (let index = 0; index < urls.length; index += 1) {
-      const url = urls[index]
-
-      documents.push({
-        id_investor: result.id,
-        url,
-        order: index
+      files.forEach(file => {
+        promises.push(uploadFile(file, `documents/${result.id}`, true))
       })
-    }
 
-    await InvestorDocument.bulkCreate(documents)
+      const urls = await Promise.all(promises)
+
+      const documents = []
+
+      for (let index = 0; index < urls.length; index += 1) {
+        const url = urls[index]
+
+        documents.push({
+          id_investor: result.id,
+          url,
+          order: index
+        })
+      }
+
+      await InvestorDocument.bulkCreate(documents)
+    }
 
     return response.json(Object.assign(constants.investor.success.CREATE, { result }))
   } catch (error) {
@@ -685,34 +710,154 @@ export const create = async (request, response) => {
  */
 export const update = async (request, response) => {
   try {
-    const { user, body } = request
-
-    // TODO: Refatorar
-    if (user.id_profile !== 3) {
-      body.id = user.investor.id
-    }
+    const { user, body, files } = request
 
     if (!body || body.length === 0) {
       throw constants.investor.error.INVALID_DATA
     }
 
-    // TODO: Aidiconar verificação de id do investidor
-    // if (!body.id) { }
+    const investor = JSON.parse(body.investor)
 
-    const investor = await Investor.findByPk(body.id)
+    // BDI-14: O status do investidor só passará a ficar ativo após a conclusão de todas as informações
+    if (!body.phones || body.phones.length === 0 || !body.accounts || body.accounts.length === 0 || !files || files.length !== 3) {
+      investor.active = false
+    } else {
+      investor.active = true
+    }
 
-    if (investor) {
+    const phones = JSON.parse(body.phones)
+
+    // TODO: Refatorar
+    if (user.id_profile !== 3) {
+      investor.id_user = user.id
+    }
+
+    // 1. Atualizar o investidor
+    const result = await Investor.findByPk(investor.id, {
+      include: [
+        {
+          model: InvestorPhone,
+          as: 'phones'
+        }
+      ]
+    })
+
+    if (result) {
       // Atualizando apenas as propriedades definidas para atualizar
-      Object.keys(body).forEach(key => {
-        if (body[key] !== undefined) {
-          investor[key] = body[key]
+      Object.keys(investor).forEach(key => {
+        if (investor[key] !== undefined) {
+          result[key] = investor[key]
         }
       })
 
-      await investor.save()
+      await result.save()
     }
 
-    return response.json(constants.investor.success.UPDATE)
+    // 2. Criar os telefones
+    let promises
+
+    if (phones && phones.length > 0) {
+      promises = []
+
+      if (result.phones) {
+        const addedPhones = phones.filter(({ number: first }) => !result.phones.some(({ number: second }) => first === second))
+        const removedPhones = result.phones.filter(({ number: first }) => !phones.some(({ number: second }) => first === second))
+
+        // 2.1 Adicionando novos telefones
+        addedPhones.forEach(phone => {
+          phone = {
+            id_investor: result.id,
+            number: phone.number
+          }
+
+          promises.push(InvestorPhone.create(phone))
+        })
+
+        await Promise.all(promises)
+
+        // 2.2 Apagando números removidos
+        const ids = removedPhones.map(phone => phone.id)
+
+        if (ids.length > 0) {
+          await InvestorPhone.destroy({
+            where: {
+              [Sequelize.Op.and]: {
+                id_investor: result.id,
+                id: {
+                  [Sequelize.Op.or]: ids
+                }
+              }
+            }
+          })
+        }
+      } else {
+        phones.forEach(phone => {
+          phone = {
+            id_investor: result.id,
+            number: phone.number
+          }
+
+          promises.push(InvestorPhone.create(phone))
+        })
+      }
+    }
+
+    // 3. Atualizar contas bancárias
+    let accounts
+
+    if (body.accounts && body.accounts.length > 0) {
+      accounts = JSON.parse(body.accounts)
+
+      if (accounts.length > 0) {
+        promises = []
+
+        // 3.1 Obter conta atualmente cadastrada
+        const account = await InvestorBankAccount.findOne({
+          where: {
+            id_investor: result.id
+          }
+        })
+
+        if (account) {
+          account.agency = accounts[0].agency
+          account.account = accounts[0].account
+          account.bank_code = accounts[0].bank_code
+
+          await account.save()
+        } else {
+          accounts[0].id_investor = result.id
+
+          await InvestorBankAccount.create(accounts[0])
+        }
+      }
+    }
+
+    // 4. Enviar os documentos
+    if (files && files.length === 3) {
+      promises = []
+
+      files.forEach(file => {
+        promises.push(uploadFile(file, `documents/${result.id}`, true))
+      })
+
+      const urls = await Promise.all(promises)
+
+      const documents = []
+
+      for (let index = 0; index < urls.length; index += 1) {
+        const url = urls[index]
+
+        documents.push({
+          id_investor: result.id,
+          url,
+          order: index
+        })
+      }
+
+      await InvestorDocument.bulkCreate(documents)
+    }
+
+    return response.json(Object.assign(constants.investor.success.UPDATE, { investor: result }))
   } catch (error) {
     logger().error(error)
 

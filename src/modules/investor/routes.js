@@ -17,7 +17,7 @@ export default () => {
   router.get(`${INVESTOR_BASE_PAH}/:id/investments/projected-amount`, validations.getProjectedAmount, controller.getProjectedAmount)
 
   router.post(INVESTOR_BASE_PAH, validations.create, multer.array('docs'), controller.create)
-  router.put(INVESTOR_BASE_PAH, validations.update, controller.update)
+  router.put(INVESTOR_BASE_PAH, validations.update, multer.array('docs'), controller.update)
 
   return router
 }
