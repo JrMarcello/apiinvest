@@ -2,7 +2,7 @@ import { logger } from '../../common/utils'
 import constants from '../../common/constants'
 
 // Models
-const { Fundraising, Investment, Investor, User } = require('../../database/models')
+const { Fundraising, Investment, Investor, User, Custodian } = require('../../database/models')
 
 /**
  * @api {get} /fundraising Get all
@@ -318,6 +318,11 @@ export const getInvestorsByFundraisingId = async (request, response) => {
 export const create = async (request, response) => {
   try {
     const { body } = request
+
+    const custodian = await Custodian.findOne({})
+
+    body.investment_percentage = 0.05
+    body.id_custodian = custodian.id
 
     const fundraising = await Fundraising.create(body)
 

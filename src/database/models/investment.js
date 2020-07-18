@@ -49,6 +49,10 @@ export default (sequelize, DataTypes) => {
         type: DataTypes.BOOLEAN,
         defaultValue: true,
         allowNull: false
+      },
+      anonymous: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false
       }
     },
     {
