@@ -77,6 +77,10 @@ export default (sequelize, DataTypes) => {
         type: DataTypes.BOOLEAN,
         defaultValue: true,
         allowNull: false
+      },
+      politically_exposed_person: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false
       }
     },
     {
