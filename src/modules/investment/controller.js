@@ -401,31 +401,31 @@ export const create = async (request, response) => {
     const notQualified = parseFloat(env().INVESTMENT_MAX_AMOUNT_NOT_QUALIFIED)
     const qualified = parseFloat(env().INVESTMENT_MAX_AMOUNT_QUALIFIED)
 
-    // if (!body.is_qualified && (amount > notQualified || amount + body.amount > notQualified)) {
-    //   throw constants.investment.error.MAX_AMOUNT_NOT_QUALIFIED
-    // }
+    if (!body.is_qualified && (amount > notQualified || amount + body.amount > notQualified)) {
+      throw constants.investment.error.MAX_AMOUNT_NOT_QUALIFIED
+    }
 
-    // if (body.is_qualified && (amount > qualified || amount + body.amount > qualified)) {
-    //   throw constants.investment.error.MAX_AMOUNT_QUALIFIED
-    // }
+    if (body.is_qualified && (amount > qualified || amount + body.amount > qualified)) {
+      throw constants.investment.error.MAX_AMOUNT_QUALIFIED
+    }
 
     const investment = await Investment.create(body)
 
     // 4. Enviar e-mail de criação de investimento
-    // await sendEmail({
-    //   from: `Buildinvest <${env().buildinvest.emails.contact}>`,
-    //   to: investor.email,
-    //   subject: 'Buildinvest - Novo investimento',
-    //   template: 'newInvestment',
-    //   context: {
-    //     buildinvest: {
-    //       bankAccount: env().buildinvest.bankAccount,
-    //       agence: env().buildinvest.agence
-    //     },
-    //     investor,
-    //     investment
-    //   }
-    // })
+    await sendEmail({
+      from: `Buildinvest <${env().buildinvest.emails.contact}>`,
+      to: investor.email,
+      subject: 'Buildinvest - Novo investimento',
+      template: 'newInvestment',
+      context: {
+        buildinvest: {
+          bankAccount: env().buildinvest.bankAccount,
+          agence: env().buildinvest.agence
+        },
+        investor,
+        investment
+      }
+    })
 
     response.json(Object.assign(constants.investment.success.CREATE, { investment }))
   } catch (err) {
