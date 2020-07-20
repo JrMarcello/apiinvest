@@ -46,7 +46,13 @@ export const getAll = async (request, response) => {
     const buildings = await Building.findAll({
       where: {
         active: true
-      }
+      },
+      include: [
+        {
+          model: BuildingImage,
+          as: 'images'
+        }
+      ]
     })
 
     return response.json(buildings)
