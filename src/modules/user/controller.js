@@ -412,39 +412,38 @@ export const login = async (request, response) => {
 }
 
 export const refreshToken = async (request, response) => {
-    try {
-      const header = request.header('Authorization')
-  
-      if (!header) {
-        throw constants.user.error.LOGIN
-      }
-  
-      const currentToken = header.replace('Bearer ', '')
-      const data = jwt.verify(currentToken, env().SECRET_KEY)
-  
-      const account = await User.findByPk(data.id, {
-        include: [
-          {
-            model: Profile,
-            as: 'profile'
-          },
-          {
-            model: Investor,
-            as: 'investor'
-          }
-        ]
-      })
-  
-      const token = getToken(account.toJSON())
-  
-      return response.json(Object.assign(constants.user.success.LOGIN, { token }))
-    } catch (error) {
-      logger().error(error)
-  
-      return response.status(500).json(error.apicode ? error : constants.user.error.LOGIN)
+  try {
+    const header = request.header('Authorization')
+
+    if (!header) {
+      throw constants.user.error.LOGIN
     }
+
+    const currentToken = header.replace('Bearer ', '')
+    const data = jwt.verify(currentToken, env().SECRET_KEY)
+
+    const account = await User.findByPk(data.id, {
+      include: [
+        {
+          model: Profile,
+          as: 'profile'
+        },
+        {
+          model: Investor,
+          as: 'investor'
+        }
+      ]
+    })
+
+    const token = getToken(account.toJSON())
+
+    return response.json(Object.assign(constants.user.success.LOGIN, { token }))
+  } catch (error) {
+    logger().error(error)
+
+    return response.status(500).json(error.apicode ? error : constants.user.error.LOGIN)
   }
-  
+}
 
 /**
  * @api {post} /user/forgotpassword Forgot Password
