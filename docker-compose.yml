@@ -22,7 +22,6 @@ services:
     image: buildinvest-api
     restart: unless-stopped
     working_dir: /usr/buildinvest/api
-    entrypoint: ["/bin/sh", "./docker-entrypoint.sh"]
     volumes:
       - .:/usr/buildinvest/api
       - /usr/buildinvest/api/node_modules
