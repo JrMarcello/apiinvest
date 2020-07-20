@@ -1,6 +1,7 @@
 import bcrypt from 'bcrypt'
 import crypto from 'crypto'
 import moment from 'moment'
+import jwt from 'jsonwebtoken'
 import { env, logger } from '../../common/utils'
 import { getToken } from '../../core/middlewares/auth'
 import { sendEmail } from '../../core/mailer'
@@ -399,6 +400,40 @@ export const login = async (request, response) => {
     if (!result) {
       throw constants.user.error.INVALID_USER_LOGIN
     }
+
+    const token = getToken(account.toJSON())
+
+    return response.json(Object.assign(constants.user.success.LOGIN, { token }))
+  } catch (error) {
+    logger().error(error)
+
+    return response.status(500).json(error.apicode ? error : constants.user.error.LOGIN)
+  }
+}
+
+export const refreshToken = async (request, response) => {
+  try {
+    const header = request.header('Authorization')
+
+    if (!header) {
+      throw constants.user.error.LOGIN
+    }
+
+    const currentToken = header.replace('Bearer ', '')
+    const data = jwt.verify(currentToken, env().SECRET_KEY)
+
+    const account = await User.findByPk(data.id, {
+      include: [
+        {
+          model: Profile,
+          as: 'profile'
+        },
+        {
+          model: Investor,
+          as: 'investor'
+        }
+      ]
+    })
 
     const token = getToken(account.toJSON())
 
