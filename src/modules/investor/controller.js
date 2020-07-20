@@ -664,7 +664,7 @@ export const create = async (request, response) => {
       await InvestorDocument.bulkCreate(documents)
     }
 
-    return response.json(Object.assign(constants.investor.success.CREATE, { result }))
+    return response.json(Object.assign(constants.investor.success.CREATE, { investor: result }))
   } catch (error) {
     logger().error(error)
 

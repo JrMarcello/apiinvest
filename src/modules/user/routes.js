@@ -9,6 +9,7 @@ export default () => {
   router.get(`${USER_BASE_PAH}/profiles`, controller.getProfiles)
 
   router.get(USER_BASE_PAH, validations.getAll, controller.getAll)
+  router.get(`${USER_BASE_PAH}/refresh`, controller.refreshToken)
   router.get(`${USER_BASE_PAH}/:id`, validations.getById, controller.getById)
   router.put(USER_BASE_PAH, validations.update, controller.update)
   router.delete(`${USER_BASE_PAH}/:id`, validations.remove, controller.remove)
