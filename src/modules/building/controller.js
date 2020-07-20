@@ -111,6 +111,10 @@ export const getAllAvaliables = async (request, response) => {
       },
       include: [
         {
+          model: BuildingImage,
+          as: 'images'
+        },
+        {
           model: Fundraising,
           as: 'fundraisings',
           where: {
