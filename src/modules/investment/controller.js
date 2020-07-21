@@ -5,7 +5,7 @@ import { uploadFile } from '../../core/storage'
 import constants from '../../common/constants'
 
 // Models
-const { Investment, Investor, Fundraising, Sequelize, Building } = require('../../database/models')
+const { Building, Investment, Investor, Fundraising, RequirementsHistory, Sequelize } = require('../../database/models')
 
 /**
  * @api {get} /investment Get all
@@ -401,6 +401,9 @@ export const create = async (request, response) => {
     const notQualified = parseFloat(env().INVESTMENT_MAX_AMOUNT_NOT_QUALIFIED)
     const qualified = parseFloat(env().INVESTMENT_MAX_AMOUNT_QUALIFIED)
 
+    // TODO: Remover hard code
+    body.is_qualified = true
+
     if (!body.is_qualified && (amount > notQualified || amount + body.amount > notQualified)) {
       throw constants.investment.error.MAX_AMOUNT_NOT_QUALIFIED
     }
@@ -409,7 +412,17 @@ export const create = async (request, response) => {
       throw constants.investment.error.MAX_AMOUNT_QUALIFIED
     }
 
+    // 4. Criar o investimento
     const investment = await Investment.create(body)
+
+    // 5. Salvar as configurações adotadas
+    const terms = {
+      id_investor: investor.id,
+      id_investment: investment.id,
+      ...body.terms
+    }
+
+    await RequirementsHistory.create(terms)
 
     // 4. Enviar e-mail de criação de investimento
     await sendEmail({
