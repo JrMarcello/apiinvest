@@ -11,6 +11,7 @@ const {
   InvestorBankAccount,
   InvestorDocument,
   InvestorPhone,
+  BuildingImage,
   Sequelize
 } = require('../../database/models')
 
@@ -303,7 +304,11 @@ export const getAllInvestmentsById = async (request, response) => {
           include: [
             {
               model: Building,
-              as: 'building'
+              as: 'building',
+              include: {
+                model: BuildingImage,
+                as: 'images'
+              }
             }
           ]
         }
