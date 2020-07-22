@@ -96,6 +96,11 @@
         "resource": "/fundraising/:id/investors",
         "methods": ["GET"],
         "action": "allow"
+      },
+      {
+        "resource": "/fundraising/building/:idBuilding",
+        "methods": ["GET"],
+        "action": "allow"
       }
     ]
   },

@@ -1,4 +1,4 @@
-import moment from 'moment'
+// import moment from 'moment'
 import { env, logger } from '../../common/utils'
 import { sendEmail } from '../../core/mailer'
 import { uploadFile } from '../../core/storage'
@@ -385,32 +385,30 @@ export const create = async (request, response) => {
       throw constants.investment.error.MIN_VALUE
     }
 
+    // TODO: Revisar regras de negócio baseadas no documento da CVM
     // 3. Validar o investimento
-    const amount = await Investment.sum('amount', {
-      where: {
-        id_investor: body.id_investor,
-        date: {
-          [Sequelize.Op.gte]: moment()
-            .startOf('year')
-            .format('YYYY-MM-DD')
-        },
-        active: true
-      }
-    })
-
-    const notQualified = parseFloat(env().INVESTMENT_MAX_AMOUNT_NOT_QUALIFIED)
-    const qualified = parseFloat(env().INVESTMENT_MAX_AMOUNT_QUALIFIED)
-
-    // TODO: Remover hard code
-    body.is_qualified = true
-
-    if (!body.is_qualified && (amount > notQualified || amount + body.amount > notQualified)) {
-      throw constants.investment.error.MAX_AMOUNT_NOT_QUALIFIED
-    }
-
-    if (body.is_qualified && (amount > qualified || amount + body.amount > qualified)) {
-      throw constants.investment.error.MAX_AMOUNT_QUALIFIED
-    }
+    // const amount = await Investment.sum('amount', {
+    //   where: {
+    //     id_investor: body.id_investor,
+    //     date: {
+    //       [Sequelize.Op.gte]: moment()
+    //         .startOf('year')
+    //         .format('YYYY-MM-DD')
+    //     },
+    //     active: true
+    //   }
+    // })
+    //
+    // const notQualified = parseFloat(env().INVESTMENT_MAX_AMOUNT_NOT_QUALIFIED)
+    // const qualified = parseFloat(env().INVESTMENT_MAX_AMOUNT_QUALIFIED)
+    //
+    // if (!body.is_qualified && (amount > notQualified || amount + body.amount > notQualified)) {
+    //   throw constants.investment.error.MAX_AMOUNT_NOT_QUALIFIED
+    // }
+    //
+    // if (body.is_qualified && (amount > qualified || amount + body.amount > qualified)) {
+    //   throw constants.investment.error.MAX_AMOUNT_QUALIFIED
+    // }
 
     // 4. Criar o investimento
     const investment = await Investment.create(body)
@@ -543,23 +541,61 @@ export const confirm = async (request, response) => {
   try {
     const { body } = request
 
-    await Investment.update(
-      {
-        confirmed: true
-      },
-      {
-        where: {
-          [Sequelize.Op.and]: {
-            id: {
-              [Sequelize.Op.or]: body.investments
-            },
-            ted_proof_url: {
-              [Sequelize.Op.ne]: null
-            }
-          }
+    const investment = await Investment.findByPk(body.investments[0])
+
+    investment.confirmed = true
+
+    await investment.save()
+
+    const fundraising = await Fundraising.findByPk(investment.id_fundraising, {
+      include: [
+        {
+          model: Building,
+          as: 'building'
         }
+      ]
+    })
+
+    const minimum = fundraising.amount * 0.66
+
+    const colleted = await Investment.sum('amount', {
+      where: {
+        id_fundraising: investment.id_fundraising,
+        confirmed: true,
+        active: true
       }
-    )
+    })
+
+    if (colleted >= minimum) {
+      const investments = await Investment.findAll({
+        where: {
+          id_fundraising: fundraising.id
+        },
+        include: [
+          {
+            model: Investor,
+            as: 'investor'
+          }
+        ]
+      })
+
+      investments.forEach(element => {
+        const { investor } = element
+
+        sendEmail({
+          from: `Buildinvest <${env().buildinvest.emails.contact}>`,
+          to: investor.email,
+          subject: 'Buildinvest - Investimento mínimo atingido',
+          template: 'fundraising-minimum-reached',
+          context: {
+            name: investor.name,
+            building: fundraising.building.name,
+            description: fundraising.building.description,
+            collected: minimum
+          }
+        })
+      })
+    }
 
     return response.json(constants.investment.success.CONFIRMATION)
   } catch (error) {

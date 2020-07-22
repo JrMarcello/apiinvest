@@ -71,6 +71,7 @@ export default (sequelize, DataTypes) => {
   Fundraising.associate = models => {
     Fundraising.belongsTo(models.Building, { foreignKey: 'id_building', as: 'building' })
     Fundraising.belongsTo(models.Custodian, { foreignKey: 'id_custodian', as: 'custodian' })
+    Fundraising.hasMany(models.Investment, { foreignKey: 'id_fundraising', as: 'investments' })
   }
 
   return Fundraising

@@ -136,6 +136,7 @@ const constants = {
     error: {
       NOT_FOUND: { apicode: 'E0501', message: 'Erro ao buscar a(s) Captação(ões)' },
       AMOUNT_RAISED: { apicode: 'E0502', message: 'Erro ao buscar total captado' },
+      AMOUNT_EXCEEDED: { apicode: 'E0508', message: 'O valor da captação ultrapassa o limite de R$5MM' },
       INVESTORS: { apicode: 'E0503', message: 'Erro ao buscar os Investidores da Captação' },
       CREATE: { apicode: 'E0504', message: 'Erro ao criar a captação' },
       UPDATE: { apicode: 'E0505', message: 'Erro ao atualizar a captação' },
