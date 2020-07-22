@@ -1,4 +1,4 @@
-import moment from 'moment'
+// import moment from 'moment'
 import { env, logger } from '../../common/utils'
 import { sendEmail } from '../../core/mailer'
 import { uploadFile } from '../../core/storage'
@@ -385,32 +385,30 @@ export const create = async (request, response) => {
       throw constants.investment.error.MIN_VALUE
     }
 
+    // TODO: Revisar regras de negócio baseadas no documento da CVM
     // 3. Validar o investimento
-    const amount = await Investment.sum('amount', {
-      where: {
-        id_investor: body.id_investor,
-        date: {
-          [Sequelize.Op.gte]: moment()
-            .startOf('year')
-            .format('YYYY-MM-DD')
-        },
-        active: true
-      }
-    })
-
-    const notQualified = parseFloat(env().INVESTMENT_MAX_AMOUNT_NOT_QUALIFIED)
-    const qualified = parseFloat(env().INVESTMENT_MAX_AMOUNT_QUALIFIED)
-
-    // TODO: Remover hard code
-    body.is_qualified = true
-
-    if (!body.is_qualified && (amount > notQualified || amount + body.amount > notQualified)) {
-      throw constants.investment.error.MAX_AMOUNT_NOT_QUALIFIED
-    }
-
-    if (body.is_qualified && (amount > qualified || amount + body.amount > qualified)) {
-      throw constants.investment.error.MAX_AMOUNT_QUALIFIED
-    }
+    // const amount = await Investment.sum('amount', {
+    //   where: {
+    //     id_investor: body.id_investor,
+    //     date: {
+    //       [Sequelize.Op.gte]: moment()
+    //         .startOf('year')
+    //         .format('YYYY-MM-DD')
+    //     },
+    //     active: true
+    //   }
+    // })
+    //
+    // const notQualified = parseFloat(env().INVESTMENT_MAX_AMOUNT_NOT_QUALIFIED)
+    // const qualified = parseFloat(env().INVESTMENT_MAX_AMOUNT_QUALIFIED)
+    //
+    // if (!body.is_qualified && (amount > notQualified || amount + body.amount > notQualified)) {
+    //   throw constants.investment.error.MAX_AMOUNT_NOT_QUALIFIED
+    // }
+    //
+    // if (body.is_qualified && (amount > qualified || amount + body.amount > qualified)) {
+    //   throw constants.investment.error.MAX_AMOUNT_QUALIFIED
+    // }
 
     // 4. Criar o investimento
     const investment = await Investment.create(body)

@@ -235,6 +235,10 @@ export const getByUserId = async (request, response) => {
         {
           model: InvestorBankAccount,
           as: 'accounts'
+        },
+        {
+          model: Investment,
+          as: 'investments'
         }
       ]
     })

@@ -150,7 +150,19 @@ export const getByBuildingId = async (request, response) => {
     const fundraisings = await Fundraising.findAll({
       where: {
         id_building: params.idBuilding
-      }
+      },
+      include: [
+        {
+          model: Investment,
+          as: 'investments',
+          include: [
+            {
+              model: Investor,
+              as: 'investor'
+            }
+          ]
+        }
+      ]
     })
 
     return response.json(fundraisings)
@@ -319,10 +331,18 @@ export const create = async (request, response) => {
   try {
     const { body } = request
 
+    // O valor total da captação não deve ultrapassar de R$5.000.000,00
+    if (body.amount > 500000) {
+      return response.status(400).json(constants.fundraising)
+    }
+
     const custodian = await Custodian.findOne({})
 
     body.investment_percentage = 0.05
     body.id_custodian = custodian.id
+
+    // O valor mínimo é equivalente a 2/3 do valor total, portanto não é possível definir o valor mínimo manualmente
+    body.investment_min_value = body.amount * 0.66
 
     const fundraising = await Fundraising.create(body)
 
