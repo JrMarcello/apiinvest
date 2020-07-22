@@ -541,23 +541,61 @@ export const confirm = async (request, response) => {
   try {
     const { body } = request
 
-    await Investment.update(
-      {
-        confirmed: true
-      },
-      {
-        where: {
-          [Sequelize.Op.and]: {
-            id: {
-              [Sequelize.Op.or]: body.investments
-            },
-            ted_proof_url: {
-              [Sequelize.Op.ne]: null
-            }
-          }
+    const investment = await Investment.findByPk(body.investments[0])
+
+    investment.confirmed = true
+
+    await investment.save()
+
+    const fundraising = await Fundraising.findByPk(investment.id_fundraising, {
+      include: [
+        {
+          model: Building,
+          as: 'building'
         }
+      ]
+    })
+
+    const minimum = fundraising.amount * 0.66
+
+    const colleted = await Investment.sum('amount', {
+      where: {
+        id_fundraising: investment.id_fundraising,
+        confirmed: true,
+        active: true
       }
-    )
+    })
+
+    if (colleted >= minimum) {
+      const investments = await Investment.findAll({
+        where: {
+          id_fundraising: fundraising.id
+        },
+        include: [
+          {
+            model: Investor,
+            as: 'investor'
+          }
+        ]
+      })
+
+      investments.forEach(element => {
+        const { investor } = element
+
+        sendEmail({
+          from: `Buildinvest <${env().buildinvest.emails.contact}>`,
+          to: investor.email,
+          subject: 'Buildinvest - Investimento mínimo atingido',
+          template: 'fundraising-minimum-reached',
+          context: {
+            name: investor.name,
+            building: fundraising.building.name,
+            description: fundraising.building.description,
+            collected: minimum
+          }
+        })
+      })
+    }
 
     return response.json(constants.investment.success.CONFIRMATION)
   } catch (error) {

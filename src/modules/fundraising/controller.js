@@ -341,9 +341,6 @@ export const create = async (request, response) => {
     body.investment_percentage = 0.05
     body.id_custodian = custodian.id
 
-    // O valor mínimo é equivalente a 2/3 do valor total, portanto não é possível definir o valor mínimo manualmente
-    body.investment_min_value = body.amount * 0.66
-
     const fundraising = await Fundraising.create(body)
 
     return response.json(Object.assign(constants.fundraising.success.CREATE, { fundraising }))
