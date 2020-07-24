@@ -52,21 +52,21 @@ const { User, Investor, Builder, Profile, Sequelize } = require('../../database/
  *     }
  */
 export const getAll = async (request, response) => {
-    // TODO: Verificar regras do NACL
+  // TODO: Verificar regras do NACL
 
-    try {
-        const users = await User.findAll({
-            where: {
-                active: true
-            }
-        })
+  try {
+    const users = await User.findAll({
+      where: {
+        active: true
+      }
+    })
 
-        return response.json(users)
-    } catch (error) {
-        logger().error(error)
+    return response.json(users)
+  } catch (error) {
+    logger().error(error)
 
-        return response.status(500).json(error.apicode ? error : constants.user.error.NOT_FOUND)
-    }
+    return response.status(500).json(error.apicode ? error : constants.user.error.NOT_FOUND)
+  }
 }
 
 /**
@@ -107,35 +107,35 @@ export const getAll = async (request, response) => {
  *   }
  */
 export const getById = async (request, response) => {
-    try {
-        const { params, user } = request
+  try {
+    const { params, user } = request
 
-        if (user.id_profile !== 3) {
-            params.id = user.id
-        }
-
-        const account = await User.findByPk(params.id, {
-            where: {
-                active: true
-            },
-            include: [
-                {
-                    model: Investor,
-                    as: 'investor'
-                },
-                {
-                    model: Builder,
-                    as: 'builder'
-                }
-            ]
-        })
-
-        return response.json(account)
-    } catch (error) {
-        logger().error(error)
-
-        return response.status(500).json(error.apicode ? error : constants.user.error.NOT_FOUND)
+    if (user.id_profile !== 3) {
+      params.id = user.id
     }
+
+    const account = await User.findByPk(params.id, {
+      where: {
+        active: true
+      },
+      include: [
+        {
+          model: Investor,
+          as: 'investor'
+        },
+        {
+          model: Builder,
+          as: 'builder'
+        }
+      ]
+    })
+
+    return response.json(account)
+  } catch (error) {
+    logger().error(error)
+
+    return response.status(500).json(error.apicode ? error : constants.user.error.NOT_FOUND)
+  }
 }
 
 /**
@@ -185,54 +185,54 @@ export const getById = async (request, response) => {
  *   }
  */
 export const create = async (request, response) => {
-    try {
-        const { body } = request
+  try {
+    const { body } = request
 
-        let user = await User.findOne({
-            where: {
-                email: body.email
-            }
-        })
+    const user = await User.findOne({
+      where: {
+        email: body.email
+      }
+    })
 
-        if (user) {
-            throw constants.user.error.MAIL_EXISTS
-        }
-
-        // Caso não seja informado o perfil, por padrão deve ser criada uma conta com perfil de investidor
-        if (!body.id_profile) {
-            body.id_profile = 1
-        }
-
-        // TODO: Repassar encriptação para um serviço, encapsular
-        body.password = bcrypt.hashSync(body.password, 10)
-
-        await User.create(body)
-
-        // Obtendo o usuário para gerar o token
-        const account = await User.findOne({
-            where: {
-                email: body.email
-            },
-            include: [
-                {
-                    model: Profile,
-                    as: 'profile'
-                },
-                {
-                    model: Investor,
-                    as: 'investor'
-                }
-            ]
-        })
-
-        const token = getToken(account.toJSON())
-
-        return response.json(Object.assign(constants.user.success.CREATE, { account, token }))
-    } catch (error) {
-        logger().error(error)
-
-        return response.status(500).json(error.apicode ? error : constants.user.error.CREATE)
+    if (user) {
+      throw constants.user.error.MAIL_EXISTS
     }
+
+    // Caso não seja informado o perfil, por padrão deve ser criada uma conta com perfil de investidor
+    if (!body.id_profile) {
+      body.id_profile = 1
+    }
+
+    // TODO: Repassar encriptação para um serviço, encapsular
+    body.password = bcrypt.hashSync(body.password, 10)
+
+    await User.create(body)
+
+    // Obtendo o usuário para gerar o token
+    const account = await User.findOne({
+      where: {
+        email: body.email
+      },
+      include: [
+        {
+          model: Profile,
+          as: 'profile'
+        },
+        {
+          model: Investor,
+          as: 'investor'
+        }
+      ]
+    })
+
+    const token = getToken(account.toJSON())
+
+    return response.json(Object.assign(constants.user.success.CREATE, { account, token }))
+  } catch (error) {
+    logger().error(error)
+
+    return response.status(500).json(error.apicode ? error : constants.user.error.CREATE)
+  }
 }
 
 /**
@@ -272,38 +272,38 @@ export const create = async (request, response) => {
  *   }
  */
 export const update = async (request, response) => {
-    try {
-        const { user, body } = request
+  try {
+    const { user, body } = request
 
-        // TODO: Refatorar
-        if (user.id_profile !== 3) {
-            body.id = user.id
-        }
-
-        // TODO: Repassar encriptação para um serviço, encapsular
-        if (body.password) {
-            body.password = bcrypt.hashSync(body.password, 10)
-        }
-
-        const account = await User.findByPk(body.id)
-
-        if (account) {
-            // Atualizando apenas as propriedades definidas para atualizar
-            Object.keys(body).forEach(key => {
-                if (body[key] !== undefined) {
-                    account[key] = body[key]
-                }
-            })
-
-            await account.save()
-        }
-
-        return response.json(constants.user.success.UPDATE)
-    } catch (error) {
-        logger().error(error)
-
-        return response.status(500).json(error.apicode ? error : constants.user.error.UPDATE)
+    // TODO: Refatorar
+    if (user.id_profile !== 3) {
+      body.id = user.id
     }
+
+    // TODO: Repassar encriptação para um serviço, encapsular
+    if (body.password) {
+      body.password = bcrypt.hashSync(body.password, 10)
+    }
+
+    const account = await User.findByPk(body.id)
+
+    if (account) {
+      // Atualizando apenas as propriedades definidas para atualizar
+      Object.keys(body).forEach(key => {
+        if (body[key] !== undefined) {
+          account[key] = body[key]
+        }
+      })
+
+      await account.save()
+    }
+
+    return response.json(constants.user.success.UPDATE)
+  } catch (error) {
+    logger().error(error)
+
+    return response.status(500).json(error.apicode ? error : constants.user.error.UPDATE)
+  }
 }
 
 /**
@@ -338,26 +338,26 @@ export const update = async (request, response) => {
  *   }
  */
 export const remove = async (request, response) => {
-    try {
-        const { user, params } = request
+  try {
+    const { user, params } = request
 
-        // TODO: Refatorar
-        const id = user.id_profile === 3 ? params.id : user.builder.id
+    // TODO: Refatorar
+    const id = user.id_profile === 3 ? params.id : user.builder.id
 
-        const account = await User.findByPk(id)
+    const account = await User.findByPk(id)
 
-        if (account) {
-            account.active = false
+    if (account) {
+      account.active = false
 
-            await account.save()
-        }
-
-        return response.json(constants.user.success.REMOVE)
-    } catch (error) {
-        logger().error(error)
-
-        return response.status(500).json(error.apicode ? error : constants.user.error.REMOVE)
+      await account.save()
     }
+
+    return response.json(constants.user.success.REMOVE)
+  } catch (error) {
+    logger().error(error)
+
+    return response.status(500).json(error.apicode ? error : constants.user.error.REMOVE)
+  }
 }
 
 /**
@@ -391,77 +391,77 @@ export const remove = async (request, response) => {
  *   }
  */
 export const login = async (request, response) => {
-    try {
-        const { body } = request
+  try {
+    const { body } = request
 
-        const account = await User.findOne({
-            where: {
-                email: body.email
-            },
-            include: [
-                {
-                    model: Profile,
-                    as: 'profile'
-                },
-                {
-                    model: Investor,
-                    as: 'investor'
-                }
-            ]
-        })
-
-        if (!account) {
-            throw constants.user.error.INVALID_USER_LOGIN
+    const account = await User.findOne({
+      where: {
+        email: body.email
+      },
+      include: [
+        {
+          model: Profile,
+          as: 'profile'
+        },
+        {
+          model: Investor,
+          as: 'investor'
         }
+      ]
+    })
 
-        const result = bcrypt.compareSync(body.password, account.password)
-
-        if (!result) {
-            throw constants.user.error.INVALID_USER_LOGIN
-        }
-
-        const token = getToken(account.toJSON())
-
-        return response.json(Object.assign(constants.user.success.LOGIN, { token }))
-    } catch (error) {
-        logger().error(error)
-
-        return response.status(500).json(error.apicode ? error : constants.user.error.LOGIN)
+    if (!account) {
+      throw constants.user.error.INVALID_USER_LOGIN
     }
+
+    const result = bcrypt.compareSync(body.password, account.password)
+
+    if (!result) {
+      throw constants.user.error.INVALID_USER_LOGIN
+    }
+
+    const token = getToken(account.toJSON())
+
+    return response.json(Object.assign(constants.user.success.LOGIN, { token }))
+  } catch (error) {
+    logger().error(error)
+
+    return response.status(500).json(error.apicode ? error : constants.user.error.LOGIN)
+  }
 }
 
 export const refreshToken = async (request, response) => {
-    try {
-        const header = request.header('Authorization')
+  try {
+    const header = request.header('Authorization')
 
-        if (!header) {
-            throw constants.user.error.LOGIN
-        }
-
-        const currentToken = header.replace('Bearer ', '')
-        const data = jwt.verify(currentToken, env().SECRET_KEY)
-
-        const account = await User.findByPk(data.id, {
-            include: [
-                {
-                    model: Profile,
-                    as: 'profile'
-                },
-                {
-                    model: Investor,
-                    as: 'investor'
-                }
-            ]
-        })
-
-        const token = getToken(account.toJSON())
-
-        return response.json(Object.assign(constants.user.success.LOGIN, { token }))
-    } catch (error) {
-        logger().error(error)
-
-        return response.status(500).json(error.apicode ? error : constants.user.error.LOGIN)
+    if (!header) {
+      throw constants.user.error.LOGIN
     }
+
+    const currentToken = header.replace('Bearer ', '')
+    const data = jwt.verify(currentToken, env().SECRET_KEY)
+
+    const account = await User.findByPk(data.id, {
+      include: [
+        {
+          model: Profile,
+          as: 'profile'
+        },
+        {
+          model: Investor,
+          as: 'investor'
+        }
+      ]
+    })
+
+    const token = getToken(account.toJSON())
+
+    return response.json(Object.assign(constants.user.success.LOGIN, { token }))
+  } catch (error) {
+    logger().error(error)
+
+    return response.status(500).json(error.apicode ? error : constants.user.error.LOGIN)
+  }
 }
 
 /**
@@ -492,40 +492,40 @@ export const refreshToken = async (request, response) => {
  *   }
  */
 export const forgotPassword = async (request, response) => {
-    try {
-        const { body } = request
+  try {
+    const { body } = request
 
-        const account = await User.findOne({
-            where: {
-                email: body.email
-            }
-        })
+    const account = await User.findOne({
+      where: {
+        email: body.email
+      }
+    })
 
-        if (!account) {
-            throw constants.user.error.FORGOT_PASSWORD_MAIL
-        }
-
-        const token = crypto.randomBytes(20).toString('hex')
-
-        account.reset_token = token
-        account.reset_expires = moment().add(1, 'h')
-
-        await account.save()
-
-        sendEmail({
-            from: `Buildinvest <${env().buildinvest.emails.contact}>`,
-            to: account.email,
-            subject: 'Buildinvest - Nova senha',
-            template: 'forgotPassword',
-            context: { account, url: `http://${env().CLIENT_BASE_PATH}/resetpassword?t=${token}` }
-        })
-
-        response.json(Object.assign(constants.user.success.FORGOT_PASSWORD))
-    } catch (err) {
-        logger().error(err)
-
-        response.status(500).json(err.apicode ? err : constants.user.error.FORGOT_PASSWORD)
+    if (!account) {
+      throw constants.user.error.FORGOT_PASSWORD_MAIL
     }
+
+    const token = crypto.randomBytes(20).toString('hex')
+
+    account.reset_token = token
+    account.reset_expires = moment().add(1, 'h')
+
+    await account.save()
+
+    sendEmail({
+      from: `Buildinvest <${env().buildinvest.emails.contact}>`,
+      to: account.email,
+      subject: 'Buildinvest - Nova senha',
+      template: 'forgotPassword',
+      context: { account, url: `http://${env().CLIENT_BASE_PATH}/resetpassword?t=${token}` }
+    })
+
+    response.json(Object.assign(constants.user.success.FORGOT_PASSWORD))
+  } catch (err) {
+    logger().error(err)
+
+    response.status(500).json(err.apicode ? err : constants.user.error.FORGOT_PASSWORD)
+  }
 }
 
 /**
@@ -558,45 +558,45 @@ export const forgotPassword = async (request, response) => {
  *   }
  */
 export const resetPassword = async (request, response) => {
-    try {
-        const { body } = request
+  try {
+    const { body } = request
 
-        const account = await User.findOne({
-            where: {
-                reset_token: body.token
-            }
-        })
+    const account = await User.findOne({
+      where: {
+        reset_token: body.token
+      }
+    })
 
-        if (!account) {
-            throw constants.user.error.RESET_PASSWORD_TOKEN
-        }
-
-        const expired = moment().isAfter(account.reset_expires)
-
-        if (expired) {
-            throw constants.user.error.RESET_PASSWORD_EXPIRES
-        }
-
-        account.passsword = body.password
-        account.reset_token = null
-        account.reset_expires = null
-
-        await account.save()
-
-        sendEmail({
-            from: `Buildinvest <${env().buildinvest.emails.contact}>`,
-            to: account.email,
-            subject: 'Buildinvest - Nova senha',
-            template: 'resetPassword',
-            context: { account }
-        })
-
-        return response.json(constants.user.success.RESET_PASSWORD)
-    } catch (error) {
-        logger().error(error)
-
-        return response.status(500).json(error.apicode ? error : constants.user.error.RESET_PASSWORD)
+    if (!account) {
+      throw constants.user.error.RESET_PASSWORD_TOKEN
     }
+
+    const expired = moment().isAfter(account.reset_expires)
+
+    if (expired) {
+      throw constants.user.error.RESET_PASSWORD_EXPIRES
+    }
+
+    account.passsword = body.password
+    account.reset_token = null
+    account.reset_expires = null
+
+    await account.save()
+
+    sendEmail({
+      from: `Buildinvest <${env().buildinvest.emails.contact}>`,
+      to: account.email,
+      subject: 'Buildinvest - Nova senha',
+      template: 'resetPassword',
+      context: { account }
+    })
+
+    return response.json(constants.user.success.RESET_PASSWORD)
+  } catch (error) {
+    logger().error(error)
+
+    return response.status(500).json(error.apicode ? error : constants.user.error.RESET_PASSWORD)
+  }
 }
 
 /**
@@ -631,19 +631,19 @@ export const resetPassword = async (request, response) => {
  *     }
  */
 export const getProfiles = async (request, response) => {
-    try {
-        const profiles = await Profile.findAll({
-            where: {
-                active: true,
-                name: {
-                    [Sequelize.Op.not]: 'Admin'
-                }
-            }
-        })
+  try {
+    const profiles = await Profile.findAll({
+      where: {
+        active: true,
+        name: {
+          [Sequelize.Op.not]: 'Admin'
+        }
+      }
+    })
 
-        return response.json(profiles)
-    } catch (error) {
-        logger().error(error)
-        return response.status(500).json(error.apicode ? error : constants.user.error.NOT_FOUND)
-    }
+    return response.json(profiles)
+  } catch (error) {
+    logger().error(error)
+    return response.status(500).json(error.apicode ? error : constants.user.error.NOT_FOUND)
+  }
 }
