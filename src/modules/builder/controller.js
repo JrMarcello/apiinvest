@@ -51,6 +51,7 @@ export const getAll = async (request, response) => {
         active: true
       }
     })
+
     return response.json(builders)
   } catch (error) {
     logger().error(error)
