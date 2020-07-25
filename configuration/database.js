@@ -2,7 +2,7 @@ require('dotenv').config();
 
 const database = {
 
-	development: {
+    development: {
         host: 'buildinvest-db',
         environment: 'development',
         username: 'postgres',
@@ -23,9 +23,9 @@ const database = {
                 created_at: 'updated_at'
             }
         }
-	},
+    },
 
-	production: {
+    production: {
         environment: 'production',
         host: process.env.POSTGRES_HOST,
         username: process.env.POSTGRES_USER,

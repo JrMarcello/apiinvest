@@ -17,9 +17,9 @@ const schemas = {
 }
 
 export default {
-  getAll: [authenticate, acl.authorize, validate(schemas.getAll)],
+  getAll: [validate(schemas.getAll)],
   getAllAvaliables: [authenticate, acl.authorize, validate(schemas.getAllAvaliables)],
-  getById: [authenticate, acl.authorize, validate(schemas.validateID)],
+  getById: [validate(schemas.validateID)],
   getByBuilderId: [authenticate, acl.authorize, validate(schemas.validateID)],
   create: [authenticate, acl.authorize, validate(schemas.create)],
   update: [authenticate, acl.authorize, validate(schemas.update)],
