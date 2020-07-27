@@ -513,23 +513,6 @@ export const facebookLogin = async (request, response) => {
     account.facebook_access_token = body.accessToken
     await account.save()
 
-    // Obtendo o usuário para gerar o token
-    account = await User.findOne({
-      where: {
-        email: body.email
-      },
-      include: [
-        {
-          model: Profile,
-          as: 'profile'
-        },
-        {
-          model: Investor,
-          as: 'investor'
-        }
-      ]
-    })
-
     const token = getToken(account.toJSON())
 
     return response.json(Object.assign(constants.user.success.LOGIN, { token }))
@@ -624,23 +607,6 @@ export const googleLogin = async (request, response) => {
     body.avatar_url = body.profileObj ? body.profileObj.imageUrl : null
     account.google_access_token = body.accessToken
     await account.save()
-
-    // Obtendo o usuário para gerar o token
-    account = await User.findOne({
-      where: {
-        email: body.email
-      },
-      include: [
-        {
-          model: Profile,
-          as: 'profile'
-        },
-        {
-          model: Investor,
-          as: 'investor'
-        }
-      ]
-    })
 
     const token = getToken(account.toJSON())
 
