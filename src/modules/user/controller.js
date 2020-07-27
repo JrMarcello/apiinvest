@@ -188,7 +188,7 @@ export const create = async (request, response) => {
   try {
     const { body } = request
 
-    let user = await User.findOne({
+    const user = await User.findOne({
       where: {
         email: body.email
       }
@@ -199,16 +199,35 @@ export const create = async (request, response) => {
     }
 
     // Caso não seja informado o perfil, por padrão deve ser criada uma conta com perfil de investidor
-    if (!body.profile) {
+    if (!body.id_profile) {
       body.id_profile = 1
     }
 
     // TODO: Repassar encriptação para um serviço, encapsular
     body.password = bcrypt.hashSync(body.password, 10)
 
-    user = await User.create(body)
+    await User.create(body)
 
-    return response.json(Object.assign(constants.user.success.CREATE, { user }))
+    // Obtendo o usuário para gerar o token
+    const account = await User.findOne({
+      where: {
+        email: body.email
+      },
+      include: [
+        {
+          model: Profile,
+          as: 'profile'
+        },
+        {
+          model: Investor,
+          as: 'investor'
+        }
+      ]
+    })
+
+    const token = getToken(account.toJSON())
+
+    return response.json(Object.assign(constants.user.success.CREATE, { account, token }))
   } catch (error) {
     logger().error(error)
 
@@ -681,7 +700,7 @@ export const forgotPassword = async (request, response) => {
 
     await account.save()
 
-    await sendEmail({
+    sendEmail({
       from: `Buildinvest <${env().buildinvest.emails.contact}>`,
       to: account.email,
       subject: 'Buildinvest - Nova senha',
@@ -752,7 +771,7 @@ export const resetPassword = async (request, response) => {
 
     await account.save()
 
-    await sendEmail({
+    sendEmail({
       from: `Buildinvest <${env().buildinvest.emails.contact}>`,
       to: account.email,
       subject: 'Buildinvest - Nova senha',
