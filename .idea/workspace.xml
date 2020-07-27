@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="ab9965d5-8a86-459d-bdfa-02c23c1bfa4e" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/src/database/models/user.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/database/models/user.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/modules/user/controller.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/modules/user/controller.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/modules/user/routes.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/modules/user/routes.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/modules/user/validations.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/modules/user/validations.js" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectId" id="1f9eivi6cwZLrz8iiJTuCLAuM0v" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="node.js.detected.package.eslint" value="true" />
+    <property name="node.js.path.for.package.eslint" value="project" />
+    <property name="node.js.selected.package.eslint" value="(autodetect)" />
+    <property name="nodejs_package_manager_path" value="npm" />
+    <property name="prettierjs.PrettierConfiguration.Package" value="D:\BuildInvest\back-buildinvest\node_modules\prettier" />
+    <property name="settings.editor.selected.configurable" value="reference.settingsDialog.application.dockerMachine" />
+    <property name="ts.external.directory.path" value="C:\Program Files\JetBrains\WebStorm 2020.1.4\plugins\JavaScriptLanguage\jsLanguageServicesImpl\external" />
+  </component>
+  <component name="RunManager">
+    <configuration name="docker-compose.yml: Compose Deployment" type="docker-deploy" factoryName="docker-compose.yml" temporary="true">
+      <deployment type="docker-compose.yml">
+        <settings>
+          <option name="sourceFilePath" value="docker-compose.yml" />
+        </settings>
+      </deployment>
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Docker.docker-compose.yml: Compose Deployment" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="ab9965d5-8a86-459d-bdfa-02c23c1bfa4e" name="Default Changelist" comment="" />
+      <created>1595634865022</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1595634865022</updated>
+      <workItem from="1595634866366" duration="315000" />
+      <workItem from="1595636081335" duration="495000" />
+      <workItem from="1595636639519" duration="875000" />
+      <workItem from="1595637613103" duration="9972000" />
+      <workItem from="1595713301721" duration="3826000" />
+      <workItem from="1595815526283" duration="3839000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="2" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="361" y="76" key="#Docker" timestamp="1595637692867">
+      <screen x="0" y="0" width="1536" height="834" />
+    </state>
+    <state x="361" y="76" key="#Docker/0.0.1536.834@0.0.1536.834" timestamp="1595637692867" />
+    <state x="223" y="72" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1595637652178">
+      <screen x="0" y="0" width="1536" height="834" />
+    </state>
+    <state x="223" y="72" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1536.834@0.0.1536.834" timestamp="1595637652178" />
+    <state x="484" y="128" key="#docker-compose.yml:_Compose_Deployment" timestamp="1595637694070">
+      <screen x="0" y="0" width="1536" height="834" />
+    </state>
+    <state x="484" y="128" key="#docker-compose.yml:_Compose_Deployment/0.0.1536.834@0.0.1536.834" timestamp="1595637694070" />
+    <state x="548" y="172" key="FileChooserDialogImpl" timestamp="1595636911885">
+      <screen x="0" y="0" width="1536" height="834" />
+    </state>
+    <state x="548" y="172" key="FileChooserDialogImpl/0.0.1536.834@0.0.1536.834" timestamp="1595636911885" />
+    <state x="277" y="62" key="SettingsEditor" timestamp="1595637549008">
+      <screen x="0" y="0" width="1536" height="834" />
+    </state>
+    <state x="277" y="62" key="SettingsEditor/0.0.1536.834@0.0.1536.834" timestamp="1595637549008" />
+    <state x="623" y="227" width="672" height="678" key="search.everywhere.popup" timestamp="1595713797041">
+      <screen x="0" y="0" width="1920" height="1050" />
+    </state>
+    <state x="623" y="227" width="672" height="678" key="search.everywhere.popup/0.0.1920.1050@0.0.1920.1050" timestamp="1595713797041" />
+  </component>
+</project>
