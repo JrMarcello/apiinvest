@@ -16,8 +16,8 @@ export default () => {
 
   router.post(`${USER_BASE_PAH}`, validations.create, controller.create)
   router.post(`${USER_BASE_PAH}/login`, validations.login, controller.login)
-  router.post(`${USER_BASE_PAH}/login/facebook`, validations.facebookbSign, controller.login)
-  router.post(`${USER_BASE_PAH}/login/google`, validations.googleSign, controller.login)
+  router.post(`${USER_BASE_PAH}/login/facebook`, validations.facebookbSign, controller.facebookLogin)
+  router.post(`${USER_BASE_PAH}/login/google`, validations.googleSign, controller.googleLogin)
   router.post(`${USER_BASE_PAH}/forgotpassword`, validations.forgotPassword, controller.forgotPassword)
   router.put(`${USER_BASE_PAH}/resetpassword`, validations.resetPassword, controller.resetPassword)
 
