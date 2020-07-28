@@ -7,7 +7,7 @@
   "license": "ISC",
   "main": "./src/core/server.js",
   "scripts": {
-    "build": "docker-compose up -d --build && npm run build-db",
+    "build": "docker-compose up -d --build",
     "build-db": "chmod +x db/create-db.sh && ./db/create-db.sh",
     "rebuild": "docker rm buildinvest-api && docker rmi -f buildinvest-api && npm run build",
     "clear": "docker rm -f buildinvest-api buildinvest-db && docker rmi -f buildinvest-api && docker network prune -f && docker volume prune -f",
