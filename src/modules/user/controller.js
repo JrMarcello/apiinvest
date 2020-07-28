@@ -188,7 +188,7 @@ export const create = async (request, response) => {
   try {
     const { body } = request
 
-    let user = await User.findOne({
+    const user = await User.findOne({
       where: {
         email: body.email
       }
@@ -199,16 +199,35 @@ export const create = async (request, response) => {
     }
 
     // Caso não seja informado o perfil, por padrão deve ser criada uma conta com perfil de investidor
-    if (!body.profile) {
+    if (!body.id_profile) {
       body.id_profile = 1
     }
 
     // TODO: Repassar encriptação para um serviço, encapsular
     body.password = bcrypt.hashSync(body.password, 10)
 
-    user = await User.create(body)
+    await User.create(body)
 
-    return response.json(Object.assign(constants.user.success.CREATE, { user }))
+    // Obtendo o usuário para gerar o token
+    const account = await User.findOne({
+      where: {
+        email: body.email
+      },
+      include: [
+        {
+          model: Profile,
+          as: 'profile'
+        },
+        {
+          model: Investor,
+          as: 'investor'
+        }
+      ]
+    })
+
+    const token = getToken(account.toJSON())
+
+    return response.json(Object.assign(constants.user.success.CREATE, { account, token }))
   } catch (error) {
     logger().error(error)
 
@@ -411,6 +430,228 @@ export const login = async (request, response) => {
   }
 }
 
+/**
+ * @api {post} /user/login Login
+ * @apiName LoginUser
+ * @apiGroup User
+ * @apiVersion 1.0.0
+ *
+ * @apiParam {string} email User email
+ * @apiParam {string} password User password
+ *
+ * @apiParamExample {json} Request-Example:
+ *   {
+ *      "email": "marcello@mail.com",
+ *      "password": "123456"
+ *   }
+ *
+ * @apiSuccessExample Success-Response:
+ *   HTTP/1.1 200 OK
+ *   {
+ *      "code": "S0003",
+ *      "message": "Usuario logado",
+ *      "token": "eyJhbGciOiJIUzI1NiIsIdkadjJHJHKkjnbajbHBNAIKGMA"
+ *   }
+ *
+ * @apiErrorExample Error-Response:
+ *   HTTP/1.1 500 Internal Server Error
+ *   {
+ *      "code": 2505,
+ *      "message": "Email ou senha inválido"
+ *   }
+ */
+export const facebookLogin = async (request, response) => {
+  try {
+    const { body } = request
+
+    let account = await User.findOne({
+      where: {
+        id_facebook: body.userID
+      },
+      include: [
+        {
+          model: Profile,
+          as: 'profile'
+        },
+        {
+          model: Investor,
+          as: 'investor'
+        }
+      ]
+    })
+
+    if (!account) {
+      account = await User.findOne({
+        where: {
+          email: body.email
+        },
+        include: [
+          {
+            model: Profile,
+            as: 'profile'
+          },
+          {
+            model: Investor,
+            as: 'investor'
+          }
+        ]
+      })
+    }
+    body.id = undefined
+    if (!account) {
+      body.id_facebook = body.userID
+      body.facebook_access_token = body.accessToken
+      body.username = body.name
+      if (!body.profile) {
+        body.id_profile = 1
+      }
+      account = await User.create(body)
+    }
+
+    body.avatar_url = body.picture && body.picture.data ? body.picture.data.url : null
+    account.id_facebook = body.userID
+    account.facebook_access_token = body.accessToken
+    await account.save()
+
+    // Obtendo o usuário para gerar o token
+    account = await User.findOne({
+      where: {
+        email: body.email
+      },
+      include: [
+        {
+          model: Profile,
+          as: 'profile'
+        },
+        {
+          model: Investor,
+          as: 'investor'
+        }
+      ]
+    })
+
+    const token = getToken(account.toJSON())
+
+    return response.json(Object.assign(constants.user.success.LOGIN, { token }))
+  } catch (error) {
+    logger().error(error)
+
+    return response.status(500).json(error.apicode ? error : constants.user.error.LOGIN)
+  }
+}
+
+/**
+ * @api {post} /user/login Login
+ * @apiName LoginUser
+ * @apiGroup User
+ * @apiVersion 1.0.0
+ *
+ * @apiParam {string} email User email
+ * @apiParam {string} password User password
+ *
+ * @apiParamExample {json} Request-Example:
+ *   {
+ *      "email": "marcello@mail.com",
+ *      "password": "123456"
+ *   }
+ *
+ * @apiSuccessExample Success-Response:
+ *   HTTP/1.1 200 OK
+ *   {
+ *      "code": "S0003",
+ *      "message": "Usuario logado",
+ *      "token": "eyJhbGciOiJIUzI1NiIsIdkadjJHJHKkjnbajbHBNAIKGMA"
+ *   }
+ *
+ * @apiErrorExample Error-Response:
+ *   HTTP/1.1 500 Internal Server Error
+ *   {
+ *      "code": 2505,
+ *      "message": "Email ou senha inválido"
+ *   }
+ */
+export const googleLogin = async (request, response) => {
+  try {
+    const { body } = request
+
+    let account = await User.findOne({
+      where: {
+        id_google: body.googleId
+      },
+      include: [
+        {
+          model: Profile,
+          as: 'profile'
+        },
+        {
+          model: Investor,
+          as: 'investor'
+        }
+      ]
+    })
+
+    if (!account) {
+      account = await User.findOne({
+        where: {
+          email: body.profileObj ? body.profileObj.email : undefined
+        },
+        include: [
+          {
+            model: Profile,
+            as: 'profile'
+          },
+          {
+            model: Investor,
+            as: 'investor'
+          }
+        ]
+      })
+    }
+
+    if (!account) {
+      body.id_google = body.googleId
+      body.google_access_token = body.accessToken
+      body.email = body.profileObj ? body.profileObj.email : null
+      body.username = body.profileObj ? body.profileObj.name : null
+      body.avatar_url = body.profileObj ? body.profileObj.imageUrl : null
+      if (!body.profile) {
+        body.id_profile = 1
+      }
+      account = await User.create(body)
+    }
+
+    account.id_google = body.googleId
+    body.avatar_url = body.profileObj ? body.profileObj.imageUrl : null
+    account.google_access_token = body.accessToken
+    await account.save()
+
+    // Obtendo o usuário para gerar o token
+    account = await User.findOne({
+      where: {
+        email: body.email
+      },
+      include: [
+        {
+          model: Profile,
+          as: 'profile'
+        },
+        {
+          model: Investor,
+          as: 'investor'
+        }
+      ]
+    })
+
+    const token = getToken(account.toJSON())
+
+    return response.json(Object.assign(constants.user.success.LOGIN, { token }))
+  } catch (error) {
+    logger().error(error)
+
+    return response.status(500).json(error.apicode ? error : constants.user.error.LOGIN)
+  }
+}
+
 export const refreshToken = async (request, response) => {
   try {
     const header = request.header('Authorization')
@@ -493,7 +734,7 @@ export const forgotPassword = async (request, response) => {
 
     await account.save()
 
-    await sendEmail({
+    sendEmail({
       from: `Buildinvest <${env().buildinvest.emails.contact}>`,
       to: account.email,
       subject: 'Buildinvest - Nova senha',
@@ -564,7 +805,7 @@ export const resetPassword = async (request, response) => {
 
     await account.save()
 
-    await sendEmail({
+    sendEmail({
       from: `Buildinvest <${env().buildinvest.emails.contact}>`,
       to: account.email,
       subject: 'Buildinvest - Nova senha',

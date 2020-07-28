@@ -14,7 +14,9 @@ export default (sequelize, DataTypes) => {
       },
 
       id_facebook: DataTypes.STRING,
+      facebook_access_token: DataTypes.STRING,
       id_google: DataTypes.STRING,
+      google_access_token: DataTypes.STRING,
 
       email: {
         type: DataTypes.STRING,
@@ -23,12 +25,12 @@ export default (sequelize, DataTypes) => {
 
       username: {
         type: DataTypes.STRING,
-        allowNull: false
+        allowNull: true
       },
 
       password: {
         type: DataTypes.STRING,
-        allowNull: false
+        allowNull: true
       },
 
       avatar_url: DataTypes.STRING,

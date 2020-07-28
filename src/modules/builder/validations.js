@@ -31,7 +31,7 @@ const schemas = {
 
 export default {
   getAll: [authenticate, acl.authorize, validate(schemas.getAll)],
-  getById: [authenticate, acl.authorize, validate(schemas.validateID)],
+  getById: [validate(schemas.validateID)],
   getByUserId: [authenticate, acl.authorize, validate(schemas.validateID)],
   getAllBuildingsById: [authenticate, acl.authorize, validate(schemas.validateID)],
   create: [authenticate, acl.authorize, validate(schemas.create)],

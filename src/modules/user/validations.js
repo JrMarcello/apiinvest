@@ -48,8 +48,26 @@ const schemas = {
       errorMessage: 'Senha inválida'
     }
   },
-  facebookbSign: {},
-  googleSign: {},
+  facebookbSign: {
+    accessToken: {
+      isString: true,
+      errorMessage: 'Token de acesso inválido'
+    },
+    userID: {
+      isString: true,
+      errorMessage: 'userID acesso inválido'
+    }
+  },
+  googleSign: {
+    accessToken: {
+      isString: true,
+      errorMessage: 'Token de acesso inválido'
+    },
+    googleId: {
+      isString: true,
+      errorMessage: 'googleId acesso inválido'
+    }
+  },
   forgotPassword: {
     email: {
       isEmail: true,
