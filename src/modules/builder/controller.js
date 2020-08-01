@@ -223,7 +223,6 @@ export const getAllBuildingsById = async (request, response) => {
   try {
     const { user, params } = request
 
-    // TODO: Refatorar
     const id = user.id_profile === 3 ? params.id : user.builder.id
 
     const builder = await Builder.findByPk(id, {
@@ -298,7 +297,6 @@ export const getByUserId = async (request, response) => {
   try {
     const { user, params } = request
 
-    // TODO: Refatorar
     const id = user.id_profile === 3 ? params.id : user.id
 
     const builder = await Builder.findAll({
@@ -406,11 +404,6 @@ export const create = async (request, response) => {
   try {
     const { body, file } = request
 
-    // TODO: Refatorar
-    // if (user.id_profile !== 3) {
-    //   body.id_user = user.id
-    // }
-
     if (!body.builder || body.builder.length === 0) {
       throw constants.builder.error.REQUIRED
     } else if (!body.phones || body.phones.length === 0) {
@@ -500,11 +493,6 @@ export const update = async (request, response) => {
   try {
     const { body, file } = request
 
-    // TODO: Refatorar
-    // if (user.id_profile !== 3) {
-    //     body.id = user.builder.id
-    // }
-
     if (!body || body.length === 0) {
       throw constants.builder.error.INVALID_DATA
     } else if (!body.phones || body.phones.length === 0) {
@@ -513,9 +501,6 @@ export const update = async (request, response) => {
 
     const builder = JSON.parse(body.builder)
     const phones = JSON.parse(body.phones)
-
-    // TODO: Aidiconar verificação de id da construtora
-    // if (!builder.id) { }
 
     // 1. Atualizando a construtora
     const result = await Builder.findByPk(builder.id, {
@@ -636,7 +621,6 @@ export const remove = async (request, response) => {
   try {
     const { user, params } = request
 
-    // TODO: Refatorar
     const id = user.id_profile === 3 ? params.id : user.builder.id
 
     const builder = await Builder.findByPk(id)
@@ -686,9 +670,6 @@ export const remove = async (request, response) => {
 export const setLogo = async (request, response) => {
   try {
     const { params, file } = request
-
-    // TODO: Aidiconar verificação arquivo enviado
-    // if (!file) { }
 
     const builder = await Builder.findByPk(params.id)
 

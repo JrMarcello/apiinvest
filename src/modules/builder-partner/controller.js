@@ -48,7 +48,6 @@ export const getByBuilderId = async (request, response) => {
   try {
     const { user, params } = request
 
-    // TODO: Refatorar
     const id = user.id_profile === 3 ? params.idBuilder : user.builder.id
 
     const partners = await BuilderPartner.findAll({
@@ -133,7 +132,6 @@ export const create = async (request, response) => {
   try {
     const { params, user, body } = request
 
-    // TODO: Refatorar
     const id = user.id_profile === 3 ? params.idBuilder : user.builder.id
 
     const promises = []
@@ -190,7 +188,6 @@ export const remove = async (request, response) => {
   try {
     const { params, user, body } = request
 
-    // TODO: Refatorar
     const id = user.id_profile === 3 ? params.idBuilder : user.builder.id
 
     await BuilderPartner.destroy({

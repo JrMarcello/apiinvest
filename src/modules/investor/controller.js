@@ -1,18 +1,19 @@
 import { logger } from '../../common/utils'
 import { uploadFile } from '../../core/storage'
 import constants from '../../common/constants'
+import statuses from '../../common/statuses'
 
 // Models
 const {
-  Building,
-  Fundraising,
-  Investment,
-  Investor,
-  InvestorBankAccount,
-  InvestorDocument,
-  InvestorPhone,
-  BuildingImage,
-  Sequelize
+    Building,
+    Fundraising,
+    Investment,
+    Investor,
+    InvestorBankAccount,
+    InvestorDocument,
+    InvestorPhone,
+    BuildingImage,
+    Sequelize
 } = require('../../database/models')
 
 /**
@@ -49,19 +50,19 @@ const {
  *     }
  */
 export const getAll = async (request, response) => {
-  try {
-    const investors = await Investor.findAll({
-      where: {
-        active: true
-      }
-    })
+    try {
+        const investors = await Investor.findAll({
+            where: {
+                active: true
+            }
+        })
 
-    return response.json(investors)
-  } catch (error) {
-    logger().error(error)
+        return response.json(investors)
+    } catch (error) {
+        logger().error(error)
 
-    return response.status(500).json(error.apicode ? error : constants.investor.error.NOT_FOUND)
-  }
+        return response.status(500).json(error.apicode ? error : constants.investor.error.NOT_FOUND)
+    }
 }
 
 /**
@@ -129,21 +130,21 @@ export const getAll = async (request, response) => {
  *   }
  */
 export const getById = async (request, response) => {
-  try {
-    const { params } = request
+    try {
+        const { params } = request
 
-    const investor = await Investor.findByPk(params.id, {
-      where: {
-        active: true
-      }
-    })
+        const investor = await Investor.findByPk(params.id, {
+            where: {
+                active: true
+            }
+        })
 
-    return response.json(investor || {})
-  } catch (error) {
-    logger().error(error)
+        return response.json(investor || {})
+    } catch (error) {
+        logger().error(error)
 
-    return response.status(500).json(error.apicode ? error : constants.investor.error.NOT_FOUND)
-  }
+        return response.status(500).json(error.apicode ? error : constants.investor.error.NOT_FOUND)
+    }
 }
 
 /**
@@ -211,45 +212,37 @@ export const getById = async (request, response) => {
  *   }
  */
 export const getByUserId = async (request, response) => {
-  try {
-    const { user, params } = request
+    try {
+        const { user, params } = request
 
-    // TODO: Refatorar
-    const id = user.id_profile === 3 ? params.id : user.id
+        const id = user.id_profile === 3 ? params.id : user.id
 
-    // BDI-14: Necessário obter perfis não concluídos
-    // const investor = await Investor.findByPk(id, {
-    //     where: {
-    //         active: true
-    //     }
-    // })
+        const investor = await Investor.findOne({
+            where: {
+                id_user: id
+            },
+            include: [
+                {
+                    model: InvestorPhone,
+                    as: 'phones'
+                },
+                {
+                    model: InvestorBankAccount,
+                    as: 'accounts'
+                },
+                {
+                    model: Investment,
+                    as: 'investments'
+                }
+            ]
+        })
 
-    const investor = await Investor.findOne({
-      where: {
-        id_user: id
-      },
-      include: [
-        {
-          model: InvestorPhone,
-          as: 'phones'
-        },
-        {
-          model: InvestorBankAccount,
-          as: 'accounts'
-        },
-        {
-          model: Investment,
-          as: 'investments'
-        }
-      ]
-    })
+        return response.json(investor || {})
+    } catch (error) {
+        logger().error(error)
 
-    return response.json(investor || {})
-  } catch (error) {
-    logger().error(error)
-
-    return response.status(500).json(error.apicode ? error : constants.investor.error.NOT_FOUND)
-  }
+        return response.status(500).json(error.apicode ? error : constants.investor.error.NOT_FOUND)
+    }
 }
 
 /**
@@ -286,42 +279,39 @@ export const getByUserId = async (request, response) => {
  *     }
  */
 export const getAllInvestmentsById = async (request, response) => {
-  try {
-    const { user, params } = request
+    try {
+        const { user, params } = request
 
-    // TODO: Refatorar
-    const id = user.id_profile === 3 ? params.id : user.investor.id
+        const id = user.id_profile === 3 ? params.id : user.investor.id
 
-    // TODO Rever quais status bucar
-    // active: true
-    const investments = await Investment.findAll({
-      where: {
-        id_investor: id
-      },
-      include: [
-        {
-          model: Fundraising,
-          as: 'fundraising',
-          include: [
-            {
-              model: Building,
-              as: 'building',
-              include: {
-                model: BuildingImage,
-                as: 'images'
-              }
-            }
-          ]
-        }
-      ]
-    })
+        const investments = await Investment.findAll({
+            where: {
+                id_investor: id
+            },
+            include: [
+                {
+                    model: Fundraising,
+                    as: 'fundraising',
+                    include: [
+                        {
+                            model: Building,
+                            as: 'building',
+                            include: {
+                                model: BuildingImage,
+                                as: 'images'
+                            }
+                        }
+                    ]
+                }
+            ]
+        })
 
-    return response.json(investments)
-  } catch (error) {
-    logger().error(error)
+        return response.json(investments)
+    } catch (error) {
+        logger().error(error)
 
-    return response.status(500).json(error.apicode ? error : constants.investor.error.INVESTMENTS_NOT_FOUND)
-  }
+        return response.status(500).json(error.apicode ? error : constants.investor.error.INVESTMENTS_NOT_FOUND)
+    }
 }
 
 /**
@@ -349,27 +339,27 @@ export const getAllInvestmentsById = async (request, response) => {
  *     }
  */
 export const getInvestmentsCount = async (request, response) => {
-  try {
-    const { user, params } = request
+    try {
+        const { user, params } = request
 
-    // TODO: Refatorar
-    const id = user.id_profile === 3 ? params.id : user.investor.id
+        const id = user.id_profile === 3 ? params.id : user.investor.id
 
-    // TODO: Rever quais status buscar
-    // confirmed: true
-    // active: true
-    const quantity = await Investment.count({
-      where: {
-        id_investor: id
-      }
-    })
+        const quantity = await Investment.count({
+            where: {
+                id_investor: id,
 
-    return response.json({ count: quantity })
-  } catch (error) {
-    logger().error(error)
+                // TODO: Rever se é necessário obter todos os investimentos
+                //       ou apenas os confirmados
+                status: statuses.investment.CONFIRMED
+            }
+        })
 
-    return response.status(500).json(error.apicode ? error : constants.investor.error.INVESTMENTS_COUNT)
-  }
+        return response.json({ count: quantity })
+    } catch (error) {
+        logger().error(error)
+
+        return response.status(500).json(error.apicode ? error : constants.investor.error.INVESTMENTS_COUNT)
+    }
 }
 
 /**
@@ -397,27 +387,25 @@ export const getInvestmentsCount = async (request, response) => {
  *     }
  */
 export const getInvestedAmount = async (request, response) => {
-  try {
-    const { user, params } = request
+    try {
+        const { user, params } = request
 
-    // TODO: Refatorar
-    const id = user.id_profile === 3 ? params.id : user.investor.id
+        const id = user.id_profile === 3 ? params.id : user.investor.id
 
-    // TODO: Rever quais status buscar
-    // confirmed: true
-    // active: true
-    const amount = await Investment.sum('amount', {
-      where: {
-        id_investor: id
-      }
-    })
+        // TODO: Verificar se é necessário obter também os investimentos pendentes
+        const amount = await Investment.sum('amount', {
+            where: {
+                id_investor: id,
+                status: statuses.investment.CONFIRMED
+            }
+        })
 
-    return response.json({ amount })
-  } catch (error) {
-    logger().error(error)
+        return response.json({ amount })
+    } catch (error) {
+        logger().error(error)
 
-    return response.status(500).json(error.apicode ? error : constants.investor.error.INVESTED_AMOUNT)
-  }
+        return response.status(500).json(error.apicode ? error : constants.investor.error.INVESTED_AMOUNT)
+    }
 }
 
 /**
@@ -445,27 +433,24 @@ export const getInvestedAmount = async (request, response) => {
  *     }
  */
 export const getReceivedAmount = async (request, response) => {
-  try {
-    const { user, params } = request
+    try {
+        const { user, params } = request
 
-    // TODO: Refatorar
-    const id = user.id_profile === 3 ? params.id : user.investor.id
+        const id = user.id_profile === 3 ? params.id : user.investor.id
 
-    // TODO: Rever quais status buscar
-    // confirmed: true
-    // active: true
-    const amount = await Investment.sum('amount_returned', {
-      where: {
-        id_investor: id
-      }
-    })
+        const amount = await Investment.sum('amount_returned', {
+            where: {
+                id_investor: id,
+                status: statuses.investment.CONFIRMED
+            }
+        })
 
-    return response.json({ amount })
-  } catch (err) {
-    logger().error(err)
+        return response.json({ amount })
+    } catch (err) {
+        logger().error(err)
 
-    return response.status(500).json(err.apicode ? err : constants.investor.error.RECEIVED_AMOUNT)
-  }
+        return response.status(500).json(err.apicode ? err : constants.investor.error.RECEIVED_AMOUNT)
+    }
 }
 
 /**
@@ -493,33 +478,29 @@ export const getReceivedAmount = async (request, response) => {
  *     }
  */
 export const getProjectedAmount = async (request, response) => {
-  try {
-    // TODO: Apagar após rever regra
-    // response.json(await repository.getProjectedAmount(request.user.id_profile === 3 ? request.params.id : request.user.investor.id))
+    try {
 
-    const { user, params } = request
+        const { user, params } = request
 
-    // TODO: Refatorar
-    const id = user.id_profile === 3 ? params.id : user.investor.id
+        const id = user.id_profile === 3 ? params.id : user.investor.id
 
-    const investor = await Investor.findByPk(id, {
-      include: [
-        {
-          model: Investment,
-          as: 'investments'
-        }
-      ]
-    })
+        const investor = await Investor.findByPk(id, {
+            include: [
+                {
+                    model: Investment,
+                    as: 'investments'
+                }
+            ]
+        })
 
-    // TODO: Rever regra
-    const amount = investor.investments.reduce((sum, investment) => sum + parseFloat(investment.amount), 0)
+        const amount = investor.investments.reduce((sum, investment) => sum + parseFloat(investment.amount), 0)
 
-    return response.json({ amount })
-  } catch (error) {
-    logger().error(error)
+        return response.json({ amount })
+    } catch (error) {
+        logger().error(error)
 
-    return response.status(500).json(error.apicode ? error : constants.investor.error.PROJECTED_AMOUNT)
-  }
+        return response.status(500).json(error.apicode ? error : constants.investor.error.PROJECTED_AMOUNT)
+    }
 }
 
 /**
@@ -584,105 +565,93 @@ export const getProjectedAmount = async (request, response) => {
  *   }
  */
 export const create = async (request, response) => {
-  try {
-    const { user, body, files } = request
+    try {
+        const { user, body, files } = request
 
-    if (!body || body.length === 0 || !body.investor || body.investor.length === 0) {
-      throw constants.investor.error.INVALID_DATA
-    }
+        if (!body || body.length === 0 || !body.investor || body.investor.length === 0) {
+            throw constants.investor.error.INVALID_DATA
+        }
 
-    // DBI-14: Removendo as travas de dados bancários e documentos
-    // if (!body.phones || body.phones.length === 0) {
-    //     throw constants.investor.phone.error.REQUIRED
-    // } else if (!body.accounts || body.accounts.length === 0) {
-    //   throw constants.investor.bank_account.error.REQUIRED
-    // } else if (!files || files.length !== 3) {
-    //   throw constants.investor.document.error.REQUIRED
-    // }
+        const investor = JSON.parse(body.investor)
 
-    const investor = JSON.parse(body.investor)
+        investor.email = user.email
 
-    // TODO: Discutir se o e-mail do investidor será obtido do usuário ou através de outro método
-    investor.email = user.email
+        if (!body.phones || body.phones.length === 0 || !body.accounts || body.accounts.length === 0 || !files || files.length !== 3) {
+            investor.active = false
+        }
 
-    // BDI-14: O status do investidor só passará a ficar ativo após a conclusão de todas as informações
-    if (!body.phones || body.phones.length === 0 || !body.accounts || body.accounts.length === 0 || !files || files.length !== 3) {
-      investor.active = false
-    }
+        const phones = JSON.parse(body.phones)
 
-    const phones = JSON.parse(body.phones)
+        if (user.id_profile !== 3) {
+            investor.id_user = user.id
+        }
 
-    // TODO: Refatorar
-    if (user.id_profile !== 3) {
-      investor.id_user = user.id
-    }
+        // 1. Criar o investidor
+        const result = await Investor.create(investor)
 
-    // 1. Criar o investidor
-    const result = await Investor.create(investor)
+        // 2. Criar os telefones
+        let phone
+        let promises = []
 
-    // 2. Criar os telefones
-    let phone
-    let promises = []
+        phones.forEach(({ number }) => {
+            phone = {
+                id_investor: result.id,
+                number
+            }
 
-    phones.forEach(({ number }) => {
-      phone = {
-        id_investor: result.id,
-        number
-      }
-
-      promises.push(InvestorPhone.create(phone))
-    })
-
-    await Promise.all(promises)
-
-    // 3. Criar as contas bancárias
-    let accounts
-
-    if (body.accounts && body.accounts.length > 0) {
-      promises = []
-
-      accounts = JSON.parse(body.accounts)
-
-      accounts.forEach(account => {
-        account.id_investor = result.id
-
-        promises.push(InvestorBankAccount.create(account))
-      })
-
-      await Promise.all(promises)
-    }
-
-    // 4. Enviar os documentos
-    if (files && files.length === 3) {
-      promises = []
-
-      files.forEach(file => {
-        promises.push(uploadFile(file, `documents/${result.id}`, true))
-      })
-
-      const urls = await Promise.all(promises)
-
-      const documents = []
-
-      for (let index = 0; index < urls.length; index += 1) {
-        const url = urls[index]
-
-        documents.push({
-          id_investor: result.id,
-          url,
-          order: index
+            promises.push(InvestorPhone.create(phone))
         })
-      }
 
-      await InvestorDocument.bulkCreate(documents)
+        await Promise.all(promises)
+
+        // 3. Criar as contas bancárias
+        let accounts
+
+        if (body.accounts && body.accounts.length > 0) {
+            promises = []
+
+            accounts = JSON.parse(body.accounts)
+
+            accounts.forEach(account => {
+                account.id_investor = result.id
+
+                promises.push(InvestorBankAccount.create(account))
+            })
+
+            await Promise.all(promises)
+        }
+
+        // 4. Enviar os documentos
+        if (files && files.length === 3) {
+            promises = []
+
+            files.forEach(file => {
+                promises.push(uploadFile(file, `documents/${result.id}`, true))
+            })
+
+            const urls = await Promise.all(promises)
+
+            const documents = []
+
+            for (let index = 0; index < urls.length; index += 1) {
+                const url = urls[index]
+
+                documents.push({
+                    id_investor: result.id,
+                    url,
+                    order: index
+                })
+            }
+
+            await InvestorDocument.bulkCreate(documents)
+        }
+
+        return response.json(Object.assign(constants.investor.success.CREATE, { investor: result }))
+    } catch (error) {
+        logger().error(error)
+
+        return response.status(500).json(error.apicode ? error : constants.investor.error.CREATE)
     }
-
-    return response.json(Object.assign(constants.investor.success.CREATE, { investor: result }))
-  } catch (error) {
-    logger().error(error)
-
-    return response.status(500).json(error.apicode ? error : constants.investor.error.CREATE)
-  }
 }
 
 /**
@@ -722,158 +691,157 @@ export const create = async (request, response) => {
  *   }
  */
 export const update = async (request, response) => {
-  try {
-    const { user, body, files } = request
+    try {
+        const { user, body, files } = request
 
-    if (!body || body.length === 0) {
-      throw constants.investor.error.INVALID_DATA
-    }
-
-    const investor = JSON.parse(body.investor)
-
-    // BDI-14: O status do investidor só passará a ficar ativo após a conclusão de todas as informações
-    if (!body.phones || body.phones.length === 0 || !body.accounts || body.accounts.length === 0 || !files || files.length !== 3) {
-      investor.active = false
-    } else {
-      investor.active = true
-    }
-
-    const phones = JSON.parse(body.phones)
-
-    // TODO: Refatorar
-    if (user.id_profile !== 3) {
-      investor.id_user = user.id
-    }
-
-    // 1. Atualizar o investidor
-    const result = await Investor.findByPk(investor.id, {
-      include: [
-        {
-          model: InvestorPhone,
-          as: 'phones'
+        if (!body || body.length === 0) {
+            throw constants.investor.error.INVALID_DATA
         }
-      ]
-    })
 
-    if (result) {
-      // Atualizando apenas as propriedades definidas para atualizar
-      Object.keys(investor).forEach(key => {
-        if (investor[key] !== undefined) {
-          result[key] = investor[key]
-        }
-      })
+        const investor = JSON.parse(body.investor)
 
-      await result.save()
-    }
-
-    // 2. Criar os telefones
-    let promises
-
-    if (phones && phones.length > 0) {
-      promises = []
-
-      if (result.phones) {
-        const addedPhones = phones.filter(({ number: first }) => !result.phones.some(({ number: second }) => first === second))
-        const removedPhones = result.phones.filter(({ number: first }) => !phones.some(({ number: second }) => first === second))
-
-        // 2.1 Adicionando novos telefones
-        addedPhones.forEach(phone => {
-          phone = {
-            id_investor: result.id,
-            number: phone.number
-          }
-
-          promises.push(InvestorPhone.create(phone))
-        })
-
-        await Promise.all(promises)
-
-        // 2.2 Apagando números removidos
-        const ids = removedPhones.map(phone => phone.id)
-
-        if (ids.length > 0) {
-          await InvestorPhone.destroy({
-            where: {
-              [Sequelize.Op.and]: {
-                id_investor: result.id,
-                id: {
-                  [Sequelize.Op.or]: ids
-                }
-              }
-            }
-          })
-        }
-      } else {
-        phones.forEach(phone => {
-          phone = {
-            id_investor: result.id,
-            number: phone.number
-          }
-
-          promises.push(InvestorPhone.create(phone))
-        })
-      }
-    }
-
-    // 3. Atualizar contas bancárias
-    let accounts
-
-    if (body.accounts && body.accounts.length > 0) {
-      accounts = JSON.parse(body.accounts)
-
-      if (accounts.length > 0) {
-        promises = []
-
-        // 3.1 Obter conta atualmente cadastrada
-        const account = await InvestorBankAccount.findOne({
-          where: {
-            id_investor: result.id
-          }
-        })
-
-        if (account) {
-          account.agency = accounts[0].agency
-          account.account = accounts[0].account
-          account.bank_code = accounts[0].bank_code
-
-          await account.save()
+        if (!body.phones || body.phones.length === 0 || !body.accounts || body.accounts.length === 0 || !files || files.length !== 3) {
+            investor.active = false
         } else {
-          accounts[0].id_investor = result.id
-
-          await InvestorBankAccount.create(accounts[0])
+            investor.active = true
         }
-      }
-    }
 
-    // 4. Enviar os documentos
-    if (files && files.length === 3) {
-      promises = []
+        const phones = JSON.parse(body.phones)
 
-      files.forEach(file => {
-        promises.push(uploadFile(file, `documents/${result.id}`, true))
-      })
+        if (user.id_profile !== 3) {
+            investor.id_user = user.id
+        }
 
-      const urls = await Promise.all(promises)
-
-      const documents = []
-
-      for (let index = 0; index < urls.length; index += 1) {
-        const url = urls[index]
-
-        documents.push({
-          id_investor: result.id,
-          url,
-          order: index
+        // 1. Atualizar o investidor
+        const result = await Investor.findByPk(investor.id, {
+            include: [
+                {
+                    model: InvestorPhone,
+                    as: 'phones'
+                }
+            ]
         })
-      }
 
-      await InvestorDocument.bulkCreate(documents)
+        if (result) {
+            
+            // Atualizando apenas as propriedades definidas para atualizar
+            Object.keys(investor).forEach(key => {
+                if (investor[key] !== undefined) {
+                    result[key] = investor[key]
+                }
+            })
+
+            await result.save()
+        }
+
+        // 2. Criar os telefones
+        let promises
+
+        if (phones && phones.length > 0) {
+            promises = []
+
+            if (result.phones) {
+                const addedPhones = phones.filter(({ number: first }) => !result.phones.some(({ number: second }) => first === second))
+                const removedPhones = result.phones.filter(({ number: first }) => !phones.some(({ number: second }) => first === second))
+
+                // 2.1 Adicionando novos telefones
+                addedPhones.forEach(phone => {
+                    phone = {
+                        id_investor: result.id,
+                        number: phone.number
+                    }
+
+                    promises.push(InvestorPhone.create(phone))
+                })
+
+                await Promise.all(promises)
+
+                // 2.2 Apagando números removidos
+                const ids = removedPhones.map(phone => phone.id)
+
+                if (ids.length > 0) {
+                    await InvestorPhone.destroy({
+                        where: {
+                            [Sequelize.Op.and]: {
+                                id_investor: result.id,
+                                id: {
+                                    [Sequelize.Op.or]: ids
+                                }
+                            }
+                        }
+                    })
+                }
+            } else {
+                phones.forEach(phone => {
+                    phone = {
+                        id_investor: result.id,
+                        number: phone.number
+                    }
+
+                    promises.push(InvestorPhone.create(phone))
+                })
+            }
+        }
+
+        // 3. Atualizar contas bancárias
+        let accounts
+
+        if (body.accounts && body.accounts.length > 0) {
+            accounts = JSON.parse(body.accounts)
+
+            if (accounts.length > 0) {
+                promises = []
+
+                // 3.1 Obter conta atualmente cadastrada
+                const account = await InvestorBankAccount.findOne({
+                    where: {
+                        id_investor: result.id
+                    }
+                })
+
+                if (account) {
+                    account.agency = accounts[0].agency
+                    account.account = accounts[0].account
+                    account.bank_code = accounts[0].bank_code
+
+                    await account.save()
+                } else {
+                    accounts[0].id_investor = result.id
+
+                    await InvestorBankAccount.create(accounts[0])
+                }
+            }
+        }
+
+        // 4. Enviar os documentos
+        if (files && files.length === 3) {
+            promises = []
+
+            files.forEach(file => {
+                promises.push(uploadFile(file, `documents/${result.id}`, true))
+            })
+
+            const urls = await Promise.all(promises)
+
+            const documents = []
+
+            for (let index = 0; index < urls.length; index += 1) {
+                const url = urls[index]
+
+                documents.push({
+                    id_investor: result.id,
+                    url,
+                    order: index
+                })
+            }
+
+            await InvestorDocument.bulkCreate(documents)
+        }
+
+        return response.json(Object.assign(constants.investor.success.UPDATE, { investor: result }))
+    } catch (error) {
+        logger().error(error)
+
+        return response.status(500).json(error.apicode ? error : constants.investor.error.UPDATE)
     }
-
-    return response.json(Object.assign(constants.investor.success.UPDATE, { investor: result }))
-  } catch (error) {
-    logger().error(error)
-
-    return response.status(500).json(error.apicode ? error : constants.investor.error.UPDATE)
-  }
 }
