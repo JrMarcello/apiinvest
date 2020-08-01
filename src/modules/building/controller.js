@@ -3,7 +3,7 @@ import constants from '../../common/constants'
 import statuses from '../../common/statuses'
 
 // Models
-const { Building, BuildingImage, Fundraising, Sequelize } = require('../../database/models')
+const { Building, BuildingImage, Fundraising, Investment, Sequelize } = require('../../database/models')
 
 /**
  * @api {get} /building Get all
@@ -201,7 +201,13 @@ export const getById = async (request, response) => {
                 },
                 {
                     model: Fundraising,
-                    as: 'fundraisings'
+                    as: 'fundraisings',
+                    include: [
+                        {
+                            model: Investment,
+                            as: 'investments'
+                        }
+                    ]
                 }
             ]
         })

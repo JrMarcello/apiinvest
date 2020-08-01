@@ -333,6 +333,7 @@ export const create = async (request, response) => {
 
         body.investment_percentage = 0.05
         body.id_custodian = custodian.id
+        body.status = statuses.fundraising.OPENED
 
         const fundraising = await Fundraising.create(body)
 

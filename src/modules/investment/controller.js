@@ -368,14 +368,16 @@ export const create = async (request, response) => {
 
         // 2. Validar o levantamento de recursos
         const fundraising = await Fundraising.findByPk(body.id_fundraising)
-
-        if (!fundraising || body.amount < fundraising.investment_min_value) {
+        
+        if (!fundraising || Number(body.amount) < fundraising.investment_min_value) {
             throw constants.investment.error.MIN_VALUE
         }
 
         // TODO: Adicionar regras validadas no frontend (two-way)
 
         // 4. Criar o investimento
+        body.status = statuses.investment.PENDING
+
         const investment = await Investment.create(body)
 
         // 5. Salvar as configurações adotadas
@@ -529,6 +531,11 @@ export const confirm = async (request, response) => {
         })
 
         if (colleted >= minimum) {
+
+            // Não é necessário verificar no schedule se a captação atingiu o mínimo ou o valor esperado.
+            // Esta condição já faz a verificação e atualiza o status da captação.
+            fundraising.status = statuses.fundraising.CONFIRMED
+
             const investments = await Investment.findAll({
                 where: {
                     id_fundraising: fundraising.id
@@ -542,6 +549,7 @@ export const confirm = async (request, response) => {
             })
 
             investments.forEach(element => {
+
                 const { investor } = element
 
                 sendEmail({
