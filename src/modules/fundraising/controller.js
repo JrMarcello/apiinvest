@@ -3,7 +3,7 @@ import constants from '../../common/constants'
 import statuses from '../../common/statuses'
 
 // Models
-const { Fundraising, Investment, Investor, User, Custodian } = require('../../database/models')
+const { Building, Builder, Fundraising, Investment, Investor, User, Custodian, Sequelize } = require('../../database/models')
 
 /**
  * @api {get} /fundraising Get all
@@ -204,6 +204,157 @@ export const getAmountRaised = async (request, response) => {
         logger().error(error)
 
         return response.status(500).json(error.apicode ? error : constants.fundraising.error.AMOUNT_RAISED)
+    }
+}
+
+export const getAllClosed = async (request, response) => {
+    try {
+
+        // Nome da obra
+        // Nome da empresa
+        // CNPJ
+        // Data de encerramento
+        // Valor captado
+        // Último relatório
+
+        const fundraisings = await Fundraising.findAll({
+            where: {
+                status: statuses.fundraising.CLOSED
+            },
+            include: [
+                {
+                    model: Building,
+                    as: 'building',
+                    attributes: [
+                        'name',
+                        'cnpj'
+                    ],
+                    include: [
+                        {
+                            model: Builder,
+                            as: 'builder',
+                            attributes: [
+                                'company_name',
+                                'cnpj'
+                            ]
+                        }
+                    ]
+                },
+                {
+                    model: Investment,
+                    as: 'investments',
+                    attributes: [
+                        'amount'
+                    ]
+                }
+            ],
+            attributes: [
+                'final_date'
+            ]
+        })
+
+        // Organizando dados
+        let result = []
+
+        fundraisings.forEach(fundraising => {
+
+            const captured = fundraising.investments.reduce((previous, current) => Number(previous) + Number(current['amount']), 0)
+
+            result.push({
+                building_name: fundraising.building.name,
+                building_cnpj: fundraising.building.cnpj,
+                builder_name: fundraising.building.builder.company_name,
+                builder_cnpj: fundraising.building.builder.cnpj,
+                final_date: fundraising.final_date,
+                captured_amount: captured
+            })
+        });
+
+        return response.json(result)
+    } catch (error) {
+        logger().error(error)
+
+        return response.status(500).json(error.apicode ? error : constants.fundraising.error.NOT_FOUND)
+    }
+}
+
+export const getAllOpened = async (request, response) => {
+    try {
+
+        // Nome da obra 
+        // Detalhes
+        // Investimento mínimo
+        // Tempo de retorno
+        // Valor já captado
+        // Valor alvo
+        // Status
+
+        // Número de investidores atual
+        // Rentabilidade a.a
+
+        const fundraisings = await Fundraising.findAll({
+            where: {
+                status: {
+                    [Sequelize.Op.or]: [
+                        statuses.fundraising.OPENED,
+                        statuses.fundraising.CONFIRMED
+                    ]
+                }
+            },
+            include: [
+                {
+                    model: Building,
+                    as: 'building',
+                    attributes: [
+                        'name',
+                        'description'
+                    ]
+                },
+                {
+                    model: Investment,
+                    as: 'investments',
+                    attributes: [
+                        'amount'
+                    ]
+                }
+            ],
+            attributes: [
+                'investment_min_value',
+                'return_date',
+                'amount',
+                'status'
+            ]
+        })
+
+        // Organizando dados
+        let result = []
+
+        fundraisings.forEach(fundraising => {
+
+            const captured = fundraising.investments.reduce((previous, current) => Number(previous) + Number(current['amount']), 0)
+
+            if (fundraising.status === statuses.fundraising.OPENED || (fundraising.status === statuses.fundraising.CONFIRMED && fundraising.amount > captured)) {
+                
+                result.push({
+                    building_name: fundraising.building.name,
+                    building_details: fundraising.building.description,
+                    minimum_investment: fundraising.investment_min_value,
+                    return_date: fundraising.return_date,
+                    captured_amount: captured,
+                    target_amount: fundraising.amount,
+                    status: fundraising.status,
+
+                    // TODO: Realizar cálculo após task de obter valores corretos
+                    profitability: 12.68
+                })
+            }
+        });
+
+        return response.json(result)
+    } catch (error) {
+        logger().error(error)
+
+        return response.status(500).json(error.apicode ? error : constants.fundraising.error.NOT_FOUND)
     }
 }
 
