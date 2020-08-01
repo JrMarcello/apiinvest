@@ -37,16 +37,15 @@ const { Building, Builder, Fundraising, Investment, Investor, User, Custodian, S
  *     }
  */
 export const getAll = async (request, response) => {
-    try {
+  try {
+    const fundraisings = await Fundraising.findAll()
 
-        const fundraisings = await Fundraising.findAll()
+    return response.json(fundraisings)
+  } catch (error) {
+    logger().error(error)
 
-        return response.json(fundraisings)
-    } catch (error) {
-        logger().error(error)
-
-        return response.status(500).json(error.apicode ? error : constants.fundraising.error.NOT_FOUND)
-    }
+    return response.status(500).json(error.apicode ? error : constants.fundraising.error.NOT_FOUND)
+  }
 }
 
 /**
@@ -87,17 +86,17 @@ export const getAll = async (request, response) => {
  *   }
  */
 export const getById = async (request, response) => {
-    try {
-        const { params } = request
+  try {
+    const { params } = request
 
-        const fundraising = await Fundraising.findByPk(params.id)
+    const fundraising = await Fundraising.findByPk(params.id)
 
-        return response.json(fundraising || {})
-    } catch (error) {
-        logger().error(error)
+    return response.json(fundraising || {})
+  } catch (error) {
+    logger().error(error)
 
-        return response.status(500).json(error.apicode ? error : constants.fundraising.error.NOT_FOUND)
-    }
+    return response.status(500).json(error.apicode ? error : constants.fundraising.error.NOT_FOUND)
+  }
 }
 
 /**
@@ -138,33 +137,33 @@ export const getById = async (request, response) => {
  *     }
  */
 export const getByBuildingId = async (request, response) => {
-    try {
-        const { params } = request
+  try {
+    const { params } = request
 
-        const fundraisings = await Fundraising.findAll({
-            where: {
-                id_building: params.idBuilding
-            },
-            include: [
-                {
-                    model: Investment,
-                    as: 'investments',
-                    include: [
-                        {
-                            model: Investor,
-                            as: 'investor'
-                        }
-                    ]
-                }
-            ]
-        })
+    const fundraisings = await Fundraising.findAll({
+      where: {
+        id_building: params.idBuilding
+      },
+      include: [
+        {
+          model: Investment,
+          as: 'investments',
+          include: [
+            {
+              model: Investor,
+              as: 'investor'
+            }
+          ]
+        }
+      ]
+    })
 
-        return response.json(fundraisings)
-    } catch (error) {
-        logger().error(error)
+    return response.json(fundraisings)
+  } catch (error) {
+    logger().error(error)
 
-        return response.status(500).json(error.apicode ? error : constants.fundraising.error.NOT_FOUND)
-    }
+    return response.status(500).json(error.apicode ? error : constants.fundraising.error.NOT_FOUND)
+  }
 }
 
 /**
@@ -189,173 +188,148 @@ export const getByBuildingId = async (request, response) => {
  *   }
  */
 export const getAmountRaised = async (request, response) => {
-    try {
-        const { params } = request
+  try {
+    const { params } = request
 
-        const amount = await Investment.sum('amount', {
-            where: {
-                id_fundraising: params.id,
-                status: statuses.investment.CONFIRMED,
-            }
-        })
+    const amount = await Investment.sum('amount', {
+      where: {
+        id_fundraising: params.id,
+        status: statuses.investment.CONFIRMED
+      }
+    })
 
-        return response.json({ amount })
-    } catch (error) {
-        logger().error(error)
+    return response.json({ amount })
+  } catch (error) {
+    logger().error(error)
 
-        return response.status(500).json(error.apicode ? error : constants.fundraising.error.AMOUNT_RAISED)
-    }
+    return response.status(500).json(error.apicode ? error : constants.fundraising.error.AMOUNT_RAISED)
+  }
 }
 
 export const getAllClosed = async (request, response) => {
-    try {
+  try {
+    // Nome da obra
+    // Nome da empresa
+    // CNPJ
+    // Data de encerramento
+    // Valor captado
+    // Último relatório
 
-        // Nome da obra
-        // Nome da empresa
-        // CNPJ
-        // Data de encerramento
-        // Valor captado
-        // Último relatório
+    const fundraisings = await Fundraising.findAll({
+      where: {
+        status: statuses.fundraising.CLOSED
+      },
+      include: [
+        {
+          model: Building,
+          as: 'building',
+          attributes: ['name', 'cnpj'],
+          include: [
+            {
+              model: Builder,
+              as: 'builder',
+              attributes: ['company_name', 'cnpj']
+            }
+          ]
+        },
+        {
+          model: Investment,
+          as: 'investments',
+          attributes: ['amount']
+        }
+      ],
+      attributes: ['final_date']
+    })
 
-        const fundraisings = await Fundraising.findAll({
-            where: {
-                status: statuses.fundraising.CLOSED
-            },
-            include: [
-                {
-                    model: Building,
-                    as: 'building',
-                    attributes: [
-                        'name',
-                        'cnpj'
-                    ],
-                    include: [
-                        {
-                            model: Builder,
-                            as: 'builder',
-                            attributes: [
-                                'company_name',
-                                'cnpj'
-                            ]
-                        }
-                    ]
-                },
-                {
-                    model: Investment,
-                    as: 'investments',
-                    attributes: [
-                        'amount'
-                    ]
-                }
-            ],
-            attributes: [
-                'final_date'
-            ]
-        })
+    // Organizando dados
+    const result = []
 
-        // Organizando dados
-        let result = []
+    fundraisings.forEach(fundraising => {
+      const captured = fundraising.investments.reduce((previous, current) => Number(previous) + Number(current.amount), 0)
 
-        fundraisings.forEach(fundraising => {
+      result.push({
+        building_name: fundraising.building.name,
+        building_cnpj: fundraising.building.cnpj,
+        builder_name: fundraising.building.builder.company_name,
+        builder_cnpj: fundraising.building.builder.cnpj,
+        final_date: fundraising.final_date,
+        captured_amount: captured
+      })
+    })
 
-            const captured = fundraising.investments.reduce((previous, current) => Number(previous) + Number(current['amount']), 0)
+    return response.json(result)
+  } catch (error) {
+    logger().error(error)
 
-            result.push({
-                building_name: fundraising.building.name,
-                building_cnpj: fundraising.building.cnpj,
-                builder_name: fundraising.building.builder.company_name,
-                builder_cnpj: fundraising.building.builder.cnpj,
-                final_date: fundraising.final_date,
-                captured_amount: captured
-            })
-        });
-
-        return response.json(result)
-    } catch (error) {
-        logger().error(error)
-
-        return response.status(500).json(error.apicode ? error : constants.fundraising.error.NOT_FOUND)
-    }
+    return response.status(500).json(error.apicode ? error : constants.fundraising.error.NOT_FOUND)
+  }
 }
 
 export const getAllOpened = async (request, response) => {
-    try {
+  try {
+    // Nome da obra
+    // Detalhes
+    // Investimento mínimo
+    // Tempo de retorno
+    // Valor já captado
+    // Valor alvo
+    // Status
 
-        // Nome da obra 
-        // Detalhes
-        // Investimento mínimo
-        // Tempo de retorno
-        // Valor já captado
-        // Valor alvo
-        // Status
+    // Número de investidores atual
+    // Rentabilidade a.a
 
-        // Número de investidores atual
-        // Rentabilidade a.a
+    const fundraisings = await Fundraising.findAll({
+      where: {
+        status: {
+          [Sequelize.Op.or]: [statuses.fundraising.OPENED, statuses.fundraising.CONFIRMED]
+        }
+      },
+      include: [
+        {
+          model: Building,
+          as: 'building',
+          attributes: ['name', 'description']
+        },
+        {
+          model: Investment,
+          as: 'investments',
+          attributes: ['amount']
+        }
+      ],
+      attributes: ['investment_min_value', 'return_date', 'amount', 'status']
+    })
 
-        const fundraisings = await Fundraising.findAll({
-            where: {
-                status: {
-                    [Sequelize.Op.or]: [
-                        statuses.fundraising.OPENED,
-                        statuses.fundraising.CONFIRMED
-                    ]
-                }
-            },
-            include: [
-                {
-                    model: Building,
-                    as: 'building',
-                    attributes: [
-                        'name',
-                        'description'
-                    ]
-                },
-                {
-                    model: Investment,
-                    as: 'investments',
-                    attributes: [
-                        'amount'
-                    ]
-                }
-            ],
-            attributes: [
-                'investment_min_value',
-                'return_date',
-                'amount',
-                'status'
-            ]
+    // Organizando dados
+    const result = []
+
+    fundraisings.forEach(fundraising => {
+      const captured = fundraising.investments.reduce((previous, current) => Number(previous) + Number(current.amount), 0)
+
+      if (
+        fundraising.status === statuses.fundraising.OPENED ||
+        (fundraising.status === statuses.fundraising.CONFIRMED && fundraising.amount > captured)
+      ) {
+        result.push({
+          building_name: fundraising.building.name,
+          building_details: fundraising.building.description,
+          minimum_investment: fundraising.investment_min_value,
+          return_date: fundraising.return_date,
+          captured_amount: captured,
+          target_amount: fundraising.amount,
+          status: fundraising.status,
+
+          // TODO: Realizar cálculo após task de obter valores corretos
+          profitability: 12.68
         })
+      }
+    })
 
-        // Organizando dados
-        let result = []
+    return response.json(result)
+  } catch (error) {
+    logger().error(error)
 
-        fundraisings.forEach(fundraising => {
-
-            const captured = fundraising.investments.reduce((previous, current) => Number(previous) + Number(current['amount']), 0)
-
-            if (fundraising.status === statuses.fundraising.OPENED || (fundraising.status === statuses.fundraising.CONFIRMED && fundraising.amount > captured)) {
-                
-                result.push({
-                    building_name: fundraising.building.name,
-                    building_details: fundraising.building.description,
-                    minimum_investment: fundraising.investment_min_value,
-                    return_date: fundraising.return_date,
-                    captured_amount: captured,
-                    target_amount: fundraising.amount,
-                    status: fundraising.status,
-
-                    // TODO: Realizar cálculo após task de obter valores corretos
-                    profitability: 12.68
-                })
-            }
-        });
-
-        return response.json(result)
-    } catch (error) {
-        logger().error(error)
-
-        return response.status(500).json(error.apicode ? error : constants.fundraising.error.NOT_FOUND)
-    }
+    return response.status(500).json(error.apicode ? error : constants.fundraising.error.NOT_FOUND)
+  }
 }
 
 /**
@@ -389,33 +363,33 @@ export const getAllOpened = async (request, response) => {
  *   }
  */
 export const getInvestorsByFundraisingId = async (request, response) => {
-    try {
-        const { params } = request
+  try {
+    const { params } = request
 
-        const investors = await Investment.findAll({
-            where: {
-                id_fundraising: params.id
-            },
-            include: [
-                {
-                    model: Investor,
-                    as: 'investor',
-                    include: [
-                        {
-                            model: User,
-                            as: 'user'
-                        }
-                    ]
-                }
-            ]
-        })
+    const investors = await Investment.findAll({
+      where: {
+        id_fundraising: params.id
+      },
+      include: [
+        {
+          model: Investor,
+          as: 'investor',
+          include: [
+            {
+              model: User,
+              as: 'user'
+            }
+          ]
+        }
+      ]
+    })
 
-        return response.json(investors)
-    } catch (error) {
-        logger().error(error)
+    return response.json(investors)
+  } catch (error) {
+    logger().error(error)
 
-        return response.status(500).json(error.apicode ? error : constants.fundraising.error.INVESTORS)
-    }
+    return response.status(500).json(error.apicode ? error : constants.fundraising.error.INVESTORS)
+  }
 }
 
 /**
@@ -472,28 +446,28 @@ export const getInvestorsByFundraisingId = async (request, response) => {
  *   }
  */
 export const create = async (request, response) => {
-    try {
-        const { body } = request
+  try {
+    const { body } = request
 
-        // O valor total da captação não deve ultrapassar de R$5.000.000,00
-        if (body.amount > 500000) {
-            return response.status(400).json(constants.fundraising)
-        }
-
-        const custodian = await Custodian.findOne({})
-
-        body.investment_percentage = 0.05
-        body.id_custodian = custodian.id
-        body.status = statuses.fundraising.OPENED
-
-        const fundraising = await Fundraising.create(body)
-
-        return response.json(Object.assign(constants.fundraising.success.CREATE, { fundraising }))
-    } catch (error) {
-        logger().error(error)
-
-        return response.status(500).json(error.apicode ? error : constants.fundraising.error.CREATE)
+    // O valor total da captação não deve ultrapassar de R$5.000.000,00
+    if (body.amount > 500000) {
+      return response.status(400).json(constants.fundraising)
     }
+
+    const custodian = await Custodian.findOne({})
+
+    body.investment_percentage = 0.05
+    body.id_custodian = custodian.id
+    body.status = statuses.fundraising.OPENED
+
+    const fundraising = await Fundraising.create(body)
+
+    return response.json(Object.assign(constants.fundraising.success.CREATE, { fundraising }))
+  } catch (error) {
+    logger().error(error)
+
+    return response.status(500).json(error.apicode ? error : constants.fundraising.error.CREATE)
+  }
 }
 
 /**
@@ -533,29 +507,28 @@ export const create = async (request, response) => {
  *   }
  */
 export const update = async (request, response) => {
-    try {
-        const { body } = request
+  try {
+    const { body } = request
 
-        const fundraising = await Fundraising.findByPk(body.id)
+    const fundraising = await Fundraising.findByPk(body.id)
 
-        if (fundraising) {
-
-            // Atualizando apenas as propriedades definidas para atualizar
-            Object.keys(body).forEach(key => {
-                if (body[key] !== undefined) {
-                    fundraising[key] = body[key]
-                }
-            })
-
-            await fundraising.save()
+    if (fundraising) {
+      // Atualizando apenas as propriedades definidas para atualizar
+      Object.keys(body).forEach(key => {
+        if (body[key] !== undefined) {
+          fundraising[key] = body[key]
         }
+      })
 
-        return response.json(constants.fundraising.success.UPDATE)
-    } catch (error) {
-        logger().error(error)
-
-        return response.status(500).json(error.apicode ? error : constants.fundraising.error.UPDATE)
+      await fundraising.save()
     }
+
+    return response.json(constants.fundraising.success.UPDATE)
+  } catch (error) {
+    logger().error(error)
+
+    return response.status(500).json(error.apicode ? error : constants.fundraising.error.UPDATE)
+  }
 }
 
 /**
@@ -586,23 +559,23 @@ export const update = async (request, response) => {
  *   }
  */
 export const finish = async (request, response) => {
-    try {
-        const { params } = request
+  try {
+    const { params } = request
 
-        const fundraising = await Fundraising.findByPk(params.id)
+    const fundraising = await Fundraising.findByPk(params.id)
 
-        if (fundraising) {
-            fundraising.status = statuses.fundraising.CLOSED
+    if (fundraising) {
+      fundraising.status = statuses.fundraising.CLOSED
 
-            await fundraising.save()
-        }
-
-        return response.json(constants.fundraising.success.FINISH)
-    } catch (err) {
-        logger().error(err)
-
-        return response.status(500).json(err.apicode ? err : constants.fundraising.error.FINISH)
+      await fundraising.save()
     }
+
+    return response.json(constants.fundraising.success.FINISH)
+  } catch (err) {
+    logger().error(err)
+
+    return response.status(500).json(err.apicode ? err : constants.fundraising.error.FINISH)
+  }
 }
 
 /**
@@ -633,21 +606,21 @@ export const finish = async (request, response) => {
  *   }
  */
 export const remove = async (request, response) => {
-    try {
-        const { params } = request
+  try {
+    const { params } = request
 
-        const fundraising = await Fundraising.findByPk(params.id)
+    const fundraising = await Fundraising.findByPk(params.id)
 
-        if (fundraising) {
-            fundraising.active = false
+    if (fundraising) {
+      fundraising.active = false
 
-            await fundraising.save()
-        }
-
-        return response.json(constants.fundraising.success.REMOVE)
-    } catch (error) {
-        logger().error(error)
-
-        return response.status(500).json(error.apicode ? error : constants.fundraising.error.REMOVE)
+      await fundraising.save()
     }
+
+    return response.json(constants.fundraising.success.REMOVE)
+  } catch (error) {
+    logger().error(error)
+
+    return response.status(500).json(error.apicode ? error : constants.fundraising.error.REMOVE)
+  }
 }

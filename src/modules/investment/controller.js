@@ -38,15 +38,15 @@ const { Building, Investment, Investor, Fundraising, RequirementsHistory, Sequel
  *     }
  */
 export const getAll = async (request, response) => {
-    try {
-        const investments = await Investment.findAll({})
+  try {
+    const investments = await Investment.findAll({})
 
-        return response.json(investments)
-    } catch (error) {
-        logger().error(error)
+    return response.json(investments)
+  } catch (error) {
+    logger().error(error)
 
-        return response.status(500).json(error.apicode ? error : constants.investment.error.NOT_FOUND)
-    }
+    return response.status(500).json(error.apicode ? error : constants.investment.error.NOT_FOUND)
+  }
 }
 
 /**
@@ -85,21 +85,17 @@ export const getAll = async (request, response) => {
  *   }
  */
 export const getById = async (request, response) => {
-    try {
-        const { params, user } = request
+  try {
+    const { params } = request
 
-        if (user.id_profile !== 3) {
-            where.id_investor = user.investor.id
-        }
+    const investment = await Investment.findByPk(params.id)
 
-        const investment = await Investment.findByPk(params.id)
+    return response.json(investment || {})
+  } catch (error) {
+    logger().error(error)
 
-        return response.json(investment || {})
-    } catch (error) {
-        logger().error(error)
-
-        return response.status(500).json(error.apicode ? error : constants.investment.error.NOT_FOUND)
-    }
+    return response.status(500).json(error.apicode ? error : constants.investment.error.NOT_FOUND)
+  }
 }
 
 /**
@@ -142,35 +138,35 @@ export const getById = async (request, response) => {
  *     }
  */
 export const getByInvestorId = async (request, response) => {
-    try {
-        const { user, params } = request
+  try {
+    const { user, params } = request
 
-        const id = user.id_profile === 3 ? params.id : user.investor.id
+    const id = user.id_profile === 3 ? params.id : user.investor.id
 
-        const investments = await Investment.findAll({
-            where: {
-                id_investor: id
-            },
-            include: [
-                {
-                    model: Fundraising,
-                    as: 'fundraising',
-                    include: [
-                        {
-                            model: Building,
-                            as: 'building'
-                        }
-                    ]
-                }
-            ]
-        })
+    const investments = await Investment.findAll({
+      where: {
+        id_investor: id
+      },
+      include: [
+        {
+          model: Fundraising,
+          as: 'fundraising',
+          include: [
+            {
+              model: Building,
+              as: 'building'
+            }
+          ]
+        }
+      ]
+    })
 
-        return response.json(investments)
-    } catch (error) {
-        logger().error(error)
+    return response.json(investments)
+  } catch (error) {
+    logger().error(error)
 
-        return response.status(500).json(error.apicode ? error : constants.investment.error.NOT_FOUND)
-    }
+    return response.status(500).json(error.apicode ? error : constants.investment.error.NOT_FOUND)
+  }
 }
 
 /**
@@ -205,33 +201,33 @@ export const getByInvestorId = async (request, response) => {
  *     }
  */
 export const getByFundraisingId = async (request, response) => {
-    try {
-        const { params } = request
+  try {
+    const { params } = request
 
-        const investments = await Investment.findAll({
-            where: {
-                id_fundraising: params.id
-            },
-            include: [
-                {
-                    model: Fundraising,
-                    as: 'fundraising',
-                    include: [
-                        {
-                            model: Building,
-                            as: 'building'
-                        }
-                    ]
-                }
-            ]
-        })
+    const investments = await Investment.findAll({
+      where: {
+        id_fundraising: params.id
+      },
+      include: [
+        {
+          model: Fundraising,
+          as: 'fundraising',
+          include: [
+            {
+              model: Building,
+              as: 'building'
+            }
+          ]
+        }
+      ]
+    })
 
-        return response.json(investments)
-    } catch (error) {
-        logger().error(error)
+    return response.json(investments)
+  } catch (error) {
+    logger().error(error)
 
-        return response.status(500).json(error.apicode ? error : constants.investment.error.NOT_FOUND)
-    }
+    return response.status(500).json(error.apicode ? error : constants.investment.error.NOT_FOUND)
+  }
 }
 
 /**
@@ -272,39 +268,38 @@ export const getByFundraisingId = async (request, response) => {
  *     }
  */
 export const getPendings = async (request, response) => {
-    try {
+  try {
+    const investments = await Investment.findAll({
+      where: {
+        ted_proof_url: {
+          [Sequelize.Op.ne]: null
+        },
+        status: statuses.investment.PENDING
+      },
+      include: [
+        {
+          model: Investor,
+          as: 'investor'
+        },
+        {
+          model: Fundraising,
+          as: 'fundraising',
+          include: [
+            {
+              model: Building,
+              as: 'building'
+            }
+          ]
+        }
+      ]
+    })
 
-        const investments = await Investment.findAll({
-            where: {
-                ted_proof_url: {
-                    [Sequelize.Op.ne]: null
-                },
-                status: statuses.investment.PENDING
-            },
-            include: [
-                {
-                    model: Investor,
-                    as: 'investor'
-                },
-                {
-                    model: Fundraising,
-                    as: 'fundraising',
-                    include: [
-                        {
-                            model: Building,
-                            as: 'building'
-                        }
-                    ]
-                }
-            ]
-        })
+    return response.json(investments)
+  } catch (error) {
+    logger().error(error)
 
-        return response.json(investments)
-    } catch (error) {
-        logger().error(error)
-
-        return response.status(500).json(error.apicode ? error : constants.investment.error.NOT_FOUND)
-    }
+    return response.status(500).json(error.apicode ? error : constants.investment.error.NOT_FOUND)
+  }
 }
 
 /**
@@ -352,65 +347,65 @@ export const getPendings = async (request, response) => {
  *   }
  */
 export const create = async (request, response) => {
-    try {
-        const { body } = request
+  try {
+    const { body } = request
 
-        const investor = await Investor.findByPk(body.id_investor)
+    const investor = await Investor.findByPk(body.id_investor)
 
-        // 1. Validar o investidor
-        if (!investor) {
-            throw constants.investment.error.INVESTOR_NOT_FOUND
-        }
-
-        if (env().BLACK_LIST.includes(investor.cpf) || env().BLACK_LIST.includes(investor.cnpj)) {
-            throw constants.investment.error.BLACK_LIST
-        }
-
-        // 2. Validar o levantamento de recursos
-        const fundraising = await Fundraising.findByPk(body.id_fundraising)
-        
-        if (!fundraising || Number(body.amount) < fundraising.investment_min_value) {
-            throw constants.investment.error.MIN_VALUE
-        }
-
-        // TODO: Adicionar regras validadas no frontend (two-way)
-
-        // 4. Criar o investimento
-        body.status = statuses.investment.PENDING
-
-        const investment = await Investment.create(body)
-
-        // 5. Salvar as configurações adotadas
-        const terms = {
-            id_investor: investor.id,
-            id_investment: investment.id,
-            ...body.terms
-        }
-
-        await RequirementsHistory.create(terms)
-
-        // 6. Enviar e-mail de criação de investimento
-        await sendEmail({
-            from: `Buildinvest <${env().buildinvest.emails.contact}>`,
-            to: investor.email,
-            subject: 'Buildinvest - Novo investimento',
-            template: 'newInvestment',
-            context: {
-                buildinvest: {
-                    bankAccount: env().buildinvest.bankAccount,
-                    agence: env().buildinvest.agence
-                },
-                investor,
-                investment
-            }
-        })
-
-        response.json(Object.assign(constants.investment.success.CREATE, { investment }))
-    } catch (err) {
-        logger().error(err)
-
-        response.status(500).json(err.apicode ? err : constants.investment.error.CREATE)
+    // 1. Validar o investidor
+    if (!investor) {
+      throw constants.investment.error.INVESTOR_NOT_FOUND
     }
+
+    if (env().BLACK_LIST.includes(investor.cpf) || env().BLACK_LIST.includes(investor.cnpj)) {
+      throw constants.investment.error.BLACK_LIST
+    }
+
+    // 2. Validar o levantamento de recursos
+    const fundraising = await Fundraising.findByPk(body.id_fundraising)
+
+    if (!fundraising || Number(body.amount) < fundraising.investment_min_value) {
+      throw constants.investment.error.MIN_VALUE
+    }
+
+    // TODO: Adicionar regras validadas no frontend (two-way)
+
+    // 4. Criar o investimento
+    body.status = statuses.investment.PENDING
+
+    const investment = await Investment.create(body)
+
+    // 5. Salvar as configurações adotadas
+    const terms = {
+      id_investor: investor.id,
+      id_investment: investment.id,
+      ...body.terms
+    }
+
+    await RequirementsHistory.create(terms)
+
+    // 6. Enviar e-mail de criação de investimento
+    await sendEmail({
+      from: `Buildinvest <${env().buildinvest.emails.contact}>`,
+      to: investor.email,
+      subject: 'Buildinvest - Novo investimento',
+      template: 'newInvestment',
+      context: {
+        buildinvest: {
+          bankAccount: env().buildinvest.bankAccount,
+          agence: env().buildinvest.agence
+        },
+        investor,
+        investment
+      }
+    })
+
+    response.json(Object.assign(constants.investment.success.CREATE, { investment }))
+  } catch (err) {
+    logger().error(err)
+
+    response.status(500).json(err.apicode ? err : constants.investment.error.CREATE)
+  }
 }
 
 /**
@@ -443,35 +438,35 @@ export const create = async (request, response) => {
  *   }
  */
 export const sendTED = async (request, response) => {
-    try {
-        const { params, file, user } = request
+  try {
+    const { params, file, user } = request
 
-        if (!file) {
-            throw constants.investment.error.NO_TED_FILE
-        }
-
-        const url = await uploadFile(file, `teds/${params.id}`, true)
-
-        const where = {
-            status: statuses.investment.PENDING
-        }
-
-        if (user.id_profile !== 3) {
-            where.id_investor = user.investor.id
-        }
-
-        const investment = await Investment.findByPk(params.id, { where })
-
-        investment.ted_proof_url = url
-
-        await investment.save()
-
-        return response.json(constants.investment.success.TED_CONFIRMATION)
-    } catch (error) {
-        logger().error(error)
-
-        return response.status(500).json(error.apicode ? error : constants.investment.error.TED_CONFIRMATION)
+    if (!file) {
+      throw constants.investment.error.NO_TED_FILE
     }
+
+    const url = await uploadFile(file, `teds/${params.id}`, true)
+
+    const where = {
+      status: statuses.investment.PENDING
+    }
+
+    if (user.id_profile !== 3) {
+      where.id_investor = user.investor.id
+    }
+
+    const investment = await Investment.findByPk(params.id, { where })
+
+    investment.ted_proof_url = url
+
+    await investment.save()
+
+    return response.json(constants.investment.success.TED_CONFIRMATION)
+  } catch (error) {
+    logger().error(error)
+
+    return response.status(500).json(error.apicode ? error : constants.investment.error.TED_CONFIRMATION)
+  }
 }
 
 /**
@@ -503,76 +498,74 @@ export const sendTED = async (request, response) => {
  *   }
  */
 export const confirm = async (request, response) => {
-    try {
-        const { body } = request
+  try {
+    const { body } = request
 
-        const investment = await Investment.findByPk(body.investments[0])
+    const investment = await Investment.findByPk(body.investments[0])
 
-        investment.status = statuses.investment.CONFIRMED
+    investment.status = statuses.investment.CONFIRMED
 
-        await investment.save()
+    await investment.save()
 
-        const fundraising = await Fundraising.findByPk(investment.id_fundraising, {
-            include: [
-                {
-                    model: Building,
-                    as: 'building'
-                }
-            ]
-        })
-
-        const minimum = fundraising.amount * 0.66
-
-        const colleted = await Investment.sum('amount', {
-            where: {
-                id_fundraising: investment.id_fundraising,
-                status: statuses.investment.CONFIRMED
-            }
-        })
-
-        if (colleted >= minimum) {
-
-            // Não é necessário verificar no schedule se a captação atingiu o mínimo ou o valor esperado.
-            // Esta condição já faz a verificação e atualiza o status da captação.
-            fundraising.status = statuses.fundraising.CONFIRMED
-
-            const investments = await Investment.findAll({
-                where: {
-                    id_fundraising: fundraising.id
-                },
-                include: [
-                    {
-                        model: Investor,
-                        as: 'investor'
-                    }
-                ]
-            })
-
-            investments.forEach(element => {
-
-                const { investor } = element
-
-                sendEmail({
-                    from: `Buildinvest <${env().buildinvest.emails.contact}>`,
-                    to: investor.email,
-                    subject: 'Buildinvest - Investimento mínimo atingido',
-                    template: 'fundraising-minimum-reached',
-                    context: {
-                        name: investor.name,
-                        building: fundraising.building.name,
-                        description: fundraising.building.description,
-                        collected: minimum
-                    }
-                })
-            })
+    const fundraising = await Fundraising.findByPk(investment.id_fundraising, {
+      include: [
+        {
+          model: Building,
+          as: 'building'
         }
+      ]
+    })
 
-        return response.json(constants.investment.success.CONFIRMATION)
-    } catch (error) {
-        logger().error(error)
+    const minimum = fundraising.amount * 0.66
 
-        return response.status(500).json(error.apicode ? error : constants.investment.error.CONFIRMATION)
+    const colleted = await Investment.sum('amount', {
+      where: {
+        id_fundraising: investment.id_fundraising,
+        status: statuses.investment.CONFIRMED
+      }
+    })
+
+    if (colleted >= minimum) {
+      // Não é necessário verificar no schedule se a captação atingiu o mínimo ou o valor esperado.
+      // Esta condição já faz a verificação e atualiza o status da captação.
+      fundraising.status = statuses.fundraising.CONFIRMED
+
+      const investments = await Investment.findAll({
+        where: {
+          id_fundraising: fundraising.id
+        },
+        include: [
+          {
+            model: Investor,
+            as: 'investor'
+          }
+        ]
+      })
+
+      investments.forEach(element => {
+        const { investor } = element
+
+        sendEmail({
+          from: `Buildinvest <${env().buildinvest.emails.contact}>`,
+          to: investor.email,
+          subject: 'Buildinvest - Investimento mínimo atingido',
+          template: 'fundraising-minimum-reached',
+          context: {
+            name: investor.name,
+            building: fundraising.building.name,
+            description: fundraising.building.description,
+            collected: minimum
+          }
+        })
+      })
     }
+
+    return response.json(constants.investment.success.CONFIRMATION)
+  } catch (error) {
+    logger().error(error)
+
+    return response.status(500).json(error.apicode ? error : constants.investment.error.CONFIRMATION)
+  }
 }
 
 /**
@@ -599,33 +592,33 @@ export const confirm = async (request, response) => {
  *   }
  */
 export const cancel = async (request, response) => {
-    try {
-        const { params, user } = request
+  try {
+    const { params, user } = request
 
-        const where = {
-            id: params.id
-        }
-
-        if (user.id_profile !== 3) {
-            where.id_investor = user.investor.id
-        }
-
-        const investment = await Investment.findByPk(params.id, {
-            where
-        })
-
-        if (!investment || investment.ted_proof_url !== null) {
-            throw constants.investment.error.INVALID_CANCEL
-        }
-
-        investment.status = statuses.investment.CANCELED
-
-        await investment.save()
-
-        response.json(constants.investment.success.CANCEL)
-    } catch (err) {
-        logger().error(err)
-
-        response.status(500).json(err.apicode ? err : constants.investment.error.CANCEL)
+    const where = {
+      id: params.id
     }
+
+    if (user.id_profile !== 3) {
+      where.id_investor = user.investor.id
+    }
+
+    const investment = await Investment.findByPk(params.id, {
+      where
+    })
+
+    if (!investment || investment.ted_proof_url !== null) {
+      throw constants.investment.error.INVALID_CANCEL
+    }
+
+    investment.status = statuses.investment.CANCELED
+
+    await investment.save()
+
+    response.json(constants.investment.success.CANCEL)
+  } catch (err) {
+    logger().error(err)
+
+    response.status(500).json(err.apicode ? err : constants.investment.error.CANCEL)
+  }
 }

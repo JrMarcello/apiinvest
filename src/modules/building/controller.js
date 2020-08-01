@@ -43,25 +43,25 @@ const { Building, BuildingImage, Fundraising, Investment, Sequelize } = require(
  *     }
  */
 export const getAll = async (request, response) => {
-    try {
-        const buildings = await Building.findAll({
-            where: {
-                active: true
-            },
-            include: [
-                {
-                    model: BuildingImage,
-                    as: 'images'
-                }
-            ]
-        })
+  try {
+    const buildings = await Building.findAll({
+      where: {
+        active: true
+      },
+      include: [
+        {
+          model: BuildingImage,
+          as: 'images'
+        }
+      ]
+    })
 
-        return response.json(buildings)
-    } catch (error) {
-        logger().error(error)
+    return response.json(buildings)
+  } catch (error) {
+    logger().error(error)
 
-        return response.status(500).json(error.apicode ? error : constants.building.error.NOT_FOUND)
-    }
+    return response.status(500).json(error.apicode ? error : constants.building.error.NOT_FOUND)
+  }
 }
 
 /**
@@ -102,43 +102,39 @@ export const getAll = async (request, response) => {
  *     }
  */
 export const getAllAvaliables = async (request, response) => {
-    try {
-        // Query original
-        // SELECT b.* FROM ${table} b JOIN fundraising f ON (b.id = f.id_building AND f.active AND f.finished = false) WHERE b.active
+  try {
+    // Query original
+    // SELECT b.* FROM ${table} b JOIN fundraising f ON (b.id = f.id_building AND f.active AND f.finished = false) WHERE b.active
 
-        const status = [
-            statuses.fundraising.OPENED,
-            statuses.fundraising.CONFIRMED,
-            statuses.fundraising.SETTLED
-        ];
+    const status = [statuses.fundraising.OPENED, statuses.fundraising.CONFIRMED, statuses.fundraising.SETTLED]
 
-        const buildings = await Building.findAll({
-            where: {
-                active: true
-            },
-            include: [
-                {
-                    model: BuildingImage,
-                    as: 'images'
-                },
-                {
-                    model: Fundraising,
-                    as: 'fundraisings',
-                    where: {
-                        status: {
-                            [Sequelize.Op.or]: status
-                        }
-                    }
-                }
-            ]
-        })
+    const buildings = await Building.findAll({
+      where: {
+        active: true
+      },
+      include: [
+        {
+          model: BuildingImage,
+          as: 'images'
+        },
+        {
+          model: Fundraising,
+          as: 'fundraisings',
+          where: {
+            status: {
+              [Sequelize.Op.or]: status
+            }
+          }
+        }
+      ]
+    })
 
-        return response.json(buildings)
-    } catch (err) {
-        logger().error(err)
+    return response.json(buildings)
+  } catch (err) {
+    logger().error(err)
 
-        return response.status(500).json(err.apicode ? err : constants.building.error.NOT_FOUND)
-    }
+    return response.status(500).json(err.apicode ? err : constants.building.error.NOT_FOUND)
+  }
 }
 
 /**
@@ -187,37 +183,37 @@ export const getAllAvaliables = async (request, response) => {
  *   }
  */
 export const getById = async (request, response) => {
-    try {
-        const { params } = request
+  try {
+    const { params } = request
 
-        const building = await Building.findByPk(params.id, {
-            where: {
-                active: true
-            },
-            include: [
-                {
-                    model: BuildingImage,
-                    as: 'images'
-                },
-                {
-                    model: Fundraising,
-                    as: 'fundraisings',
-                    include: [
-                        {
-                            model: Investment,
-                            as: 'investments'
-                        }
-                    ]
-                }
-            ]
-        })
+    const building = await Building.findByPk(params.id, {
+      where: {
+        active: true
+      },
+      include: [
+        {
+          model: BuildingImage,
+          as: 'images'
+        },
+        {
+          model: Fundraising,
+          as: 'fundraisings',
+          include: [
+            {
+              model: Investment,
+              as: 'investments'
+            }
+          ]
+        }
+      ]
+    })
 
-        return response.json(building || {})
-    } catch (error) {
-        logger().error(error)
+    return response.json(building || {})
+  } catch (error) {
+    logger().error(error)
 
-        return response.status(500).json(error.apicode ? error : constants.building.error.NOT_FOUND)
-    }
+    return response.status(500).json(error.apicode ? error : constants.building.error.NOT_FOUND)
+  }
 }
 
 /**
@@ -264,22 +260,22 @@ export const getById = async (request, response) => {
  *   }
  */
 export const getByBuilderId = async (request, response) => {
-    try {
-        const { params } = request
+  try {
+    const { params } = request
 
-        const buildings = await Building.findAll({
-            where: {
-                id_builder: params.id,
-                active: true
-            }
-        })
+    const buildings = await Building.findAll({
+      where: {
+        id_builder: params.id,
+        active: true
+      }
+    })
 
-        return response.json(buildings)
-    } catch (error) {
-        logger().error(error)
+    return response.json(buildings)
+  } catch (error) {
+    logger().error(error)
 
-        return response.status(500).json(error.apicode ? error : constants.building.error.NOT_FOUND)
-    }
+    return response.status(500).json(error.apicode ? error : constants.building.error.NOT_FOUND)
+  }
 }
 
 /**
@@ -353,17 +349,17 @@ export const getByBuilderId = async (request, response) => {
  *   }
  */
 export const create = async (request, response) => {
-    try {
-        const { body } = request
+  try {
+    const { body } = request
 
-        const building = await Building.create(body)
+    const building = await Building.create(body)
 
-        return response.json(Object.assign(constants.building.success.CREATE, { building }))
-    } catch (error) {
-        logger().error(error)
+    return response.json(Object.assign(constants.building.success.CREATE, { building }))
+  } catch (error) {
+    logger().error(error)
 
-        return response.status(500).json(error.apicode ? error : constants.building.error.CREATE)
-    }
+    return response.status(500).json(error.apicode ? error : constants.building.error.CREATE)
+  }
 }
 
 /**
@@ -416,32 +412,32 @@ export const create = async (request, response) => {
  *   }
  */
 export const update = async (request, response) => {
-    try {
-        const { body } = request
+  try {
+    const { body } = request
 
-        if (!body || body.length === 0) {
-            throw constants.building.error.INVALID_DATA
-        }
-
-        const building = await Building.findByPk(body.id)
-
-        if (building) {
-            // Atualizando apenas as propriedades definidas para atualizar
-            Object.keys(body).forEach(key => {
-                if (body[key] !== undefined) {
-                    building[key] = body[key]
-                }
-            })
-
-            await building.save()
-        }
-
-        return response.json(constants.building.success.UPDATE)
-    } catch (error) {
-        logger().error(error)
-
-        return response.status(500).json(error.apicode ? error : constants.building.error.UPDATE)
+    if (!body || body.length === 0) {
+      throw constants.building.error.INVALID_DATA
     }
+
+    const building = await Building.findByPk(body.id)
+
+    if (building) {
+      // Atualizando apenas as propriedades definidas para atualizar
+      Object.keys(body).forEach(key => {
+        if (body[key] !== undefined) {
+          building[key] = body[key]
+        }
+      })
+
+      await building.save()
+    }
+
+    return response.json(constants.building.success.UPDATE)
+  } catch (error) {
+    logger().error(error)
+
+    return response.status(500).json(error.apicode ? error : constants.building.error.UPDATE)
+  }
 }
 
 /**
@@ -476,21 +472,21 @@ export const update = async (request, response) => {
  *   }
  */
 export const remove = async (request, response) => {
-    try {
-        const { params } = request
+  try {
+    const { params } = request
 
-        const building = await Building.findByPk(params.id)
+    const building = await Building.findByPk(params.id)
 
-        if (building) {
-            building.active = false
+    if (building) {
+      building.active = false
 
-            await building.save()
-        }
-
-        return response.json(constants.building.success.REMOVE)
-    } catch (error) {
-        logger().error(error)
-
-        return response.status(500).json(error.apicode ? error : constants.building.error.REMOVE)
+      await building.save()
     }
+
+    return response.json(constants.building.success.REMOVE)
+  } catch (error) {
+    logger().error(error)
+
+    return response.status(500).json(error.apicode ? error : constants.building.error.REMOVE)
+  }
 }
