@@ -1,4 +1,5 @@
 import { logger } from '../../common/utils'
+import { uploadFile } from '../../core/storage'
 import constants from '../../common/constants'
 
 // Models
@@ -346,9 +347,33 @@ export const getByBuilderId = async (request, response) => {
  */
 export const create = async (request, response) => {
   try {
-    const { body } = request
+    const { files } = request
+    let { body } = request
+
+    body = JSON.parse(body.building)
 
     const building = await Building.create(body)
+
+    if (files && files.length > 0) {
+      const promises = []
+
+      files.forEach(file => {
+        promises.push(uploadFile(file, `buildings/${building.id}`, true))
+      })
+
+      const urls = await Promise.all(promises)
+
+      let images = []
+
+      urls.forEach(url => {
+        images.push({
+          id_building: building.id,
+          url
+        })
+      })
+
+      images = await BuildingImage.bulkCreate(images)
+    }
 
     return response.json(Object.assign(constants.building.success.CREATE, { building }))
   } catch (error) {
