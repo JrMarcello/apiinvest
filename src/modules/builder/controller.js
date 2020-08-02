@@ -427,7 +427,7 @@ export const create = async (request, response) => {
         }
     })
 
-    if (result) {
+    if (result && result.length > 0) {
         return response.status(302).json(constants.builder.error.CNPJ)
     }
 
@@ -528,8 +528,19 @@ export const update = async (request, response) => {
     // TODO: Aidiconar verificação de id da construtora
     // if (!builder.id) { }
 
-    // 1. Atualizando a construtora
-    const result = await Builder.findByPk(builder.id, {
+    // 1. Verificar se o CNPJ ja está cadastrado
+    let result = await Builder.findAll({ 
+        where: {
+            cnpj: builder.cnpj
+        }
+    })
+
+    if (result && result.length > 0) {
+        return response.status(302).json(constants.builder.error.CNPJ)
+    }
+
+    // 2. Atualizando a construtora
+    result = await Builder.findByPk(builder.id, {
       include: [
         {
           model: BuilderPhone,
@@ -549,11 +560,11 @@ export const update = async (request, response) => {
       await result.save()
     }
 
-    // 2. Atualizando telefones
+    // 3. Atualizando telefones
     const addedPhones = phones.filter(({ number: first }) => !result.phones.some(({ number: second }) => first === second))
     const removedPhones = result.phones.filter(({ number: first }) => !phones.some(({ number: second }) => first === second))
 
-    // 2.1 Adicionando novos telefones
+    // 3.1 Adicionando novos telefones
     const promises = []
 
     addedPhones.forEach(phone => {
@@ -567,7 +578,7 @@ export const update = async (request, response) => {
 
     await Promise.all(promises)
 
-    // 2.2 Apagando números removidos
+    // 3.2 Apagando números removidos
     const ids = removedPhones.map(phone => phone.id)
 
     if (ids.length > 0) {
@@ -583,9 +594,9 @@ export const update = async (request, response) => {
       })
     }
 
-    // 3. Atualizando a logo
+    // 4. Atualizando a logo
     if (file) {
-      // 3.1 Removendo a logo anterior
+      // 4.1 Removendo a logo anterior
       if (result && result.logo_url) {
         const path = result.logo_url.split(env().GOOGLE_CLOUD.BUCKET).pop()
 
@@ -596,7 +607,7 @@ export const update = async (request, response) => {
         await result.save()
       }
 
-      // 3.2 Enviando a logo atualizada
+      // 4.2 Enviando a logo atualizada
       const url = await uploadFile(file, `logos/${result.id}`, true)
 
       result.logo_url = url
