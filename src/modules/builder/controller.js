@@ -421,14 +421,14 @@ export const create = async (request, response) => {
     const phones = JSON.parse(body.phones)
 
     // 1. Verificar se o CNPJ ja está cadastrado
-    let result = await Builder.findAll({ 
-        where: {
-            cnpj: builder.cnpj
-        }
+    let result = await Builder.findAll({
+      where: {
+        cnpj: builder.cnpj
+      }
     })
 
     if (result && result.length > 0) {
-        return response.status(302).json(constants.builder.error.CNPJ)
+      return response.status(302).json(constants.builder.error.CNPJ)
     }
 
     // 2. Criar a construtora
@@ -529,14 +529,14 @@ export const update = async (request, response) => {
     // if (!builder.id) { }
 
     // 1. Verificar se o CNPJ ja está cadastrado
-    let result = await Builder.findAll({ 
-        where: {
-            cnpj: builder.cnpj
-        }
+    let result = await Builder.findAll({
+      where: {
+        cnpj: builder.cnpj
+      }
     })
 
     if (result && result.length > 0) {
-        return response.status(302).json(constants.builder.error.CNPJ)
+      return response.status(302).json(constants.builder.error.CNPJ)
     }
 
     // 2. Atualizando a construtora
