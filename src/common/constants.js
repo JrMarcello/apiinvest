@@ -207,7 +207,8 @@ const constants = {
       SET_LOGO: { apicode: 'E0804', message: 'Erro ao tentar enviar imagem' },
       REMOVE_LOGO: { apicode: 'E0805', message: 'Erro ao tentar remover imagem' },
       REQUIRED: { apicode: 'E0806', message: 'Informe seus dados' },
-      INVALID_DATA: { apicode: 'E0807', message: 'Dados inválidos' }
+      INVALID_DATA: { apicode: 'E0807', message: 'Dados inválidos' },
+      CNPJ: { apicode: 'E0808', message: 'O CNPJ informado já se encontra cadastrado no sistema.' }
     },
     phones: {
       // S08xx

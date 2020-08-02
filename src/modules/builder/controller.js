@@ -420,10 +420,21 @@ export const create = async (request, response) => {
     const builder = JSON.parse(body.builder)
     const phones = JSON.parse(body.phones)
 
-    // 1. Criar a construtora
-    const result = await Builder.create(builder)
+    // 1. Verificar se o CNPJ ja está cadastrado
+    let result = await Builder.findAll({ 
+        where: {
+            cnpj: builder.cnpj
+        }
+    })
 
-    // 2. Criar telefones
+    if (result) {
+        return response.status(302).json(constants.builder.error.CNPJ)
+    }
+
+    // 2. Criar a construtora
+    result = await Builder.create(builder)
+
+    // 3. Criar telefones
     let phone
     const promises = []
 
@@ -438,7 +449,7 @@ export const create = async (request, response) => {
 
     await Promise.all(promises)
 
-    // 3. Enviar logo
+    // 4. Enviar logo
     if (file) {
       const url = await uploadFile(file, `logos/${result.id}`, true)
       result.logo_url = url
