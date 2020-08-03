@@ -404,11 +404,11 @@ export const create = async (request, response) => {
       }
     })
 
-    response.json(Object.assign(constants.investment.success.CREATE, { investment }))
+    return response.json(Object.assign(constants.investment.success.CREATE, { investment }))
   } catch (err) {
     logger().error(err)
 
-    response.status(500).json(err.apicode ? err : constants.investment.error.CREATE)
+    return response.status(500).json(err.apicode ? err : constants.investment.error.CREATE)
   }
 }
 
