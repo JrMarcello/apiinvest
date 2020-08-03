@@ -351,9 +351,7 @@ export const create = async (request, response) => {
     const { body, user } = request
 
     if (user.id_profile === 3) {
-        return response
-            .status(500)
-            .json(constants.investment.error.ADMIN)
+      return response.status(500).json(constants.investment.error.ADMIN)
     }
 
     const investor = await Investor.findByPk(body.id_investor)
