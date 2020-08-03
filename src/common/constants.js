@@ -121,7 +121,8 @@ const constants = {
       MAX_AMOUNT_QUALIFIED: { apicode: 'E0409', message: 'Limite de investimentos excedido' },
       NO_TED_FILE: { apicode: 'E0410', message: 'Comprovante de TED não anexado' },
       INVALID_DATA: { apicode: 'E0411', message: 'Formato de dados inválido' },
-      INVALID_CANCEL: { apicode: 'E0412', message: 'Não é possivel cancelar investimentos com TED e/ou confirmados!' }
+      INVALID_CANCEL: { apicode: 'E0412', message: 'Não é possivel cancelar investimentos com TED e/ou confirmados!' },
+      ADMIN: { apicode: 'E0413', message: 'Não é possível investir utilizando um perfil de Administrador' }
     }
   },
   fundraising: {
