@@ -83,9 +83,6 @@ export const create = async (request, response) => {
   try {
     const { params, files } = request
 
-    // TODO: Aidiconar verificação arquivo enviado
-    // if (!images) { }
-
     const promises = []
 
     for (let index = 0; index < files.length; index += 1) {

@@ -52,8 +52,6 @@ const { User, Investor, Builder, Profile, Sequelize } = require('../../database/
  *     }
  */
 export const getAll = async (request, response) => {
-  // TODO: Verificar regras do NACL
-
   try {
     const users = await User.findAll({
       where: {
@@ -203,7 +201,6 @@ export const create = async (request, response) => {
       body.id_profile = 1
     }
 
-    // TODO: Repassar encriptação para um serviço, encapsular
     body.password = bcrypt.hashSync(body.password, 10)
 
     await User.create(body)
@@ -275,12 +272,10 @@ export const update = async (request, response) => {
   try {
     const { user, body } = request
 
-    // TODO: Refatorar
     if (user.id_profile !== 3) {
       body.id = user.id
     }
 
-    // TODO: Repassar encriptação para um serviço, encapsular
     if (body.password) {
       body.password = bcrypt.hashSync(body.password, 10)
     }
@@ -341,7 +336,6 @@ export const remove = async (request, response) => {
   try {
     const { user, params } = request
 
-    // TODO: Refatorar
     const id = user.id_profile === 3 ? params.id : user.builder.id
 
     const account = await User.findByPk(id)

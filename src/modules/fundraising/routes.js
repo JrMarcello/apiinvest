@@ -7,6 +7,8 @@ const FUNDRAISING_BASE_PATH = '/fundraising'
 
 export default () => {
   router.get(FUNDRAISING_BASE_PATH, validations.getAll, controller.getAll)
+  router.get(`${FUNDRAISING_BASE_PATH}/wordpress/closed`, controller.getAllClosed)
+  router.get(`${FUNDRAISING_BASE_PATH}/wordpress/opened`, controller.getAllOpened)
   router.get(`${FUNDRAISING_BASE_PATH}/building/:idBuilding`, validations.getByBuildingId, controller.getByBuildingId)
   router.get(`${FUNDRAISING_BASE_PATH}/:id/amountraised`, validations.getAmountRaised, controller.getAmountRaised)
   router.get(`${FUNDRAISING_BASE_PATH}/:id/investors`, validations.getInvestorsByFundraisingId, controller.getInvestorsByFundraisingId)

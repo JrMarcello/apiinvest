@@ -1,6 +1,7 @@
 import { logger } from '../../common/utils'
 import { uploadFile } from '../../core/storage'
 import constants from '../../common/constants'
+import statuses from '../../common/statuses'
 
 // Models
 const {
@@ -214,15 +215,7 @@ export const getByUserId = async (request, response) => {
   try {
     const { user, params } = request
 
-    // TODO: Refatorar
     const id = user.id_profile === 3 ? params.id : user.id
-
-    // BDI-14: Necessário obter perfis não concluídos
-    // const investor = await Investor.findByPk(id, {
-    //     where: {
-    //         active: true
-    //     }
-    // })
 
     const investor = await Investor.findOne({
       where: {
@@ -289,13 +282,11 @@ export const getAllInvestmentsById = async (request, response) => {
   try {
     const { user, params } = request
 
-    // TODO: Refatorar
     const id = user.id_profile === 3 ? params.id : user.investor.id
 
     const investments = await Investment.findAll({
       where: {
-        id_investor: id,
-        active: true
+        id_investor: id
       },
       include: [
         {
@@ -351,14 +342,15 @@ export const getInvestmentsCount = async (request, response) => {
   try {
     const { user, params } = request
 
-    // TODO: Refatorar
     const id = user.id_profile === 3 ? params.id : user.investor.id
 
     const quantity = await Investment.count({
       where: {
         id_investor: id,
-        confirmed: true,
-        active: true
+
+        // TODO: Rever se é necessário obter todos os investimentos
+        //       ou apenas os confirmados
+        status: statuses.investment.CONFIRMED
       }
     })
 
@@ -398,14 +390,13 @@ export const getInvestedAmount = async (request, response) => {
   try {
     const { user, params } = request
 
-    // TODO: Refatorar
     const id = user.id_profile === 3 ? params.id : user.investor.id
 
+    // TODO: Verificar se é necessário obter também os investimentos pendentes
     const amount = await Investment.sum('amount', {
       where: {
         id_investor: id,
-        confirmed: true,
-        active: true
+        status: statuses.investment.CONFIRMED
       }
     })
 
@@ -445,14 +436,12 @@ export const getReceivedAmount = async (request, response) => {
   try {
     const { user, params } = request
 
-    // TODO: Refatorar
     const id = user.id_profile === 3 ? params.id : user.investor.id
 
     const amount = await Investment.sum('amount_returned', {
       where: {
         id_investor: id,
-        confirmed: true,
-        active: true
+        status: statuses.investment.CONFIRMED
       }
     })
 
@@ -490,12 +479,8 @@ export const getReceivedAmount = async (request, response) => {
  */
 export const getProjectedAmount = async (request, response) => {
   try {
-    // TODO: Apagar após rever regra
-    // response.json(await repository.getProjectedAmount(request.user.id_profile === 3 ? request.params.id : request.user.investor.id))
-
     const { user, params } = request
 
-    // TODO: Refatorar
     const id = user.id_profile === 3 ? params.id : user.investor.id
 
     const investor = await Investor.findByPk(id, {
@@ -507,7 +492,6 @@ export const getProjectedAmount = async (request, response) => {
       ]
     })
 
-    // TODO: Rever regra
     const amount = investor.investments.reduce((sum, investment) => sum + parseFloat(investment.amount), 0)
 
     return response.json({ amount })
@@ -587,28 +571,16 @@ export const create = async (request, response) => {
       throw constants.investor.error.INVALID_DATA
     }
 
-    // DBI-14: Removendo as travas de dados bancários e documentos
-    // if (!body.phones || body.phones.length === 0) {
-    //     throw constants.investor.phone.error.REQUIRED
-    // } else if (!body.accounts || body.accounts.length === 0) {
-    //   throw constants.investor.bank_account.error.REQUIRED
-    // } else if (!files || files.length !== 3) {
-    //   throw constants.investor.document.error.REQUIRED
-    // }
-
     const investor = JSON.parse(body.investor)
 
-    // TODO: Discutir se o e-mail do investidor será obtido do usuário ou através de outro método
     investor.email = user.email
 
-    // BDI-14: O status do investidor só passará a ficar ativo após a conclusão de todas as informações
     if (!body.phones || body.phones.length === 0 || !body.accounts || body.accounts.length === 0 || !files || files.length !== 3) {
       investor.active = false
     }
 
     const phones = JSON.parse(body.phones)
 
-    // TODO: Refatorar
     if (user.id_profile !== 3) {
       investor.id_user = user.id
     }
@@ -727,7 +699,6 @@ export const update = async (request, response) => {
 
     const investor = JSON.parse(body.investor)
 
-    // BDI-14: O status do investidor só passará a ficar ativo após a conclusão de todas as informações
     if (!body.phones || body.phones.length === 0 || !body.accounts || body.accounts.length === 0 || !files || files.length !== 3) {
       investor.active = false
     } else {
@@ -736,7 +707,6 @@ export const update = async (request, response) => {
 
     const phones = JSON.parse(body.phones)
 
-    // TODO: Refatorar
     if (user.id_profile !== 3) {
       investor.id_user = user.id
     }

@@ -1,8 +1,9 @@
 import { logger } from '../../common/utils'
 import constants from '../../common/constants'
+import statuses from '../../common/statuses'
 
 // Models
-const { Building, BuildingImage, Fundraising } = require('../../database/models')
+const { Building, BuildingImage, Fundraising, Investment, Sequelize } = require('../../database/models')
 
 /**
  * @api {get} /building Get all
@@ -105,6 +106,8 @@ export const getAllAvaliables = async (request, response) => {
     // Query original
     // SELECT b.* FROM ${table} b JOIN fundraising f ON (b.id = f.id_building AND f.active AND f.finished = false) WHERE b.active
 
+    const status = [statuses.fundraising.OPENED, statuses.fundraising.CONFIRMED, statuses.fundraising.SETTLED]
+
     const buildings = await Building.findAll({
       where: {
         active: true
@@ -118,8 +121,9 @@ export const getAllAvaliables = async (request, response) => {
           model: Fundraising,
           as: 'fundraisings',
           where: {
-            active: true,
-            finished: false
+            status: {
+              [Sequelize.Op.or]: status
+            }
           }
         }
       ]
@@ -193,16 +197,16 @@ export const getById = async (request, response) => {
         },
         {
           model: Fundraising,
-          as: 'fundraisings'
+          as: 'fundraisings',
+          include: [
+            {
+              model: Investment,
+              as: 'investments'
+            }
+          ]
         }
       ]
     })
-
-    // TODO: Investigar aplicação de imagens e fundraising
-    // if (building) {
-    //     building.images = await image.getByBuildingId(building.id)
-    //     building.fundraisings = await fundraising.getByBuildingId(building.id)
-    // }
 
     return response.json(building || {})
   } catch (error) {

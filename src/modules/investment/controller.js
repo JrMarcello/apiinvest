@@ -3,6 +3,7 @@ import { env, logger } from '../../common/utils'
 import { sendEmail } from '../../core/mailer'
 import { uploadFile } from '../../core/storage'
 import constants from '../../common/constants'
+import statuses from '../../common/statuses'
 
 // Models
 const { Building, Investment, Investor, Fundraising, RequirementsHistory, Sequelize } = require('../../database/models')
@@ -38,11 +39,7 @@ const { Building, Investment, Investor, Fundraising, RequirementsHistory, Sequel
  */
 export const getAll = async (request, response) => {
   try {
-    const investments = await Investment.findAll({
-      where: {
-        active: true
-      }
-    })
+    const investments = await Investment.findAll({})
 
     return response.json(investments)
   } catch (error) {
@@ -89,19 +86,9 @@ export const getAll = async (request, response) => {
  */
 export const getById = async (request, response) => {
   try {
-    const { params, user } = request
+    const { params } = request
 
-    const where = {
-      active: true
-    }
-
-    if (user.id_profile !== 3) {
-      where.id_investor = user.investor.id
-    }
-
-    const investment = await Investment.findByPk(params.id, {
-      where
-    })
+    const investment = await Investment.findByPk(params.id)
 
     return response.json(investment || {})
   } catch (error) {
@@ -154,13 +141,11 @@ export const getByInvestorId = async (request, response) => {
   try {
     const { user, params } = request
 
-    // TODO: Refatorar
     const id = user.id_profile === 3 ? params.id : user.investor.id
 
     const investments = await Investment.findAll({
       where: {
-        id_investor: id,
-        active: true
+        id_investor: id
       },
       include: [
         {
@@ -221,8 +206,7 @@ export const getByFundraisingId = async (request, response) => {
 
     const investments = await Investment.findAll({
       where: {
-        id_fundraising: params.id,
-        active: true
+        id_fundraising: params.id
       },
       include: [
         {
@@ -287,11 +271,10 @@ export const getPendings = async (request, response) => {
   try {
     const investments = await Investment.findAll({
       where: {
-        active: true,
-        confirmed: false,
         ted_proof_url: {
           [Sequelize.Op.ne]: null
-        }
+        },
+        status: statuses.investment.PENDING
       },
       include: [
         {
@@ -381,36 +364,15 @@ export const create = async (request, response) => {
     // 2. Validar o levantamento de recursos
     const fundraising = await Fundraising.findByPk(body.id_fundraising)
 
-    if (!fundraising || body.amount < fundraising.investment_min_value) {
+    if (!fundraising || Number(body.amount) < fundraising.investment_min_value) {
       throw constants.investment.error.MIN_VALUE
     }
 
-    // TODO: Revisar regras de negócio baseadas no documento da CVM
-    // 3. Validar o investimento
-    // const amount = await Investment.sum('amount', {
-    //   where: {
-    //     id_investor: body.id_investor,
-    //     date: {
-    //       [Sequelize.Op.gte]: moment()
-    //         .startOf('year')
-    //         .format('YYYY-MM-DD')
-    //     },
-    //     active: true
-    //   }
-    // })
-    //
-    // const notQualified = parseFloat(env().INVESTMENT_MAX_AMOUNT_NOT_QUALIFIED)
-    // const qualified = parseFloat(env().INVESTMENT_MAX_AMOUNT_QUALIFIED)
-    //
-    // if (!body.is_qualified && (amount > notQualified || amount + body.amount > notQualified)) {
-    //   throw constants.investment.error.MAX_AMOUNT_NOT_QUALIFIED
-    // }
-    //
-    // if (body.is_qualified && (amount > qualified || amount + body.amount > qualified)) {
-    //   throw constants.investment.error.MAX_AMOUNT_QUALIFIED
-    // }
+    // TODO: Adicionar regras validadas no frontend (two-way)
 
     // 4. Criar o investimento
+    body.status = statuses.investment.PENDING
+
     const investment = await Investment.create(body)
 
     // 5. Salvar as configurações adotadas
@@ -422,7 +384,7 @@ export const create = async (request, response) => {
 
     await RequirementsHistory.create(terms)
 
-    // 4. Enviar e-mail de criação de investimento
+    // 6. Enviar e-mail de criação de investimento
     await sendEmail({
       from: `Buildinvest <${env().buildinvest.emails.contact}>`,
       to: investor.email,
@@ -486,16 +448,14 @@ export const sendTED = async (request, response) => {
     const url = await uploadFile(file, `teds/${params.id}`, true)
 
     const where = {
-      active: true
+      status: statuses.investment.PENDING
     }
 
     if (user.id_profile !== 3) {
       where.id_investor = user.investor.id
     }
 
-    const investment = await Investment.findByPk(params.id, {
-      where
-    })
+    const investment = await Investment.findByPk(params.id, { where })
 
     investment.ted_proof_url = url
 
@@ -543,7 +503,7 @@ export const confirm = async (request, response) => {
 
     const investment = await Investment.findByPk(body.investments[0])
 
-    investment.confirmed = true
+    investment.status = statuses.investment.CONFIRMED
 
     await investment.save()
 
@@ -561,12 +521,15 @@ export const confirm = async (request, response) => {
     const colleted = await Investment.sum('amount', {
       where: {
         id_fundraising: investment.id_fundraising,
-        confirmed: true,
-        active: true
+        status: statuses.investment.CONFIRMED
       }
     })
 
     if (colleted >= minimum) {
+      // Não é necessário verificar no schedule se a captação atingiu o mínimo ou o valor esperado.
+      // Esta condição já faz a verificação e atualiza o status da captação.
+      fundraising.status = statuses.fundraising.CONFIRMED
+
       const investments = await Investment.findAll({
         where: {
           id_fundraising: fundraising.id
@@ -648,11 +611,9 @@ export const cancel = async (request, response) => {
       throw constants.investment.error.INVALID_CANCEL
     }
 
-    investment.active = false
+    investment.status = statuses.investment.CANCELED
 
     await investment.save()
-
-    // await repository.cancel(request.params.id, request.user.id_profile === 3 ? null : request.user.investor.id)
 
     response.json(constants.investment.success.CANCEL)
   } catch (err) {
