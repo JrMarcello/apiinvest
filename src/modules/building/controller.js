@@ -1,8 +1,10 @@
 import { logger } from '../../common/utils'
+import { uploadFile } from '../../core/storage'
 import constants from '../../common/constants'
+import statuses from '../../common/statuses'
 
 // Models
-const { Building, BuildingImage, Fundraising } = require('../../database/models')
+const { Building, BuildingImage, Fundraising, Investment, Sequelize } = require('../../database/models')
 
 /**
  * @api {get} /building Get all
@@ -105,6 +107,8 @@ export const getAllAvaliables = async (request, response) => {
     // Query original
     // SELECT b.* FROM ${table} b JOIN fundraising f ON (b.id = f.id_building AND f.active AND f.finished = false) WHERE b.active
 
+    const status = [statuses.fundraising.OPENED, statuses.fundraising.CONFIRMED, statuses.fundraising.SETTLED]
+
     const buildings = await Building.findAll({
       where: {
         active: true
@@ -118,8 +122,9 @@ export const getAllAvaliables = async (request, response) => {
           model: Fundraising,
           as: 'fundraisings',
           where: {
-            active: true,
-            finished: false
+            status: {
+              [Sequelize.Op.or]: status
+            }
           }
         }
       ]
@@ -193,16 +198,16 @@ export const getById = async (request, response) => {
         },
         {
           model: Fundraising,
-          as: 'fundraisings'
+          as: 'fundraisings',
+          include: [
+            {
+              model: Investment,
+              as: 'investments'
+            }
+          ]
         }
       ]
     })
-
-    // TODO: Investigar aplicação de imagens e fundraising
-    // if (building) {
-    //     building.images = await image.getByBuildingId(building.id)
-    //     building.fundraisings = await fundraising.getByBuildingId(building.id)
-    // }
 
     return response.json(building || {})
   } catch (error) {
@@ -346,9 +351,33 @@ export const getByBuilderId = async (request, response) => {
  */
 export const create = async (request, response) => {
   try {
-    const { body } = request
+    const { files } = request
+    let { body } = request
+
+    body = JSON.parse(body.building)
 
     const building = await Building.create(body)
+
+    if (files && files.length > 0) {
+      const promises = []
+
+      files.forEach(file => {
+        promises.push(uploadFile(file, `buildings/${building.id}`, true))
+      })
+
+      const urls = await Promise.all(promises)
+
+      let images = []
+
+      urls.forEach(url => {
+        images.push({
+          id_building: building.id,
+          url
+        })
+      })
+
+      images = await BuildingImage.bulkCreate(images)
+    }
 
     return response.json(Object.assign(constants.building.success.CREATE, { building }))
   } catch (error) {

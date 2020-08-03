@@ -48,17 +48,10 @@ export default (sequelize, DataTypes) => {
         allowNull: false
       },
 
-      finished: {
-        type: DataTypes.BOOLEAN,
-        defaultValue: false,
-        allowNull: false
-      },
-
       ted_proof_url: DataTypes.STRING,
 
-      active: {
-        type: DataTypes.BOOLEAN,
-        defaultValue: true,
+      status: {
+        type: DataTypes.INTEGER,
         allowNull: false
       }
     },

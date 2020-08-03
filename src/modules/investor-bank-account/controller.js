@@ -40,7 +40,6 @@ export const getByInvestorId = async (request, response) => {
   try {
     const { user, params } = request
 
-    // TODO: Refatorar
     const id = user.id_profile === 3 ? params.idInvestor : user.investor.id
 
     const accounts = await InvestorBankAccount.findAll({
@@ -108,7 +107,6 @@ export const create = async (request, response) => {
   try {
     const { params, user, body } = request
 
-    // TODO: Refatorar
     const id = user.id_profile === 3 ? params.idInvestor : user.investor.id
 
     const promises = []
@@ -167,7 +165,6 @@ export const remove = async (request, response) => {
   try {
     const { params, user, body } = request
 
-    // TODO: Refatorar
     const id = user.id_profile === 3 ? params.idInvestor : user.investor.id
 
     await InvestorBankAccount.destroy({
