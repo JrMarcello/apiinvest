@@ -31,6 +31,11 @@ export default (sequelize, DataTypes) => {
         allowNull: false
       },
 
+      confirmed_at: {
+        type: DataTypes.DATE,
+        allowNull: true
+      },
+
       is_qualified: {
         type: DataTypes.BOOLEAN,
         defaultValue: false,

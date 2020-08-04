@@ -4,6 +4,7 @@ import { sendEmail } from '../../core/mailer'
 import { uploadFile } from '../../core/storage'
 import constants from '../../common/constants'
 import statuses from '../../common/statuses'
+import { countDays } from '../../common/utils'
 
 // Models
 const { Building, Investment, Investor, Fundraising, RequirementsHistory, Sequelize } = require('../../database/models')
@@ -504,6 +505,7 @@ export const confirm = async (request, response) => {
     const investment = await Investment.findByPk(body.investments[0])
 
     investment.status = statuses.investment.CONFIRMED
+    investment.confirmed_at = Date.now()
 
     await investment.save()
 
@@ -608,6 +610,17 @@ export const cancel = async (request, response) => {
     })
 
     if (!investment || investment.ted_proof_url !== null) {
+      throw constants.investment.error.INVALID_CANCEL
+    }
+
+
+    // verificar se é possível cancelar o investimento por parte do investidor profile_id 1
+
+    let inner7day = (countDays(investment.confirmed_at) >= 0 && countDays(investment.confirmed_at) <= 7)
+
+    if (user.id_profile === 1 && statuses.investment.CONFIRMED === investment.status && !inner7day) {
+      throw constants.investment.error.INVALID_CANCEL
+    } else if (user.id_profile === 1 && investment.status === statuses.investment.PENDING && countDays(investment.confirmed_at) < 7) {
       throw constants.investment.error.INVALID_CANCEL
     }
 
