@@ -348,7 +348,11 @@ export const getPendings = async (request, response) => {
  */
 export const create = async (request, response) => {
   try {
-    const { body } = request
+    const { body, user } = request
+
+    if (user.id_profile === 3) {
+      return response.status(500).json(constants.investment.error.ADMIN)
+    }
 
     const investor = await Investor.findByPk(body.id_investor)
 
@@ -400,11 +404,11 @@ export const create = async (request, response) => {
       }
     })
 
-    response.json(Object.assign(constants.investment.success.CREATE, { investment }))
+    return response.json(Object.assign(constants.investment.success.CREATE, { investment }))
   } catch (err) {
     logger().error(err)
 
-    response.status(500).json(err.apicode ? err : constants.investment.error.CREATE)
+    return response.status(500).json(err.apicode ? err : constants.investment.error.CREATE)
   }
 }
 
