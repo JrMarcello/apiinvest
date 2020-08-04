@@ -2,7 +2,7 @@ import { logger } from '../../common/utils'
 import { uploadFile } from '../../core/storage'
 import constants from '../../common/constants'
 // Models
-const { InvestorDocument } = require('../../database/models')
+const { Document } = require('../../database/models')
 
 /**
  * @api {get} /investor/:idInvestor/documents Get Documents (By Investor ID)
@@ -48,21 +48,22 @@ const { InvestorDocument } = require('../../database/models')
  *   }
  */
 export const getByInvestorId = async (request, response) => {
-  try {
-    const { params } = request
+    try {
+        const { params } = request
 
-    const documents = await InvestorDocument.findAll({
-      where: {
-        id_investor: params.idInvestor
-      }
-    })
+        const documents = await Document.findAll({
+            where: {
+                reference_id: params.idInvestor,
+                reference_entity: 'investor'
+            }
+        })
 
-    return response.json(documents)
-  } catch (error) {
-    logger().error(error)
+        return response.json(documents)
+    } catch (error) {
+        logger().error(error)
 
-    return response.status(500).json(error.apicode ? error : constants.investor.document.error.NOT_FOUND)
-  }
+        return response.status(500).json(error.apicode ? error : constants.investor.document.error.NOT_FOUND)
+    }
 }
 
 /**
@@ -92,37 +93,45 @@ export const getByInvestorId = async (request, response) => {
  *   }
  */
 export const create = async (request, response) => {
-  try {
-    const { params, files } = request
+    try {
+        const { params, files } = request
 
-    const promises = []
+        const promises = []
 
-    for (let index = 0; index < files.length; index += 1) {
-      const file = files[index]
+        files.forEach(file => {
+            promises.push(uploadFile(file, `documents/${params.idInvestor}`, true))
+        })
 
-      promises.push(uploadFile(file, `documents/${params.idInvestor}`, true))
+        const urls = await Promise.all(promises)
+
+        let documents = []
+
+        // A ordem das promisses não é alterada
+        urls.forEach((url, index) => {
+
+            let type;
+
+            if (files[index].mimetype === 'application/pdf') {
+                type = statuses.document.PDF
+            } else if (files[index].mimetype.includes('image')) {
+                type = statuses.document.IMAGE
+            }
+
+            documents.push({
+                name: files[index].originalname,
+                reference_id: params.idInvestor,
+                reference_entity: 'investor',
+                type,
+                url
+            })
+        });
+
+        documents = await Document.bulkCreate(documents)
+
+        return response.json(Object.assign(constants.investor.document.success.CREATE, { documents }))
+    } catch (error) {
+        logger().error(error)
+
+        return response.status(500).json(error.apicode ? error : constants.investor.document.error.CREATE)
     }
-
-    const urls = await Promise.all(promises)
-
-    let documents = []
-
-    for (let index = 0; index < urls.length; index += 1) {
-      const url = urls[index]
-
-      documents.push({
-        id_investor: params.idInvestor,
-        url,
-        order: index
-      })
-    }
-
-    documents = await InvestorDocument.bulkCreate(documents)
-
-    return response.json(Object.assign(constants.investor.document.success.CREATE, { documents }))
-  } catch (error) {
-    logger().error(error)
-
-    return response.status(500).json(error.apicode ? error : constants.investor.document.error.CREATE)
-  }
 }
