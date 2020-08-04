@@ -121,7 +121,9 @@ const constants = {
       MAX_AMOUNT_QUALIFIED: { apicode: 'E0409', message: 'Limite de investimentos excedido' },
       NO_TED_FILE: { apicode: 'E0410', message: 'Comprovante de TED não anexado' },
       INVALID_DATA: { apicode: 'E0411', message: 'Formato de dados inválido' },
-      INVALID_CANCEL: { apicode: 'E0412', message: 'Não é possivel cancelar investimentos com TED e/ou confirmados!' }
+      INVALID_CANCEL: { apicode: 'E0412', message: 'Não é possivel cancelar investimentos com TED e/ou confirmados!' },
+      INVALID_CANCEL_TIME: { apicode: 'E0413', message: 'Não é possivel cancelar investimentos confirmados a mais de 7 dias!' },
+      INVALID_CANCEL_PENDING_LIMIT: { apicode: 'E0414', message: 'Só é possível cancelar um investimento em pendência com mais de 7 dias!' }
     }
   },
   fundraising: {

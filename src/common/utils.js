@@ -17,7 +17,7 @@ export const check1Week = (date) => {
 }
 
 export const countDays = (date) => {
-    if (!date) return false
+    if (!date) return undefined
     const now = new Date()
     const past = new Date(date)
     const diff = now.getTime() - past.getTime()
