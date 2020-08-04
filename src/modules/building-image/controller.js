@@ -1,9 +1,10 @@
 import { logger } from '../../common/utils'
 import { removeFiles, uploadFile } from '../../core/storage'
 import constants from '../../common/constants'
+import statuses from '../../common/statuses'
 
 // Models
-const { BuildingImage, Sequelize } = require('../../database/models')
+const { Document, Sequelize } = require('../../database/models')
 
 /**
  * @api {get} /building/:idBuilding/images Get Image (By Building ID)
@@ -34,21 +35,22 @@ const { BuildingImage, Sequelize } = require('../../database/models')
  *   }
  */
 export const getByBuildingId = async (request, response) => {
-  try {
-    const { params } = request
+    try {
+        const { params } = request
 
-    const images = await BuildingImage.findAll({
-      where: {
-        id_building: params.idBuilding
-      }
-    })
+        const images = await Document.findAll({
+            where: {
+                reference_id: params.idBuilding,
+                reference_entity: 'building'
+            }
+        })
 
-    return response.json(images)
-  } catch (err) {
-    logger().error(err)
+        return response.json(images)
+    } catch (err) {
+        logger().error(err)
 
-    return response.status(500).json(err.apicode ? err : constants.building.images.error.NOT_FOUND)
-  }
+        return response.status(500).json(err.apicode ? err : constants.building.images.error.NOT_FOUND)
+    }
 }
 
 /**
@@ -80,38 +82,47 @@ export const getByBuildingId = async (request, response) => {
  *   }
  */
 export const create = async (request, response) => {
-  try {
-    const { params, files } = request
+    try {
+        const { params, files } = request
 
-    const promises = []
+        const promises = []
 
-    for (let index = 0; index < files.length; index += 1) {
-      const file = files[index]
+        files.forEach(file => {
+            promises.push(uploadFile(file, `buildings/${params.idBuilding}`, true))
+        })
 
-      promises.push(uploadFile(file, `buildings/${params.idBuilding}`, true))
+        const urls = await Promise.all(promises)
+
+        let documents = []
+
+        // A ordem das promisses não é alterada
+        urls.forEach((url, index) => {
+
+            let type;
+
+            if (files[index].mimetype === 'application/pdf') {
+                type = statuses.document.PDF
+            } else if (files[index].mimetype.includes('image')) {
+                type = statuses.document.IMAGE
+            }
+
+            documents.push({
+                name: files[index].originalname,
+                reference_id: params.idBuilding,
+                reference_entity: 'building',
+                type,
+                url
+            })
+        })
+
+        const images = await Document.bulkCreate(documents)
+
+        return response.json(Object.assign(constants.building.images.success.CREATE, { images }))
+    } catch (error) {
+        logger().error(error)
+
+        return response.status(500).json(error.apicode ? error : constants.building.images.error.CREATE)
     }
-
-    const urls = await Promise.all(promises)
-
-    let images = []
-
-    for (let index = 0; index < urls.length; index += 1) {
-      const url = urls[index]
-
-      images.push({
-        id_building: params.idBuilding,
-        url
-      })
-    }
-
-    images = await BuildingImage.bulkCreate(images)
-
-    return response.json(Object.assign(constants.building.images.success.CREATE, { images }))
-  } catch (error) {
-    logger().error(error)
-
-    return response.status(500).json(error.apicode ? error : constants.building.images.error.CREATE)
-  }
 }
 
 /**
@@ -147,38 +158,40 @@ export const create = async (request, response) => {
  *   }
  */
 export const remove = async (request, response) => {
-  try {
-    const { params, body } = request
+    try {
+        const { params, body } = request
 
-    const images = await BuildingImage.findAll({
-      where: {
-        [Sequelize.Op.and]: {
-          id_building: params.idBuilding,
-          id: {
-            [Sequelize.Op.or]: body.ids
-          }
-        }
-      }
-    })
-
-    if (images && images.length > 0) {
-      await removeFiles(images)
-      await BuildingImage.destroy({
-        where: {
-          [Sequelize.Op.and]: {
-            id_building: params.idBuilding,
-            id: {
-              [Sequelize.Op.or]: body.ids
+        const images = await Document.findAll({
+            where: {
+                [Sequelize.Op.and]: {
+                    reference_id: params.idBuilding,
+                    reference_entity: 'building',
+                    id: {
+                        [Sequelize.Op.or]: body.ids
+                    }
+                }
             }
-          }
+        })
+
+        if (images && images.length > 0) {
+            await removeFiles(images)
+            await Document.destroy({
+                where: {
+                    [Sequelize.Op.and]: {
+                        reference_id: params.idBuilding,
+                        reference_entity: 'building',
+                        id: {
+                            [Sequelize.Op.or]: body.ids
+                        }
+                    }
+                }
+            })
         }
-      })
+
+        return response.json(constants.building.images.success.REMOVE)
+    } catch (error) {
+        logger().error(error)
+
+        return response.status(500).json(error.apicode ? error : constants.building.images.error.REMOVE)
     }
-
-    return response.json(constants.building.images.success.REMOVE)
-  } catch (error) {
-    logger().error(error)
-
-    return response.status(500).json(error.apicode ? error : constants.building.images.error.REMOVE)
-  }
 }
