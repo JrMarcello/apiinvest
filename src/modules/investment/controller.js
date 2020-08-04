@@ -1,10 +1,9 @@
 // import moment from 'moment'
-import { env, logger } from '../../common/utils'
+import { env, logger, countDays } from '../../common/utils'
 import { sendEmail } from '../../core/mailer'
 import { uploadFile } from '../../core/storage'
 import constants from '../../common/constants'
 import statuses from '../../common/statuses'
-import { countDays } from '../../common/utils'
 
 // Models
 const { Building, Investment, Investor, Fundraising, RequirementsHistory, Sequelize } = require('../../database/models')
@@ -625,7 +624,7 @@ export const cancel = async (request, response) => {
       throw constants.investment.error.INVALID_CANCEL_TIME
     }
 
-    if (isInvestor && !more7days && investment.status === ( statuses.investment.PENDING || statuses.investment.WAITING_RETURN)) {
+    if (isInvestor && !more7days && investment.status === (statuses.investment.PENDING || statuses.investment.WAITING_RETURN)) {
       throw constants.investment.error.INVALID_CANCEL_PENDING_LIMIT
     }
 
