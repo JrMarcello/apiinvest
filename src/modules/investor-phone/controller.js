@@ -2,7 +2,7 @@ import { logger } from '../../common/utils'
 import constants from '../../common/constants'
 
 // Models
-const { InvestorPhone, Sequelize } = require('../../database/models')
+const { Phone, Sequelize } = require('../../database/models')
 
 /**
  * @api {get} /investor/:idInvestor/phones Get Phone (By Investor ID)
@@ -38,9 +38,10 @@ export const getByInvestorId = async (request, response) => {
 
     const id = user.id_profile === 3 ? params.idInvestor : user.investor.id
 
-    const phones = await InvestorPhone.findAll({
+    const phones = await Phone.findAll({
       where: {
-        id_investor: id
+        reference_id: id,
+        reference_entity: 'investor'
       }
     })
 
@@ -98,13 +99,12 @@ export const create = async (request, response) => {
 
     const promises = []
 
-    for (let index = 0; index < body.phones.length; index += 1) {
-      const phone = body.phones[index]
+    body.phones.forEach(phone => {
+      phone.reference_id = id
+      phone.reference_entity = 'investor'
 
-      phone.id_investor = id
-
-      promises.push(InvestorPhone.create(phone))
-    }
+      promises.push(Phone.create(phone))
+    })
 
     const phones = await Promise.all(promises)
 
@@ -154,10 +154,11 @@ export const remove = async (request, response) => {
 
     const id = user.id_profile === 3 ? params.idInvestor : user.investor.id
 
-    await InvestorPhone.destroy({
+    await Phone.destroy({
       where: {
         [Sequelize.Op.and]: {
-          id_investor: id,
+          reference_id: id,
+          reference_entity: 'investor',
           id: {
             [Sequelize.Op.or]: body.ids
           }

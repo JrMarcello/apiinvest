@@ -78,6 +78,7 @@ export default (sequelize, DataTypes) => {
         defaultValue: true,
         allowNull: false
       },
+
       politically_exposed_person: {
         type: DataTypes.BOOLEAN,
         defaultValue: false
@@ -92,8 +93,8 @@ export default (sequelize, DataTypes) => {
   Investor.associate = models => {
     Investor.belongsTo(models.User, { foreignKey: 'id_user', as: 'user' })
     Investor.hasMany(models.Investment, { foreignKey: 'id_investor', as: 'investments' })
-    Investor.hasMany(models.InvestorPhone, { foreignKey: 'id_investor', as: 'phones' })
-    Investor.hasMany(models.InvestorBankAccount, { foreignKey: 'id_investor', as: 'accounts' })
+    Investor.hasMany(models.Phone, { foreignKey: 'reference_id', as: 'phones' })
+    Investor.hasMany(models.BankAccount, { foreignKey: 'reference_id', as: 'accounts' })
   }
 
   return Investor

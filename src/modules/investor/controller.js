@@ -4,16 +4,7 @@ import constants from '../../common/constants'
 import statuses from '../../common/statuses'
 
 // Models
-const {
-  Building,
-  Fundraising,
-  Investment,
-  Investor,
-  InvestorBankAccount,
-  InvestorPhone,
-  Document,
-  Sequelize
-} = require('../../database/models')
+const { Building, Fundraising, Investment, Investor, BankAccount, Document, Phone, Sequelize } = require('../../database/models')
 
 /**
  * @api {get} /investor Get all
@@ -222,12 +213,20 @@ export const getByUserId = async (request, response) => {
       },
       include: [
         {
-          model: InvestorPhone,
-          as: 'phones'
+          model: Phone,
+          as: 'phones',
+          required: false,
+          where: {
+            reference_entity: 'investor'
+          }
         },
         {
-          model: InvestorBankAccount,
-          as: 'accounts'
+          model: BankAccount,
+          as: 'accounts',
+          required: false,
+          where: {
+            reference_entity: 'investor'
+          }
         },
         {
           model: Investment,
@@ -298,6 +297,7 @@ export const getAllInvestmentsById = async (request, response) => {
               include: {
                 model: Document,
                 as: 'documents',
+                required: false,
                 where: {
                   reference_entity: 'building'
                 }
@@ -596,11 +596,12 @@ export const create = async (request, response) => {
 
     phones.forEach(({ number }) => {
       phone = {
-        id_investor: result.id,
+        reference_id: result.id,
+        reference_entity: 'investor',
         number
       }
 
-      promises.push(InvestorPhone.create(phone))
+      promises.push(Phone.create(phone))
     })
 
     await Promise.all(promises)
@@ -614,9 +615,10 @@ export const create = async (request, response) => {
       accounts = JSON.parse(body.accounts)
 
       accounts.forEach(account => {
-        account.id_investor = result.id
+        account.reference_id = result.id
+        account.reference_entity = 'investor'
 
-        promises.push(InvestorBankAccount.create(account))
+        promises.push(BankAccount.create(account))
       })
 
       await Promise.all(promises)
@@ -726,8 +728,11 @@ export const update = async (request, response) => {
     const result = await Investor.findByPk(investor.id, {
       include: [
         {
-          model: InvestorPhone,
-          as: 'phones'
+          model: Phone,
+          as: 'phones',
+          where: {
+            reference_entity: 'investor'
+          }
         }
       ]
     })
@@ -756,11 +761,12 @@ export const update = async (request, response) => {
         // 2.1 Adicionando novos telefones
         addedPhones.forEach(phone => {
           phone = {
-            id_investor: result.id,
+            reference_id: result.id,
+            reference_entity: 'investor',
             number: phone.number
           }
 
-          promises.push(InvestorPhone.create(phone))
+          promises.push(Phone.create(phone))
         })
 
         await Promise.all(promises)
@@ -769,10 +775,11 @@ export const update = async (request, response) => {
         const ids = removedPhones.map(phone => phone.id)
 
         if (ids.length > 0) {
-          await InvestorPhone.destroy({
+          await Phone.destroy({
             where: {
               [Sequelize.Op.and]: {
-                id_investor: result.id,
+                reference_id: result.id,
+                reference_entity: 'investor',
                 id: {
                   [Sequelize.Op.or]: ids
                 }
@@ -783,11 +790,12 @@ export const update = async (request, response) => {
       } else {
         phones.forEach(phone => {
           phone = {
-            id_investor: result.id,
+            reference_id: result.id,
+            reference_entity: 'investor',
             number: phone.number
           }
 
-          promises.push(InvestorPhone.create(phone))
+          promises.push(Phone.create(phone))
         })
       }
     }
@@ -802,9 +810,10 @@ export const update = async (request, response) => {
         promises = []
 
         // 3.1 Obter conta atualmente cadastrada
-        const account = await InvestorBankAccount.findOne({
+        const account = await BankAccount.findOne({
           where: {
-            id_investor: result.id
+            reference_id: result.id,
+            reference_entity: 'investor'
           }
         })
 
@@ -815,9 +824,10 @@ export const update = async (request, response) => {
 
           await account.save()
         } else {
-          accounts[0].id_investor = result.id
+          accounts[0].reference_id = result.id
+          accounts[0].reference_entity = 'investor'
 
-          await InvestorBankAccount.create(accounts[0])
+          await BankAccount.create(accounts[0])
         }
       }
     }

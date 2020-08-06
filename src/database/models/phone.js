@@ -1,6 +1,6 @@
 export default (sequelize, DataTypes) => {
-  const BuilderPhone = sequelize.define(
-    'BuilderPhone',
+  const Phone = sequelize.define(
+    'Phone',
     {
       id: {
         type: DataTypes.INTEGER,
@@ -8,8 +8,13 @@ export default (sequelize, DataTypes) => {
         primaryKey: true
       },
 
-      id_builder: {
+      reference_id: {
         type: DataTypes.UUID,
+        allowNull: false
+      },
+
+      reference_entity: {
+        type: DataTypes.STRING,
         allowNull: false
       },
 
@@ -20,14 +25,9 @@ export default (sequelize, DataTypes) => {
       }
     },
     {
-      tableName: 'builder_phone'
+      tableName: 'phone'
     }
   )
 
-  // Associations
-  BuilderPhone.associate = models => {
-    BuilderPhone.belongsTo(models.Builder, { foreignKey: 'id_builder', as: 'builder' })
-  }
-
-  return BuilderPhone
+  return Phone
 }

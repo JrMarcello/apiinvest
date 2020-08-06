@@ -3,7 +3,7 @@ import { removeFile, uploadFile } from '../../core/storage'
 import constants from '../../common/constants'
 
 // Models
-const { Builder, BuilderPhone, BuilderPartner, Building, Sequelize } = require('../../database/models')
+const { Builder, Phone, BuilderPartner, Building, Sequelize } = require('../../database/models')
 
 /**
  * @api {get} /builder Get all
@@ -158,8 +158,12 @@ export const getById = async (request, response) => {
       },
       include: [
         {
-          model: BuilderPhone,
-          as: 'phones'
+          model: Phone,
+          as: 'phones',
+          required: false,
+          where: {
+            reference_entity: 'builder'
+          }
         },
         {
           model: BuilderPartner,
@@ -433,11 +437,12 @@ export const create = async (request, response) => {
 
     phones.forEach(({ number }) => {
       phone = {
-        id_builder: result.id,
+        reference_id: result.id,
+        reference_entity: 'builder',
         number
       }
 
-      promises.push(BuilderPhone.create(phone))
+      promises.push(Phone.create(phone))
     })
 
     await Promise.all(promises)
@@ -516,23 +521,16 @@ export const update = async (request, response) => {
     // TODO: Aidiconar verificação de id da construtora
     // if (!builder.id) { }
 
-    // 1. Verificar se o CNPJ ja está cadastrado
-    let result = await Builder.findAll({
-      where: {
-        cnpj: builder.cnpj
-      }
-    })
-
-    if (result && result.length > 0) {
-      return response.status(302).json(constants.builder.error.CNPJ)
-    }
-
-    // 2. Atualizando a construtora
-    result = await Builder.findByPk(builder.id, {
+    // 1. Atualizando a construtora
+    const result = await Builder.findByPk(builder.id, {
       include: [
         {
-          model: BuilderPhone,
-          as: 'phones'
+          model: Phone,
+          as: 'phones',
+          required: false,
+          where: {
+            reference_entity: 'builder'
+          }
         }
       ]
     })
@@ -548,32 +546,34 @@ export const update = async (request, response) => {
       await result.save()
     }
 
-    // 3. Atualizando telefones
+    // 2. Atualizando telefones
     const addedPhones = phones.filter(({ number: first }) => !result.phones.some(({ number: second }) => first === second))
     const removedPhones = result.phones.filter(({ number: first }) => !phones.some(({ number: second }) => first === second))
 
-    // 3.1 Adicionando novos telefones
+    // 2.1 Adicionando novos telefones
     const promises = []
 
     addedPhones.forEach(phone => {
       phone = {
-        id_builder: result.id,
+        reference_id: result.id,
+        reference_entity: 'builder',
         number: phone.number
       }
 
-      promises.push(BuilderPhone.create(phone))
+      promises.push(Phone.create(phone))
     })
 
     await Promise.all(promises)
 
-    // 3.2 Apagando números removidos
+    // 2.2 Apagando números removidos
     const ids = removedPhones.map(phone => phone.id)
 
     if (ids.length > 0) {
-      await BuilderPhone.destroy({
+      await Phone.destroy({
         where: {
           [Sequelize.Op.and]: {
-            id_builder: result.id,
+            reference_id: result.id,
+            reference_entity: 'builder',
             id: {
               [Sequelize.Op.or]: ids
             }
@@ -582,9 +582,9 @@ export const update = async (request, response) => {
       })
     }
 
-    // 4. Atualizando a logo
+    // 3. Atualizando a logo
     if (file) {
-      // 4.1 Removendo a logo anterior
+      // 3.1 Removendo a logo anterior
       if (result && result.logo_url) {
         const path = result.logo_url.split(env().GOOGLE_CLOUD.BUCKET).pop()
 
@@ -595,7 +595,7 @@ export const update = async (request, response) => {
         await result.save()
       }
 
-      // 4.2 Enviando a logo atualizada
+      // 3.2 Enviando a logo atualizada
       const url = await uploadFile(file, `logos/${result.id}`, true)
 
       result.logo_url = url

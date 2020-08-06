@@ -4,7 +4,7 @@ import constants from '../../common/constants'
 import statuses from '../../common/statuses'
 
 // Models
-const { Building, Document, Fundraising, Investment, Sequelize } = require('../../database/models')
+const { BankAccount, Building, Custodian, Document, Fundraising, Investment, Sequelize } = require('../../database/models')
 
 /**
  * @api {get} /building Get all
@@ -53,6 +53,7 @@ export const getAll = async (request, response) => {
         {
           model: Document,
           as: 'documents',
+          required: false,
           where: {
             reference_entity: 'building'
           }
@@ -120,6 +121,7 @@ export const getAllAvaliables = async (request, response) => {
         {
           model: Document,
           as: 'documents',
+          required: false,
           where: {
             reference_entity: 'building'
           }
@@ -201,6 +203,7 @@ export const getById = async (request, response) => {
         {
           model: Document,
           as: 'documents',
+          required: false,
           where: {
             reference_entity: 'building'
           }
@@ -212,6 +215,16 @@ export const getById = async (request, response) => {
             {
               model: Investment,
               as: 'investments'
+            },
+            {
+              model: Custodian,
+              as: 'custodian',
+              include: [
+                {
+                  model: BankAccount,
+                  as: 'account'
+                }
+              ]
             }
           ]
         }

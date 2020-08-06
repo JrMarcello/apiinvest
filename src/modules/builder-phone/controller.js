@@ -2,7 +2,7 @@ import { logger } from '../../common/utils'
 import constants from '../../common/constants'
 
 // Models
-const { BuilderPhone, Sequelize } = require('../../database/models')
+const { Phone, Sequelize } = require('../../database/models')
 
 /**
  * @api {get} /builder/:idBuilder/phones Get Phone (By Builder ID)
@@ -38,9 +38,10 @@ export const getByBuilderId = async (request, response) => {
 
     const id = user.id_profile === 3 ? params.idBuilder : user.builder.id
 
-    const phones = await BuilderPhone.findAll({
+    const phones = await Phone.findAll({
       where: {
-        id_builder: id
+        reference_id: id,
+        reference_entity: 'builder'
       }
     })
 
@@ -100,11 +101,12 @@ export const create = async (request, response) => {
       const number = body.phones[index]
 
       const phone = {
-        id_builder: id,
+        reference_id: id,
+        reference_entity: 'builder',
         number
       }
 
-      promises.push(BuilderPhone.create(phone))
+      promises.push(Phone.create(phone))
     }
 
     const phones = await Promise.all(promises)
@@ -153,10 +155,11 @@ export const remove = async (request, response) => {
 
     const id = user.id_profile === 3 ? params.idBuilder : user.builder.id
 
-    await BuilderPhone.destroy({
+    await Phone.destroy({
       where: {
         [Sequelize.Op.and]: {
-          id_builder: id,
+          reference_id: id,
+          reference_entity: 'builder',
           id: {
             [Sequelize.Op.or]: body.ids
           }

@@ -2,7 +2,7 @@ import { logger } from '../../common/utils'
 import constants from '../../common/constants'
 
 // Models
-const { InvestorBankAccount, Sequelize } = require('../../database/models')
+const { BankAccount, Sequelize } = require('../../database/models')
 
 /**
  * @api {get} /investor/:idInvestor/bank-accounts Get Bank Account (By Investor ID)
@@ -42,9 +42,10 @@ export const getByInvestorId = async (request, response) => {
 
     const id = user.id_profile === 3 ? params.idInvestor : user.investor.id
 
-    const accounts = await InvestorBankAccount.findAll({
+    const accounts = await BankAccount.findAll({
       where: {
-        id_investor: id,
+        reference_id: id,
+        reference_entity: 'investor',
         active: true
       }
     })
@@ -114,9 +115,10 @@ export const create = async (request, response) => {
     for (let index = 0; index < body.accounts.length; index += 1) {
       const account = body.accounts[index]
 
-      account.id_investor = id
+      account.reference_id = id
+      account.reference_entity = 'investor'
 
-      promises.push(InvestorBankAccount.create(account))
+      promises.push(BankAccount.create(account))
     }
 
     const accounts = await Promise.all(promises)
@@ -167,10 +169,11 @@ export const remove = async (request, response) => {
 
     const id = user.id_profile === 3 ? params.idInvestor : user.investor.id
 
-    await InvestorBankAccount.destroy({
+    await BankAccount.destroy({
       where: {
         [Sequelize.Op.and]: {
-          id_investor: id,
+          reference_id: id,
+          reference_entity: 'investor',
           id: {
             [Sequelize.Op.or]: body.ids
           }

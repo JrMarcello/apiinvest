@@ -2,7 +2,7 @@ import { logger } from '../../common/utils'
 import constants from '../../common/constants'
 
 // Models
-const { Custodian } = require('../../database/models')
+const { Custodian, BankAccount } = require('../../database/models')
 
 /**
  * @api {get} /custodian Get all
@@ -153,7 +153,14 @@ export const create = async (request, response) => {
   try {
     const { body } = request
 
+    // 1. Criar o custodiante
     const custodian = await Custodian.create(body)
+
+    // 2. Criar conta bancária
+    body.account.reference_id = custodian.id
+    body.account.reference_entity = 'custodian'
+
+    await BankAccount.create(body.account)
 
     return response.json(Object.assign(constants.custodian.success.CREATE, { custodian }))
   } catch (error) {
@@ -218,6 +225,27 @@ export const update = async (request, response) => {
       })
 
       await custodian.save()
+    }
+
+    // Atualizar conta bancária
+    const account = await BankAccount.findOne({
+      where: {
+        reference_id: custodian.id,
+        reference_entity: 'custodian'
+      }
+    })
+
+    if (account) {
+      account.agency = body.account.agency
+      account.account = body.account.account
+      account.bank_code = body.account.bank_code
+
+      await account.save()
+    } else {
+      body.account.reference_id = custodian.id
+      body.account.reference_entity = 'custodian'
+
+      await BankAccount.create(body.account)
     }
 
     return response.json(constants.custodian.success.UPDATE)
