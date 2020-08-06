@@ -1,8 +1,10 @@
 import { logger } from '../../common/utils'
 import { uploadFile } from '../../core/storage'
 import constants from '../../common/constants'
+import statuses from '../../common/statuses'
+
 // Models
-const { InvestorDocument } = require('../../database/models')
+const { Document } = require('../../database/models')
 
 /**
  * @api {get} /investor/:idInvestor/documents Get Documents (By Investor ID)
@@ -51,9 +53,10 @@ export const getByInvestorId = async (request, response) => {
   try {
     const { params } = request
 
-    const documents = await InvestorDocument.findAll({
+    const documents = await Document.findAll({
       where: {
-        id_investor: params.idInvestor
+        reference_id: params.idInvestor,
+        reference_entity: 'investor'
       }
     })
 
@@ -97,27 +100,34 @@ export const create = async (request, response) => {
 
     const promises = []
 
-    for (let index = 0; index < files.length; index += 1) {
-      const file = files[index]
-
+    files.forEach(file => {
       promises.push(uploadFile(file, `documents/${params.idInvestor}`, true))
-    }
+    })
 
     const urls = await Promise.all(promises)
 
     let documents = []
 
-    for (let index = 0; index < urls.length; index += 1) {
-      const url = urls[index]
+    // A ordem das promisses não é alterada
+    urls.forEach((url, index) => {
+      let type
+
+      if (files[index].mimetype === 'application/pdf') {
+        type = statuses.document.PDF
+      } else if (files[index].mimetype.includes('image')) {
+        type = statuses.document.IMAGE
+      }
 
       documents.push({
-        id_investor: params.idInvestor,
-        url,
-        order: index
+        name: files[index].originalname,
+        reference_id: params.idInvestor,
+        reference_entity: 'investor',
+        type,
+        url
       })
-    }
+    })
 
-    documents = await InvestorDocument.bulkCreate(documents)
+    documents = await Document.bulkCreate(documents)
 
     return response.json(Object.assign(constants.investor.document.success.CREATE, { documents }))
   } catch (error) {

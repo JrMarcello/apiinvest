@@ -10,9 +10,8 @@ const {
   Investment,
   Investor,
   InvestorBankAccount,
-  InvestorDocument,
   InvestorPhone,
-  BuildingImage,
+  Document,
   Sequelize
 } = require('../../database/models')
 
@@ -297,8 +296,11 @@ export const getAllInvestmentsById = async (request, response) => {
               model: Building,
               as: 'building',
               include: {
-                model: BuildingImage,
-                as: 'images'
+                model: Document,
+                as: 'documents',
+                where: {
+                  reference_entity: 'building'
+                }
               }
             }
           ]
@@ -632,17 +634,26 @@ export const create = async (request, response) => {
 
       const documents = []
 
-      for (let index = 0; index < urls.length; index += 1) {
-        const url = urls[index]
+      // A ordem das promisses não é alterada
+      urls.forEach((url, index) => {
+        let type
+
+        if (files[index].mimetype === 'application/pdf') {
+          type = statuses.document.PDF
+        } else if (files[index].mimetype.includes('image')) {
+          type = statuses.document.IMAGE
+        }
 
         documents.push({
-          id_investor: result.id,
-          url,
-          order: index
+          name: files[index].originalname,
+          reference_id: result.id,
+          reference_entity: 'investor',
+          type,
+          url
         })
-      }
+      })
 
-      await InvestorDocument.bulkCreate(documents)
+      await Document.bulkCreate(documents)
     }
 
     return response.json(Object.assign(constants.investor.success.CREATE, { investor: result }))
@@ -823,17 +834,26 @@ export const update = async (request, response) => {
 
       const documents = []
 
-      for (let index = 0; index < urls.length; index += 1) {
-        const url = urls[index]
+      // A ordem das promisses não é alterada
+      urls.forEach((url, index) => {
+        let type
+
+        if (files[index].mimetype === 'application/pdf') {
+          type = statuses.document.PDF
+        } else if (files[index].mimetype.includes('image')) {
+          type = statuses.document.IMAGE
+        }
 
         documents.push({
-          id_investor: result.id,
-          url,
-          order: index
+          name: files[index].originalname,
+          reference_id: investor.id,
+          reference_entity: 'investor',
+          type,
+          url
         })
-      }
+      })
 
-      await InvestorDocument.bulkCreate(documents)
+      await Document.bulkCreate(documents)
     }
 
     return response.json(Object.assign(constants.investor.success.UPDATE, { investor: result }))
