@@ -3,7 +3,7 @@ import { removeFile, uploadFile } from '../../core/storage'
 import constants from '../../common/constants'
 
 // Models
-const { Builder, BuilderPhone, BuilderPartner, Building, Sequelize } = require('../../database/models')
+const { Builder, Phone, BuilderPartner, Building, Sequelize } = require('../../database/models')
 
 /**
  * @api {get} /builder Get all
@@ -45,19 +45,19 @@ const { Builder, BuilderPhone, BuilderPartner, Building, Sequelize } = require('
  *     }
  */
 export const getAll = async (request, response) => {
-  try {
-    const builders = await Builder.findAll({
-      where: {
-        active: true
-      }
-    })
+    try {
+        const builders = await Builder.findAll({
+            where: {
+                active: true
+            }
+        })
 
-    return response.json(builders)
-  } catch (error) {
-    logger().error(error)
+        return response.json(builders)
+    } catch (error) {
+        logger().error(error)
 
-    return response.status(500).json(error.apicode ? error : constants.builder.error.NOT_FOUND)
-  }
+        return response.status(500).json(error.apicode ? error : constants.builder.error.NOT_FOUND)
+    }
 }
 
 /**
@@ -149,31 +149,34 @@ export const getAll = async (request, response) => {
  *   }
  */
 export const getById = async (request, response) => {
-  try {
-    const { params } = request
+    try {
+        const { params } = request
 
-    const builder = await Builder.findByPk(params.id, {
-      where: {
-        active: true
-      },
-      include: [
-        {
-          model: BuilderPhone,
-          as: 'phones'
-        },
-        {
-          model: BuilderPartner,
-          as: 'partners'
-        }
-      ]
-    })
+        const builder = await Builder.findByPk(params.id, {
+            where: {
+                active: true
+            },
+            include: [
+                {
+                    model: Phone,
+                    as: 'phones',
+                    where: {
+                        reference_entity: 'builder'
+                    }
+                },
+                {
+                    model: BuilderPartner,
+                    as: 'partners'
+                }
+            ]
+        })
 
-    return response.json(builder || {})
-  } catch (error) {
-    logger().error(error)
+        return response.json(builder || {})
+    } catch (error) {
+        logger().error(error)
 
-    return response.status(500).json(error.apicode ? error : constants.builder.error.NOT_FOUND)
-  }
+        return response.status(500).json(error.apicode ? error : constants.builder.error.NOT_FOUND)
+    }
 }
 
 /**
@@ -220,31 +223,31 @@ export const getById = async (request, response) => {
  *     }
  */
 export const getAllBuildingsById = async (request, response) => {
-  try {
-    const { user, params } = request
+    try {
+        const { user, params } = request
 
-    const id = user.id_profile === 3 ? params.id : user.builder.id
+        const id = user.id_profile === 3 ? params.id : user.builder.id
 
-    const builder = await Builder.findByPk(id, {
-      where: {
-        active: true
-      },
-      include: [
-        {
-          model: Building,
-          as: 'buildings'
-        }
-      ]
-    })
+        const builder = await Builder.findByPk(id, {
+            where: {
+                active: true
+            },
+            include: [
+                {
+                    model: Building,
+                    as: 'buildings'
+                }
+            ]
+        })
 
-    const { buildings } = builder
+        const { buildings } = builder
 
-    return response.json(buildings)
-  } catch (error) {
-    logger().error(error)
+        return response.json(buildings)
+    } catch (error) {
+        logger().error(error)
 
-    return response.status(500).json(error.apicode ? error : constants.building.error.NOT_FOUND)
-  }
+        return response.status(500).json(error.apicode ? error : constants.building.error.NOT_FOUND)
+    }
 }
 
 /**
@@ -294,24 +297,24 @@ export const getAllBuildingsById = async (request, response) => {
  *   }
  */
 export const getByUserId = async (request, response) => {
-  try {
-    const { user, params } = request
+    try {
+        const { user, params } = request
 
-    const id = user.id_profile === 3 ? params.id : user.id
+        const id = user.id_profile === 3 ? params.id : user.id
 
-    const builder = await Builder.findAll({
-      where: {
-        id_user: id,
-        active: true
-      }
-    })
+        const builder = await Builder.findAll({
+            where: {
+                id_user: id,
+                active: true
+            }
+        })
 
-    return response.json(builder || [])
-  } catch (error) {
-    logger().error(error)
+        return response.json(builder || [])
+    } catch (error) {
+        logger().error(error)
 
-    return response.status(500).json(error.apicode ? error : constants.builder.error.NOT_FOUND)
-  }
+        return response.status(500).json(error.apicode ? error : constants.builder.error.NOT_FOUND)
+    }
 }
 
 /**
@@ -401,61 +404,62 @@ export const getByUserId = async (request, response) => {
  *   }
  */
 export const create = async (request, response) => {
-  try {
-    const { body, file } = request
+    try {
+        const { body, file } = request
 
-    if (!body.builder || body.builder.length === 0) {
-      throw constants.builder.error.REQUIRED
-    } else if (!body.phones || body.phones.length === 0) {
-      throw constants.builder.phones.error.REQUIRED
+        if (!body.builder || body.builder.length === 0) {
+            throw constants.builder.error.REQUIRED
+        } else if (!body.phones || body.phones.length === 0) {
+            throw constants.builder.phones.error.REQUIRED
+        }
+
+        const builder = JSON.parse(body.builder)
+        const phones = JSON.parse(body.phones)
+
+        // 1. Verificar se o CNPJ ja está cadastrado
+        let result = await Builder.findAll({
+            where: {
+                cnpj: builder.cnpj
+            }
+        })
+
+        if (result && result.length > 0) {
+            return response.status(302).json(constants.builder.error.CNPJ)
+        }
+
+        // 2. Criar a construtora
+        result = await Builder.create(builder)
+
+        // 3. Criar telefones
+        let phone
+        const promises = []
+
+        phones.forEach(({ number }) => {
+            phone = {
+                reference_id: result.id,
+                reference_entity: 'builder',
+                number
+            }
+
+            promises.push(Phone.create(phone))
+        })
+
+        await Promise.all(promises)
+
+        // 4. Enviar logo
+        if (file) {
+            const url = await uploadFile(file, `logos/${result.id}`, true)
+            result.logo_url = url
+
+            await result.save()
+        }
+
+        return response.json(Object.assign(constants.builder.success.CREATE, { result }))
+    } catch (error) {
+        logger().error(error)
+
+        return response.status(500).json(error.apicode ? error : constants.builder.error.CREATE)
     }
-
-    const builder = JSON.parse(body.builder)
-    const phones = JSON.parse(body.phones)
-
-    // 1. Verificar se o CNPJ ja está cadastrado
-    let result = await Builder.findAll({
-      where: {
-        cnpj: builder.cnpj
-      }
-    })
-
-    if (result && result.length > 0) {
-      return response.status(302).json(constants.builder.error.CNPJ)
-    }
-
-    // 2. Criar a construtora
-    result = await Builder.create(builder)
-
-    // 3. Criar telefones
-    let phone
-    const promises = []
-
-    phones.forEach(({ number }) => {
-      phone = {
-        id_builder: result.id,
-        number
-      }
-
-      promises.push(BuilderPhone.create(phone))
-    })
-
-    await Promise.all(promises)
-
-    // 4. Enviar logo
-    if (file) {
-      const url = await uploadFile(file, `logos/${result.id}`, true)
-      result.logo_url = url
-
-      await result.save()
-    }
-
-    return response.json(Object.assign(constants.builder.success.CREATE, { result }))
-  } catch (error) {
-    logger().error(error)
-
-    return response.status(500).json(error.apicode ? error : constants.builder.error.CREATE)
-  }
 }
 
 /**
@@ -501,114 +505,108 @@ export const create = async (request, response) => {
  *   }
  */
 export const update = async (request, response) => {
-  try {
-    const { body, file } = request
+    try {
+        const { body, file } = request
 
-    if (!body || body.length === 0) {
-      throw constants.builder.error.INVALID_DATA
-    } else if (!body.phones || body.phones.length === 0) {
-      throw constants.builder.phones.error.REQUIRED
-    }
-
-    const builder = JSON.parse(body.builder)
-    const phones = JSON.parse(body.phones)
-
-    // TODO: Aidiconar verificação de id da construtora
-    // if (!builder.id) { }
-
-    // 1. Verificar se o CNPJ ja está cadastrado
-    let result = await Builder.findAll({
-      where: {
-        cnpj: builder.cnpj
-      }
-    })
-
-    if (result && result.length > 0) {
-      return response.status(302).json(constants.builder.error.CNPJ)
-    }
-
-    // 2. Atualizando a construtora
-    result = await Builder.findByPk(builder.id, {
-      include: [
-        {
-          model: BuilderPhone,
-          as: 'phones'
+        if (!body || body.length === 0) {
+            throw constants.builder.error.INVALID_DATA
+        } else if (!body.phones || body.phones.length === 0) {
+            throw constants.builder.phones.error.REQUIRED
         }
-      ]
-    })
 
-    if (result) {
-      // Atualizando apenas as propriedades definidas para atualizar
-      Object.keys(builder).forEach(key => {
-        if (builder[key] !== undefined) {
-          result[key] = builder[key]
+        const builder = JSON.parse(body.builder)
+        const phones = JSON.parse(body.phones)
+
+        // TODO: Aidiconar verificação de id da construtora
+        // if (!builder.id) { }
+
+        // 1. Atualizando a construtora
+        const result = await Builder.findByPk(builder.id, {
+            include: [
+                {
+                    model: Phone,
+                    as: 'phones',
+                    where: {
+                        reference_entity: 'builder'
+                    }
+                }
+            ]
+        })
+
+        if (result) {
+            // Atualizando apenas as propriedades definidas para atualizar
+            Object.keys(builder).forEach(key => {
+                if (builder[key] !== undefined) {
+                    result[key] = builder[key]
+                }
+            })
+
+            await result.save()
         }
-      })
 
-      await result.save()
-    }
+        // 2. Atualizando telefones
+        const addedPhones = phones.filter(({ number: first }) => !result.phones.some(({ number: second }) => first === second))
+        const removedPhones = result.phones.filter(({ number: first }) => !phones.some(({ number: second }) => first === second))
 
-    // 3. Atualizando telefones
-    const addedPhones = phones.filter(({ number: first }) => !result.phones.some(({ number: second }) => first === second))
-    const removedPhones = result.phones.filter(({ number: first }) => !phones.some(({ number: second }) => first === second))
+        // 2.1 Adicionando novos telefones
+        const promises = []
 
-    // 3.1 Adicionando novos telefones
-    const promises = []
-
-    addedPhones.forEach(phone => {
-      phone = {
-        id_builder: result.id,
-        number: phone.number
-      }
-
-      promises.push(BuilderPhone.create(phone))
-    })
-
-    await Promise.all(promises)
-
-    // 3.2 Apagando números removidos
-    const ids = removedPhones.map(phone => phone.id)
-
-    if (ids.length > 0) {
-      await BuilderPhone.destroy({
-        where: {
-          [Sequelize.Op.and]: {
-            id_builder: result.id,
-            id: {
-              [Sequelize.Op.or]: ids
+        addedPhones.forEach(phone => {
+            phone = {
+                reference_id: result.id,
+                reference_entity: 'builder',
+                number: phone.number
             }
-          }
+
+            promises.push(Phone.create(phone))
+        })
+
+        await Promise.all(promises)
+
+        // 2.2 Apagando números removidos
+        const ids = removedPhones.map(phone => phone.id)
+
+        if (ids.length > 0) {
+            await Phone.destroy({
+                where: {
+                    [Sequelize.Op.and]: {
+                        reference_id: result.id,
+                        reference_entity: 'builder',
+                        id: {
+                            [Sequelize.Op.or]: ids
+                        }
+                    }
+                }
+            })
         }
-      })
+
+        // 3. Atualizando a logo
+        if (file) {
+            // 3.1 Removendo a logo anterior
+            if (result && result.logo_url) {
+                const path = result.logo_url.split(env().GOOGLE_CLOUD.BUCKET).pop()
+
+                await removeFile(path)
+
+                result.logo_url = null
+
+                await result.save()
+            }
+
+            // 3.2 Enviando a logo atualizada
+            const url = await uploadFile(file, `logos/${result.id}`, true)
+
+            result.logo_url = url
+
+            await result.save()
+        }
+
+        return response.json(constants.builder.success.UPDATE)
+    } catch (error) {
+        logger().error(error)
+
+        return response.status(500).json(error.apicode ? error : constants.builder.error.UPDATE)
     }
-
-    // 4. Atualizando a logo
-    if (file) {
-      // 4.1 Removendo a logo anterior
-      if (result && result.logo_url) {
-        const path = result.logo_url.split(env().GOOGLE_CLOUD.BUCKET).pop()
-
-        await removeFile(path)
-
-        result.logo_url = null
-
-        await result.save()
-      }
-
-      // 4.2 Enviando a logo atualizada
-      const url = await uploadFile(file, `logos/${result.id}`, true)
-
-      result.logo_url = url
-
-      await result.save()
-    }
-
-    return response.json(constants.builder.success.UPDATE)
-  } catch (error) {
-    logger().error(error)
-
-    return response.status(500).json(error.apicode ? error : constants.builder.error.UPDATE)
-  }
 }
 
 /**
@@ -643,25 +641,25 @@ export const update = async (request, response) => {
  *   }
  */
 export const remove = async (request, response) => {
-  try {
-    const { user, params } = request
+    try {
+        const { user, params } = request
 
-    const id = user.id_profile === 3 ? params.id : user.builder.id
+        const id = user.id_profile === 3 ? params.id : user.builder.id
 
-    const builder = await Builder.findByPk(id)
+        const builder = await Builder.findByPk(id)
 
-    if (builder) {
-      builder.active = false
+        if (builder) {
+            builder.active = false
 
-      await builder.save()
+            await builder.save()
+        }
+
+        return response.json(constants.builder.success.REMOVE)
+    } catch (error) {
+        logger().error(error)
+
+        return response.status(500).json(error.apicode ? error : constants.builder.error.REMOVE)
     }
-
-    return response.json(constants.builder.success.REMOVE)
-  } catch (error) {
-    logger().error(error)
-
-    return response.status(500).json(error.apicode ? error : constants.builder.error.REMOVE)
-  }
 }
 
 /**
@@ -693,33 +691,33 @@ export const remove = async (request, response) => {
  *   }
  */
 export const setLogo = async (request, response) => {
-  try {
-    const { params, file } = request
+    try {
+        const { params, file } = request
 
-    const builder = await Builder.findByPk(params.id)
+        const builder = await Builder.findByPk(params.id)
 
-    if (builder && builder.logo_url) {
-      const path = builder.logo_url.split(env().GOOGLE_CLOUD.BUCKET).pop()
+        if (builder && builder.logo_url) {
+            const path = builder.logo_url.split(env().GOOGLE_CLOUD.BUCKET).pop()
 
-      await removeFile(path)
+            await removeFile(path)
 
-      builder.logo_url = null
+            builder.logo_url = null
 
-      await builder.save()
+            await builder.save()
+        }
+
+        const url = await uploadFile(file, `logos/${params.id}`, true)
+
+        builder.logo_url = url
+
+        await builder.save()
+
+        return response.json(Object.assign(constants.builder.success.SET_LOGO, { image: url }))
+    } catch (error) {
+        logger().error(error)
+
+        return response.status(500).json(error.apicode ? error : constants.builder.error.SET_LOGO)
     }
-
-    const url = await uploadFile(file, `logos/${params.id}`, true)
-
-    builder.logo_url = url
-
-    await builder.save()
-
-    return response.json(Object.assign(constants.builder.success.SET_LOGO, { image: url }))
-  } catch (error) {
-    logger().error(error)
-
-    return response.status(500).json(error.apicode ? error : constants.builder.error.SET_LOGO)
-  }
 }
 
 /**
@@ -750,25 +748,25 @@ export const setLogo = async (request, response) => {
  *   }
  */
 export const removeLogo = async (request, response) => {
-  try {
-    const { params } = request
+    try {
+        const { params } = request
 
-    const builder = await Builder.findByPk(params.id)
+        const builder = await Builder.findByPk(params.id)
 
-    if (builder && builder.logo_url) {
-      const path = builder.logo_url.split(env().GOOGLE_CLOUD.BUCKET).pop()
+        if (builder && builder.logo_url) {
+            const path = builder.logo_url.split(env().GOOGLE_CLOUD.BUCKET).pop()
 
-      await removeFile(path)
+            await removeFile(path)
 
-      builder.logo_url = null
+            builder.logo_url = null
 
-      await builder.save()
+            await builder.save()
+        }
+
+        return response.json(Object.assign(constants.builder.success.REMOVE_LOGO))
+    } catch (error) {
+        logger().error(error)
+
+        return response.status(500).json(error.apicode ? error : constants.builder.error.REMOVE_LOGO)
     }
-
-    return response.json(Object.assign(constants.builder.success.REMOVE_LOGO))
-  } catch (error) {
-    logger().error(error)
-
-    return response.status(500).json(error.apicode ? error : constants.builder.error.REMOVE_LOGO)
-  }
 }

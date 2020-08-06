@@ -85,8 +85,8 @@ export default (sequelize, DataTypes) => {
   Builder.associate = models => {
     Builder.belongsTo(models.User, { foreignKey: 'id_user', as: 'user' })
     Builder.hasMany(models.Building, { foreignKey: 'id_builder', as: 'buildings' })
-    Builder.hasMany(models.BuilderPhone, { foreignKey: 'id_builder', as: 'phones' })
-    Builder.hasMany(models.BuilderPartner, { foreignKey: 'id_builder', as: 'partners' })
+    Builder.hasMany(models.BuilderPartner, { foreignKey: 'id_builder', as: 'partners' })   
+    Builder.hasMany(models.Phone, { foreignKey: 'reference_id', as: 'phones' })
   }
 
   return Builder

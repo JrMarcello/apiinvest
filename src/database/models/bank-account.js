@@ -1,37 +1,37 @@
 export default (sequelize, DataTypes) => {
-    const Custodian = sequelize.define(
-        'Custodian',
+    const BankAccount = sequelize.define(
+        'BankAccount',
         {
             id: {
-                type: DataTypes.UUID,
-                defaultValue: DataTypes.UUIDV1,
+                type: DataTypes.INTEGER,
+                autoIncrement: true,
                 primaryKey: true
             },
 
-            cnpj: {
-                type: DataTypes.STRING(14),
-                unique: true,
+            reference_id: {
+                type: DataTypes.UUID,
                 allowNull: false
             },
 
-            company_name: {
+            reference_entity: {
                 type: DataTypes.STRING,
                 allowNull: false
             },
 
-            company_fancy_name: {
+            bank_code: {
+                type: DataTypes.STRING(4),
+                allowNull: false
+            },
+
+            agency: {
                 type: DataTypes.STRING,
                 allowNull: false
             },
 
-            phone: {
+            account: {
                 type: DataTypes.STRING,
                 allowNull: false
             },
-
-            agent_name: DataTypes.STRING,
-            agent_email: DataTypes.STRING,
-            agent_phone: DataTypes.STRING,
 
             active: {
                 type: DataTypes.BOOLEAN,
@@ -40,9 +40,9 @@ export default (sequelize, DataTypes) => {
             }
         },
         {
-            tableName: 'custodian'
+            tableName: 'bank_account'
         }
     )
 
-    return Custodian
+    return BankAccount
 }
