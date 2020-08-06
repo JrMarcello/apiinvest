@@ -4,7 +4,7 @@ import constants from '../../common/constants'
 import statuses from '../../common/statuses'
 
 // Models
-const { Building, BuildingImage, Fundraising, Investment, Sequelize } = require('../../database/models')
+const { Building, Document, Fundraising, Investment, Sequelize } = require('../../database/models')
 
 /**
  * @api {get} /building Get all
@@ -51,8 +51,11 @@ export const getAll = async (request, response) => {
       },
       include: [
         {
-          model: BuildingImage,
-          as: 'images'
+          model: Document,
+          as: 'documents',
+          where: {
+            reference_entity: 'building'
+          }
         }
       ]
     })
@@ -115,8 +118,11 @@ export const getAllAvaliables = async (request, response) => {
       },
       include: [
         {
-          model: BuildingImage,
-          as: 'images'
+          model: Document,
+          as: 'documents',
+          where: {
+            reference_entity: 'building'
+          }
         },
         {
           model: Fundraising,
@@ -193,8 +199,11 @@ export const getById = async (request, response) => {
       },
       include: [
         {
-          model: BuildingImage,
-          as: 'images'
+          model: Document,
+          as: 'documents',
+          where: {
+            reference_entity: 'building'
+          }
         },
         {
           model: Fundraising,
@@ -367,16 +376,28 @@ export const create = async (request, response) => {
 
       const urls = await Promise.all(promises)
 
-      let images = []
+      const documents = []
 
-      urls.forEach(url => {
-        images.push({
-          id_building: building.id,
+      // A ordem das promisses não é alterada
+      urls.forEach((url, index) => {
+        let type
+
+        if (files[index].mimetype === 'application/pdf') {
+          type = statuses.document.PDF
+        } else if (files[index].mimetype.includes('image')) {
+          type = statuses.document.IMAGE
+        }
+
+        documents.push({
+          name: files[index].originalname,
+          reference_id: building.id,
+          reference_entity: 'building',
+          type,
           url
         })
       })
 
-      images = await BuildingImage.bulkCreate(images)
+      await Document.bulkCreate(documents)
     }
 
     return response.json(Object.assign(constants.building.success.CREATE, { building }))

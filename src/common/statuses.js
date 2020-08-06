@@ -13,6 +13,11 @@ const statuses = {
     CONFIRMED: 2,
     CANCELED: 3,
     WAITING_RETURN: 4
+  },
+
+  document: {
+    IMAGE: 1,
+    PDF: 2
   }
 }
 

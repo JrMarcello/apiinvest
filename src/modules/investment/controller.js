@@ -1,5 +1,5 @@
 // import moment from 'moment'
-import { env, logger } from '../../common/utils'
+import { env, logger, countDays } from '../../common/utils'
 import { sendEmail } from '../../core/mailer'
 import { uploadFile } from '../../core/storage'
 import constants from '../../common/constants'
@@ -508,6 +508,7 @@ export const confirm = async (request, response) => {
     const investment = await Investment.findByPk(body.investments[0])
 
     investment.status = statuses.investment.CONFIRMED
+    investment.confirmed_at = Date.now()
 
     await investment.save()
 
@@ -611,8 +612,24 @@ export const cancel = async (request, response) => {
       where
     })
 
-    if (!investment || investment.ted_proof_url !== null) {
-      throw constants.investment.error.INVALID_CANCEL
+    // if (!investment || investment.ted_proof_url !== null) {
+    //   throw constants.investment.error.INVALID_CANCEL
+    // }
+
+    // verificar se é possível cancelar o investimento por parte do investidor profile_id 1
+    // x a) Adicionar botão de cancelar CASO a confirmação do TED ocorreu nos últimos 7 dias
+    // b) Caso o investimento esteja suspenso, é possível cancelar com mais de 7 dias
+
+    const isInvestor = user.id_profile === 1
+    const inner7days = countDays(investment.confirmed_at) >= 0 && countDays(investment.confirmed_at) <= 7
+    const more7days = countDays(investment.confirmed_at) > 7
+
+    if (isInvestor && !inner7days && statuses.investment.CONFIRMED === investment.status) {
+      throw constants.investment.error.INVALID_CANCEL_TIME
+    }
+
+    if (isInvestor && !more7days && investment.status === (statuses.investment.PENDING || statuses.investment.WAITING_RETURN)) {
+      throw constants.investment.error.INVALID_CANCEL_PENDING_LIMIT
     }
 
     investment.status = statuses.investment.CANCELED
