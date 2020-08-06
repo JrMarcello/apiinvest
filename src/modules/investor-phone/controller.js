@@ -33,24 +33,24 @@ const { Phone, Sequelize } = require('../../database/models')
  *   }
  */
 export const getByInvestorId = async (request, response) => {
-    try {
-        const { user, params } = request
+  try {
+    const { user, params } = request
 
-        const id = user.id_profile === 3 ? params.idInvestor : user.investor.id
+    const id = user.id_profile === 3 ? params.idInvestor : user.investor.id
 
-        const phones = await Phone.findAll({
-            where: {
-                reference_id: id,
-                reference_entity: 'investor'
-            }
-        })
+    const phones = await Phone.findAll({
+      where: {
+        reference_id: id,
+        reference_entity: 'investor'
+      }
+    })
 
-        return response.json(phones)
-    } catch (error) {
-        logger().error(error)
+    return response.json(phones)
+  } catch (error) {
+    logger().error(error)
 
-        return response.status(500).json(error.apicode ? error : constants.investor.phone.error.NOT_FOUND)
-    }
+    return response.status(500).json(error.apicode ? error : constants.investor.phone.error.NOT_FOUND)
+  }
 }
 
 /**
@@ -92,29 +92,28 @@ export const getByInvestorId = async (request, response) => {
  *   }
  */
 export const create = async (request, response) => {
-    try {
-        const { params, user, body } = request
+  try {
+    const { params, user, body } = request
 
-        const id = user.id_profile === 3 ? params.idInvestor : user.investor.id
+    const id = user.id_profile === 3 ? params.idInvestor : user.investor.id
 
-        const promises = []
+    const promises = []
 
-        body.phones.forEach(phone => {
+    body.phones.forEach(phone => {
+      phone.reference_id = id
+      phone.reference_entity = 'investor'
 
-            phone.reference_id = id
-            phone.reference_entity = 'investor'
+      promises.push(Phone.create(phone))
+    })
 
-            promises.push(Phone.create(phone))
-        });
+    const phones = await Promise.all(promises)
 
-        const phones = await Promise.all(promises)
+    return response.json(Object.assign(constants.investor.phone.success.CREATE, { phones }))
+  } catch (error) {
+    logger().error(error)
 
-        return response.json(Object.assign(constants.investor.phone.success.CREATE, { phones }))
-    } catch (error) {
-        logger().error(error)
-
-        return response.status(500).json(error.apicode ? error : constants.investor.phone.error.CREATE)
-    }
+    return response.status(500).json(error.apicode ? error : constants.investor.phone.error.CREATE)
+  }
 }
 
 /**
@@ -150,27 +149,27 @@ export const create = async (request, response) => {
  *   }
  */
 export const remove = async (request, response) => {
-    try {
-        const { params, user, body } = request
+  try {
+    const { params, user, body } = request
 
-        const id = user.id_profile === 3 ? params.idInvestor : user.investor.id
+    const id = user.id_profile === 3 ? params.idInvestor : user.investor.id
 
-        await Phone.destroy({
-            where: {
-                [Sequelize.Op.and]: {
-                    reference_id: id,
-                    reference_entity: 'investor',
-                    id: {
-                        [Sequelize.Op.or]: body.ids
-                    }
-                }
-            }
-        })
+    await Phone.destroy({
+      where: {
+        [Sequelize.Op.and]: {
+          reference_id: id,
+          reference_entity: 'investor',
+          id: {
+            [Sequelize.Op.or]: body.ids
+          }
+        }
+      }
+    })
 
-        return response.json(constants.investor.phone.success.REMOVE)
-    } catch (error) {
-        logger().error(error)
+    return response.json(constants.investor.phone.success.REMOVE)
+  } catch (error) {
+    logger().error(error)
 
-        return response.status(500).json(error.apicode ? error : constants.investor.phone.error.REMOVE)
-    }
+    return response.status(500).json(error.apicode ? error : constants.investor.phone.error.REMOVE)
+  }
 }

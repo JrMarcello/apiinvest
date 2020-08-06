@@ -37,25 +37,25 @@ const { BankAccount, Sequelize } = require('../../database/models')
  *   }
  */
 export const getByInvestorId = async (request, response) => {
-    try {
-        const { user, params } = request
+  try {
+    const { user, params } = request
 
-        const id = user.id_profile === 3 ? params.idInvestor : user.investor.id
+    const id = user.id_profile === 3 ? params.idInvestor : user.investor.id
 
-        const accounts = await BankAccount.findAll({
-            where: {
-                reference_id: id,
-                reference_entity: 'investor',
-                active: true
-            }
-        })
+    const accounts = await BankAccount.findAll({
+      where: {
+        reference_id: id,
+        reference_entity: 'investor',
+        active: true
+      }
+    })
 
-        return response.json(accounts)
-    } catch (error) {
-        logger().error(error)
+    return response.json(accounts)
+  } catch (error) {
+    logger().error(error)
 
-        return response.status(500).json(error.apicode ? error : constants.investor.bank_account.error.NOT_FOUND)
-    }
+    return response.status(500).json(error.apicode ? error : constants.investor.bank_account.error.NOT_FOUND)
+  }
 }
 
 /**
@@ -105,30 +105,30 @@ export const getByInvestorId = async (request, response) => {
  *   }
  */
 export const create = async (request, response) => {
-    try {
-        const { params, user, body } = request
+  try {
+    const { params, user, body } = request
 
-        const id = user.id_profile === 3 ? params.idInvestor : user.investor.id
+    const id = user.id_profile === 3 ? params.idInvestor : user.investor.id
 
-        const promises = []
+    const promises = []
 
-        for (let index = 0; index < body.accounts.length; index += 1) {
-            const account = body.accounts[index]
+    for (let index = 0; index < body.accounts.length; index += 1) {
+      const account = body.accounts[index]
 
-            account.reference_id = id,
-            account.reference_entity = 'investor',
+      account.reference_id = id
+      account.reference_entity = 'investor'
 
-            promises.push(BankAccount.create(account))
-        }
-
-        const accounts = await Promise.all(promises)
-
-        return response.json(Object.assign(constants.investor.bank_account.success.CREATE, { accounts }))
-    } catch (error) {
-        logger().error(error)
-
-        return response.status(500).json(error.apicode ? error : constants.investor.bank_account.error.CREATE)
+      promises.push(BankAccount.create(account))
     }
+
+    const accounts = await Promise.all(promises)
+
+    return response.json(Object.assign(constants.investor.bank_account.success.CREATE, { accounts }))
+  } catch (error) {
+    logger().error(error)
+
+    return response.status(500).json(error.apicode ? error : constants.investor.bank_account.error.CREATE)
+  }
 }
 
 /**
@@ -164,27 +164,27 @@ export const create = async (request, response) => {
  *   }
  */
 export const remove = async (request, response) => {
-    try {
-        const { params, user, body } = request
+  try {
+    const { params, user, body } = request
 
-        const id = user.id_profile === 3 ? params.idInvestor : user.investor.id
+    const id = user.id_profile === 3 ? params.idInvestor : user.investor.id
 
-        await BankAccount.destroy({
-            where: {
-                [Sequelize.Op.and]: {
-                    reference_id: id,
-                    reference_entity: 'investor',
-                    id: {
-                        [Sequelize.Op.or]: body.ids
-                    }
-                }
-            }
-        })
+    await BankAccount.destroy({
+      where: {
+        [Sequelize.Op.and]: {
+          reference_id: id,
+          reference_entity: 'investor',
+          id: {
+            [Sequelize.Op.or]: body.ids
+          }
+        }
+      }
+    })
 
-        return response.json(constants.investor.bank_account.success.REMOVE)
-    } catch (error) {
-        logger().error(error)
+    return response.json(constants.investor.bank_account.success.REMOVE)
+  } catch (error) {
+    logger().error(error)
 
-        return response.status(500).json(error.apicode ? error : constants.investor.bank_account.error.REMOVE)
-    }
+    return response.status(500).json(error.apicode ? error : constants.investor.bank_account.error.REMOVE)
+  }
 }
