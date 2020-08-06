@@ -122,7 +122,12 @@ const constants = {
       NO_TED_FILE: { apicode: 'E0410', message: 'Comprovante de TED não anexado' },
       INVALID_DATA: { apicode: 'E0411', message: 'Formato de dados inválido' },
       INVALID_CANCEL: { apicode: 'E0412', message: 'Não é possivel cancelar investimentos com TED e/ou confirmados!' },
-      ADMIN: { apicode: 'E0413', message: 'Não é possível investir utilizando um perfil de Administrador' }
+      INVALID_CANCEL_TIME: { apicode: 'E0413', message: 'Não é possivel cancelar investimentos confirmados a mais de 7 dias!' },
+      INVALID_CANCEL_PENDING_LIMIT: {
+        apicode: 'E0414',
+        message: 'Só é possível cancelar um investimento em pendência com mais de 7 dias!'
+      },
+      ADMIN: { apicode: 'E0415', message: 'Não é possível investir utilizando um perfil de Administrador' }
     }
   },
   fundraising: {
