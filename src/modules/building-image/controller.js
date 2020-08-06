@@ -35,22 +35,22 @@ const { Document, Sequelize } = require('../../database/models')
  *   }
  */
 export const getByBuildingId = async (request, response) => {
-  try {
-    const { params } = request
+    try {
+        const { params } = request
 
-    const images = await Document.findAll({
-      where: {
-        reference_id: params.idBuilding,
-        reference_entity: 'building'
-      }
-    })
+        const images = await Document.findAll({
+            where: {
+                reference_id: params.idBuilding,
+                reference_entity: 'building'
+            }
+        })
 
-    return response.json(images)
-  } catch (err) {
-    logger().error(err)
+        return response.json(images)
+    } catch (err) {
+        logger().error(err)
 
-    return response.status(500).json(err.apicode ? err : constants.building.images.error.NOT_FOUND)
-  }
+        return response.status(500).json(err.apicode ? err : constants.building.images.error.NOT_FOUND)
+    }
 }
 
 /**
@@ -82,46 +82,46 @@ export const getByBuildingId = async (request, response) => {
  *   }
  */
 export const create = async (request, response) => {
-  try {
-    const { params, files } = request
+    try {
+        const { params, files } = request
 
-    const promises = []
+        const promises = []
 
-    files.forEach(file => {
-      promises.push(uploadFile(file, `buildings/${params.idBuilding}`, true))
-    })
+        files.forEach(file => {
+            promises.push(uploadFile(file, `buildings/${params.idBuilding}`, true))
+        })
 
-    const urls = await Promise.all(promises)
+        const urls = await Promise.all(promises)
 
-    const documents = []
+        const documents = []
 
-    // A ordem das promisses não é alterada
-    urls.forEach((url, index) => {
-      let type
+        // A ordem das promisses não é alterada
+        urls.forEach((url, index) => {
+            let type
 
-      if (files[index].mimetype === 'application/pdf') {
-        type = statuses.document.PDF
-      } else if (files[index].mimetype.includes('image')) {
-        type = statuses.document.IMAGE
-      }
+            if (files[index].mimetype === 'application/pdf') {
+                type = statuses.document.PDF
+            } else if (files[index].mimetype.includes('image')) {
+                type = statuses.document.IMAGE
+            }
 
-      documents.push({
-        name: files[index].originalname,
-        reference_id: params.idBuilding,
-        reference_entity: 'building',
-        type,
-        url
-      })
-    })
+            documents.push({
+                name: files[index].originalname,
+                reference_id: params.idBuilding,
+                reference_entity: 'building',
+                type,
+                url
+            })
+        })
 
-    const images = await Document.bulkCreate(documents)
+        const images = await Document.bulkCreate(documents)
 
-    return response.json(Object.assign(constants.building.images.success.CREATE, { images }))
-  } catch (error) {
-    logger().error(error)
+        return response.json(Object.assign(constants.building.images.success.CREATE, { images }))
+    } catch (error) {
+        logger().error(error)
 
-    return response.status(500).json(error.apicode ? error : constants.building.images.error.CREATE)
-  }
+        return response.status(500).json(error.apicode ? error : constants.building.images.error.CREATE)
+    }
 }
 
 /**
@@ -157,40 +157,40 @@ export const create = async (request, response) => {
  *   }
  */
 export const remove = async (request, response) => {
-  try {
-    const { params, body } = request
+    try {
+        const { params, body } = request
 
-    const images = await Document.findAll({
-      where: {
-        [Sequelize.Op.and]: {
-          reference_id: params.idBuilding,
-          reference_entity: 'building',
-          id: {
-            [Sequelize.Op.or]: body.ids
-          }
-        }
-      }
-    })
-
-    if (images && images.length > 0) {
-      await removeFiles(images)
-      await Document.destroy({
-        where: {
-          [Sequelize.Op.and]: {
-            reference_id: params.idBuilding,
-            reference_entity: 'building',
-            id: {
-              [Sequelize.Op.or]: body.ids
+        const images = await Document.findAll({
+            where: {
+                [Sequelize.Op.and]: {
+                    reference_id: params.idBuilding,
+                    reference_entity: 'building',
+                    id: {
+                        [Sequelize.Op.or]: body.ids
+                    }
+                }
             }
-          }
+        })
+
+        if (images && images.length > 0) {
+            await removeFiles(images)
+            await Document.destroy({
+                where: {
+                    [Sequelize.Op.and]: {
+                        reference_id: params.idBuilding,
+                        reference_entity: 'building',
+                        id: {
+                            [Sequelize.Op.or]: body.ids
+                        }
+                    }
+                }
+            })
         }
-      })
+
+        return response.json(constants.building.images.success.REMOVE)
+    } catch (error) {
+        logger().error(error)
+
+        return response.status(500).json(error.apicode ? error : constants.building.images.error.REMOVE)
     }
-
-    return response.json(constants.building.images.success.REMOVE)
-  } catch (error) {
-    logger().error(error)
-
-    return response.status(500).json(error.apicode ? error : constants.building.images.error.REMOVE)
-  }
 }

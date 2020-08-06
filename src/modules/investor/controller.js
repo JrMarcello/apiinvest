@@ -10,9 +10,8 @@ const {
     Investment,
     Investor,
     BankAccount,
-    InvestorDocument,
+    Document,
     Phone,
-    BuildingImage,
     Sequelize
 } = require('../../database/models')
 
@@ -225,6 +224,7 @@ export const getByUserId = async (request, response) => {
                 {
                     model: Phone,
                     as: 'phones',
+                    required: false,
                     where: {
                         reference_entity: 'investor'
                     }
@@ -232,6 +232,7 @@ export const getByUserId = async (request, response) => {
                 {
                     model: BankAccount,
                     as: 'accounts',
+                    required: false,
                     where: {
                         reference_entity: 'investor'
                     }
@@ -305,6 +306,7 @@ export const getAllInvestmentsById = async (request, response) => {
                             include: {
                                 model: Document,
                                 as: 'documents',
+                                required: false,
                                 where: {
                                     reference_entity: 'building'
                                 }
@@ -641,6 +643,8 @@ export const create = async (request, response) => {
             })
 
             const urls = await Promise.all(promises)
+
+            let documents = []
 
             // A ordem das promisses não é alterada
             urls.forEach((url, index) => {

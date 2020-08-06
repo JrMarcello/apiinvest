@@ -160,6 +160,7 @@ export const getById = async (request, response) => {
                 {
                     model: Phone,
                     as: 'phones',
+                    required: false,
                     where: {
                         reference_entity: 'builder'
                     }
@@ -170,6 +171,8 @@ export const getById = async (request, response) => {
                 }
             ]
         })
+
+        console.log(builder)
 
         return response.json(builder || {})
     } catch (error) {
@@ -526,6 +529,7 @@ export const update = async (request, response) => {
                 {
                     model: Phone,
                     as: 'phones',
+                    required: false,
                     where: {
                         reference_entity: 'builder'
                     }

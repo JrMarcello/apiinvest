@@ -46,7 +46,7 @@ export default (sequelize, DataTypes) => {
 
     // Associations
     Custodian.associate = models => {
-        Custodian.hasMany(models.BankAccount, { foreignKey: 'reference_id', as: 'accounts' })
+        Custodian.hasOne(models.BankAccount, { foreignKey: 'reference_id', as: 'account' })
     }
 
 

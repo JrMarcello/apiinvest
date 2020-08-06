@@ -4,7 +4,7 @@ import constants from '../../common/constants'
 import statuses from '../../common/statuses'
 
 // Models
-const { Building, Document, Fundraising, Investment, Sequelize } = require('../../database/models')
+const { BankAccount, Building, Custodian, Document, Fundraising, Investment, Sequelize } = require('../../database/models')
 
 /**
  * @api {get} /building Get all
@@ -44,28 +44,29 @@ const { Building, Document, Fundraising, Investment, Sequelize } = require('../.
  *     }
  */
 export const getAll = async (request, response) => {
-  try {
-    const buildings = await Building.findAll({
-      where: {
-        active: true
-      },
-      include: [
-        {
-          model: Document,
-          as: 'documents',
-          where: {
-            reference_entity: 'building'
-          }
-        }
-      ]
-    })
+    try {
+        const buildings = await Building.findAll({
+            where: {
+                active: true
+            },
+            include: [
+                {
+                    model: Document,
+                    as: 'documents',                    
+                    required: false,
+                    where: {
+                        reference_entity: 'building'
+                    }
+                }
+            ]
+        })
 
-    return response.json(buildings)
-  } catch (error) {
-    logger().error(error)
+        return response.json(buildings)
+    } catch (error) {
+        logger().error(error)
 
-    return response.status(500).json(error.apicode ? error : constants.building.error.NOT_FOUND)
-  }
+        return response.status(500).json(error.apicode ? error : constants.building.error.NOT_FOUND)
+    }
 }
 
 /**
@@ -106,42 +107,43 @@ export const getAll = async (request, response) => {
  *     }
  */
 export const getAllAvaliables = async (request, response) => {
-  try {
-    // Query original
-    // SELECT b.* FROM ${table} b JOIN fundraising f ON (b.id = f.id_building AND f.active AND f.finished = false) WHERE b.active
+    try {
+        // Query original
+        // SELECT b.* FROM ${table} b JOIN fundraising f ON (b.id = f.id_building AND f.active AND f.finished = false) WHERE b.active
 
-    const status = [statuses.fundraising.OPENED, statuses.fundraising.CONFIRMED, statuses.fundraising.SETTLED]
+        const status = [statuses.fundraising.OPENED, statuses.fundraising.CONFIRMED, statuses.fundraising.SETTLED]
 
-    const buildings = await Building.findAll({
-      where: {
-        active: true
-      },
-      include: [
-        {
-          model: Document,
-          as: 'documents',
-          where: {
-            reference_entity: 'building'
-          }
-        },
-        {
-          model: Fundraising,
-          as: 'fundraisings',
-          where: {
-            status: {
-              [Sequelize.Op.or]: status
-            }
-          }
-        }
-      ]
-    })
+        const buildings = await Building.findAll({
+            where: {
+                active: true
+            },
+            include: [
+                {
+                    model: Document,
+                    as: 'documents',
+                    required: false,
+                    where: {
+                        reference_entity: 'building'
+                    }
+                },
+                {
+                    model: Fundraising,
+                    as: 'fundraisings',
+                    where: {
+                        status: {
+                            [Sequelize.Op.or]: status
+                        }
+                    }
+                }
+            ]
+        })
 
-    return response.json(buildings)
-  } catch (err) {
-    logger().error(err)
+        return response.json(buildings)
+    } catch (err) {
+        logger().error(err)
 
-    return response.status(500).json(err.apicode ? err : constants.building.error.NOT_FOUND)
-  }
+        return response.status(500).json(err.apicode ? err : constants.building.error.NOT_FOUND)
+    }
 }
 
 /**
@@ -190,40 +192,51 @@ export const getAllAvaliables = async (request, response) => {
  *   }
  */
 export const getById = async (request, response) => {
-  try {
-    const { params } = request
+    try {
+        const { params } = request
 
-    const building = await Building.findByPk(params.id, {
-      where: {
-        active: true
-      },
-      include: [
-        {
-          model: Document,
-          as: 'documents',
-          where: {
-            reference_entity: 'building'
-          }
-        },
-        {
-          model: Fundraising,
-          as: 'fundraisings',
-          include: [
-            {
-              model: Investment,
-              as: 'investments'
-            }
-          ]
-        }
-      ]
-    })
+        const building = await Building.findByPk(params.id, {
+            where: {
+                active: true
+            },
+            include: [
+                {
+                    model: Document,
+                    as: 'documents',
+                    required: false,
+                    where: {
+                        reference_entity: 'building'
+                    }
+                },
+                {
+                    model: Fundraising,
+                    as: 'fundraisings',
+                    include: [
+                        {
+                            model: Investment,
+                            as: 'investments'
+                        },
+                        {
+                            model: Custodian,
+                            as: 'custodian',
+                            include: [
+                                {
+                                    model: BankAccount,
+                                    as: 'account'
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        })
 
-    return response.json(building || {})
-  } catch (error) {
-    logger().error(error)
+        return response.json(building || {})
+    } catch (error) {
+        logger().error(error)
 
-    return response.status(500).json(error.apicode ? error : constants.building.error.NOT_FOUND)
-  }
+        return response.status(500).json(error.apicode ? error : constants.building.error.NOT_FOUND)
+    }
 }
 
 /**
@@ -270,22 +283,22 @@ export const getById = async (request, response) => {
  *   }
  */
 export const getByBuilderId = async (request, response) => {
-  try {
-    const { params } = request
+    try {
+        const { params } = request
 
-    const buildings = await Building.findAll({
-      where: {
-        id_builder: params.id,
-        active: true
-      }
-    })
+        const buildings = await Building.findAll({
+            where: {
+                id_builder: params.id,
+                active: true
+            }
+        })
 
-    return response.json(buildings)
-  } catch (error) {
-    logger().error(error)
+        return response.json(buildings)
+    } catch (error) {
+        logger().error(error)
 
-    return response.status(500).json(error.apicode ? error : constants.building.error.NOT_FOUND)
-  }
+        return response.status(500).json(error.apicode ? error : constants.building.error.NOT_FOUND)
+    }
 }
 
 /**
@@ -359,53 +372,53 @@ export const getByBuilderId = async (request, response) => {
  *   }
  */
 export const create = async (request, response) => {
-  try {
-    const { files } = request
-    let { body } = request
+    try {
+        const { files } = request
+        let { body } = request
 
-    body = JSON.parse(body.building)
+        body = JSON.parse(body.building)
 
-    const building = await Building.create(body)
+        const building = await Building.create(body)
 
-    if (files && files.length > 0) {
-      const promises = []
+        if (files && files.length > 0) {
+            const promises = []
 
-      files.forEach(file => {
-        promises.push(uploadFile(file, `buildings/${building.id}`, true))
-      })
+            files.forEach(file => {
+                promises.push(uploadFile(file, `buildings/${building.id}`, true))
+            })
 
-      const urls = await Promise.all(promises)
+            const urls = await Promise.all(promises)
 
-      const documents = []
+            const documents = []
 
-      // A ordem das promisses não é alterada
-      urls.forEach((url, index) => {
-        let type
+            // A ordem das promisses não é alterada
+            urls.forEach((url, index) => {
+                let type
 
-        if (files[index].mimetype === 'application/pdf') {
-          type = statuses.document.PDF
-        } else if (files[index].mimetype.includes('image')) {
-          type = statuses.document.IMAGE
+                if (files[index].mimetype === 'application/pdf') {
+                    type = statuses.document.PDF
+                } else if (files[index].mimetype.includes('image')) {
+                    type = statuses.document.IMAGE
+                }
+
+                documents.push({
+                    name: files[index].originalname,
+                    reference_id: building.id,
+                    reference_entity: 'building',
+                    type,
+                    url
+                })
+            })
+
+            await Document.bulkCreate(documents)
         }
 
-        documents.push({
-          name: files[index].originalname,
-          reference_id: building.id,
-          reference_entity: 'building',
-          type,
-          url
-        })
-      })
+        return response.json(Object.assign(constants.building.success.CREATE, { building }))
+    } catch (error) {
+        logger().error(error)
 
-      await Document.bulkCreate(documents)
+        return response.status(500).json(error.apicode ? error : constants.building.error.CREATE)
     }
-
-    return response.json(Object.assign(constants.building.success.CREATE, { building }))
-  } catch (error) {
-    logger().error(error)
-
-    return response.status(500).json(error.apicode ? error : constants.building.error.CREATE)
-  }
 }
 
 /**
@@ -458,32 +471,32 @@ export const create = async (request, response) => {
  *   }
  */
 export const update = async (request, response) => {
-  try {
-    const { body } = request
+    try {
+        const { body } = request
 
-    if (!body || body.length === 0) {
-      throw constants.building.error.INVALID_DATA
-    }
-
-    const building = await Building.findByPk(body.id)
-
-    if (building) {
-      // Atualizando apenas as propriedades definidas para atualizar
-      Object.keys(body).forEach(key => {
-        if (body[key] !== undefined) {
-          building[key] = body[key]
+        if (!body || body.length === 0) {
+            throw constants.building.error.INVALID_DATA
         }
-      })
 
-      await building.save()
+        const building = await Building.findByPk(body.id)
+
+        if (building) {
+            // Atualizando apenas as propriedades definidas para atualizar
+            Object.keys(body).forEach(key => {
+                if (body[key] !== undefined) {
+                    building[key] = body[key]
+                }
+            })
+
+            await building.save()
+        }
+
+        return response.json(constants.building.success.UPDATE)
+    } catch (error) {
+        logger().error(error)
+
+        return response.status(500).json(error.apicode ? error : constants.building.error.UPDATE)
     }
-
-    return response.json(constants.building.success.UPDATE)
-  } catch (error) {
-    logger().error(error)
-
-    return response.status(500).json(error.apicode ? error : constants.building.error.UPDATE)
-  }
 }
 
 /**
@@ -518,21 +531,21 @@ export const update = async (request, response) => {
  *   }
  */
 export const remove = async (request, response) => {
-  try {
-    const { params } = request
+    try {
+        const { params } = request
 
-    const building = await Building.findByPk(params.id)
+        const building = await Building.findByPk(params.id)
 
-    if (building) {
-      building.active = false
+        if (building) {
+            building.active = false
 
-      await building.save()
+            await building.save()
+        }
+
+        return response.json(constants.building.success.REMOVE)
+    } catch (error) {
+        logger().error(error)
+
+        return response.status(500).json(error.apicode ? error : constants.building.error.REMOVE)
     }
-
-    return response.json(constants.building.success.REMOVE)
-  } catch (error) {
-    logger().error(error)
-
-    return response.status(500).json(error.apicode ? error : constants.building.error.REMOVE)
-  }
 }

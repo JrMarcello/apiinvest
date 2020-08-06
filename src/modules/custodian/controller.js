@@ -236,11 +236,20 @@ export const update = async (request, response) => {
             }
         })
 
-        account.agency = body.account.agency;
-        account.account = body.account.account;
-        account.bank_code = body.account.bank_code;
+        if (account) {
 
-        await account.save()
+            account.agency = body.account.agency;
+            account.account = body.account.account;
+            account.bank_code = body.account.bank_code;
+
+            await account.save()
+        } else {
+
+            body.account.reference_id = custodian.id
+            body.account.reference_entity = 'custodian'
+
+            await BankAccount.create(body.account)
+        }
 
         return response.json(constants.custodian.success.UPDATE)
     } catch (error) {
