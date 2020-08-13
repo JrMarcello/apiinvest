@@ -23,6 +23,7 @@ export default {
   getInvestedAmount: [authenticate, acl.authorize, validate(schemas.validateID)],
   getReceivedAmount: [authenticate, acl.authorize, validate(schemas.validateID)],
   getProjectedAmount: [authenticate, acl.authorize, validate(schemas.validateID)],
+  getDashboardInfo: [authenticate, acl.authorize, validate(schemas.validateID)],
   create: [authenticate, acl.authorize, validate(schemas.create)],
   update: [authenticate, acl.authorize, validate(schemas.update)]
 }
