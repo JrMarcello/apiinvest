@@ -504,6 +504,67 @@ export const getProjectedAmount = async (request, response) => {
   }
 }
 
+export const getDashboardInfo = async (request, response) => {
+  try {
+    const { user } = request
+
+    const investorId = user.investor.id
+
+    // Lista de todos os investimentos
+    const investments = await Investment.findAll({
+      where: {
+        id_investor: investorId
+      },
+      include: [
+        {
+          model: Fundraising,
+          as: 'fundraising',
+          include: [
+            {
+              model: Building,
+              as: 'building',
+              include: {
+                model: Document,
+                as: 'documents',
+                required: false,
+                where: {
+                  reference_entity: 'building'
+                }
+              }
+            }
+          ]
+        }
+      ]
+    })
+
+    // Total projetado
+    const projected = investments.reduce((sum, investment) => sum + parseFloat(investment.amount), 0)
+
+    // Quantidade de investimentos confirmados
+    let confirmed = 0
+
+    // Total investido
+    let invested = 0
+
+    // Total recebido
+    let received = 0
+
+    investments.forEach(investment => {
+      if (investment.status === statuses.investment.CONFIRMED) {
+        confirmed += 1
+        invested += investment.amount
+        received += investment.amount_returned
+      }
+    })
+
+    return response.json({ investments, projected, confirmed, invested, received })
+  } catch (error) {
+    logger().error(error)
+
+    return response.status(500).json(error.apicode ? error : constants.investor.error.PROJECTED_AMOUNT)
+  }
+}
+
 /**
  * @api {post} /investor Create
  * @apiName Createinvestor
