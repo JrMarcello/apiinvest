@@ -223,7 +223,7 @@ export const getAllClosed = async (request, response) => {
         {
           model: Building,
           as: 'building',
-          attributes: ['name', 'cnpj'],
+          attributes: ['id', 'name', 'cnpj'],
           include: [
             {
               model: Builder,
@@ -267,6 +267,7 @@ export const getAllClosed = async (request, response) => {
           name: fundraising.building.builder.company_name,
           cnpj: fundraising.building.builder.cnpj
         },
+        link: `${process.env.PORTAL_URL}/public/empreendimento/${fundraising.building.id}`,
         last_report: reports && reports.length > 0 ? reports.pop().createdAt : null,
         final_date: fundraising.final_date,
         captured_amount: captured
