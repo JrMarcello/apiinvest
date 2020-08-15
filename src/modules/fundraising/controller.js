@@ -408,7 +408,7 @@ export const getInvestorsByFundraisingId = async (request, response) => {
   try {
     const { params } = request
 
-    const investors = await Investment.findAll({
+    const investments = await Investment.findAll({
       where: {
         id_fundraising: params.id
       },
@@ -425,6 +425,8 @@ export const getInvestorsByFundraisingId = async (request, response) => {
         }
       ]
     })
+
+    const investors = investments.map(investment => investment.investor)
 
     return response.json(investors)
   } catch (error) {
