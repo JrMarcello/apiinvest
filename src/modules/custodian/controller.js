@@ -91,10 +91,20 @@ export const getById = async (request, response) => {
     const custodian = await Custodian.findByPk(params.id, {
       where: {
         active: true
-      }
+      },
+      include: [
+        {
+          model: BankAccount,
+          as: 'account',
+          required: false,
+          where: {
+            reference_entity: 'custodian'
+          }
+        }
+      ]
     })
 
-    return response.json(custodian || {})
+    return response.json(custodian)
   } catch (error) {
     logger().error(error)
 
