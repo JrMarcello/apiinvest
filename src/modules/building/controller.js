@@ -4,7 +4,17 @@ import constants from '../../common/constants'
 import statuses from '../../common/statuses'
 
 // Models
-const { BankAccount, Building, Custodian, Document, Fundraising, Investment, Investor, Sequelize } = require('../../database/models')
+const {
+  BankAccount,
+  Building,
+  BuildingDetail,
+  Custodian,
+  Document,
+  Fundraising,
+  Investment,
+  Investor,
+  Sequelize
+} = require('../../database/models')
 
 /**
  * @api {get} /building Get all
@@ -207,6 +217,11 @@ export const getById = async (request, response) => {
           where: {
             reference_entity: 'building'
           }
+        },
+        {
+          model: BuildingDetail,
+          as: 'details',
+          required: false
         },
         {
           model: Fundraising,
@@ -547,6 +562,92 @@ export const remove = async (request, response) => {
 
       await building.save()
     }
+
+    return response.json(constants.building.success.REMOVE)
+  } catch (error) {
+    logger().error(error)
+
+    return response.status(500).json(error.apicode ? error : constants.building.error.REMOVE)
+  }
+}
+
+export const getAllDetails = async (request, response) => {
+  try {
+    const { params } = request
+
+    const details = await BuildingDetail.findAll({ where: { id_building: params.id } })
+
+    return response.json(details)
+  } catch (error) {
+    logger().error(error)
+
+    return response.status(500).json(error.apicode ? error : constants.building.error.NOT_FOUND)
+  }
+}
+
+export const getDetail = async (request, response) => {
+  try {
+    const { params } = request
+
+    const detail = await BuildingDetail.findByPk(params.detailId)
+
+    return response.json(detail)
+  } catch (error) {
+    logger().error(error)
+
+    return response.status(500).json(error.apicode ? error : constants.building.error.NOT_FOUND)
+  }
+}
+
+export const addDetail = async (request, response) => {
+  try {
+    const { body, params } = request
+
+    body.id_building = params.id
+
+    const detail = await BuildingDetail.create(body)
+
+    return response.json(Object.assign(constants.building.success.CREATE, { detail }))
+  } catch (error) {
+    logger().error(error)
+
+    return response.status(500).json(error.apicode ? error : constants.building.error.CREATE)
+  }
+}
+export const updateDetail = async (request, response) => {
+  try {
+    const { body, params } = request
+
+    const detail = await BuildingDetail.findByPk(params.detailId)
+
+    if (detail) {
+      // Atualizando apenas as propriedades definidas para atualizar
+      Object.keys(body).forEach(key => {
+        if (body[key] !== undefined) {
+          detail[key] = body[key]
+        }
+      })
+
+      await detail.save()
+    }
+
+    return response.json(constants.building.success.UPDATE)
+  } catch (error) {
+    logger().error(error)
+
+    return response.status(500).json(error.apicode ? error : constants.building.error.UPDATE)
+  }
+}
+
+export const removeDetail = async (request, response) => {
+  try {
+    const { params } = request
+
+    BuildingDetail.destroy({
+      where: {
+        id: params.detailId
+      }
+    })
 
     return response.json(constants.building.success.REMOVE)
   } catch (error) {

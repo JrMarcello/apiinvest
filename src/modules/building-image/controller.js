@@ -124,6 +124,50 @@ export const create = async (request, response) => {
   }
 }
 
+export const createJuridic = async (request, response) => {
+  try {
+    const { params, files } = request
+
+    const promises = []
+
+    files.forEach(file => {
+      promises.push(uploadFile(file, `buildings/${params.idBuilding}`, true))
+    })
+
+    const urls = await Promise.all(promises)
+
+    const documents = []
+
+    // A ordem das promisses não é alterada
+    urls.forEach((url, index) => {
+      let type
+
+      if (files[index].mimetype === 'application/pdf') {
+        type = statuses.document.PDF
+      } else if (files[index].mimetype.includes('image')) {
+        type = statuses.document.IMAGE
+      }
+
+      documents.push({
+        name: files[index].originalname,
+        reference_id: params.idBuilding,
+        reference_entity: 'building',
+        type,
+        url,
+        category: statuses.pdf.JURIDIC
+      })
+    })
+
+    const juridic = await Document.bulkCreate(documents)
+
+    return response.json(Object.assign(constants.building.images.success.CREATE, { juridic }))
+  } catch (error) {
+    logger().error(error)
+
+    return response.status(500).json(error.apicode ? error : constants.building.images.error.CREATE)
+  }
+}
+
 /**
  * @api {delete} /building/:idBuilding/images Delete Images
  * @apiName DeleteBuilderImages

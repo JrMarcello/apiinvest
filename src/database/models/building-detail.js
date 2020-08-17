@@ -1,6 +1,6 @@
 export default (sequelize, DataTypes) => {
-  const BuildingImage = sequelize.define(
-    'BuildingImage',
+  const BuildingDetail = sequelize.define(
+    'BuildingDetail',
     {
       id: {
         type: DataTypes.INTEGER,
@@ -13,20 +13,25 @@ export default (sequelize, DataTypes) => {
         allowNull: false
       },
 
-      url: {
+      title: {
         type: DataTypes.STRING,
+        allowNull: false
+      },
+
+      content: {
+        type: DataTypes.TEXT,
         allowNull: false
       }
     },
     {
-      tableName: 'building_image'
+      tableName: 'building_detail'
     }
   )
 
   // Associations
-  BuildingImage.associate = models => {
-    BuildingImage.belongsTo(models.Building, { foreignKey: 'id_building', as: 'building' })
+  BuildingDetail.associate = models => {
+    BuildingDetail.belongsTo(models.Building, { foreignKey: 'id_building', as: 'building' })
   }
 
-  return BuildingImage
+  return BuildingDetail
 }

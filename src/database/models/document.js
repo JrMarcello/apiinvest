@@ -35,6 +35,11 @@ export default (sequelize, DataTypes) => {
       type: {
         type: DataTypes.INTEGER,
         allowNull: false
+      },
+
+      category: {
+        type: DataTypes.INTEGER,
+        allowNull: false
       }
     },
     {
