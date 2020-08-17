@@ -98,6 +98,7 @@ export default (sequelize, DataTypes) => {
     Building.belongsTo(models.Builder, { foreignKey: 'id_builder', as: 'builder' })
     Building.hasMany(models.Fundraising, { foreignKey: 'id_building', as: 'fundraisings' })
     Building.hasMany(models.Document, { foreignKey: 'reference_id', as: 'documents' })
+    Building.hasMany(models.BuildingDetail, { foreignKey: 'id_building', as: 'details' })
   }
 
   return Building

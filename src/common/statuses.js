@@ -18,6 +18,11 @@ const statuses = {
   document: {
     IMAGE: 1,
     PDF: 2
+  },
+
+  pdf: {
+      COMMON: 1,
+      JURIDIC: 2
   }
 }
 
