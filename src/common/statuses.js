@@ -21,8 +21,8 @@ const statuses = {
   },
 
   pdf: {
-      COMMON: 1,
-      JURIDIC: 2
+    COMMON: 1,
+    JURIDIC: 2
   }
 }
 
