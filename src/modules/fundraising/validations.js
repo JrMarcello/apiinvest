@@ -25,7 +25,7 @@ export default {
   getAll: [authenticate, acl.authorize, validate(schemas.getAll)],
   getById: [authenticate, acl.authorize, validate(schemas.validateID)],
   getByBuildingId: [authenticate, acl.authorize, validate(schemas.getByBuildingId)],
-  getAmountRaised: [authenticate, acl.authorize, validate(schemas.validateID)],
+  getAmountRaised: [validate(schemas.validateID)],
   getInvestorsByFundraisingId: [authenticate, acl.authorize, validate(schemas.validateID)],
   create: [authenticate, acl.authorize, validate(schemas.create)],
   update: [authenticate, acl.authorize, validate(schemas.update)],
