@@ -45,5 +45,6 @@ export const error = err => {
   const formattedMsg = `[ERROR] - ${moment().format()} -> ${err.toString()}\n`
 
   process.stderr.write(chalk.bold.red(formattedMsg))
+  console.log(err)
   logger.error(err)
 }
