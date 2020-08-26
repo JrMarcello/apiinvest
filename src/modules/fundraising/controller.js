@@ -494,7 +494,7 @@ export const create = async (request, response) => {
     const { body } = request
 
     // O valor total da captação não deve ultrapassar de R$5.000.000,00
-    if (Number(body.amount) > 500000) {
+    if (Number(body.amount) > 5000000) {
       return response.status(400).json(constants.fundraising.error.AMOUNT_EXCEEDED)
     }
 
