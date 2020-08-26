@@ -4,7 +4,7 @@ import constants from '../../common/constants'
 import statuses from '../../common/statuses'
 
 // Models
-const { Building, Fundraising, Investment, Investor, BankAccount, Document, Phone, Sequelize } = require('../../database/models')
+const { Building, Custodian, Fundraising, Investment, Investor, BankAccount, Document, Phone, Sequelize } = require('../../database/models')
 
 /**
  * @api {get} /investor Get all
@@ -537,6 +537,16 @@ export const getDashboardInfo = async (request, response) => {
       ]
     })
 
+    // Custodiante
+    const custodian = (await Custodian.findAll({
+        limit: 1,
+        order: [['createdAt', 'DESC']],
+        include: [{
+          model: BankAccount,
+          as: 'account'
+        }]
+    }))[0]
+
     // Total projetado
     const projected = investments.reduce((sum, investment) => sum + parseFloat(investment.amount), 0)
 
@@ -557,7 +567,7 @@ export const getDashboardInfo = async (request, response) => {
       }
     })
 
-    return response.json({ investments, projected, confirmed, invested, received })
+    return response.json({ investments, projected, confirmed, invested, received, custodian })
   } catch (error) {
     logger().error(error)
 

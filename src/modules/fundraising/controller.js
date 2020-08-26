@@ -498,7 +498,10 @@ export const create = async (request, response) => {
       return response.status(400).json(constants.fundraising.error.AMOUNT_EXCEEDED)
     }
 
-    const custodian = await Custodian.findOne({})
+    const custodian = (await Custodian.findAll({
+        limit: 1,
+        order: [['createdAt', 'DESC']]
+    }))[0]
 
     body.investment_percentage = 0.05
     body.id_custodian = custodian.id
