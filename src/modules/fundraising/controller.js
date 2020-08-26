@@ -494,8 +494,8 @@ export const create = async (request, response) => {
     const { body } = request
 
     // O valor total da captação não deve ultrapassar de R$5.000.000,00
-    if (body.amount > 500000) {
-      return response.status(400).json(constants.fundraising)
+    if (Number(body.amount) > 500000) {
+      return response.status(400).json(constants.fundraising.error.AMOUNT_EXCEEDED)
     }
 
     const custodian = await Custodian.findOne({})
