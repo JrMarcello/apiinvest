@@ -801,6 +801,7 @@ export const update = async (request, response) => {
         {
           model: Phone,
           as: 'phones',
+          required: false,
           where: {
             reference_entity: 'investor'
           }
